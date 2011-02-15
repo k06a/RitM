@@ -10,9 +10,7 @@ void BruteRouter::transmitPacket(Protocol proto, Packet & packet, unsigned offse
 		it = nextProcessors.begin();
 		it != nextProcessors.end(); it++)
 	{
-		ProcessingStatus ps = (*it)->processPacket(proto, packet, offset);
-		if (ps == ProcessingStatus::Accepted)
-			break;
+		(*it)->processPacket(proto, packet, offset);
 	}
 }
 
@@ -24,4 +22,9 @@ void BruteRouter::addNextProcessor(IProcessor * processor)
 void BruteRouter::removeNextProcessor(IProcessor * processor)
 {
 	std::remove(nextProcessors.begin(), nextProcessors.end(), processor);
+}
+
+const std::deque<IProcessor*> & BruteRouter::processors()
+{
+	return nextProcessors;
 }

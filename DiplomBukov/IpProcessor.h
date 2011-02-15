@@ -13,11 +13,13 @@ namespace DiplomBukov
 
 	public:
 		IpProcessor(IRouter * router_ = NULL);
+
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
+        virtual Protocol getProtocol();
 		virtual void setRouter(IRouter * router_);
 		virtual IRouter * router();
 	};
-	// class MacProcessor
+	// class IpProcessor
 }
 // namespace DiplomBukov
 

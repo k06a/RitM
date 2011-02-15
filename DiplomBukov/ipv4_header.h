@@ -1,6 +1,8 @@
 #ifndef IPV4_HEADER_H
 #define IPV4_HEADER_H
 
+#include "LittleBigEndian.h"
+
 namespace DiplomBukov
 {
 	#pragma pack(push,1)
@@ -18,10 +20,10 @@ namespace DiplomBukov
 	#pragma pack(push,1)
 	struct ipv4_header
 	{
-		// ---------------- Fisrt DWORD ----------------
+		// ---------------- First DWORD ----------------
 
-		unsigned char version:4;
 		unsigned char hdr_len:4;
+        unsigned char version:4;
 
 		struct {
 			unsigned char dscp:6;
@@ -89,9 +91,9 @@ namespace DiplomBukov
 		{
 		}
 
-		virtual int size() const
+		const int size() const
 		{
-			return hdr_len*4;
+			return (hdr_len << 4);
 		}
 	};
 	#pragma pack(pop)

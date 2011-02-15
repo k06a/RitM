@@ -180,6 +180,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\CommonInclude.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -190,10 +194,6 @@
 		<Filter
 			Name="Interface"
 			>
-			<File
-				RelativePath=".\CommonInclude.h"
-				>
-			</File>
 			<File
 				RelativePath=".\IAdapter.h"
 				>
@@ -237,13 +237,17 @@
 					RelativePath=".\mac_header.h"
 					>
 				</File>
+				<File
+					RelativePath=".\tcp_header.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Implementation"
 			>
 			<Filter
-				Name="Switch"
+				Name="Router"
 				>
 				<File
 					RelativePath=".\BruteRouter.cpp"
@@ -251,6 +255,14 @@
 				</File>
 				<File
 					RelativePath=".\BruteRouter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ProtocolRouter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ProtocolRouter.h"
 					>
 				</File>
 			</Filter>
@@ -271,6 +283,14 @@
 				</File>
 				<File
 					RelativePath=".\MacProcessor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TcpProcessor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TcpProcessor.h"
 					>
 				</File>
 			</Filter>

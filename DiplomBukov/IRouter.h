@@ -1,6 +1,7 @@
 #ifndef IROUTER_H
 #define IROUTER_H
 
+#include <deque>
 #include "CommonInclude.h"
 
 namespace DiplomBukov
@@ -17,6 +18,7 @@ namespace DiplomBukov
 		virtual void transmitPacket(Protocol proto, Packet & packet, unsigned offset) = 0;
 		virtual void addNextProcessor(IProcessor * packetProcessor) = 0;
 		virtual void removeNextProcessor(IProcessor * packetProcessor) = 0;
+		virtual const std::deque<IProcessor*> & processors() = 0;
 	};
 	// class IRouter
 }
