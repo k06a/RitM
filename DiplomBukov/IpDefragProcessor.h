@@ -1,5 +1,5 @@
-#ifndef IPPROCESSOR_H
-#define IPPROCESSOR_H
+#ifndef IPDEFRAGPROCESSOR_H
+#define IPDEFRAGPROCESSOR_H
 
 #include "IRouter.h"
 #include "IAdapter.h"
@@ -8,21 +8,21 @@
 
 namespace DiplomBukov
 {
-	class IpProcessor : public IProcessor
+	class IpDefragProcessor : public IProcessor
 	{
-		IRouter * router_;
+		IRouter * baseRouter;
 
 	public:
-		IpProcessor(IRouter * router_ = NULL);
+		IpDefragProcessor(IRouter * router = NULL);
         virtual IProcessor * CreateCopy() const;
 
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual Protocol getProtocol();
-		virtual void setRouter(IRouter * router_);
+		virtual void setRouter(IRouter * router);
 		virtual IRouter * router();
 	};
-	// class IpProcessor
+	// class IpDefragProcessor
 }
 // namespace DiplomBukov
 
-#endif // IPPROCESSOR_H
+#endif // IPDEFRAGPROCESSOR_H

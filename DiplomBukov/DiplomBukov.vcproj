@@ -278,11 +278,19 @@
 				Name="Processor"
 				>
 				<File
-					RelativePath=".\IpProcessor.cpp"
+					RelativePath=".\IpDefragProcessor.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\IpProcessor.h"
+					RelativePath=".\IpDefragProcessor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Ipv4Processor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Ipv4Processor.h"
 					>
 				</File>
 				<File
@@ -318,11 +326,11 @@
 				Name="ProcessorCreator"
 				>
 				<File
-					RelativePath=".\IpProcessorCreator.cpp"
+					RelativePath=".\Ipv4ProcessorCreator.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\IpProcessorCreator.h"
+					RelativePath=".\Ipv4ProcessorCreator.h"
 					>
 				</File>
 				<File
@@ -331,6 +339,14 @@
 				</File>
 				<File
 					RelativePath=".\MacProcessorCreator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TcpProcessorCreator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TcpProcessorCreator.h"
 					>
 				</File>
 			</Filter>

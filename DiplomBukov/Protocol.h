@@ -28,6 +28,16 @@ namespace DiplomBukov
 		{
 		}
 
+        Protocol(unsigned short proto)
+            : value(proto)
+        {
+        }
+
+        Protocol(unsigned char proto)
+            : value((unsigned short)proto)
+        {
+        }
+
         Protocol & operator = (ProtocolEnum proto)
         {
             value = (unsigned short)proto;

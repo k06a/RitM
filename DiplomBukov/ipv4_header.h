@@ -14,6 +14,11 @@ namespace DiplomBukov
 			unsigned short words[2];
 			unsigned   int dword;
 		};
+
+        bool operator < (const ipv4_addr & addr) const
+        {
+            return dword < addr.dword;
+        }
 	};
 	#pragma pack(pop)
 
