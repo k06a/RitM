@@ -15,14 +15,22 @@ using namespace DiplomBukov;
 
 int main(int argc, char * argv[])
 {
-    IAdapter * fileAdapter    = new FileAdapter("2.pcap", new ProtocolRouter());
-	IProcessor * macProcessor = new MacProcessor(new ProtocolRouter());
-    IProcessor * ipProcessor  = new IpProcessor(new ProtocolRouter());
-    IProcessor * tcpProcessor = new TcpProcessor(new ProtocolRouter());
+    IAdapter   * fileAdapter    = new FileAdapter("2.pcap", new ProtocolRouter());
+	IProcessor * macProcessor   = new MacProcessor(new ProtocolRouter());
+    IProcessor * ipProcessor    = new IpProcessor(new ProtocolRouter());
+    IProcessor * ipdfProcessor  = new IpDefragProcessor(new ProtocolRouter());
+    IProcessor * tcpProcessor   = new TcpProcessor(new ProtocolRouter());
+    IProcessor * udpProcessor   = new UdpProcessor(new ProtocolRouter());
+    IProcessor * icmpProcessor  = new IcmpProcessor(new ProtocolRouter());
 
-    fileAdapter->router()->addNextProcessor(macProcessor);
-	macProcessor->router()->addNextProcessor(ipProcessor);
-    ipProcessor->router()->addNextProcessor(tcpProcessor);
+    #define connect(a,b) a->router()->addNextProcessor(b)
+
+    connect(fileAdapter, macProcessor);
+        connect(macProcessor, ipProcessor);
+            connect(ipProcessor, ipdfProcessor);
+                connect(ipdfProcessor, tcpProcessor);
+                connect(ipdfProcessor, udpProcessor);
+                connect(ipdfProcessor, icmpProcessor);
 
     fileAdapter->start();
 }

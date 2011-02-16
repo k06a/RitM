@@ -8,6 +8,11 @@ TcpProcessor::TcpProcessor(IRouter * router_)
 {
 }
 
+IProcessor * TcpProcessor::CreateCopy() const
+{
+    return new TcpProcessor(router_->CreateCopy());
+}
+
 ProcessingStatus TcpProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != Protocol::TCP))

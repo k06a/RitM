@@ -4,27 +4,36 @@
 
 using namespace DiplomBukov;
 
+BruteRouter::BruteRouter()
+    : procList()
+{
+}
+
+BruteRouter::BruteRouter(const MyDeque & d)
+    : procList()
+{
+    
+}
+
 void BruteRouter::transmitPacket(Protocol proto, Packet & packet, unsigned offset)
 {
-	for(std::deque<IProcessor*>::iterator
-		it = nextProcessors.begin();
-		it != nextProcessors.end(); it++)
-	{
+	for(MyDeque::iterator it = procList.begin(); it != procList.end(); it++)
+    {
 		(*it)->processPacket(proto, packet, offset);
 	}
 }
 
 void BruteRouter::addNextProcessor(IProcessor * processor)
 {
-	nextProcessors.push_back(processor);
+	procList.push_back(processor);
 }
 
 void BruteRouter::removeNextProcessor(IProcessor * processor)
 {
-	std::remove(nextProcessors.begin(), nextProcessors.end(), processor);
+	std::remove(procList.begin(), procList.end(), processor);
 }
 
-const std::deque<IProcessor*> & BruteRouter::processors()
+const std::deque<IProcessor*> & BruteRouter::nextProcessors()
 {
-	return nextProcessors;
+	return procList;
 }

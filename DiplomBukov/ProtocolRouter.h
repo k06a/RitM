@@ -10,14 +10,21 @@ namespace DiplomBukov
 {
     class ProtocolRouter : public IRouter
     {
-        std::deque<IProcessor*> nextProcessors;
-        std::multimap<Protocol,IProcessor*> mapProcessors;
+        typedef std::deque<IProcessor*> MyDeque;
+        typedef std::multimap<Protocol,IProcessor*> MyMap;
+
+        MyDeque procList;
+        MyMap procMap;
 
     public:
+        ProtocolRouter();
+        ProtocolRouter(const MyDeque & d, const MyMap m);
+        virtual IRouter * CreateCopy();
+
         virtual void transmitPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual void addNextProcessor(IProcessor * processor);
         virtual void removeNextProcessor(IProcessor * processor);
-        virtual const std::deque<IProcessor*> & processors();
+        virtual const std::deque<IProcessor*> & nextProcessors();
     };
     // class ProtocolRouter
 }

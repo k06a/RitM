@@ -8,6 +8,11 @@ MacProcessor::MacProcessor(IRouter * router_)
 
 }
 
+IProcessor * MacProcessor::CreateCopy() const
+{
+    return new MacProcessor(router_->CreateCopy());
+}
+
 ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
     if (proto != Protocol::None)

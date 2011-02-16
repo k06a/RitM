@@ -9,13 +9,18 @@ namespace DiplomBukov
 {
 	class BruteRouter : public IRouter
 	{
-		std::deque<IProcessor*> nextProcessors;
+        typedef std::deque<IProcessor*> MyDeque;
+
+		MyDeque procList;
 
 	public:
+        BruteRouter();
+        BruteRouter(const MyDeque & d);
+
 		virtual void transmitPacket(Protocol proto, Packet & packet, unsigned offset);
 		virtual void addNextProcessor(IProcessor * processor);
 		virtual void removeNextProcessor(IProcessor * processor);
-		virtual const std::deque<IProcessor*> & processors();
+		virtual const std::deque<IProcessor*> & nextProcessors();
 	};
 	// class BruteRouter
 }

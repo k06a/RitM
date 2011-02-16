@@ -5,15 +5,18 @@
 
 namespace DiplomBukov
 {
-	class IRouter;
-	class IAdapter;
-	class IProcessor;
+    class IRouter;
+    class IAdapter;
+    class IProcessor;
+    class IRouterCreator;
+    class IProcessorCreator;
 
 	class IProcessor
 	{
 	public:
 		virtual ~IProcessor() {}
-
+        
+        virtual IProcessor * CreateCopy() const = 0;
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset) = 0;
         virtual Protocol getProtocol() = 0;
 		virtual void setRouter(IRouter * adapter) = 0;

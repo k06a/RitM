@@ -203,7 +203,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IProcessorCreator.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IRouter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IRouterCreator.h"
 				>
 			</File>
 		</Filter>
@@ -303,6 +311,26 @@
 				</File>
 				<File
 					RelativePath=".\FileAdapter.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ProcessorCreator"
+				>
+				<File
+					RelativePath=".\IpProcessorCreator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\IpProcessorCreator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\MacProcessorCreator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\MacProcessorCreator.h"
 					>
 				</File>
 			</Filter>

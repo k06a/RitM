@@ -4,6 +4,7 @@
 #include "IRouter.h"
 #include "IAdapter.h"
 #include "IProcessor.h"
+#include "IProcessorCreator.h"
 
 namespace DiplomBukov
 {
@@ -13,6 +14,7 @@ namespace DiplomBukov
 
     public:
         TcpProcessor(IRouter * router_ = NULL);
+        virtual IProcessor * CreateCopy() const;
 
         virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual Protocol getProtocol();

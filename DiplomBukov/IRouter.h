@@ -6,19 +6,22 @@
 
 namespace DiplomBukov
 {
-	class IRouter;
-	class IAdapter;
-	class IProcessor;
+    class IRouter;
+    class IAdapter;
+    class IProcessor;
+    class IRouterCreator;
+    class IProcessorCreator;
 
 	class IRouter
 	{
 	public:
 		virtual ~IRouter() {}
 
+        virtual IRouter * CreateCopy() = 0;
 		virtual void transmitPacket(Protocol proto, Packet & packet, unsigned offset) = 0;
 		virtual void addNextProcessor(IProcessor * packetProcessor) = 0;
 		virtual void removeNextProcessor(IProcessor * packetProcessor) = 0;
-		virtual const std::deque<IProcessor*> & processors() = 0;
+		virtual const std::deque<IProcessor*> & nextProcessors() = 0;
 	};
 	// class IRouter
 }

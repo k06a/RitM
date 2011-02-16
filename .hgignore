@@ -1,2 +1,6 @@
 relre:.suo$
 relre:.user$
+relre:Debug/
+relre:Release/
+relre:.ncb$
+relre:.pcap$
