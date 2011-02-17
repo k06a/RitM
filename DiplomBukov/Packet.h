@@ -1,6 +1,8 @@
 #ifndef PACKET_H
 #define PACKET_H
 
+#include <string.h>
+
 namespace DiplomBukov
 {
 	struct Packet

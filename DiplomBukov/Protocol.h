@@ -23,8 +23,9 @@ namespace DiplomBukov
             ARP  = 0x0608,
 
             // Transport Layer
-			TCP = 6,
-			UDP = 18
+			TCP  = 0x06,
+			UDP  = 0x11,
+            ICMP = 0x01
 		};
 		
 		Protocol(ProtocolEnum proto = None)

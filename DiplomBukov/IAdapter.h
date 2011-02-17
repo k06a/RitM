@@ -5,13 +5,7 @@
 
 namespace DiplomBukov
 {
-    class IRouter;
-    class IAdapter;
-    class IProcessor;
-    class IRouterCreator;
-    class IProcessorCreator;
-
-	class IAdapter
+    class IAdapter
 	{
 	public:
 		virtual ~IAdapter() {}
@@ -31,4 +25,4 @@ namespace DiplomBukov
 }
 // namespace DiplomBukov
 
-#endif //IADAPTER_H
+#endif // IADAPTER_H

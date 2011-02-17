@@ -195,25 +195,45 @@
 			Name="Interface"
 			>
 			<File
-				RelativePath=".\IAdapter.h"
+				RelativePath=".\ILibrary.h"
 				>
 			</File>
-			<File
-				RelativePath=".\IProcessor.h"
+			<Filter
+				Name="Lowest"
 				>
-			</File>
-			<File
-				RelativePath=".\IProcessorCreator.h"
+				<File
+					RelativePath=".\IAdapter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IProcessor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IRouter.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Low"
 				>
-			</File>
-			<File
-				RelativePath=".\IRouter.h"
+				<File
+					RelativePath=".\IAdapterCreator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IProcessorCreator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IRouterCreator.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Highest"
 				>
-			</File>
-			<File
-				RelativePath=".\IRouterCreator.h"
-				>
-			</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Structs"
@@ -347,6 +367,50 @@
 				</File>
 				<File
 					RelativePath=".\TcpSplitterProcessorCreator.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Module"
+				>
+				<File
+					RelativePath=".\AdapterModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\AdapterModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ProcessorModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ProcessorModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\RouterModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RouterModule.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Plugin"
+				>
+				<File
+					RelativePath=".\AdapterPlugin.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ProcessorPlugin.h"
+					>
+				</File>
+				<File
+					RelativePath=".\RouterPlugin.h"
 					>
 				</File>
 			</Filter>

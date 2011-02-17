@@ -16,7 +16,7 @@ using namespace DiplomBukov;
 
 int main(int argc, char * argv[])
 {
-    IAdapter   * fileAdapter   = new FileAdapter("1.pcap", "1df.pcap", new ProtocolRouter());
+    IAdapter   * fileAdapter   = new FileAdapter("icmp_native.pcap", "icmp_defraged.pcap", new ProtocolRouter());
 	IProcessor * macProcessor  = new MacProcessor(new ProtocolRouter());
     IProcessor * ipv4Splitter  = new Ipv4SplitterProcessor(new ProtocolRouter());
     IProcessor * ipdfProcessor = new Ipv4DefragProcessor(new ProtocolRouter());

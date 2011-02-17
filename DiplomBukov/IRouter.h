@@ -6,13 +6,7 @@
 
 namespace DiplomBukov
 {
-    class IRouter;
-    class IAdapter;
-    class IProcessor;
-    class IRouterCreator;
-    class IProcessorCreator;
-
-	class IRouter
+    class IRouter
 	{
 	public:
 		virtual ~IRouter() {}

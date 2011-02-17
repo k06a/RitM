@@ -5,12 +5,6 @@
 
 namespace DiplomBukov
 {
-    class IRouter;
-    class IAdapter;
-    class IProcessor;
-    class IRouterCreator;
-    class IProcessorCreator;
-
     class IRouterCreator
     {
     public:
