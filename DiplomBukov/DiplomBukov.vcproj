@@ -329,6 +329,10 @@
 					RelativePath=".\TcpSplitterProcessor.h"
 					>
 				</File>
+				<File
+					RelativePath=".\UdpSplitterProcessor.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Adapter"

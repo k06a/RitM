@@ -1,6 +1,7 @@
 #ifndef ILIBRARY_H
 #define ILIBRARY_H
 
+#include <deque>
 #include "CommonInclude.h"
 
 namespace DiplomBukov

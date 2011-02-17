@@ -40,6 +40,11 @@ Protocol Ipv4SplitterProcessor::getProtocol()
     return Protocol::IPv4;
 }
 
+const char * Ipv4SplitterProcessor::getProcessorName()
+{
+    return "Ipv4SplitterProcessor";
+}
+
 void Ipv4SplitterProcessor::setRouter(IRouter * router)
 {
 	baseRouter = router;

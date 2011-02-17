@@ -13,6 +13,7 @@ namespace DiplomBukov
         virtual IProcessor * CreateCopy() const = 0;
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset) = 0;
         virtual Protocol getProtocol() = 0;
+        virtual const char * getProcessorName() = 0;
 		virtual void setRouter(IRouter * adapter) = 0;
 		virtual IRouter * router() = 0;
 	};

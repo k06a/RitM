@@ -20,6 +20,9 @@ ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, un
         return ProcessingStatus::Rejected;
 
     mac_header * mac = (mac_header *)(packet.data + offset);
+    packet.src_hardware_addr = mac->src;
+    packet.dst_hardware_addr = mac->dst;
+
     if (router_ != NULL)
     	router_->transmitPacket(mac->proto, packet, offset + sizeof(mac_header));
 
@@ -29,6 +32,11 @@ ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, un
 Protocol MacProcessor::getProtocol()
 {
     return Protocol::Ethernet_II;
+}
+
+const char * MacProcessor::getProcessorName()
+{
+    return "MacProcessor";
 }
 
 void MacProcessor::setRouter(IRouter * router_)

@@ -2,6 +2,7 @@
 #define PACKET_H
 
 #include <string.h>
+#include "mac_header.h"
 
 namespace DiplomBukov
 {
@@ -21,6 +22,8 @@ namespace DiplomBukov
         unsigned real_size;
         bool lastFragmentReceived;
         PacketPolicy status;
+        mac_addr src_hardware_addr;
+        mac_addr dst_hardware_addr;
         unsigned char * data;
         unsigned char * mask;
 

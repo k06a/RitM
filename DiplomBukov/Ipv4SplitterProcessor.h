@@ -25,6 +25,7 @@ namespace DiplomBukov
 
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual Protocol getProtocol();
+        virtual const char * getProcessorName();
 		virtual void setRouter(IRouter * router_);
 		virtual IRouter * router();
 	};

@@ -59,6 +59,11 @@ Protocol Ipv4DefragProcessor::getProtocol()
     return Protocol::IPv4;
 }
 
+const char * Ipv4DefragProcessor::getProcessorName()
+{
+    return "Ipv4DefragProcessor";
+}
+
 void Ipv4DefragProcessor::setRouter(IRouter * router)
 {
 	baseRouter = router;
