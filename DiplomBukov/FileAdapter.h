@@ -31,10 +31,11 @@ namespace DiplomBukov
 	class FileAdapter :	public IAdapter
 	{
 		IRouter * router_;
-		FILE * file;
+        FILE * file1;
+        FILE * file2;
 
 	public:
-		FileAdapter(char * filename, IRouter * router_ = NULL);
+		FileAdapter(char * filename1, char * filename2, IRouter * router_ = NULL);
 		~FileAdapter();
 
 		virtual void setRouter(IRouter * router_);

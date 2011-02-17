@@ -3,18 +3,24 @@
 
 using namespace DiplomBukov;
 
-FileAdapter::FileAdapter(char * filename, IRouter * router_)
-	: router_(router_), file(NULL)
+FileAdapter::FileAdapter(char * filename1, char * filename2, IRouter * router_)
+	: router_(router_), file1(NULL), file2(NULL)
 {
-	int ret = fopen_s(&file, filename, "rb");
+	int ret = fopen_s(&file1, filename1, "rb");
 	if (ret != 0)
 		throw "Ошибка открытия файла";
+
+    ret = fopen_s(&file2, filename2, "wb");
+    if (ret != 0)
+        throw "Ошибка открытия файла";
 }
 
 FileAdapter::~FileAdapter()
 {
-	if (file != NULL)
-		fclose(file);
+	if (file1 != NULL)
+		fclose(file1);
+    if (file2 != NULL)
+        fclose(file2);
 }
 
 void FileAdapter::setRouter(IRouter * router_)
@@ -30,27 +36,32 @@ IRouter * FileAdapter::router()
 void FileAdapter::run()
 {
     pcap_file_header pfh;
-    fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file);
+    fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file1);
+    fwrite(&pfh, sizeof(pfh), 1, file2);
 
-    unsigned id = 0;
-    //std::list<Packet*> packets;
-	while (true)
+    unsigned id = 1;
+    while (true)
 	{
         int ret;
         pcap_packet_header pph;
-        ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file);
+        ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file1);
         if (ret == 0) break;
 
-        Packet * packet = new Packet();
-        //packets.push_back(packet);
-        packet->id = id++;
-        packet->time = pph.ts_sec;
+        Packet packet(pph.incl_len);
+        packet.id = id++;
+        packet.time = pph.ts_sec;
 
-        ret = fread_s(packet->data, sizeof(packet->data), 1, pph.incl_len, file);
-        if (ret == 0) break;
+        if (fread_s(packet.data, packet.size, 1, pph.orig_len, file1) == 0)
+            break;
         
-        router_->transmitPacket(Protocol::None, *packet, 0);
+        router_->transmitPacket(Protocol::Ethernet_II, packet, 0);
 
-        delete packet;
+        if (packet.status == Packet::Accepted)
+        {
+            pph.incl_len = packet.real_size;
+            pph.orig_len = packet.real_size;
+            fwrite(&pph, sizeof(pph), 1, file2);
+            fwrite(packet.data, packet.real_size, 1, file2);
+        }
 	}
 }

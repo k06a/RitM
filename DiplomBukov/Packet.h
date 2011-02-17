@@ -5,12 +5,8 @@ namespace DiplomBukov
 {
 	struct Packet
 	{
-        enum PacketType
-        {
-            Ipv4Packet = 65536+14,
-            IpFragment = 1514
-        };
-
+        static const int Ipv4PacketSize = 65536+14;
+            
 		enum PacketPolicy
 		{
 			Accepted,
@@ -19,30 +15,66 @@ namespace DiplomBukov
 
 		unsigned id;
 		unsigned time;
-		unsigned size;
-		PacketPolicy status;
+        unsigned size;
+        unsigned real_size;
+        bool lastFragmentReceived;
+        PacketPolicy status;
         unsigned char * data;
         unsigned char * mask;
 
-        Packet(PacketType packetType = Ipv4Packet, int id = 0, int size = 0)
-            : id(id), time(0), size(size)
+        Packet(int size = Ipv4PacketSize, bool masked = false)
+            : id(0), time(0), size(size), real_size(size)
             , status(Accepted), data(NULL), mask(NULL)
+            , lastFragmentReceived(false)
         {
-            data = new unsigned char [packetType];
+            data = new unsigned char [size];
+            if (masked)
+            {
+                mask = new unsigned char [size];
+                memset(mask, 0, size);
+                real_size = 0;
+            }
         }
 
-        Packet(bool maskedPacket)
-            : id(id), time(0), size(size)
-            , status(Accepted), data(NULL), mask(NULL)
+        void reinitFrom(Packet & packet)
         {
-            data = new unsigned char [Ipv4Packet];
-            mask = new unsigned char [Ipv4Packet];
-            memset(mask, 0, Ipv4Packet);
+            delete data;
+            delete mask;
+            memcpy(this, &packet, sizeof(Packet));
+            packet.data = NULL;
+            packet.mask = NULL;
         }
 
-        int append(int offset, unsigned char * ptr, int sz)
+        ~Packet()
+        {
+            delete data;
+            delete mask;
+            data = NULL;
+            mask = NULL;
+        }
+
+        void destroy()
+        {
+            delete this;
+        }
+
+        void append(int offset, unsigned char * ptr, int sz, bool flag_mf)
         {
             memcpy(data + offset, ptr, sz);
+            memset(mask + offset,   1, sz);
+            if (!flag_mf)
+                lastFragmentReceived = true;
+            if ((unsigned)offset + sz > real_size)
+                real_size = offset + sz;
+        }
+
+        bool finished()
+        {
+            if (mask == NULL)
+                return true;
+            if (!lastFragmentReceived)
+                return false;
+            return (memchr(mask, 0, real_size) == NULL);
         }
 	};
 	// struct Packet

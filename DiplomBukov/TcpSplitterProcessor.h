@@ -1,5 +1,5 @@
-#ifndef TCPPROCESSOR_H
-#define TCPPROCESSOR_H
+#ifndef TCPSPLITTERPROCESSOR_H
+#define TCPSPLITTERPROCESSOR_H
 
 #include "IRouter.h"
 #include "IAdapter.h"
@@ -8,12 +8,12 @@
 
 namespace DiplomBukov
 {
-    class TcpProcessor : public IProcessor
+    class TcpSplitterProcessor : public IProcessor
     {
         IRouter * router_;
 
     public:
-        TcpProcessor(IRouter * router_ = NULL);
+        TcpSplitterProcessor(IRouter * router_ = NULL);
         virtual IProcessor * CreateCopy() const;
 
         virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
@@ -21,8 +21,8 @@ namespace DiplomBukov
         virtual void setRouter(IRouter * router_);
         virtual IRouter * router();
     };
-    // class TcpProcessor
+    // class TcpSplitterProcessor
 }
 // namespace DiplomBukov
 
-#endif // TCPPROCESSOR_H
+#endif // TCPSPLITTERPROCESSOR_H

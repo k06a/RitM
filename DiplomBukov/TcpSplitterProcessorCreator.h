@@ -1,5 +1,5 @@
-#ifndef IPV4PROCESSORCREATOR_H
-#define IPV4PROCESSORCREATOR_H
+#ifndef TCPSPLITTERPROCESSORCREATOR_H
+#define TCPSPLITTERPROCESSORCREATOR_H
 
 #include "IRouter.h"
 #include "IAdapter.h"
@@ -8,13 +8,13 @@
 
 namespace DiplomBukov
 {
-    class Ipv4ProcessorCreator : public IProcessorCreator
+    class TcpSplitterProcessorCreator : public IProcessorCreator
     {
     public:
         virtual IProcessor * createProcessor(IRouter * router = NULL);
     };
-    // class MacProcessorCreator
+    // class TcpSplitterProcessorCreator
 }
 // namespace DiplomBukov
 
-#endif // IPV4PROCESSORCREATOR_H
+#endif // TCPSPLITTERPROCESSORCREATOR_H

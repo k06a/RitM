@@ -1,19 +1,19 @@
-#include "TcpProcessor.h"
+#include "TcpSplitterProcessor.h"
 #include "tcp_header.h"
 
 using namespace DiplomBukov;
 
-TcpProcessor::TcpProcessor(IRouter * router_)
+TcpSplitterProcessor::TcpSplitterProcessor(IRouter * router_)
 : router_(router_)
 {
 }
 
-IProcessor * TcpProcessor::CreateCopy() const
+IProcessor * TcpSplitterProcessor::CreateCopy() const
 {
-    return new TcpProcessor(router_->CreateCopy());
+    return new TcpSplitterProcessor(router_->CreateCopy());
 }
 
-ProcessingStatus TcpProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus TcpSplitterProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != Protocol::TCP))
         return ProcessingStatus::Rejected;
@@ -26,17 +26,17 @@ ProcessingStatus TcpProcessor::processPacket(Protocol proto, Packet & packet, un
     return ProcessingStatus::Accepted;
 }
 
-Protocol TcpProcessor::getProtocol()
+Protocol TcpSplitterProcessor::getProtocol()
 {
     return Protocol::TCP;
 }
 
-void TcpProcessor::setRouter(IRouter * router_)
+void TcpSplitterProcessor::setRouter(IRouter * router_)
 {
     this->router_ = router_;
 }
 
-IRouter * TcpProcessor::router()
+IRouter * TcpSplitterProcessor::router()
 {
     return router_;
 }

@@ -1,4 +1,5 @@
 #include "MacProcessor.h"
+#include "mac_header.h"
 
 using namespace DiplomBukov;
 
@@ -15,20 +16,19 @@ IProcessor * MacProcessor::CreateCopy() const
 
 ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
-    if (proto != Protocol::None)
+    if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
 
-    proto = *(unsigned short*)(packet.data + offset + 12);
-    offset += 14;
-	if (router_ != NULL)
-    	router_->transmitPacket(proto, packet, offset);
+    mac_header * mac = (mac_header *)(packet.data + offset);
+    if (router_ != NULL)
+    	router_->transmitPacket(mac->proto, packet, offset + sizeof(mac_header));
 
 	return ProcessingStatus::Accepted;
 }
 
 Protocol MacProcessor::getProtocol()
 {
-    return Protocol::None;
+    return Protocol::Ethernet_II;
 }
 
 void MacProcessor::setRouter(IRouter * router_)

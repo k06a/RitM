@@ -1,5 +1,5 @@
-#ifndef IPDEFRAGPROCESSOR_H
-#define IPDEFRAGPROCESSOR_H
+#ifndef IPV4DEFRAGPROCESSOR_H
+#define IPV4DEFRAGPROCESSOR_H
 
 #include "IRouter.h"
 #include "IAdapter.h"
@@ -8,12 +8,14 @@
 
 namespace DiplomBukov
 {
-	class IpDefragProcessor : public IProcessor
+	class Ipv4DefragProcessor : public IProcessor
 	{
 		IRouter * baseRouter;
+        Packet * fullPacket;
+        int ipDataOffset;
 
 	public:
-		IpDefragProcessor(IRouter * router = NULL);
+		Ipv4DefragProcessor(IRouter * router = NULL);
         virtual IProcessor * CreateCopy() const;
 
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
@@ -21,8 +23,8 @@ namespace DiplomBukov
 		virtual void setRouter(IRouter * router);
 		virtual IRouter * router();
 	};
-	// class IpDefragProcessor
+	// class Ipv4DefragProcessor
 }
 // namespace DiplomBukov
 
-#endif // IPDEFRAGPROCESSOR_H
+#endif // IPV4DEFRAGPROCESSOR_H

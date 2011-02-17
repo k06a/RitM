@@ -1,5 +1,5 @@
-#ifndef IPV4PROCESSOR_H
-#define IPV4PROCESSOR_H
+#ifndef IPV4SPLITTERPROCESSOR_H
+#define IPV4SPLITTERPROCESSOR_H
 
 #include <map>
 #include "IRouter.h"
@@ -11,7 +11,7 @@
 
 namespace DiplomBukov
 {
-    class Ipv4Processor : public IProcessor
+    class Ipv4SplitterProcessor : public IProcessor
 	{
         typedef std::pair<ipv4_addr,ipv4_addr> ipv4_pair;
         typedef std::map<ipv4_pair,IRouter*> MyMap;
@@ -20,7 +20,7 @@ namespace DiplomBukov
         MyMap routers;
 
 	public:
-		Ipv4Processor(IRouter * baseRouter = NULL);
+		Ipv4SplitterProcessor(IRouter * baseRouter = NULL);
         virtual IProcessor * CreateCopy() const;
 
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
@@ -28,8 +28,8 @@ namespace DiplomBukov
 		virtual void setRouter(IRouter * router_);
 		virtual IRouter * router();
 	};
-	// class Ipv4Processor
+	// class Ipv4SplitterProcessor
 }
 // namespace DiplomBukov
 
-#endif // IPV4PROCESSOR_H
+#endif // IPV4SPLITTERPROCESSOR_H
