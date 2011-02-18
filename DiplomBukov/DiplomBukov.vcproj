@@ -330,6 +330,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\UdpSplitterProcessor.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\UdpSplitterProcessor.h"
 					>
 				</File>

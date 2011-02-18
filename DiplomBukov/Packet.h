@@ -1,6 +1,7 @@
 #ifndef PACKET_H
 #define PACKET_H
 
+#include <iostream>
 #include <string.h>
 #include "mac_header.h"
 
@@ -8,8 +9,9 @@ namespace DiplomBukov
 {
 	struct Packet
 	{
-        static const int Ipv4PacketSize = 65536+14;
-            
+        static const unsigned Ipv4PacketSize = 65536+14+18;
+        static const unsigned Ethernet2FrameSize = 1514;
+
 		enum PacketPolicy
 		{
 			Accepted,
@@ -27,8 +29,8 @@ namespace DiplomBukov
         unsigned char * data;
         unsigned char * mask;
 
-        Packet(int size = Ipv4PacketSize, bool masked = false)
-            : id(0), time(0), size(size), real_size(size)
+        Packet(int size = Ipv4PacketSize, int id = 0, bool masked = false)
+            : id(id), time(0), size(size), real_size(size)
             , status(Accepted), data(NULL), mask(NULL)
             , lastFragmentReceived(false)
         {
@@ -43,17 +45,17 @@ namespace DiplomBukov
 
         void reinitFrom(Packet & packet)
         {
-            delete data;
-            delete mask;
-            memcpy(this, &packet, sizeof(Packet));
+            delete [] data;
+            delete [] mask;
+            memcpy(this, &packet, sizeof(*this));
             packet.data = NULL;
             packet.mask = NULL;
         }
 
         ~Packet()
         {
-            delete data;
-            delete mask;
+            delete [] data;
+            delete [] mask;
             data = NULL;
             mask = NULL;
         }

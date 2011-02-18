@@ -15,7 +15,7 @@ IProcessor * TcpSplitterProcessor::CreateCopy() const
 
 ProcessingStatus TcpSplitterProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
-    if ((proto != Protocol::None) && (proto != Protocol::TCP))
+    if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)(packet.data + offset);

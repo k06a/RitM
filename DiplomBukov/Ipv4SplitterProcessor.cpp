@@ -15,7 +15,7 @@ IProcessor * Ipv4SplitterProcessor::CreateCopy() const
 
 ProcessingStatus Ipv4SplitterProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
-    if ((proto != Protocol::None) && (proto != Protocol::IPv4))
+    if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
     ipv4_header * ipv4 = (ipv4_header *)(packet.data + offset);

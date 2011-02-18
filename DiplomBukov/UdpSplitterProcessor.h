@@ -5,7 +5,15 @@
 
 namespace DiplomBukov
 {
-    typedef TcpSplitterProcessor UdpSplitterProcessor;
+    class UdpSplitterProcessor : public TcpSplitterProcessor
+    {
+    public:
+        UdpSplitterProcessor(IRouter * router = NULL);
+
+        virtual Protocol getProtocol();
+        virtual const char * getProcessorName();
+    };
+    // class UdpSplitterProcessor
 }
 // namespace DiplomBukov
 

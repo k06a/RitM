@@ -47,14 +47,13 @@ void FileAdapter::run()
         ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file1);
         if (ret == 0) break;
 
-        Packet packet(pph.incl_len);
-        packet.id = id++;
+        Packet packet(pph.incl_len, id++);
         packet.time = pph.ts_sec;
 
         if (fread_s(packet.data, packet.size, 1, pph.orig_len, file1) == 0)
             break;
         
-        router_->transmitPacket(Protocol::Ethernet_II, packet, 0);
+        router_->transmitPacket(pfh.network, packet, 0); // Protocol::Ethernet_II
 
         if (packet.status == Packet::Accepted)
         {

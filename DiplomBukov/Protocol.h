@@ -33,6 +33,11 @@ namespace DiplomBukov
 		{
 		}
 
+        Protocol(unsigned int proto)
+            : value(proto)
+        {
+        }
+
         Protocol(unsigned short proto)
             : value(proto)
         {

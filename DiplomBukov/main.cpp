@@ -32,7 +32,7 @@ void print_arch(IProcessor * proc, std::string prefix = "")
 
 int main(int argc, char * argv[])
 {
-    IAdapter   * fileAdapter   = new FileAdapter("icmp_native.pcap", "icmp_defraged.pcap", new ProtocolRouter());
+    IAdapter   * fileAdapter   = new FileAdapter("icmp_native_64k.pcap", "icmp_defraged_64k.pcap", new ProtocolRouter());
 	IProcessor * macProcessor  = new MacProcessor(new ProtocolRouter());
     IProcessor * ipv4Splitter  = new Ipv4SplitterProcessor(new ProtocolRouter());
     IProcessor * ipdfProcessor = new Ipv4DefragProcessor(new ProtocolRouter());

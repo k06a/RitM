@@ -15,16 +15,16 @@ IProcessor * Ipv4DefragProcessor::CreateCopy() const
 
 ProcessingStatus Ipv4DefragProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
-    if (baseRouter == NULL)
+    if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
-
+    
     ipv4_header * ipv4 = (ipv4_header *)(packet.data + offset);
 
     if (ipv4->flag_mf || (ipv4->fragmentOffset() != 0))
     {
         if (fullPacket == NULL)
         {
-            fullPacket = new Packet(Packet::Ipv4PacketSize, true);
+            fullPacket = new Packet(Packet::Ipv4PacketSize, 100500, true);
             ipDataOffset = offset + ipv4->size();
             fullPacket->append(0, packet.data, ipDataOffset, ipv4->flag_mf);
         }
@@ -39,7 +39,7 @@ ProcessingStatus Ipv4DefragProcessor::processPacket(Protocol proto, Packet & pac
             newIp->flag_mf = 0;
             newIp->setFragmentOffset(0);
             newIp->totalLength = ipv4->fragmentOffset() + ipv4->totalLength;
-            fullPacket->real_size = offset + newIp->size() + newIp->totalLength;
+            fullPacket->real_size = offset + newIp->totalLength;
             newIp->recountSum();
 
             packet.reinitFrom(*fullPacket);
