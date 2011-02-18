@@ -1,18 +1,23 @@
 #include "ProcessorModule.h"
+#include "IProcessor.h"
 
 using namespace DiplomBukov;
 
-ProcessorModule::ProcessorModule(IProcessor * processor)
-    : baseProcessor_(processor)
+ProcessorModule::ProcessorModule(IProcessor * baseProcessor)
+    : baseProcessor(baseProcessor)
 {
+    if (baseProcessor != NULL)
+        baseProcessor->setModule(this);
 }
 
-IProcessor * ProcessorModule::baseProcessor()
+IProcessor * ProcessorModule::getBaseProcessor()
 {
-    return baseProcessor_;
+    return baseProcessor;
 }
 
-void ProcessorModule::setBaseProcessor(IProcessor * processor)
+void ProcessorModule::setBaseProcessor(IProcessor * baseProcessor)
 {
-    baseProcessor_ = processor;
+    this->baseProcessor = baseProcessor;
+    if (baseProcessor != NULL)
+        baseProcessor->setModule(this);
 }

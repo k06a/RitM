@@ -4,7 +4,7 @@
 using namespace DiplomBukov;
 
 Ipv4SplitterProcessor::Ipv4SplitterProcessor(IRouter * baseRouter)
-	: baseRouter(baseRouter)
+	: module(NULL), baseRouter(baseRouter)
 {
 }
 
@@ -50,7 +50,17 @@ void Ipv4SplitterProcessor::setRouter(IRouter * router)
 	baseRouter = router;
 }
 
-IRouter * Ipv4SplitterProcessor::router()
+IRouter * Ipv4SplitterProcessor::getRouter()
 {
 	return baseRouter;
+}
+
+void Ipv4SplitterProcessor::setModule(IProcessorModule * module)
+{
+    this->module = module;
+}
+
+IProcessorModule * Ipv4SplitterProcessor::getModule()
+{
+    return module;
 }

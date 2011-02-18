@@ -1,6 +1,8 @@
 #ifndef TCP_HEADER_H
 #define TCP_HEADER_H
 
+#include "i64u64.h"
+
 namespace DiplomBukov
 {
     #pragma pack(push,1)

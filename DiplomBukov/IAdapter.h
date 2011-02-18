@@ -11,13 +11,13 @@ namespace DiplomBukov
 		virtual ~IAdapter() {}
 
 		virtual void setRouter(IRouter * router) = 0;
-		virtual IRouter * router() = 0;
+		virtual IRouter * getRouter() = 0;
 		virtual void run() = 0;
 
 	public:
 		void start()
 		{
-			// Need to be async`
+			// Need to be async
 			run();
 		}
 	};

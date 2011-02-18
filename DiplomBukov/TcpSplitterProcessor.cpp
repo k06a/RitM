@@ -4,7 +4,7 @@
 using namespace DiplomBukov;
 
 TcpSplitterProcessor::TcpSplitterProcessor(IRouter * router)
-    : baseRouter(router)
+    : module(NULL), baseRouter(router)
 {
 }
 
@@ -51,7 +51,17 @@ void TcpSplitterProcessor::setRouter(IRouter * router)
     baseRouter = router;
 }
 
-IRouter * TcpSplitterProcessor::router()
+IRouter * TcpSplitterProcessor::getRouter()
 {
     return baseRouter;
+}
+
+void TcpSplitterProcessor::setModule(IProcessorModule * module)
+{
+    this->module = module;
+}
+
+IProcessorModule * TcpSplitterProcessor::getModule()
+{
+    return module;
 }

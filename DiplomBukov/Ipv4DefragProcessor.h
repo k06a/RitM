@@ -10,6 +10,7 @@ namespace DiplomBukov
 {
 	class Ipv4DefragProcessor : public IProcessor
 	{
+        IProcessorModule * module;
 		IRouter * baseRouter;
         Packet * fullPacket;
         int ipDataOffset;
@@ -21,8 +22,12 @@ namespace DiplomBukov
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
+
 		virtual void setRouter(IRouter * router);
-		virtual IRouter * router();
+		virtual IRouter * getRouter();
+
+        virtual void setModule(IProcessorModule * module);
+        virtual IProcessorModule * getModule();
 	};
 	// class Ipv4DefragProcessor
 }

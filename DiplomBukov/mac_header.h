@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "Protocol.h"
+#include "i64u64.h"
 
 namespace DiplomBukov
 {
@@ -11,8 +12,8 @@ namespace DiplomBukov
 	{
 		union
 		{
-			unsigned  char bytes[6];
-			unsigned short words[3];
+			u8  bytes[6];
+			u16 words[3];
 		};
 
         mac_addr()
@@ -22,16 +23,13 @@ namespace DiplomBukov
             words[2] = 0x0000;
         }
 
-        mac_addr(unsigned char a, unsigned char b, unsigned char c,
-                 unsigned char d, unsigned char e, unsigned char f)
+        mac_addr(u8 a, u8 b, u8 c, u8 d, u8 e, u8 f)
         {
             bytes[0] = a; bytes[1] = b; bytes[2] = c;
             bytes[3] = d; bytes[4] = e; bytes[5] = f;
         }
 
-        mac_addr(unsigned short a,
-                 unsigned short b,
-                 unsigned short c)
+        mac_addr(u16 a, u16 b, u16 c)
         {
             words[0] = a;
             words[1] = b;

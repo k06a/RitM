@@ -2,6 +2,7 @@
 #define IPV4_HEADER_H
 
 #include "LittleBigEndian.h"
+#include "i64u64.h"
 
 namespace DiplomBukov
 {
@@ -10,14 +11,14 @@ namespace DiplomBukov
 	{
 		union
 		{
-			unsigned  char bytes[4];
-			unsigned short words[2];
-			unsigned   int dword;
+			u8  bytes[4];
+			u16 words[2];
+			u32 dword;
 		};
 
         bool operator < (const ipv4_addr & addr) const
         {
-            return dword < addr.dword;
+            return (dword < addr.dword);
         }
 	};
 	#pragma pack(pop)
@@ -27,57 +28,54 @@ namespace DiplomBukov
 	{
 		// ---------------- First DWORD ----------------
 
-		unsigned char hdr_len:4;
-        unsigned char version:4;
+		u8 hdr_len:4;
+        u8 version:4;
 
 		struct {
-			unsigned char dscp:6;
-			unsigned char ect:1;
-			unsigned char ce:1;
+			u8 dscp:6;
+			u8 ect:1;
+			u8 ce:1;
 		} dsfield;
 
-		boolib::util::BigEndian<unsigned short> totalLength;
+		boolib::util::BigEndian<u16> totalLength;
 
 		// ---------------- Second DWORD ----------------
 
-		unsigned short identificator;
+		u16 identificator;
 
     private:
-        unsigned char frag_offset1:5;
+        u8 frag_offset1:5;
     public:
-        unsigned char flag_mf:1;
-        unsigned char flag_df:1;
-        unsigned char flag_rb:1;
+        u8 flag_mf:1;
+        u8 flag_df:1;
+        u8 flag_rb:1;
 	private:
-        unsigned char frag_offset2;
+        u8 frag_offset2;
 	public:
-        unsigned short fragmentOffset() {
+        u16 fragmentOffset() {
 			return (frag_offset1 << 11) | (frag_offset2 << 3);
 		}
 
-		void setFragmentOffset(unsigned short value) {
+		void setFragmentOffset(u16 value) {
 			frag_offset1 = (value >> 11);
             frag_offset2 = (value >> 3);
 		}
 
-		// ---------------- Third DWORD ----------------
+		// ---------------- Third DWORD -----------------
 
-		unsigned  char ttl;
-		unsigned  char proto;
-		unsigned short checksum;
+		u8 ttl;
+		u8 proto;
+		u16 checksum;
 
-		// ---------------- Fourth DWORD ----------------
+		// ---------- Fourth and Fifth DWORD ------------
 
 		ipv4_addr src_data;
-
-		// ---------------- Fifth DWORD ----------------
-
 		ipv4_addr dst_data;
 
         // ----------------------------------------------
         #pragma warning(push)
         #pragma warning(disable:4200)
-        unsigned char data[];
+        u8 data[];
         #pragma warning(pop)
         // ----------------------------------------------
 
@@ -98,27 +96,27 @@ namespace DiplomBukov
 		}
         */
 
-        static unsigned short countCheckSum(char *p1, int iSize)
+        static u16 countCheckSum(char *p1, i32 iSize)
         {
-            unsigned short *usBuf = (unsigned short *)p1;
+            u16 *usBuf = (u16 *)p1;
 
-            unsigned int usChksum = 0;
+            u32 usChksum = 0;
             while (iSize > 1)
             {
                 usChksum += *usBuf++;
-                iSize -= sizeof(unsigned short);
+                iSize -= sizeof(u16);
             }
 
             if (iSize)
-                usChksum += *(unsigned char*)usBuf;
+                usChksum += *(u8*)usBuf;
 
             usChksum = (usChksum >> 16) + (usChksum & 0xffff);
             usChksum += (usChksum >> 16);
 
-            return (unsigned short)(~usChksum);
+            return (u8)(~usChksum);
         }
 
-		unsigned short recountSum()
+		u16 recountSum()
 		{
             checksum = 0;
 			checksum = countCheckSum((char*)this, size());

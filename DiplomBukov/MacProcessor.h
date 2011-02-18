@@ -10,17 +10,22 @@ namespace DiplomBukov
 {
 	class MacProcessor : public IProcessor
 	{
-		IRouter * router_;
-
+        IProcessorModule * module;
+        IRouter * router;
+        
 	public:
-		MacProcessor(IRouter * router_ = NULL);
+		MacProcessor(IRouter * router = NULL);
         virtual IProcessor * CreateCopy() const;
 
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
-		virtual void setRouter(IRouter * router_);
-		virtual IRouter * router();
+
+		virtual void setRouter(IRouter * router);
+		virtual IRouter * getRouter();
+
+        virtual void setModule(IProcessorModule * module);
+        virtual IProcessorModule * getModule();
 	};
 	// class MacProcessor
 }

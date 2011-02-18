@@ -4,7 +4,7 @@
 using namespace DiplomBukov;
 
 Ipv4DefragProcessor::Ipv4DefragProcessor(IRouter * router)
-	: baseRouter(router), fullPacket(NULL)
+	: module(NULL), baseRouter(router), fullPacket(NULL)
 {
 }
 
@@ -30,7 +30,8 @@ ProcessingStatus Ipv4DefragProcessor::processPacket(Protocol proto, Packet & pac
         }
         
         fullPacket->append(ipDataOffset + ipv4->fragmentOffset(),
-                           ipv4->data, ipv4->totalLength, ipv4->flag_mf);
+                           ipv4->data, ipv4->totalLength - ipv4->size(),
+                           ipv4->flag_mf);
         packet.status = Packet::Rejected;
 
         if (fullPacket->finished())
@@ -69,7 +70,17 @@ void Ipv4DefragProcessor::setRouter(IRouter * router)
 	baseRouter = router;
 }
 
-IRouter * Ipv4DefragProcessor::router()
+IRouter * Ipv4DefragProcessor::getRouter()
 {
 	return baseRouter;
+}
+
+void Ipv4DefragProcessor::setModule(IProcessorModule * module)
+{
+    this->module = module;
+}
+
+IProcessorModule * Ipv4DefragProcessor::getModule()
+{
+    return module;
 }

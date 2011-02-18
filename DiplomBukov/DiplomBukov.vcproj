@@ -184,6 +184,10 @@
 				RelativePath=".\CommonInclude.h"
 				>
 			</File>
+			<File
+				RelativePath=".\i64u64.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -233,6 +237,10 @@
 			<Filter
 				Name="Highest"
 				>
+				<File
+					RelativePath=".\IProcessorModule.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -257,6 +265,10 @@
 			<Filter
 				Name="NetStack"
 				>
+				<File
+					RelativePath=".\icmp_header.h"
+					>
+				</File>
 				<File
 					RelativePath=".\ipv4_header.h"
 					>
@@ -297,6 +309,14 @@
 			<Filter
 				Name="Processor"
 				>
+				<File
+					RelativePath=".\IcmpProcessor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\IcmpProcessor.h"
+					>
+				</File>
 				<File
 					RelativePath=".\Ipv4DefragProcessor.cpp"
 					>

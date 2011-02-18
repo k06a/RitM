@@ -16,9 +16,10 @@ namespace DiplomBukov
         typedef std::pair<ipv4_addr,ipv4_addr> ipv4_pair;
         typedef std::map<ipv4_pair,IRouter*> MyMap;
         
-		IRouter * baseRouter;
+        IProcessorModule * module;
+        IRouter * baseRouter;
         MyMap routers;
-
+		
 	public:
 		Ipv4SplitterProcessor(IRouter * baseRouter = NULL);
         virtual IProcessor * CreateCopy() const;
@@ -26,8 +27,12 @@ namespace DiplomBukov
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
+
 		virtual void setRouter(IRouter * router_);
-		virtual IRouter * router();
+		virtual IRouter * getRouter();
+
+        virtual void setModule(IProcessorModule * module);
+        virtual IProcessorModule * getModule();
 	};
 	// class Ipv4SplitterProcessor
 }

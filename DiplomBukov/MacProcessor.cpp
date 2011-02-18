@@ -3,15 +3,14 @@
 
 using namespace DiplomBukov;
 
-MacProcessor::MacProcessor(IRouter * router_)
-	: router_(router_)
+MacProcessor::MacProcessor(IRouter * router)
+	: module(NULL), router(router)
 {
-
 }
 
 IProcessor * MacProcessor::CreateCopy() const
 {
-    return new MacProcessor(router_->CreateCopy());
+    return new MacProcessor(router->CreateCopy());
 }
 
 ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
@@ -23,8 +22,8 @@ ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, un
     packet.src_hardware_addr = mac->src;
     packet.dst_hardware_addr = mac->dst;
 
-    if (router_ != NULL)
-    	router_->transmitPacket(mac->proto, packet, offset + sizeof(mac_header));
+    if (router != NULL)
+    	router->transmitPacket(mac->proto, packet, offset + sizeof(mac_header));
 
 	return ProcessingStatus::Accepted;
 }
@@ -39,12 +38,22 @@ const char * MacProcessor::getProcessorName()
     return "MacProcessor";
 }
 
-void MacProcessor::setRouter(IRouter * router_)
+void MacProcessor::setRouter(IRouter * router)
 {
-	this->router_ = router_;
+	this->router = router;
 }
 
-IRouter * MacProcessor::router()
+IRouter * MacProcessor::getRouter()
 {
-	return router_;
+	return router;
+}
+
+void MacProcessor::setModule(IProcessorModule * module)
+{
+    this->module = module;
+}
+
+IProcessorModule * MacProcessor::getModule()
+{
+    return module;
 }

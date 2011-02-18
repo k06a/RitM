@@ -39,7 +39,7 @@ namespace DiplomBukov
 		~FileAdapter();
 
 		virtual void setRouter(IRouter * router_);
-		virtual IRouter * router();
+		virtual IRouter * getRouter();
 		virtual void run();
 	};
 	// class FileAdapter

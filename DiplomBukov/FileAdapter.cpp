@@ -6,12 +6,10 @@ using namespace DiplomBukov;
 FileAdapter::FileAdapter(char * filename1, char * filename2, IRouter * router_)
 	: router_(router_), file1(NULL), file2(NULL)
 {
-	int ret = fopen_s(&file1, filename1, "rb");
-	if (ret != 0)
+	if (fopen_s(&file1, filename1, "rb") != 0)
 		throw "Ошибка открытия файла";
 
-    ret = fopen_s(&file2, filename2, "wb");
-    if (ret != 0)
+    if (fopen_s(&file2, filename2, "wb") != 0)
         throw "Ошибка открытия файла";
 }
 
@@ -28,7 +26,7 @@ void FileAdapter::setRouter(IRouter * router_)
 	this->router_ = router_;
 }
 
-IRouter * FileAdapter::router()
+IRouter * FileAdapter::getRouter()
 {
 	return router_;
 }

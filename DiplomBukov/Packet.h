@@ -9,7 +9,7 @@ namespace DiplomBukov
 {
 	struct Packet
 	{
-        static const unsigned Ipv4PacketSize = 65536+14+18;
+        static const unsigned Ipv4PacketSize = 65536+14;
         static const unsigned Ethernet2FrameSize = 1514;
 
 		enum PacketPolicy

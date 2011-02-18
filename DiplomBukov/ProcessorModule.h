@@ -2,18 +2,19 @@
 #define PROCESSORMODULE_H
 
 #include "CommonInclude.h"
+#include "IProcessorModule.h"
 
 namespace DiplomBukov
 {
-    class ProcessorModule
+    class ProcessorModule : public IProcessorModule
     {
-        IProcessor * baseProcessor_;
+        IProcessor * baseProcessor;
 
     public:
         ProcessorModule(IProcessor * processor = NULL);
 
-        IProcessor * baseProcessor();
-        void setBaseProcessor(IProcessor * processor);
+        virtual IProcessor * getBaseProcessor();
+        virtual void setBaseProcessor(IProcessor * processor);
     };
     // class ProcessorModule
 }
