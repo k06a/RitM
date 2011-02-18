@@ -113,7 +113,7 @@ namespace DiplomBukov
             usChksum = (usChksum >> 16) + (usChksum & 0xffff);
             usChksum += (usChksum >> 16);
 
-            return (u8)(~usChksum);
+            return (u16)(~usChksum);
         }
 
 		u16 recountSum()
