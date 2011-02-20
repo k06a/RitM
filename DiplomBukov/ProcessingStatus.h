@@ -22,9 +22,10 @@ namespace DiplomBukov
 		ProcessingStatus & operator = (const ProcessingStatusEnum & pse)
 		{
 			status = pse;
+            return (*this);
 		}
 
-		operator ProcessingStatusEnum()
+		operator ProcessingStatusEnum() const
 		{
 			return status;
 		}

@@ -2,16 +2,19 @@
 #define ROUTERPLUGIN_H
 
 #include "CommonInclude.h"
+#include "IRouterPlugin.h"
 
 namespace DiplomBukov
 {
-    class RouterPlugin
+    class RouterPlugin : public IRouterPlugin
     {
-    public:
-        virtual ~RouterPlugin() {}
+        IRouterCreator * routerCreator;
 
-        virtual IRouterCreator * routerCreator() = 0;
-        virtual void setRouterCreator(IRouterCreator * routerCreator) = 0;
+    public:
+        RouterPlugin(IRouterCreator * creator = 0);
+
+        virtual IRouterCreator * getRouterCreator();
+        virtual void setRouterCreator(IRouterCreator * creator);
     };
     // class RouterPlugin
 }

@@ -17,11 +17,11 @@ namespace DiplomBukov
         typedef std::map<ipv4_pair,IRouter*> MyMap;
         
         IProcessorModule * module;
-        IRouter * baseRouter;
+        IRouter * router;
         MyMap routers;
 		
 	public:
-		Ipv4SplitterProcessor(IRouter * baseRouter = NULL);
+		Ipv4SplitterProcessor(IRouter * router = NULL);
         virtual IProcessor * CreateCopy() const;
 
 		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);

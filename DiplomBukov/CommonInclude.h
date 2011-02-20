@@ -4,10 +4,9 @@
 
 #include "i64u64.h"
 
-#define KB *1024
-
 namespace DiplomBukov
 {
+    class IPacketProcessor;
     class IRouter;
     class IAdapter;
     class IProcessor;

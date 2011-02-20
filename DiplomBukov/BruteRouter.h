@@ -17,7 +17,7 @@ namespace DiplomBukov
         BruteRouter();
         BruteRouter(const MyDeque & d);
 
-		virtual void transmitPacket(Protocol proto, Packet & packet, unsigned offset);
+		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
 		virtual void addNextProcessor(IProcessor * processor);
 		virtual void removeNextProcessor(IProcessor * processor);
 		virtual const std::deque<IProcessor*> & nextProcessors();

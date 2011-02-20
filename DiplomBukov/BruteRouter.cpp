@@ -15,12 +15,16 @@ BruteRouter::BruteRouter(const MyDeque & d)
     
 }
 
-void BruteRouter::transmitPacket(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus BruteRouter::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
+    ProcessingStatus ans = ProcessingStatus::Rejected;
 	for(MyDeque::iterator it = procList.begin(); it != procList.end(); it++)
     {
-		(*it)->processPacket(proto, packet, offset);
+		ProcessingStatus ret = (*it)->processPacket(proto, packet, offset);
+        if (ret == ProcessingStatus::Accepted)
+            ans = ProcessingStatus::Accepted;
 	}
+    return ans;
 }
 
 void BruteRouter::addNextProcessor(IProcessor * processor)

@@ -4,13 +4,13 @@
 using namespace DiplomBukov;
 
 TcpSplitterProcessor::TcpSplitterProcessor(IRouter * router)
-    : module(NULL), baseRouter(router)
+    : module(NULL), router(router)
 {
 }
 
 IProcessor * TcpSplitterProcessor::CreateCopy() const
 {
-    return new TcpSplitterProcessor(baseRouter->CreateCopy());
+    return new TcpSplitterProcessor(router->CreateCopy());
 }
 
 ProcessingStatus TcpSplitterProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
@@ -28,10 +28,13 @@ ProcessingStatus TcpSplitterProcessor::processPacket(Protocol proto, Packet & pa
     port_pair para(adr1,adr2);
     MyMap::iterator it = routers.find(para);
     if (it == routers.end())
-        routers[para] = baseRouter->CreateCopy();
+    {
+        if (router != NULL)
+            routers[para] = router->CreateCopy();
+    }
 
-    if (baseRouter != NULL)
-        routers[para]->transmitPacket(Protocol::None, packet, offset + tcp->header_size());
+    if (router != NULL)
+        routers[para]->processPacket(Protocol::None, packet, offset + tcp->header_size());
 
     return ProcessingStatus::Accepted;
 }
@@ -48,12 +51,12 @@ Protocol TcpSplitterProcessor::getProtocol()
 
 void TcpSplitterProcessor::setRouter(IRouter * router)
 {
-    baseRouter = router;
+    this->router = router;
 }
 
 IRouter * TcpSplitterProcessor::getRouter()
 {
-    return baseRouter;
+    return router;
 }
 
 void TcpSplitterProcessor::setModule(IProcessorModule * module)

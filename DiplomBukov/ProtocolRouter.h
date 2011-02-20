@@ -19,9 +19,10 @@ namespace DiplomBukov
     public:
         ProtocolRouter();
         ProtocolRouter(const MyDeque & d, const MyMap m);
-        virtual IRouter * CreateCopy();
+        
+        virtual IRouter * CreateCopy() const;
+        virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
 
-        virtual void transmitPacket(Protocol proto, Packet & packet, unsigned offset);
         virtual void addNextProcessor(IProcessor * processor);
         virtual void removeNextProcessor(IProcessor * processor);
         virtual const std::deque<IProcessor*> & nextProcessors();

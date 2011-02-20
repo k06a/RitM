@@ -203,23 +203,23 @@
 				>
 			</File>
 			<Filter
-				Name="Lowest"
+				Name="IPlugins"
 				>
 				<File
-					RelativePath=".\IAdapter.h"
+					RelativePath=".\IAdapterPlugin.h"
 					>
 				</File>
 				<File
-					RelativePath=".\IProcessor.h"
+					RelativePath=".\IProcessorPlugin.h"
 					>
 				</File>
 				<File
-					RelativePath=".\IRouter.h"
+					RelativePath=".\IRouterPlugin.h"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="Low"
+				Name="ICreators"
 				>
 				<File
 					RelativePath=".\IAdapterCreator.h"
@@ -235,10 +235,38 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Highest"
+				Name="IModules"
 				>
 				<File
+					RelativePath=".\IAdapterModule.h"
+					>
+				</File>
+				<File
 					RelativePath=".\IProcessorModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IRouterModule.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="IObjects"
+				>
+				<File
+					RelativePath=".\IAdapter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IPacketProcessor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IProcessor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IRouter.h"
 					>
 				</File>
 			</Filter>
@@ -287,91 +315,7 @@
 			Name="Implementation"
 			>
 			<Filter
-				Name="Router"
-				>
-				<File
-					RelativePath=".\BruteRouter.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\BruteRouter.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ProtocolRouter.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ProtocolRouter.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Processor"
-				>
-				<File
-					RelativePath=".\IcmpProcessor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\IcmpProcessor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Ipv4DefragProcessor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Ipv4DefragProcessor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Ipv4SplitterProcessor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Ipv4SplitterProcessor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\MacProcessor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\MacProcessor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TcpSplitterProcessor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\TcpSplitterProcessor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\UdpSplitterProcessor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\UdpSplitterProcessor.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Adapter"
-				>
-				<File
-					RelativePath=".\FileAdapter.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\FileAdapter.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="ProcessorCreator"
+				Name="ProcessorCreators"
 				>
 				<File
 					RelativePath=".\Ipv4SplitterProcessorCreator.cpp"
@@ -399,7 +343,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Module"
+				Name="Modules"
 				>
 				<File
 					RelativePath=".\AdapterModule.cpp"
@@ -427,10 +371,18 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Plugin"
+				Name="Plugins"
 				>
 				<File
+					RelativePath=".\AdapterPlugin.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\AdapterPlugin.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ProcessorPlugin.cpp"
 					>
 				</File>
 				<File
@@ -438,9 +390,101 @@
 					>
 				</File>
 				<File
+					RelativePath=".\RouterPlugin.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\RouterPlugin.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Objects"
+				>
+				<Filter
+					Name="Adapters"
+					>
+					<File
+						RelativePath=".\FileAdapter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\FileAdapter.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Processors"
+					>
+					<File
+						RelativePath=".\IcmpProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\IcmpProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4DefragProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4DefragProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4SplitterProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4SplitterProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\MacProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\MacProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpSplitterProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpSplitterProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\UdpSplitterProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\UdpSplitterProcessor.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Routers"
+					>
+					<File
+						RelativePath=".\BruteRouter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\BruteRouter.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ProtocolRouter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ProtocolRouter.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>

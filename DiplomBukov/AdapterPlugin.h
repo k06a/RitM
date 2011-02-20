@@ -2,16 +2,19 @@
 #define ADAPTERPLUGIN_H
 
 #include "CommonInclude.h"
+#include "IAdapterPlugin.h"
 
 namespace DiplomBukov
 {
-    class AdapterPlugin
+    class AdapterPlugin : public IAdapterPlugin
     {
-    public:
-        AdapterPlugin(IAdapterCreator * adapterCreator = 0);
+        IAdapterCreator * adapterCreator;
 
-        IAdapterCreator * adapterCreator();
-        void setAdapterCreator(IAdapterCreator * adapterCreator);
+    public:
+        AdapterPlugin(IAdapterCreator * creator = 0);
+
+        virtual IAdapterCreator * getAdapterCreator();
+        virtual void setAdapterCreator(IAdapterCreator * creator);
     };
     // class AdapterPlugin
 }

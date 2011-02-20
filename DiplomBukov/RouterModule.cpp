@@ -3,16 +3,16 @@
 using namespace DiplomBukov;
 
 RouterModule::RouterModule(IRouter * router)
-: baseRouter_(router)
+    : baseRouter(router)
 {
 }
 
-IRouter * RouterModule::baseRouter()
+IRouter * RouterModule::getBaseRouter()
 {
-    return baseRouter_;
+    return baseRouter;
 }
 
 void RouterModule::setBaseRouter(IRouter * router)
 {
-    baseRouter_ = router;
+    baseRouter = router;
 }

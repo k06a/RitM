@@ -15,14 +15,15 @@ namespace DiplomBukov
         typedef std::map<port_pair,IRouter*> MyMap;
 
         IProcessorModule * module;
-        IRouter * baseRouter;
+        IRouter * router;
         MyMap routers;
 
     public:
         TcpSplitterProcessor(IRouter * router = NULL);
-        virtual IProcessor * CreateCopy() const;
 
+        virtual IProcessor * CreateCopy() const;
         virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
+
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 

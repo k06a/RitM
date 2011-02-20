@@ -4,13 +4,13 @@
 using namespace DiplomBukov;
 
 IcmpProcessor::IcmpProcessor(IRouter * router)
-    : module(NULL), baseRouter(router)
+    : module(NULL), router(router)
 {
 }
 
 IProcessor * IcmpProcessor::CreateCopy() const
 {
-    return new IcmpProcessor(baseRouter->CreateCopy());
+    return new IcmpProcessor(router->CreateCopy());
 }
 
 ProcessingStatus IcmpProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
@@ -21,7 +21,7 @@ ProcessingStatus IcmpProcessor::processPacket(Protocol proto, Packet & packet, u
     icmp_header * icmp = (icmp_header *)(packet.data + offset);
 
     //if (baseRouter != NULL)
-    //    baseRouter->transmitPacket(Protocol::None, packet, offset + sizeof(icmp_header));
+    //    baseRouter->processPacket(Protocol::None, packet, offset + sizeof(icmp_header));
 
     return ProcessingStatus::Accepted;
 }
@@ -38,12 +38,12 @@ Protocol IcmpProcessor::getProtocol()
 
 void IcmpProcessor::setRouter(IRouter * router)
 {
-    baseRouter = router;
+    this->router = router;
 }
 
 IRouter * IcmpProcessor::getRouter()
 {
-    return baseRouter;
+    return router;
 }
 
 void IcmpProcessor::setModule(IProcessorModule * module)

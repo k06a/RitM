@@ -3,16 +3,16 @@
 using namespace DiplomBukov;
 
 AdapterModule::AdapterModule(IAdapter * adapter)
-: baseAdapter_(adapter)
+    : baseAdapter(adapter)
 {
 }
 
-IAdapter * AdapterModule::baseAdapter()
+IAdapter * AdapterModule::getBaseAdapter()
 {
-    return baseAdapter_;
+    return baseAdapter;
 }
 
 void AdapterModule::setBaseAdapter(IAdapter * adapter)
 {
-    baseAdapter_ = adapter;
+    baseAdapter = adapter;
 }

@@ -23,7 +23,7 @@ ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, un
     packet.dst_hardware_addr = mac->dst;
 
     if (router != NULL)
-    	router->transmitPacket(mac->proto, packet, offset + sizeof(mac_header));
+    	router->processPacket(mac->proto, packet, offset + sizeof(mac_header));
 
 	return ProcessingStatus::Accepted;
 }

@@ -11,7 +11,7 @@ namespace DiplomBukov
     class IcmpProcessor : public IProcessor
     {
         IProcessorModule * module;
-        IRouter * baseRouter;
+        IRouter * router;
         
     public:
         IcmpProcessor(IRouter * router = NULL);

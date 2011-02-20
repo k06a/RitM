@@ -2,18 +2,19 @@
 #define ADAPTERMODULE_H
 
 #include "CommonInclude.h"
+#include "IAdapterModule.h"
 
 namespace DiplomBukov
 {
-    class AdapterModule
+    class AdapterModule : public IAdapterModule
     {
-        IAdapter * baseAdapter_;
+        IAdapter * baseAdapter;
 
     public:
-        AdapterModule(IAdapter * processor = NULL);
+        AdapterModule(IAdapter * adapter = NULL);
 
-        IAdapter * baseAdapter();
-        void setBaseAdapter(IAdapter * adapter);
+        virtual IAdapter * getBaseAdapter();
+        virtual void setBaseAdapter(IAdapter * adapter);
     };
     // class AdapterModule
 }

@@ -11,7 +11,7 @@ namespace DiplomBukov
 	class Ipv4DefragProcessor : public IProcessor
 	{
         IProcessorModule * module;
-		IRouter * baseRouter;
+		IRouter * router;
         Packet * fullPacket;
         int ipDataOffset;
 

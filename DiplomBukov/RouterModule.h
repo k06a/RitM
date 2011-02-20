@@ -2,18 +2,19 @@
 #define ROUTERMODULE_H
 
 #include "CommonInclude.h"
+#include "IRouterModule.h"
 
 namespace DiplomBukov
 {
-    class RouterModule
+    class RouterModule : public IRouterModule
     {
-        IRouter * baseRouter_;
+        IRouter * baseRouter;
 
     public:
         RouterModule(IRouter * router = NULL);
 
-        IRouter * baseRouter();
-        void setBaseRouter(IRouter * router);
+        virtual IRouter * getBaseRouter();
+        virtual void setBaseRouter(IRouter * router);
     };
     // class RouterModule
 }

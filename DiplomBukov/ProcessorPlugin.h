@@ -2,16 +2,19 @@
 #define PROCESSORPLUGIN_H
 
 #include "CommonInclude.h"
+#include "IProcessorPlugin.h"
 
 namespace DiplomBukov
 {
-    class ProcessorPlugin
+    class ProcessorPlugin : public IProcessorPlugin
     {
-    public:
-        virtual ~ProcessorPlugin() {}
+        IProcessorCreator * processorCreator;
 
-        virtual IProcessorCreator * processorCreator() = 0;
-        virtual void setProcessorCreator(IProcessorCreator * processorCreator) = 0;
+    public:
+        ProcessorPlugin(IProcessorCreator * creator = 0);
+
+        virtual IProcessorCreator * getProcessorCreator();
+        virtual void setProcessorCreator(IProcessorCreator * creator) = 0;
     };
     // class ProcessorPlugin
 }

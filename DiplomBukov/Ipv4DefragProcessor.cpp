@@ -4,13 +4,13 @@
 using namespace DiplomBukov;
 
 Ipv4DefragProcessor::Ipv4DefragProcessor(IRouter * router)
-	: module(NULL), baseRouter(router), fullPacket(NULL)
+	: module(NULL), router(router), fullPacket(NULL)
 {
 }
 
 IProcessor * Ipv4DefragProcessor::CreateCopy() const
 {
-    return new Ipv4DefragProcessor(baseRouter->CreateCopy());
+    return new Ipv4DefragProcessor(router->CreateCopy());
 }
 
 ProcessingStatus Ipv4DefragProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
@@ -47,8 +47,8 @@ ProcessingStatus Ipv4DefragProcessor::processPacket(Protocol proto, Packet & pac
             delete fullPacket;
             fullPacket = NULL;
 
-            if (baseRouter != 0)
-                baseRouter->transmitPacket(ipv4->proto, packet, offset + ipv4->size());
+            if (router != 0)
+                router->processPacket(ipv4->proto, packet, offset + ipv4->size());
         }
     }
 
@@ -67,12 +67,12 @@ const char * Ipv4DefragProcessor::getProcessorName()
 
 void Ipv4DefragProcessor::setRouter(IRouter * router)
 {
-	baseRouter = router;
+	this->router = router;
 }
 
 IRouter * Ipv4DefragProcessor::getRouter()
 {
-	return baseRouter;
+	return router;
 }
 
 void Ipv4DefragProcessor::setModule(IProcessorModule * module)

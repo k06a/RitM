@@ -51,7 +51,7 @@ void FileAdapter::run()
         if (fread_s(packet.data, packet.size, 1, pph.orig_len, file1) == 0)
             break;
         
-        router_->transmitPacket(pfh.network, packet, 0); // Protocol::Ethernet_II
+        router_->processPacket(pfh.network, packet, 0); // Protocol::Ethernet_II
 
         if (packet.status == Packet::Accepted)
         {

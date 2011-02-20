@@ -3,14 +3,14 @@
 
 using namespace DiplomBukov;
 
-Ipv4SplitterProcessor::Ipv4SplitterProcessor(IRouter * baseRouter)
-	: module(NULL), baseRouter(baseRouter)
+Ipv4SplitterProcessor::Ipv4SplitterProcessor(IRouter * router)
+	: module(NULL), router(router)
 {
 }
 
 IProcessor * Ipv4SplitterProcessor::CreateCopy() const
 {
-    return new Ipv4SplitterProcessor(baseRouter->CreateCopy());
+    return new Ipv4SplitterProcessor(router->CreateCopy());
 }
 
 ProcessingStatus Ipv4SplitterProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
@@ -27,10 +27,13 @@ ProcessingStatus Ipv4SplitterProcessor::processPacket(Protocol proto, Packet & p
     ipv4_pair para(adr1,adr2);
     MyMap::iterator it = routers.find(para);
     if (it == routers.end())
-        routers[para] = baseRouter->CreateCopy();
+    {
+        if (router != NULL)
+            routers[para] = router->CreateCopy();
+    }
 
-    if (baseRouter != NULL)
-        routers[para]->transmitPacket(proto, packet, offset);
+    if (router != NULL)
+        routers[para]->processPacket(proto, packet, offset);
 
 	return ProcessingStatus::Accepted;
 }
@@ -47,12 +50,12 @@ const char * Ipv4SplitterProcessor::getProcessorName()
 
 void Ipv4SplitterProcessor::setRouter(IRouter * router)
 {
-	baseRouter = router;
+	this->router = router;
 }
 
 IRouter * Ipv4SplitterProcessor::getRouter()
 {
-	return baseRouter;
+	return router;
 }
 
 void Ipv4SplitterProcessor::setModule(IProcessorModule * module)

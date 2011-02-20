@@ -17,25 +17,30 @@ ProtocolRouter::ProtocolRouter(const MyDeque & d, const MyMap m)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
-        IProcessor * proc = (*it)->CreateCopy();
+        IProcessor * proc = (IProcessor*)(*it)->CreateCopy();
         procList.push_back(proc);
         procMap.insert(std::make_pair(proc->getProtocol(), proc));
     }
 }
 
-IRouter * ProtocolRouter::CreateCopy()
+IRouter * ProtocolRouter::CreateCopy() const
 {
     return new ProtocolRouter(procList, procMap);
 }
 
-void ProtocolRouter::transmitPacket(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus ProtocolRouter::processPacket(Protocol proto, Packet & packet, unsigned offset)
 {
-    MyMap::iterator it = procMap.find(proto);
-    while ((it != procMap.end()) && (it->first == proto))
+    ProcessingStatus ans = ProcessingStatus::Rejected;
+    
+    for (MyMap::iterator it = procMap.find(proto);
+         (it != procMap.end()) && (it->first == proto);
+         ++it)
     {
-        it->second->processPacket(proto, packet, offset);
-        ++it;
+        ProcessingStatus ret = it->second->processPacket(proto, packet, offset);
+        if (ret == ProcessingStatus::Accepted)
+            ans = ProcessingStatus::Accepted;
     }
+    return ans;
 }
 
 void ProtocolRouter::addNextProcessor(IProcessor * processor)
