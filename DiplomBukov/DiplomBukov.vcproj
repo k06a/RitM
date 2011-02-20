@@ -269,6 +269,14 @@
 					RelativePath=".\IRouter.h"
 					>
 				</File>
+				<File
+					RelativePath=".\ISwitch.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ISwitchPort.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -482,6 +490,18 @@
 					</File>
 					<File
 						RelativePath=".\ProtocolRouter.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Switches"
+					>
+					<File
+						RelativePath=".\MacSwitch.h"
+						>
+					</File>
+					<File
+						RelativePath=".\SwitchPort.h"
 						>
 					</File>
 				</Filter>
