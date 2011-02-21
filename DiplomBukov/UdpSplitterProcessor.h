@@ -8,7 +8,7 @@ namespace DiplomBukov
     class UdpSplitterProcessor : public TcpSplitterProcessor
     {
     public:
-        UdpSplitterProcessor(IRouter * router = NULL);
+        UdpSplitterProcessor(IPacketProcessor * router = NULL);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

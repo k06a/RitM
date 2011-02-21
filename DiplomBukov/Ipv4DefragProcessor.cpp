@@ -3,24 +3,15 @@
 
 using namespace DiplomBukov;
 
-Ipv4DefragProcessor::Ipv4DefragProcessor(IRouter * router)
-	: module(NULL), router(router), fullPacket(NULL)
+Ipv4DefragProcessor::Ipv4DefragProcessor(IPacketProcessor * router)
+	: fullPacket(NULL)
 {
+    setNextProcessor(router);
 }
 
 IProcessor * Ipv4DefragProcessor::CreateCopy() const
 {
-    return new Ipv4DefragProcessor(router->CreateCopy());
-}
-
-IPacketProcessor * Ipv4DefragProcessor::getPointer()
-{
-    return this;
-}
-
-void Ipv4DefragProcessor::ping(IPacketProcessor * prevProcessor)
-{
-
+    return new Ipv4DefragProcessor(nextProcessor->CreateCopy());
 }
 
 ProcessingStatus Ipv4DefragProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -57,17 +48,12 @@ ProcessingStatus Ipv4DefragProcessor::forwardProcess(Protocol proto, Packet & pa
             delete fullPacket;
             fullPacket = NULL;
 
-            if (router != 0)
-                router->forwardProcess(ipv4->proto, packet, offset + ipv4->size());
+            if (nextProcessor != 0)
+                nextProcessor->forwardProcess(ipv4->proto, packet, offset + ipv4->size());
         }
     }
 
 	return ProcessingStatus::Accepted;
-}
-
-ProcessingStatus Ipv4DefragProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
-{
-    return ProcessingStatus::Accepted;
 }
 
 Protocol Ipv4DefragProcessor::getProtocol()
@@ -78,24 +64,4 @@ Protocol Ipv4DefragProcessor::getProtocol()
 const char * Ipv4DefragProcessor::getProcessorName()
 {
     return "Ipv4DefragProcessor";
-}
-
-void Ipv4DefragProcessor::setRouter(IRouter * router)
-{
-	this->router = router;
-}
-
-IRouter * Ipv4DefragProcessor::getRouter()
-{
-	return router;
-}
-
-void Ipv4DefragProcessor::setModule(IProcessorModule * module)
-{
-    this->module = module;
-}
-
-IProcessorModule * Ipv4DefragProcessor::getModule()
-{
-    return module;
 }

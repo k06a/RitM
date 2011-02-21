@@ -6,6 +6,9 @@
 
 namespace DiplomBukov
 {
+    #define extends public
+    #define implements public
+
     class IPacketProcessor;
     class IRouter;
     class IAdapter;

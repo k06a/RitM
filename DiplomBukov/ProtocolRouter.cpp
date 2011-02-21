@@ -1,5 +1,6 @@
 #include "ProtocolRouter.h"
 #include "ProcessingStatus.h"
+#include "IProcessor.h"
 
 #include <map>
 #include <utility>
@@ -8,40 +9,29 @@
 using namespace DiplomBukov;
 
 ProtocolRouter::ProtocolRouter()
-    : procList(), procMap()
+    : procMap()
 {
 }
 
 ProtocolRouter::ProtocolRouter(const ProtocolRouter & router)
-    : procList(), procMap()
+    : procMap()
 {
-    Init(router.procList, router.procMap);
+    Init(router.procList);
 }
 
-void ProtocolRouter::Init(const MyDeque & d, const MyMap & m)
+void ProtocolRouter::Init(const MyDeque & d)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
-        IProcessor * proc = (IProcessor*)(*it)->CreateCopy();
-        procList.push_back(proc);
+        IProcessor * proc = (IProcessor*)((*it)->CreateCopy());
         procMap.insert(std::make_pair(proc->getProtocol(), proc));
+        AbstractRouter::addNextProcessor(proc);
     }
 }
 
 IRouter * ProtocolRouter::CreateCopy() const
 {
     return new ProtocolRouter(*this);
-}
-
-IPacketProcessor * ProtocolRouter::getPointer()
-{
-    return this;
-}
-
-void ProtocolRouter::ping(IPacketProcessor * prevProcessor)
-{
-    for(MyDeque::iterator it = procList.begin(); it != procList.end(); ++it)
-        (*it)->ping(prevProcessor);
 }
 
 ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -59,16 +49,11 @@ ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, Packet & packet,
     return ans;
 }
 
-ProcessingStatus ProtocolRouter::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
-{
-    return ProcessingStatus::Accepted;
-}
-
 void ProtocolRouter::addNextProcessor(IProcessor * processor)
 {
     Protocol proto = processor->getProtocol();
-    procList.push_back(processor);
     procMap.insert(std::make_pair(proto, processor));
+    AbstractRouter::addNextProcessor(processor);
 }
 
 void ProtocolRouter::removeNextProcessor(IProcessor * processor)
@@ -81,10 +66,10 @@ void ProtocolRouter::removeNextProcessor(IProcessor * processor)
             break;
         }
     }
-    std::remove(procList.begin(), procList.end(), processor);
+    AbstractRouter::removeNextProcessor(processor);
 }
 
 const std::deque<IProcessor*> & ProtocolRouter::nextProcessors()
 {
-    return procList;
+    return AbstractRouter::nextProcessors();
 }

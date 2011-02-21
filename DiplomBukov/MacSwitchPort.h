@@ -3,30 +3,29 @@
 
 #include <deque>
 #include <algorithm>
+
 #include "CommonInclude.h"
 #include "IPacketProcessor.h"
+#include "AbstractProcessor.h"
 #include "mac_header.h"
 
 namespace DiplomBukov
 {
-    class MacSwitchPort : public IPacketProcessor
+    class MacSwitchPort : public AbstractProcessor
     {
         typedef std::deque<mac_addr> MyList;
 
-        IPacketProcessor * nextProcessor;
-        IPacketProcessor * prevProcessor;
         MyList macList;
 
     public:
-        MacSwitchPort(IPacketProcessor * nextProcessor);
+        MacSwitchPort(IPacketProcessor * const nextProcessor);
         MacSwitchPort(const MacSwitchPort & macSwitchPort);
         void Init(const IPacketProcessor * np, const IPacketProcessor * pp);
-        virtual IPacketProcessor * CreateCopy() const;
+        virtual IProcessor * CreateCopy() const;
 
-        virtual IPacketProcessor * getPointer();
-        virtual void ping(IPacketProcessor * prevProcessor);
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual const char * getProcessorName();
 
         bool checkMac(const mac_addr & mac);
     };

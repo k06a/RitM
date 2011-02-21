@@ -3,9 +3,8 @@
 
 #include <stdio.h>
 
-#include "IRouter.h"
+#include "AbstractPacketProcessor.h"
 #include "IAdapter.h"
-#include "IProcessor.h"
 
 namespace DiplomBukov
 {
@@ -28,18 +27,18 @@ namespace DiplomBukov
 		unsigned int orig_len;  /* actual length of packet */
 	};
 
-	class FileAdapter :	public IAdapter
+	class FileAdapter
+        : public AbstractPacketProcessor
+        , public IAdapter
 	{
-		IRouter * router_;
-        FILE * file1;
+		FILE * file1;
         FILE * file2;
 
 	public:
-		FileAdapter(char * filename1, char * filename2, IRouter * router_ = NULL);
-		~FileAdapter();
-
-		virtual void setRouter(IRouter * router_);
-		virtual IRouter * getRouter();
+		FileAdapter(char * filename1, char * filename2, IPacketProcessor * router = NULL);
+		virtual IPacketProcessor * CreateCopy() const;
+        ~FileAdapter();
+        
 		virtual void run();
 	};
 	// class FileAdapter

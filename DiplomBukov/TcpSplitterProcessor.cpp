@@ -3,24 +3,14 @@
 
 using namespace DiplomBukov;
 
-TcpSplitterProcessor::TcpSplitterProcessor(IRouter * router)
-    : module(NULL), router(router)
+TcpSplitterProcessor::TcpSplitterProcessor(IPacketProcessor * router)
 {
+    setNextProcessor(router);
 }
 
 IProcessor * TcpSplitterProcessor::CreateCopy() const
 {
-    return new TcpSplitterProcessor(router->CreateCopy());
-}
-
-IPacketProcessor * TcpSplitterProcessor::getPointer()
-{
-    return this;
-}
-
-void TcpSplitterProcessor::ping(IPacketProcessor * prevProcessor)
-{
-
+    return new TcpSplitterProcessor(nextProcessor->CreateCopy());
 }
 
 ProcessingStatus TcpSplitterProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -39,18 +29,13 @@ ProcessingStatus TcpSplitterProcessor::forwardProcess(Protocol proto, Packet & p
     MyMap::iterator it = routers.find(para);
     if (it == routers.end())
     {
-        if (router != NULL)
-            routers[para] = router->CreateCopy();
+        if (nextProcessor != NULL)
+            routers[para] = nextProcessor->CreateCopy();
     }
 
-    if (router != NULL)
+    if (nextProcessor != NULL)
         routers[para]->forwardProcess(Protocol::None, packet, offset + tcp->header_size());
 
-    return ProcessingStatus::Accepted;
-}
-
-ProcessingStatus TcpSplitterProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
-{
     return ProcessingStatus::Accepted;
 }
 
@@ -62,24 +47,4 @@ const char * TcpSplitterProcessor::getProcessorName()
 Protocol TcpSplitterProcessor::getProtocol()
 {
     return Protocol::TCP;
-}
-
-void TcpSplitterProcessor::setRouter(IRouter * router)
-{
-    this->router = router;
-}
-
-IRouter * TcpSplitterProcessor::getRouter()
-{
-    return router;
-}
-
-void TcpSplitterProcessor::setModule(IProcessorModule * module)
-{
-    this->module = module;
-}
-
-IProcessorModule * TcpSplitterProcessor::getModule()
-{
-    return module;
 }

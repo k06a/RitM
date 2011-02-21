@@ -2,31 +2,20 @@
 #define BRUTEROUTER_H
 
 #include <deque>
-#include "IRouter.h"
-#include "IProcessor.h"
+
+#include "AbstractRouter.h"
 
 namespace DiplomBukov
 {
-	class BruteRouter : public IRouter
+	class BruteRouter : public AbstractRouter
 	{
-        typedef std::deque<IProcessor*> MyDeque;
-
-		MyDeque procList;
-
-	public:
+    public:
         BruteRouter();
         BruteRouter(const MyDeque & d);
         virtual IRouter * CreateCopy() const;
 
-        virtual IPacketProcessor * getPointer();
-        virtual void ping(IPacketProcessor * prevProcessor);
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
-
-        virtual void addNextProcessor(IProcessor * processor);
-		virtual void removeNextProcessor(IProcessor * processor);
-		virtual const std::deque<IProcessor*> & nextProcessors();
-	};
+    };
 	// class BruteRouter
 }
 // namespace DiplomBukov

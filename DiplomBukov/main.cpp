@@ -20,16 +20,36 @@
 
 using namespace DiplomBukov;
 
-void print_arch(IProcessor * proc, std::string prefix = "")
+void print_arch(IPacketProcessor * proc, std::string prefix = "")
 {
     if (proc == NULL) return;
 
-    std::cout << prefix << proc->getProcessorName() << std::endl;
+    IPacketProcessor * ipp = proc;
+    IRouter * ir = dynamic_cast<IRouter*>(ipp);
+    IAdapter * ia = dynamic_cast<IAdapter*>(ipp);
+    IProcessor * ip = dynamic_cast<IProcessor*>(ipp);
 
-    std::deque<IProcessor*> procList = proc->getRouter()->nextProcessors();
-    for (size_t i = 0; i < procList.size(); i++)
+    if (ir != NULL)
     {
-        print_arch(procList[i], prefix + "    ");
+        std::cout << prefix << "[ Router ]:" << std::endl;
+        const std::deque<IProcessor*> & procList = ir->nextProcessors();
+        for (size_t i = 0; i < procList.size(); i++)
+            print_arch(procList[i], prefix + "    ");
+        return;
+    }
+
+    if (ia != NULL)
+    {
+        std::cout << prefix << "Adapter" << std::endl;
+        print_arch(ipp->getNextProcessor(), prefix + "    ");
+        return;
+    }
+
+    if (ip != 0)
+    {
+        std::cout << prefix << ip->getProcessorName() << std::endl;
+        print_arch(ipp->getNextProcessor(), prefix + "    ");
+        return;
     }
 }
 
@@ -51,8 +71,9 @@ int main(int argc, char * argv[])
     ProcessorModule * udpModule  = new ProcessorModule(udpProcessor);
     ProcessorModule * icmpModule = new ProcessorModule(icmpProcessor);
 
-    #define connect(a,b) a->getRouter()->addNextProcessor(b)
+    #define connect(a,b) a->getNextProcessor()->setNextProcessor(b)
 
+    fileAdapter->getNextProcessor()->setNextProcessor(macProcessor);
     connect(fileAdapter, macProcessor);
         connect(macProcessor, ipv4Splitter);
             connect(ipv4Splitter, ipdfProcessor);
@@ -60,7 +81,7 @@ int main(int argc, char * argv[])
                 connect(ipdfProcessor, udpProcessor);
                 connect(ipdfProcessor, icmpProcessor);
 
-    print_arch(macProcessor);
+    print_arch(fileAdapter);
 
-    fileAdapter->start();
+    fileAdapter->run();
 }

@@ -1,37 +1,25 @@
 #ifndef IPV4DEFRAGPROCESSOR_H
 #define IPV4DEFRAGPROCESSOR_H
 
-#include "IRouter.h"
-#include "IAdapter.h"
-#include "IProcessor.h"
-#include "IProcessorCreator.h"
+#include "CommonInclude.h"
+#include "AbstractPacketProcessor.h"
+#include "AbstractProcessor.h"
 
 namespace DiplomBukov
 {
-	class Ipv4DefragProcessor : public IProcessor
+	class Ipv4DefragProcessor : public AbstractProcessor
 	{
-        IProcessorModule * module;
-		IRouter * router;
         Packet * fullPacket;
         int ipDataOffset;
 
 	public:
-		Ipv4DefragProcessor(IRouter * router = NULL);
+		Ipv4DefragProcessor(IPacketProcessor * router = NULL);
         virtual IProcessor * CreateCopy() const;
 
-        virtual IPacketProcessor * getPointer();
-        virtual void ping(IPacketProcessor * prevProcessor);
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
-
-		virtual void setRouter(IRouter * router);
-		virtual IRouter * getRouter();
-
-        virtual void setModule(IProcessorModule * module);
-        virtual IProcessorModule * getModule();
 	};
 	// class Ipv4DefragProcessor
 }

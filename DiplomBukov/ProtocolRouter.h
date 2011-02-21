@@ -3,30 +3,26 @@
 
 #include <map>
 #include <deque>
-#include "IRouter.h"
-#include "IProcessor.h"
+
+#include "CommonInclude.h"
+#include "AbstractRouter.h"
 
 namespace DiplomBukov
 {
-    class ProtocolRouter : public IRouter
+    class ProtocolRouter : public AbstractRouter
     {
-        typedef std::deque<IProcessor*> MyDeque;
         typedef std::multimap<Protocol,IProcessor*> MyMap;
 
-        MyDeque procList;
         MyMap procMap;
 
     public:
         ProtocolRouter();
         ProtocolRouter(const ProtocolRouter & router);
-        void Init(const MyDeque & d, const MyMap & m);
+        void Init(const MyDeque & d);
         virtual IRouter * CreateCopy() const;
 
-        virtual IPacketProcessor * getPointer();
-        virtual void ping(IPacketProcessor * prevProcessor);
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
-
+        
         virtual void addNextProcessor(IProcessor * processor);
         virtual void removeNextProcessor(IProcessor * processor);
         virtual const std::deque<IProcessor*> & nextProcessors();

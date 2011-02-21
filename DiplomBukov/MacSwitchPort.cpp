@@ -2,9 +2,10 @@
 
 using namespace DiplomBukov;
 
-MacSwitchPort::MacSwitchPort(IPacketProcessor * nextProcessor)
-    : nextProcessor(nextProcessor), prevProcessor(NULL)
+MacSwitchPort::MacSwitchPort(IPacketProcessor * const nextProcessor)
 {
+    this->nextProcessor = nextProcessor;
+    this->prevProcessor = NULL;
 }
 
 MacSwitchPort::MacSwitchPort(const MacSwitchPort & macSwitchPort)
@@ -18,19 +19,9 @@ void MacSwitchPort::Init(const IPacketProcessor * np, const IPacketProcessor * p
     prevProcessor = pp->CreateCopy();
 }
 
-IPacketProcessor * MacSwitchPort::CreateCopy() const
+IProcessor * MacSwitchPort::CreateCopy() const
 {
     return new MacSwitchPort(*this);
-}
-
-IPacketProcessor * MacSwitchPort::getPointer()
-{
-    return this;
-}
-
-void MacSwitchPort::ping(IPacketProcessor * prevProcessor)
-{
-    this->prevProcessor = prevProcessor;
 }
 
 ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -41,6 +32,11 @@ ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, Packet & packet, 
 ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
 {
     return ProcessingStatus::Accepted;
+}
+
+const char * MacSwitchPort::getProcessorName()
+{
+    return "MacSwitchPort";
 }
 
 bool MacSwitchPort::checkMac(const mac_addr & mac)

@@ -3,14 +3,21 @@
 
 using namespace DiplomBukov;
 
-FileAdapter::FileAdapter(char * filename1, char * filename2, IRouter * router_)
-	: router_(router_), file1(NULL), file2(NULL)
+FileAdapter::FileAdapter(char * filename1, char * filename2, IPacketProcessor * router)
+	: file1(NULL), file2(NULL)
 {
+    setNextProcessor(router);
+
 	if (fopen_s(&file1, filename1, "rb") != 0)
 		throw "Ошибка открытия файла";
 
     if (fopen_s(&file2, filename2, "wb") != 0)
         throw "Ошибка открытия файла";
+}
+
+IPacketProcessor * FileAdapter::CreateCopy() const
+{
+    return NULL;
 }
 
 FileAdapter::~FileAdapter()
@@ -19,16 +26,6 @@ FileAdapter::~FileAdapter()
 		fclose(file1);
     if (file2 != NULL)
         fclose(file2);
-}
-
-void FileAdapter::setRouter(IRouter * router_)
-{
-	this->router_ = router_;
-}
-
-IRouter * FileAdapter::getRouter()
-{
-	return router_;
 }
 
 void FileAdapter::run()
@@ -51,7 +48,7 @@ void FileAdapter::run()
         if (fread_s(packet.data, packet.size, 1, pph.orig_len, file1) == 0)
             break;
         
-        router_->forwardProcess(pfh.network, packet, 0); // Protocol::Ethernet_II
+        nextProcessor->forwardProcess(pfh.network, packet, 0); // Protocol::Ethernet_II
 
         if (packet.status == Packet::Accepted)
         {

@@ -3,24 +3,14 @@
 
 using namespace DiplomBukov;
 
-IcmpProcessor::IcmpProcessor(IRouter * router)
-    : module(NULL), router(router)
+IcmpProcessor::IcmpProcessor(IPacketProcessor * router)
 {
+    setNextProcessor(router);
 }
 
 IProcessor * IcmpProcessor::CreateCopy() const
 {
-    return new IcmpProcessor(router->CreateCopy());
-}
-
-IPacketProcessor * IcmpProcessor::getPointer()
-{
-    return this;
-}
-
-void IcmpProcessor::ping(IPacketProcessor * prevProcessor)
-{
-
+    return new IcmpProcessor(nextProcessor->CreateCopy());
 }
 
 ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -36,11 +26,6 @@ ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, Packet & packet, 
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus IcmpProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
-{
-    return ProcessingStatus::Accepted;
-}
-
 const char * IcmpProcessor::getProcessorName()
 {
     return "IcmpProcessor";
@@ -49,24 +34,4 @@ const char * IcmpProcessor::getProcessorName()
 Protocol IcmpProcessor::getProtocol()
 {
     return Protocol::TCP;
-}
-
-void IcmpProcessor::setRouter(IRouter * router)
-{
-    this->router = router;
-}
-
-IRouter * IcmpProcessor::getRouter()
-{
-    return router;
-}
-
-void IcmpProcessor::setModule(IProcessorModule * module)
-{
-    this->module = module;
-}
-
-IProcessorModule * IcmpProcessor::getModule()
-{
-    return module;
 }

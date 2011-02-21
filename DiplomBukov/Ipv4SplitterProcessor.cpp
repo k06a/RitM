@@ -3,24 +3,14 @@
 
 using namespace DiplomBukov;
 
-Ipv4SplitterProcessor::Ipv4SplitterProcessor(IRouter * router)
-	: module(NULL), router(router)
+Ipv4SplitterProcessor::Ipv4SplitterProcessor(IPacketProcessor * router)
 {
+    setNextProcessor(router);
 }
 
 IProcessor * Ipv4SplitterProcessor::CreateCopy() const
 {
-    return new Ipv4SplitterProcessor(router->CreateCopy());
-}
-
-IPacketProcessor * Ipv4SplitterProcessor::getPointer()
-{
-    return this;
-}
-
-void Ipv4SplitterProcessor::ping(IPacketProcessor * prevProcessor)
-{
-
+    return new Ipv4SplitterProcessor(nextProcessor->CreateCopy());
 }
 
 ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -38,19 +28,14 @@ ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, Packet & 
     MyMap::iterator it = routers.find(para);
     if (it == routers.end())
     {
-        if (router != NULL)
-            routers[para] = router->CreateCopy();
+        if (nextProcessor != NULL)
+            routers[para] = nextProcessor->CreateCopy();
     }
 
-    if (router != NULL)
+    if (nextProcessor != NULL)
         routers[para]->forwardProcess(proto, packet, offset);
 
 	return ProcessingStatus::Accepted;
-}
-
-ProcessingStatus Ipv4SplitterProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
-{
-    return ProcessingStatus::Accepted;
 }
 
 Protocol Ipv4SplitterProcessor::getProtocol()
@@ -61,24 +46,4 @@ Protocol Ipv4SplitterProcessor::getProtocol()
 const char * Ipv4SplitterProcessor::getProcessorName()
 {
     return "Ipv4SplitterProcessor";
-}
-
-void Ipv4SplitterProcessor::setRouter(IRouter * router)
-{
-	this->router = router;
-}
-
-IRouter * Ipv4SplitterProcessor::getRouter()
-{
-	return router;
-}
-
-void Ipv4SplitterProcessor::setModule(IProcessorModule * module)
-{
-    this->module = module;
-}
-
-IProcessorModule * Ipv4SplitterProcessor::getModule()
-{
-    return module;
 }

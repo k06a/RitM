@@ -3,24 +3,14 @@
 
 using namespace DiplomBukov;
 
-MacProcessor::MacProcessor(IRouter * router)
-	: module(NULL), router(router)
+MacProcessor::MacProcessor(IPacketProcessor * router)
 {
+    setNextProcessor(router);
 }
 
 IProcessor * MacProcessor::CreateCopy() const
 {
-    return new MacProcessor(router->CreateCopy());
-}
-
-IPacketProcessor * MacProcessor::getPointer()
-{
-    return this;
-}
-
-void MacProcessor::ping(IPacketProcessor * prevProcessor)
-{
-
+    return new MacProcessor(nextProcessor->CreateCopy());
 }
 
 ProcessingStatus MacProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -32,15 +22,10 @@ ProcessingStatus MacProcessor::forwardProcess(Protocol proto, Packet & packet, u
     packet.src_hardware_addr = mac->src;
     packet.dst_hardware_addr = mac->dst;
 
-    if (router != NULL)
-    	router->forwardProcess(mac->proto, packet, offset + sizeof(mac_header));
+    if (nextProcessor != NULL)
+    	nextProcessor->forwardProcess(mac->proto, packet, offset + sizeof(mac_header));
 
 	return ProcessingStatus::Accepted;
-}
-
-ProcessingStatus MacProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
-{
-    return ProcessingStatus::Accepted;
 }
 
 Protocol MacProcessor::getProtocol()
@@ -51,24 +36,4 @@ Protocol MacProcessor::getProtocol()
 const char * MacProcessor::getProcessorName()
 {
     return "MacProcessor";
-}
-
-void MacProcessor::setRouter(IRouter * router)
-{
-	this->router = router;
-}
-
-IRouter * MacProcessor::getRouter()
-{
-	return router;
-}
-
-void MacProcessor::setModule(IProcessorModule * module)
-{
-    this->module = module;
-}
-
-IProcessorModule * MacProcessor::getModule()
-{
-    return module;
 }
