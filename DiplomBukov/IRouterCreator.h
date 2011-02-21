@@ -10,7 +10,7 @@ namespace DiplomBukov
     public:
         virtual ~IRouterCreator() {}
 
-        virtual IRouter * createRouter() = 0;
+        virtual IRouter * createRouter() const = 0;
     };
     // class IRouterCreator
 }

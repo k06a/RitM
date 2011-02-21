@@ -70,6 +70,24 @@ namespace DiplomBukov
         {
             return mac_addr(0xffff,0xffff,0xffff);
         }
+
+        bool operator == (const mac_addr & addr) const
+        {
+            return (words[0] == addr.words[0])
+                && (words[1] == addr.words[1])
+                && (words[2] == addr.words[2]);
+        }
+
+        bool operator < (const mac_addr & addr) const
+        {
+            if (words[0] != addr.words[0])
+                return (words[0] < addr.words[0]);
+            if (words[1] != addr.words[1])
+                return (words[1] < addr.words[1]);
+            if (words[2] != addr.words[2])
+                return (words[2] < addr.words[2]);
+            return false;
+        }
 	};
 	#pragma pack(pop)
 

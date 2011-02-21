@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-IProcessor * TcpSplitterProcessorCreator::createProcessor(IRouter * router)
+IProcessor * TcpSplitterProcessorCreator::createProcessor(IRouter * router) const
 {
     return new TcpSplitterProcessor(router);
 }

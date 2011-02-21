@@ -18,10 +18,14 @@ namespace DiplomBukov
 
     public:
         ProtocolRouter();
-        ProtocolRouter(const MyDeque & d, const MyMap m);
-        
+        ProtocolRouter(const ProtocolRouter & router);
+        void Init(const MyDeque & d, const MyMap & m);
         virtual IRouter * CreateCopy() const;
-        virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
+
+        virtual IPacketProcessor * getPointer();
+        virtual void ping(IPacketProcessor * prevProcessor);
+        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
 
         virtual void addNextProcessor(IProcessor * processor);
         virtual void removeNextProcessor(IProcessor * processor);

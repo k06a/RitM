@@ -12,8 +12,13 @@ ProtocolRouter::ProtocolRouter()
 {
 }
 
-ProtocolRouter::ProtocolRouter(const MyDeque & d, const MyMap m)
+ProtocolRouter::ProtocolRouter(const ProtocolRouter & router)
     : procList(), procMap()
+{
+    Init(router.procList, router.procMap);
+}
+
+void ProtocolRouter::Init(const MyDeque & d, const MyMap & m)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
@@ -25,10 +30,21 @@ ProtocolRouter::ProtocolRouter(const MyDeque & d, const MyMap m)
 
 IRouter * ProtocolRouter::CreateCopy() const
 {
-    return new ProtocolRouter(procList, procMap);
+    return new ProtocolRouter(*this);
 }
 
-ProcessingStatus ProtocolRouter::processPacket(Protocol proto, Packet & packet, unsigned offset)
+IPacketProcessor * ProtocolRouter::getPointer()
+{
+    return this;
+}
+
+void ProtocolRouter::ping(IPacketProcessor * prevProcessor)
+{
+    for(MyDeque::iterator it = procList.begin(); it != procList.end(); ++it)
+        (*it)->ping(prevProcessor);
+}
+
+ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
     
@@ -36,11 +52,16 @@ ProcessingStatus ProtocolRouter::processPacket(Protocol proto, Packet & packet, 
          (it != procMap.end()) && (it->first == proto);
          ++it)
     {
-        ProcessingStatus ret = it->second->processPacket(proto, packet, offset);
+        ProcessingStatus ret = it->second->forwardProcess(proto, packet, offset);
         if (ret == ProcessingStatus::Accepted)
             ans = ProcessingStatus::Accepted;
     }
     return ans;
+}
+
+ProcessingStatus ProtocolRouter::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+{
+    return ProcessingStatus::Accepted;
 }
 
 void ProtocolRouter::addNextProcessor(IProcessor * processor)

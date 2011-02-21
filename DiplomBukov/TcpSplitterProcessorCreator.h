@@ -11,7 +11,7 @@ namespace DiplomBukov
     class TcpSplitterProcessorCreator : public IProcessorCreator
     {
     public:
-        virtual IProcessor * createProcessor(IRouter * router = NULL);
+        virtual IProcessor * createProcessor(IRouter * router = NULL) const;
     };
     // class TcpSplitterProcessorCreator
 }

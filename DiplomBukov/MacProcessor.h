@@ -17,7 +17,11 @@ namespace DiplomBukov
 		MacProcessor(IRouter * router = NULL);
         virtual IProcessor * CreateCopy() const;
 
-		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
+        virtual IPacketProcessor * getPointer();
+        virtual void ping(IPacketProcessor * prevProcessor);
+        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
+
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 

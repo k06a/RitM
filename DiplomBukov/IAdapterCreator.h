@@ -10,7 +10,7 @@ namespace DiplomBukov
     public:
         virtual ~IProcessorCreator() {}
 
-        virtual IAdapter * createAdapter(IRouter * router = NULL) = 0;
+        virtual IAdapter * createAdapter(IRouter * router = NULL) const = 0;
     };
     // class IAdapterCreator
 }

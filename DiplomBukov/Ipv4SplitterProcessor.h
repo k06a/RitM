@@ -24,11 +24,15 @@ namespace DiplomBukov
 		Ipv4SplitterProcessor(IRouter * router = NULL);
         virtual IProcessor * CreateCopy() const;
 
-		virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset);
+        virtual IPacketProcessor * getPointer();
+        virtual void ping(IPacketProcessor * prevProcessor);
+        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
+
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 
-		virtual void setRouter(IRouter * router_);
+		virtual void setRouter(IRouter * router);
 		virtual IRouter * getRouter();
 
         virtual void setModule(IProcessorModule * module);

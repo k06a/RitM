@@ -13,7 +13,17 @@ IProcessor * Ipv4SplitterProcessor::CreateCopy() const
     return new Ipv4SplitterProcessor(router->CreateCopy());
 }
 
-ProcessingStatus Ipv4SplitterProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
+IPacketProcessor * Ipv4SplitterProcessor::getPointer()
+{
+    return this;
+}
+
+void Ipv4SplitterProcessor::ping(IPacketProcessor * prevProcessor)
+{
+
+}
+
+ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -33,9 +43,14 @@ ProcessingStatus Ipv4SplitterProcessor::processPacket(Protocol proto, Packet & p
     }
 
     if (router != NULL)
-        routers[para]->processPacket(proto, packet, offset);
+        routers[para]->forwardProcess(proto, packet, offset);
 
 	return ProcessingStatus::Accepted;
+}
+
+ProcessingStatus Ipv4SplitterProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+{
+    return ProcessingStatus::Accepted;
 }
 
 Protocol Ipv4SplitterProcessor::getProtocol()

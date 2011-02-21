@@ -5,7 +5,7 @@
 
 namespace DiplomBukov
 {
-    class IAdapter
+    class IAdapter : public IPacketProcessor
 	{
 	public:
 		virtual ~IAdapter() {}
@@ -13,6 +13,14 @@ namespace DiplomBukov
 		virtual void setRouter(IRouter * router) = 0;
 		virtual IRouter * getRouter() = 0;
 		virtual void run() = 0;
+
+        virtual IPacketProcessor * CreateCopy() const;
+
+        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
+
+        virtual IPacketProcessor * getPointer();
+        //virtual void ping(IPacketProcessor * prevProcessor);
 
 	public:
 		void start()

@@ -497,11 +497,19 @@
 					Name="Switches"
 					>
 					<File
+						RelativePath=".\MacSwitch.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\MacSwitch.h"
 						>
 					</File>
 					<File
-						RelativePath=".\SwitchPort.h"
+						RelativePath=".\MacSwitchPort.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\MacSwitchPort.h"
 						>
 					</File>
 				</Filter>

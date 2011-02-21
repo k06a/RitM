@@ -1,4 +1,3 @@
-#include "stdio.h"
 #include "BasicLibrary.h"
 
 using namespace DiplomBukov;
@@ -9,17 +8,17 @@ BasicLibrary::BasicLibrary()
     //
 }
 
-std::deque<IRouterCreator*> & BasicLibrary::getRouterCreators()
+const std::deque<IRouterCreator*> & BasicLibrary::getRouterCreators()
 {
     return routerCreatorList;
 }
 
-std::deque<IAdapterCreator*> & BasicLibrary::getAdapterCreators()
+const std::deque<IAdapterCreator*> & BasicLibrary::getAdapterCreators()
 {
     return adapterCreatorList;
 }
 
-std::deque<IProcessorCreator*> & BasicLibrary::getProcessorCreators()
+const std::deque<IProcessorCreator*> & BasicLibrary::getProcessorCreators()
 {
     return processorCreatorList;
 }

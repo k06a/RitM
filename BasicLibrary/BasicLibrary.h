@@ -1,3 +1,7 @@
+#ifndef BASICLIBRARY_H
+#define BASICLIBRARY_H
+
+#include <deque>
 #include "../DiplomBukov/ILibrary.h"
 
 namespace DiplomBukov
@@ -11,9 +15,9 @@ namespace DiplomBukov
     public:
         BasicLibrary();
 
-        virtual std::deque<IRouterCreator*> & getRouterCreators();
-        virtual std::deque<IAdapterCreator*> & getAdapterCreators();
-        virtual std::deque<IProcessorCreator*> & getProcessorCreators();
+        virtual const std::deque<IRouterCreator*> & getRouterCreators();
+        virtual const std::deque<IAdapterCreator*> & getAdapterCreators();
+        virtual const std::deque<IProcessorCreator*> & getProcessorCreators();
     };
     // class BasicLibrary
 }
@@ -24,3 +28,5 @@ DiplomBukov::ILibrary * getLibrary()
 {
     return new DiplomBukov::BasicLibrary();
 }
+
+#endif // BASICLIBRARY_H

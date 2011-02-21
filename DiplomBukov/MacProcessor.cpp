@@ -13,7 +13,17 @@ IProcessor * MacProcessor::CreateCopy() const
     return new MacProcessor(router->CreateCopy());
 }
 
-ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
+IPacketProcessor * MacProcessor::getPointer()
+{
+    return this;
+}
+
+void MacProcessor::ping(IPacketProcessor * prevProcessor)
+{
+
+}
+
+ProcessingStatus MacProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
 {
     if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
@@ -23,9 +33,14 @@ ProcessingStatus MacProcessor::processPacket(Protocol proto, Packet & packet, un
     packet.dst_hardware_addr = mac->dst;
 
     if (router != NULL)
-    	router->processPacket(mac->proto, packet, offset + sizeof(mac_header));
+    	router->forwardProcess(mac->proto, packet, offset + sizeof(mac_header));
 
 	return ProcessingStatus::Accepted;
+}
+
+ProcessingStatus MacProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+{
+    return ProcessingStatus::Accepted;
 }
 
 Protocol MacProcessor::getProtocol()

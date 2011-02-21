@@ -11,9 +11,9 @@ namespace DiplomBukov
     public:
         virtual ~ILibrary() {}
 
-        virtual std::deque<IRouterCreator*> & getRouterCreators() = 0;
-        virtual std::deque<IAdapterCreator*> & getAdapterCreators() = 0;
-        virtual std::deque<IProcessorCreator*> & getProcessorCreators() = 0;
+        virtual const std::deque<IRouterCreator*> & getRouterCreators() = 0;
+        virtual const std::deque<IAdapterCreator*> & getAdapterCreators() = 0;
+        virtual const std::deque<IProcessorCreator*> & getProcessorCreators() = 0;
     };
     // class ILibrary
 }

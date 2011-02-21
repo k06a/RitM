@@ -13,7 +13,17 @@ IProcessor * Ipv4DefragProcessor::CreateCopy() const
     return new Ipv4DefragProcessor(router->CreateCopy());
 }
 
-ProcessingStatus Ipv4DefragProcessor::processPacket(Protocol proto, Packet & packet, unsigned offset)
+IPacketProcessor * Ipv4DefragProcessor::getPointer()
+{
+    return this;
+}
+
+void Ipv4DefragProcessor::ping(IPacketProcessor * prevProcessor)
+{
+
+}
+
+ProcessingStatus Ipv4DefragProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -48,11 +58,16 @@ ProcessingStatus Ipv4DefragProcessor::processPacket(Protocol proto, Packet & pac
             fullPacket = NULL;
 
             if (router != 0)
-                router->processPacket(ipv4->proto, packet, offset + ipv4->size());
+                router->forwardProcess(ipv4->proto, packet, offset + ipv4->size());
         }
     }
 
 	return ProcessingStatus::Accepted;
+}
+
+ProcessingStatus Ipv4DefragProcessor::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+{
+    return ProcessingStatus::Accepted;
 }
 
 Protocol Ipv4DefragProcessor::getProtocol()

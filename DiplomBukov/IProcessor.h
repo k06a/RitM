@@ -12,8 +12,7 @@ namespace DiplomBukov
 		virtual ~IProcessor() {}
         
         virtual IProcessor * CreateCopy() const = 0;
-		//virtual ProcessingStatus processPacket(Protocol proto, Packet & packet, unsigned offset) = 0;
-        
+		
         virtual Protocol getProtocol() = 0;
         virtual const char * getProcessorName() = 0;
 
