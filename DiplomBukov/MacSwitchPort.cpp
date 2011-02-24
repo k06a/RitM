@@ -24,12 +24,12 @@ IProcessorPtr MacSwitchPort::CreateCopy() const
     return IProcessorPtr(new MacSwitchPort(*this));
 }
 
-ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     return ProcessingStatus::Accepted;
 }

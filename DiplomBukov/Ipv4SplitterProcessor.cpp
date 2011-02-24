@@ -13,12 +13,12 @@ IProcessorPtr Ipv4SplitterProcessor::CreateCopy() const
     return IProcessorPtr(new Ipv4SplitterProcessor(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    ipv4_header * ipv4 = (ipv4_header *)(packet.data + offset);
+    ipv4_header * ipv4 = (ipv4_header *)(packet->data() + offset);
     ipv4_addr adr1 = ipv4->src_data;
     ipv4_addr adr2 = ipv4->dst_data;
     if (adr2 < adr1) std::swap(adr1, adr2);

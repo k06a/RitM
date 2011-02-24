@@ -14,7 +14,7 @@ namespace DiplomBukov
         BruteRouter(const MyDeque & d);
         virtual IProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
     };
 	// class BruteRouter
 }

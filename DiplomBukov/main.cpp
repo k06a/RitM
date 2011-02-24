@@ -19,15 +19,15 @@
 #include "IcmpProcessor.h"
 
 using namespace DiplomBukov;
-/*
+
 void print_arch(IProcessorPtr proc, std::string prefix = "")
 {
     if (proc == NULL) return;
 
-    IProcessorPtr ipp = proc;
-    IRouterPtr ir = dynamic_cast<IRouterPtr>(ipp);
-    IAdapter * ia = dynamic_cast<IAdapter*>(ipp);
-    IProcessorPtr ip = dynamic_cast<IProcessorPtr>(ipp);
+    IProcessor * ipp = proc.get();
+    IRouter    * ir = dynamic_cast<IRouter*>(ipp);
+    IAdapter   * ia = dynamic_cast<IAdapter*>(ipp);
+    IProcessor * ip = dynamic_cast<IProcessor*>(ipp);
 
     if (ir != NULL)
     {
@@ -52,20 +52,19 @@ void print_arch(IProcessorPtr proc, std::string prefix = "")
         return;
     }
 }
-*/
 
 int main(int argc, char * argv[])
 {
-#define new_router IProcessorPtr(new ProtocolRouter())
+    #define NEW_ROUTER IProcessorPtr(new ProtocolRouter())
 
-    IAdapter   * fileAdapter   = new FileAdapter("icmp_native_64k.pcap", "icmp_defraged_64k.pcap", new_router);
+    IAdapterPtr fileAdapter(new FileAdapter("icmp_native_64k.pcap", "icmp_defraged_64k.pcap", NEW_ROUTER));
 
-	IProcessorPtr macProcessor(new MacProcessor(new_router));
-    IProcessorPtr ipv4Splitter(new Ipv4SplitterProcessor(new_router));
-    IProcessorPtr ipdfProcessor(new Ipv4DefragProcessor(new_router));
-    IProcessorPtr tcpProcessor(new TcpSplitterProcessor(new_router));
-    IProcessorPtr udpProcessor(new UdpSplitterProcessor(new_router));
-    IProcessorPtr icmpProcessor(new IcmpProcessor(new_router));
+	IProcessorPtr macProcessor(new MacProcessor(NEW_ROUTER));
+    IProcessorPtr ipv4Splitter(new Ipv4SplitterProcessor(NEW_ROUTER));
+    IProcessorPtr ipdfProcessor(new Ipv4DefragProcessor(NEW_ROUTER));
+    IProcessorPtr tcpProcessor(new TcpSplitterProcessor(NEW_ROUTER));
+    IProcessorPtr udpProcessor(new UdpSplitterProcessor(NEW_ROUTER));
+    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_ROUTER));
 
     ProcessorModule * macModule  = new ProcessorModule(macProcessor);
     ProcessorModule * ipv4Module = new ProcessorModule(ipv4Splitter);
@@ -76,15 +75,14 @@ int main(int argc, char * argv[])
 
     #define connect(a,b) a->getNextProcessor()->setNextProcessor(b)
 
-    fileAdapter->getNextProcessor()->setNextProcessor(macProcessor);
     connect(fileAdapter, macProcessor);
-        connect(macProcessor, ipv4Splitter);
+    connect(macProcessor, ipv4Splitter);
             connect(ipv4Splitter, ipdfProcessor);
                 connect(ipdfProcessor, tcpProcessor);
                 connect(ipdfProcessor, udpProcessor);
                 connect(ipdfProcessor, icmpProcessor);
 
-    //print_arch(fileAdapter);
+    print_arch(fileAdapter);
 
     fileAdapter->run();
 }

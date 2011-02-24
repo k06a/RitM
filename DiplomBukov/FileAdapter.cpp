@@ -1,4 +1,5 @@
 #include "FileAdapter.h"
+#include "RawPacket.h"
 #include <list>
 
 using namespace DiplomBukov;
@@ -42,20 +43,21 @@ void FileAdapter::run()
         ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file1);
         if (ret == 0) break;
 
-        Packet packet(pph.incl_len, id++);
-        packet.time = pph.ts_sec;
+        IPacketPtr packet(new RawPacket(pph.incl_len));
+        packet->setId(id++);
+        packet->setTime(pph.ts_sec);
 
-        if (fread_s(packet.data, packet.size, 1, pph.orig_len, file1) == 0)
+        if (fread_s(packet->data(), packet->size(), 1, pph.orig_len, file1) == 0)
             break;
         
         nextProcessor->forwardProcess(pfh.network, packet, 0); // Protocol::Ethernet_II
 
-        if (packet.status == Packet::Accepted)
+        if (packet->status() == Packet::Accepted)
         {
-            pph.incl_len = packet.real_size;
-            pph.orig_len = packet.real_size;
+            pph.incl_len = packet->realSize();
+            pph.orig_len = packet->realSize();
             fwrite(&pph, sizeof(pph), 1, file2);
-            fwrite(packet.data, packet.real_size, 1, file2);
+            fwrite(packet->data(), packet->realSize(), 1, file2);
         }
 	}
 }

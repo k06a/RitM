@@ -29,10 +29,13 @@ namespace DiplomBukov
 
         virtual void setNextProcessor(IProcessorPtr processor)
         {
-            // TODO: realize
-            //IProcessorPtr ip = dynamic_cast<IProcessorPtr>(processor);
-            //if (ip != NULL)
-            //    addNextProcessor(ip);
+            addNextProcessor(processor);
+            AbstractProcessor::setNextProcessor(processor);
+        }
+
+        virtual IProcessorPtr getNextProcessor()
+        {
+            return AbstractProcessor::getNextProcessor();
         }
 
         virtual void ping(IProcessorPtr prevProcessor)

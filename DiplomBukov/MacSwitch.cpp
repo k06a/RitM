@@ -24,12 +24,12 @@ IProcessorPtr MacSwitch::getPointer()
     return IProcessorPtr(port);
 }
 
-ProcessingStatus MacSwitch::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     return nextProcessor->forwardProcess(proto, packet, offset);
 }
 
-ProcessingStatus MacSwitch::backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     //
     return ProcessingStatus::Accepted;

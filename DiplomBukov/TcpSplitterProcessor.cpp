@@ -13,12 +13,12 @@ IProcessorPtr TcpSplitterProcessor::CreateCopy() const
     return IProcessorPtr(new TcpSplitterProcessor(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus TcpSplitterProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus TcpSplitterProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(packet.data + offset);
+    tcp_header * tcp = (tcp_header *)(packet->data() + offset);
 
     unsigned short adr1 = tcp->src_port;
     unsigned short adr2 = tcp->dst_port;

@@ -40,14 +40,14 @@ namespace DiplomBukov
             return "EMPTY";
         }
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
         {
             if (nextProcessor != NULL)
                 return nextProcessor->forwardProcess(proto, packet, offset);
             return ProcessingStatus::Rejected;
         }
 
-        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
         {
             if (prevProcessor != NULL)
                 return prevProcessor->backwardProcess(proto, packet, offset);

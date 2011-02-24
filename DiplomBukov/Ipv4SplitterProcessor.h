@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "CommonInclude.h"
+#include "IPacket.h"
 #include "AbstractProcessor.h"
 #include "ipv4_header.h"
 
@@ -21,7 +22,7 @@ namespace DiplomBukov
 		Ipv4SplitterProcessor(IProcessorPtr router = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

@@ -11,6 +11,12 @@ namespace DiplomBukov
     class IPacket
     {
     public:
+        enum PacketPolicy
+        {
+            Accepted,
+            Rejected
+        };
+
         virtual ~IPacket() {}
 
         virtual void setId(unsigned id) = 0;
@@ -19,9 +25,13 @@ namespace DiplomBukov
         virtual void setTime(unsigned secs) = 0;
         virtual unsigned time() const = 0;
 
+        virtual void setStatus(PacketPolicy status) = 0;
+        virtual PacketPolicy status() const = 0;
+
         virtual void setData(u8 * ptr, unsigned size) = 0;
         virtual u8 & operator [] (unsigned index) = 0;
         virtual unsigned size() const = 0;
+        virtual u8 * data() = 0;
 
         virtual void setRealSize(unsigned size) = 0;
         virtual unsigned realSize() const = 0;

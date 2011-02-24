@@ -24,8 +24,8 @@ namespace DiplomBukov
 
         virtual IProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
         virtual const char * getProcessorName();
 
         bool checkMac(const mac_addr & mac);

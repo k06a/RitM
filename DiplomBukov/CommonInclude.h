@@ -10,6 +10,7 @@ namespace DiplomBukov
     #define extends public
     #define implements public
 
+    class IPacket;
     class IRouter;
     class IAdapter;
     class IProcessor;
@@ -28,6 +29,7 @@ namespace DiplomBukov
 
     class ILibrary;
 
+    typedef std::tr1::shared_ptr<IPacket> IPacketPtr;
     typedef std::tr1::shared_ptr<IRouter> IRouterPtr;
     typedef std::tr1::shared_ptr<IAdapter> IAdapterPtr;
     typedef std::tr1::shared_ptr<IProcessor> IProcessorPtr;

@@ -2,6 +2,7 @@
 #define MACPROCESSOR_H
 
 #include "CommonInclude.h"
+#include "IPacket.h"
 #include "AbstractProcessor.h"
 
 namespace DiplomBukov
@@ -12,7 +13,7 @@ namespace DiplomBukov
 		MacProcessor(IProcessorPtr router = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

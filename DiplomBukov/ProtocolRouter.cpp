@@ -34,7 +34,7 @@ IProcessorPtr ProtocolRouter::CreateCopy() const
     return IProcessorPtr(new ProtocolRouter(*this));
 }
 
-ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
     

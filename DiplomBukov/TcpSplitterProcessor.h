@@ -2,6 +2,7 @@
 #define TCPSPLITTERPROCESSOR_H
 
 #include <map>
+#include "IPacket.h"
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 
@@ -18,7 +19,7 @@ namespace DiplomBukov
         TcpSplitterProcessor(IProcessorPtr router = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

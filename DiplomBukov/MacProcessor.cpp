@@ -13,14 +13,14 @@ IProcessorPtr MacProcessor::CreateCopy() const
     return IProcessorPtr(new MacProcessor(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus MacProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus MacProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
 
-    mac_header * mac = (mac_header *)(packet.data + offset);
-    packet.src_hardware_addr = mac->src;
-    packet.dst_hardware_addr = mac->dst;
+    mac_header * mac = (mac_header *)(packet->data() + offset);
+    packet->src_mac() = mac->src;
+    packet->dst_mac() = mac->dst;
 
     if (nextProcessor != NULL)
     	nextProcessor->forwardProcess(mac->proto, packet, offset + sizeof(mac_header));

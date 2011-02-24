@@ -4,13 +4,13 @@ using namespace DiplomBukov;
 
 RawPacket::RawPacket(int size)
     : id_(0), time_(0)
-    , real_size(0), data()
+    , real_size(0), data_(size)
 {
 }
 
 RawPacket::RawPacket(u8 * ptr, int size)
     : id_(0), time_(0), real_size(0)
-    , data(ptr, ptr+size)
+    , data_(ptr, ptr+size)
 {
 }
 
@@ -34,20 +34,35 @@ unsigned RawPacket::time() const
     return time_;
 }
 
+void RawPacket::setStatus(PacketPolicy status)
+{
+    status_ = status;
+}
+
+IPacket::PacketPolicy RawPacket::status() const
+{
+    return status_;
+}
+
 void RawPacket::setData(u8 * ptr, unsigned size)
 {
     std::vector<u8> tmp(ptr, ptr+size);
-    data.swap(tmp);    
+    data_.swap(tmp);    
 }
 
 u8 & RawPacket::operator [] (unsigned index)
 {
-    return data[index];
+    return data_[index];
 }
 
 unsigned RawPacket::size() const
 {
-    return data.size();
+    return data_.size();
+}
+
+u8 * RawPacket::data()
+{
+    return &data_[0];
 }
 
 void RawPacket::setRealSize(unsigned size)

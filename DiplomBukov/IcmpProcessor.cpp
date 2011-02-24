@@ -13,12 +13,12 @@ IProcessorPtr IcmpProcessor::CreateCopy() const
     return IProcessorPtr(new IcmpProcessor(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    icmp_header * icmp = (icmp_header *)(packet.data + offset);
+    icmp_header * icmp = (icmp_header *)(packet->data() + offset);
 
     //if (baseRouter != NULL)
     //    baseRouter->processPacket(Protocol::None, packet, offset + sizeof(icmp_header));
