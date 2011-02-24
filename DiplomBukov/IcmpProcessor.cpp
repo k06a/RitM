@@ -18,10 +18,12 @@ ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, IPacketPtr & pack
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
+    packet->addProcessor(Self);
+
     icmp_header * icmp = (icmp_header *)(packet->data() + offset);
 
-    //if (baseRouter != NULL)
-    //    baseRouter->processPacket(Protocol::None, packet, offset + sizeof(icmp_header));
+    if (nextProcessor != NULL)
+        nextProcessor->forwardProcess(Protocol::None, packet, offset + sizeof(icmp_header));
 
     return ProcessingStatus::Accepted;
 }
@@ -33,5 +35,5 @@ const char * IcmpProcessor::getProcessorName()
 
 Protocol IcmpProcessor::getProtocol()
 {
-    return Protocol::TCP;
+    return Protocol::ICMP;
 }

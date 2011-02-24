@@ -1,5 +1,5 @@
-#ifndef TCPSPLITTERPROCESSOR_H
-#define TCPSPLITTERPROCESSOR_H
+#ifndef TCPPROCESSOR_H
+#define TCPPROCESSOR_H
 
 #include <map>
 #include "IPacket.h"
@@ -8,15 +8,10 @@
 
 namespace DiplomBukov
 {
-    class TcpSplitterProcessor : public AbstractProcessor
+    class TcpProcessor : public AbstractProcessor
     {
-        typedef std::pair<unsigned short,unsigned short> port_pair;
-        typedef std::map<port_pair,IProcessorPtr> MyMap;
-
-        MyMap routers;
-
     public:
-        TcpSplitterProcessor(IProcessorPtr router = IProcessorPtr());
+        TcpProcessor(IProcessorPtr router = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -24,8 +19,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpSplitterProcessor
+    // class TcpSplitter
 }
 // namespace DiplomBukov
 
-#endif // TCPSPLITTERPROCESSOR_H
+#endif // TCPPROCESSOR_H

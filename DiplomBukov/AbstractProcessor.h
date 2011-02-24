@@ -9,6 +9,7 @@ namespace DiplomBukov
     class AbstractProcessor : public virtual IProcessor
     {
     protected:
+        IProcessorPtr Self;
         IProcessorPtr prevProcessor;
         IProcessorPtr nextProcessor;
         IProcessorModule * module;
@@ -21,13 +22,13 @@ namespace DiplomBukov
 
         virtual IProcessorPtr getPointer()
         {
-            return IProcessorPtr(this);
+            return Self;
         }
 
         virtual void ping(IProcessorPtr prevProcessor)
         {
             setPrevProcessor(prevProcessor);
-            prevProcessor->ping(IProcessorPtr(this));
+            prevProcessor->ping(Self);
         }
 
         virtual Protocol getProtocol()
@@ -52,6 +53,16 @@ namespace DiplomBukov
             if (prevProcessor != NULL)
                 return prevProcessor->backwardProcess(proto, packet, offset);
             return ProcessingStatus::Rejected;
+        }
+
+        virtual void setSelf(IProcessorPtr proc)
+        {
+            Self = proc;
+        }
+
+        virtual IProcessorPtr self()
+        {
+            return Self;
         }
 
         virtual void setNextProcessor(IProcessorPtr processor)

@@ -8,12 +8,12 @@
 
 namespace DiplomBukov
 {
-    class TcpSplitterProcessorCreator : public IProcessorCreator
+    class TcpSplitterCreator : public IProcessorCreator
     {
     public:
         virtual IProcessorPtr createProcessor(IRouterPtr router = IRouterPtr()) const;
     };
-    // class TcpSplitterProcessorCreator
+    // class TcpSplitterCreator
 }
 // namespace DiplomBukov
 

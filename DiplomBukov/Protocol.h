@@ -28,6 +28,24 @@ namespace DiplomBukov
             ICMP = 0x01
 		};
 		
+        static const char * text(ProtocolEnum pro)
+        {
+            switch (pro)
+            {
+                case None: return "None";
+                
+                case IPv4: return "IPv4";
+                case IPv6: return "IPv6";
+                case ARP:  return "ARP";
+
+                case TCP:  return "TCP";
+                case UDP:  return "UDP";
+                case ICMP: return "ICMP";
+            }
+
+            return NULL;
+        }
+
 		Protocol(ProtocolEnum proto = None)
 			: value((unsigned short)proto)
 		{

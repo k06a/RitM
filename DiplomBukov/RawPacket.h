@@ -1,6 +1,7 @@
 #ifndef RAWPACKET_H
 #define RAWPACKET_H
 
+#include <deque>
 #include <vector>
 #include "IPacket.h"
 #include "i64u64.h"
@@ -15,7 +16,8 @@ namespace DiplomBukov
         PacketPolicy status_;
         unsigned real_size;
         std::vector<u8> data_;
-        IAdapter * adapter_;
+        IAdapterPtr adapter_;
+        std::deque<IProcessorPtr> processors_;
         mac_addr src_mac_addr;
         mac_addr dst_mac_addr;
 
@@ -40,8 +42,11 @@ namespace DiplomBukov
         virtual void setRealSize(unsigned size);
         virtual unsigned realSize() const;
 
-        virtual void setAdapter(IAdapter * ad);
-        virtual IAdapter * adapter() const;
+        virtual void setAdapter(IAdapterPtr ad);
+        virtual IAdapterPtr adapter() const;
+
+        virtual void addProcessor(IProcessorPtr pro);
+        virtual const std::deque<IProcessorPtr> & processors() const;
 
         virtual mac_addr & src_mac();
         virtual mac_addr & dst_mac();

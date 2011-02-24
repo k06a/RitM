@@ -21,6 +21,9 @@ namespace DiplomBukov
         virtual Protocol getProtocol() = 0;
         virtual const char * getProcessorName() = 0;
 
+        virtual void setSelf(IProcessorPtr proc) = 0;
+        virtual IProcessorPtr self() = 0;
+
         virtual void setNextProcessor(IProcessorPtr processor) = 0;
         virtual IProcessorPtr getNextProcessor() = 0;
 

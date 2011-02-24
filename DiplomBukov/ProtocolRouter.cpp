@@ -46,6 +46,19 @@ ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, IPacketPtr & pac
         if (ret == ProcessingStatus::Accepted)
             ans = ProcessingStatus::Accepted;
     }
+
+    if (proto != Protocol::None)
+    {
+        for (MyMap::iterator it = procMap.find(Protocol::None);
+            (it != procMap.end()) && (it->first == Protocol::None);
+            ++it)
+        {
+            ProcessingStatus ret = it->second->forwardProcess(proto, packet, offset);
+            if (ret == ProcessingStatus::Accepted)
+                ans = ProcessingStatus::Accepted;
+        }
+    }
+
     return ans;
 }
 

@@ -1,5 +1,5 @@
-#ifndef Ipv4SplitterProcessorCREATOR_H
-#define Ipv4SplitterProcessorCREATOR_H
+#ifndef Ipv4SplitterCREATOR_H
+#define Ipv4SplitterCREATOR_H
 
 #include "IRouter.h"
 #include "IAdapter.h"
@@ -8,7 +8,7 @@
 
 namespace DiplomBukov
 {
-    class Ipv4SplitterProcessorCreator : public IProcessorCreator
+    class Ipv4SplitterCreator : public IProcessorCreator
     {
     public:
         virtual IProcessorPtr createProcessor(IRouterPtr router = IRouterPtr()) const;
@@ -17,4 +17,4 @@ namespace DiplomBukov
 }
 // namespace DiplomBukov
 
-#endif // Ipv4SplitterProcessorCREATOR_H
+#endif // Ipv4SplitterCREATOR_H

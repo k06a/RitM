@@ -11,12 +11,20 @@
 #include "FileAdapter.h"
 #include "BruteRouter.h"
 #include "ProtocolRouter.h"
+
+#include "AcceptProcessor.h"
+#include "RejectProcessor.h"
+
 #include "MacProcessor.h"
-#include "Ipv4SplitterProcessor.h"
-#include "Ipv4DefragProcessor.h"
-#include "TcpSplitterProcessor.h"
-#include "UdpSplitterProcessor.h"
+#include "Ipv4Processor.h"
 #include "IcmpProcessor.h"
+#include "TcpProcessor.h"
+#include "UdpProcessor.h"
+
+#include "Ipv4Splitter.h"
+#include "Ipv4Defragger.h"
+#include "TcpSplitter.h"
+#include "UdpSplitter.h"
 
 using namespace DiplomBukov;
 
@@ -31,7 +39,7 @@ void print_arch(IProcessorPtr proc, std::string prefix = "")
 
     if (ir != NULL)
     {
-        std::cout << prefix << "[ Router ]:" << std::endl;
+        std::cout << " [ Router ]:";
         const std::deque<IProcessorPtr> & procList = ir->nextProcessors();
         for (size_t i = 0; i < procList.size(); i++)
             print_arch(procList[i], prefix + "    ");
@@ -40,14 +48,15 @@ void print_arch(IProcessorPtr proc, std::string prefix = "")
 
     if (ia != NULL)
     {
-        std::cout << prefix << "Adapter" << std::endl;
+        std::cout << prefix << ia->getProcessorName();
         print_arch(ipp->getNextProcessor(), prefix + "    ");
         return;
     }
 
     if (ip != 0)
     {
-        std::cout << prefix << ip->getProcessorName() << std::endl;
+        std::cout << std::endl << prefix << ip->getProcessorName()
+                  << "(" << Protocol::text(ip->getProtocol()) << ")";
         print_arch(ipp->getNextProcessor(), prefix + "    ");
         return;
     }
@@ -58,12 +67,13 @@ int main(int argc, char * argv[])
     #define NEW_ROUTER IProcessorPtr(new ProtocolRouter())
 
     IAdapterPtr fileAdapter(new FileAdapter("icmp_native_64k.pcap", "icmp_defraged_64k.pcap", NEW_ROUTER));
-
+    
+    /*
 	IProcessorPtr macProcessor(new MacProcessor(NEW_ROUTER));
-    IProcessorPtr ipv4Splitter(new Ipv4SplitterProcessor(NEW_ROUTER));
-    IProcessorPtr ipdfProcessor(new Ipv4DefragProcessor(NEW_ROUTER));
-    IProcessorPtr tcpProcessor(new TcpSplitterProcessor(NEW_ROUTER));
-    IProcessorPtr udpProcessor(new UdpSplitterProcessor(NEW_ROUTER));
+    IProcessorPtr ipv4Splitter(new Ipv4Splitter(NEW_ROUTER));
+    IProcessorPtr ipdfProcessor(new Ipv4Defragger(NEW_ROUTER));
+    IProcessorPtr tcpProcessor(new TcpSplitter(NEW_ROUTER));
+    IProcessorPtr udpProcessor(new UdpSplitter(NEW_ROUTER));
     IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_ROUTER));
 
     ProcessorModule * macModule  = new ProcessorModule(macProcessor);
@@ -81,8 +91,34 @@ int main(int argc, char * argv[])
                 connect(ipdfProcessor, tcpProcessor);
                 connect(ipdfProcessor, udpProcessor);
                 connect(ipdfProcessor, icmpProcessor);
+    */
 
+    IProcessorPtr macProcessor(new MacProcessor(NEW_ROUTER));
+    IProcessorPtr rejector(new RejectProcessor(NEW_ROUTER));
+    IProcessorPtr ipv4Processor(new Ipv4Processor(NEW_ROUTER));
+    IProcessorPtr tcpProcessor(new TcpProcessor(NEW_ROUTER));
+    IProcessorPtr udpProcessor(new UdpProcessor(NEW_ROUTER));
+    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_ROUTER));
+    IProcessorPtr acceptor(new AcceptProcessor(NEW_ROUTER));
+
+    ProcessorModule * macModule  = new ProcessorModule(macProcessor);
+    ProcessorModule * ipv4Module = new ProcessorModule(ipv4Processor);
+    ProcessorModule * tcpModule  = new ProcessorModule(tcpProcessor);
+    ProcessorModule * udpModule  = new ProcessorModule(udpProcessor);
+    ProcessorModule * icmpModule = new ProcessorModule(icmpProcessor);
+
+    #define connect(a,b) a->getNextProcessor()->setNextProcessor(b)
+
+    connect(fileAdapter, rejector);
+        connect(rejector, macProcessor);
+            connect(macProcessor, ipv4Processor);
+                connect(ipv4Processor, tcpProcessor);
+                connect(ipv4Processor, udpProcessor);
+                connect(ipv4Processor, icmpProcessor);
+                    connect(icmpProcessor, acceptor);
+    
     print_arch(fileAdapter);
+    std::cout << std::endl;
 
     fileAdapter->run();
 }

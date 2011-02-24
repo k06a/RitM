@@ -29,6 +29,11 @@ FileAdapter::~FileAdapter()
         fclose(file2);
 }
 
+const char * FileAdapter::getProcessorName()
+{
+    return "FileAdapter";
+}
+
 void FileAdapter::run()
 {
     pcap_file_header pfh;
@@ -46,6 +51,7 @@ void FileAdapter::run()
         IPacketPtr packet(new RawPacket(pph.incl_len));
         packet->setId(id++);
         packet->setTime(pph.ts_sec);
+        packet->setAdapter(IAdapterPtr(this));
 
         if (fread_s(packet->data(), packet->size(), 1, pph.orig_len, file1) == 0)
             break;

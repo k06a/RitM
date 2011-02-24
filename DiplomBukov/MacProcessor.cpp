@@ -18,6 +18,8 @@ ProcessingStatus MacProcessor::forwardProcess(Protocol proto, IPacketPtr & packe
     if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
 
+    packet->addProcessor(Self);
+
     mac_header * mac = (mac_header *)(packet->data() + offset);
     packet->src_mac() = mac->src;
     packet->dst_mac() = mac->dst;

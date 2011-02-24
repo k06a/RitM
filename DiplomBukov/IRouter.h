@@ -18,7 +18,7 @@ namespace DiplomBukov
 
         virtual void addNextProcessor(IProcessorPtr processor) = 0;
         virtual void removeNextProcessor(IProcessorPtr processor) = 0;
-        virtual const std::deque<IProcessorPtr> & nextProcessors() = 0;
+        virtual const std::deque<IProcessorPtr> & nextProcessors() const = 0;
 	};
 	// class IRouter
 

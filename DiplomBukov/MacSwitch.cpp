@@ -19,7 +19,7 @@ IProcessorPtr MacSwitch::CreateCopy() const
 
 IProcessorPtr MacSwitch::getPointer()
 {
-    MacSwitchPort * port = new MacSwitchPort(IProcessorPtr(this));
+    MacSwitchPort * port = new MacSwitchPort(Self);
     ports.push_back(port);
     return IProcessorPtr(port);
 }

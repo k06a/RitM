@@ -39,6 +39,8 @@ namespace DiplomBukov
 		virtual IProcessorPtr CreateCopy() const;
         ~FileAdapter();
         
+        virtual const char * getProcessorName();
+
 		virtual void run();
 	};
 	// class FileAdapter

@@ -54,7 +54,7 @@ namespace DiplomBukov
             std::remove(procList.begin(), procList.end(), processor);
         }
 
-        virtual const std::deque<IProcessorPtr> & nextProcessors()
+        virtual const MyDeque & nextProcessors() const
         {
             return procList;
         }

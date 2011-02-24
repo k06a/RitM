@@ -1,22 +1,24 @@
-#include "Ipv4SplitterProcessor.h"
+#include "Ipv4Splitter.h"
 #include "ipv4_header.h"
 
 using namespace DiplomBukov;
 
-Ipv4SplitterProcessor::Ipv4SplitterProcessor(IProcessorPtr router)
+Ipv4Splitter::Ipv4Splitter(IProcessorPtr router)
 {
     setNextProcessor(router);
 }
 
-IProcessorPtr Ipv4SplitterProcessor::CreateCopy() const
+IProcessorPtr Ipv4Splitter::CreateCopy() const
 {
-    return IProcessorPtr(new Ipv4SplitterProcessor(nextProcessor->CreateCopy()));
+    return IProcessorPtr(new Ipv4Splitter(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
+
+    packet->addProcessor(Self);
 
     ipv4_header * ipv4 = (ipv4_header *)(packet->data() + offset);
     ipv4_addr adr1 = ipv4->src_data;
@@ -38,12 +40,12 @@ ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, IPacketPt
 	return ProcessingStatus::Accepted;
 }
 
-Protocol Ipv4SplitterProcessor::getProtocol()
+Protocol Ipv4Splitter::getProtocol()
 {
     return Protocol::IPv4;
 }
 
-const char * Ipv4SplitterProcessor::getProcessorName()
+const char * Ipv4Splitter::getProcessorName()
 {
-    return "Ipv4SplitterProcessor";
+    return "Ipv4Splitter";
 }

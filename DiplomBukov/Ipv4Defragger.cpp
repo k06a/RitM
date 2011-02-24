@@ -1,24 +1,26 @@
-#include "Ipv4DefragProcessor.h"
+#include "Ipv4Defragger.h"
 #include "ipv4_header.h"
 
 using namespace DiplomBukov;
 
-Ipv4DefragProcessor::Ipv4DefragProcessor(IProcessorPtr router)
+Ipv4Defragger::Ipv4Defragger(IProcessorPtr router)
 	: fullPacket(NULL)
 {
     setNextProcessor(router);
 }
 
-IProcessorPtr Ipv4DefragProcessor::CreateCopy() const
+IProcessorPtr Ipv4Defragger::CreateCopy() const
 {
-    return IProcessorPtr(new Ipv4DefragProcessor(nextProcessor->CreateCopy()));
+    return IProcessorPtr(new Ipv4Defragger(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus Ipv4DefragProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
     
+    packet->addProcessor(Self);
+
     ipv4_header * ipv4 = (ipv4_header *)(packet->data() + offset);
 
     if (ipv4->flag_mf || (ipv4->fragmentOffset() != 0))
@@ -57,12 +59,12 @@ ProcessingStatus Ipv4DefragProcessor::forwardProcess(Protocol proto, IPacketPtr 
 	return ProcessingStatus::Accepted;
 }
 
-Protocol Ipv4DefragProcessor::getProtocol()
+Protocol Ipv4Defragger::getProtocol()
 {
     return Protocol::IPv4;
 }
 
-const char * Ipv4DefragProcessor::getProcessorName()
+const char * Ipv4Defragger::getProcessorName()
 {
-    return "Ipv4DefragProcessor";
+    return "Ipv4Defragger";
 }

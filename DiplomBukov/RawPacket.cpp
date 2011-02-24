@@ -3,14 +3,14 @@
 using namespace DiplomBukov;
 
 RawPacket::RawPacket(int size)
-    : id_(0), time_(0)
-    , real_size(0), data_(size)
+    : id_(0), time_(0), status_(Accepted)
+    , real_size(size), data_(size)
 {
 }
 
 RawPacket::RawPacket(u8 * ptr, int size)
-    : id_(0), time_(0), real_size(0)
-    , data_(ptr, ptr+size)
+    : id_(0), time_(0), status_(Accepted)
+    , real_size(size), data_(ptr, ptr+size)
 {
 }
 
@@ -75,14 +75,24 @@ unsigned RawPacket::realSize() const
     return real_size;
 }
 
-void RawPacket::setAdapter(IAdapter * ad)
+void RawPacket::setAdapter(IAdapterPtr ad)
 {
     adapter_ = ad;
 }
 
-IAdapter * RawPacket::adapter() const
+IAdapterPtr RawPacket::adapter() const
 {
     return adapter_;
+}
+
+void RawPacket::addProcessor(IProcessorPtr pro)
+{
+    processors_.push_back(pro);
+}
+
+const std::deque<IProcessorPtr> & RawPacket::processors() const
+{
+    return processors_;
 }
 
 mac_addr & RawPacket::src_mac()

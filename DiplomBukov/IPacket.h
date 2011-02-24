@@ -1,7 +1,9 @@
 #ifndef IPACKET_H
 #define IPACKET_H
 
+#include <deque>
 #include <memory>
+#include <vector>
 #include "CommonInclude.h"
 #include "i64u64.h"
 #include "mac_header.h"
@@ -36,8 +38,11 @@ namespace DiplomBukov
         virtual void setRealSize(unsigned size) = 0;
         virtual unsigned realSize() const = 0;
 
-        virtual void setAdapter(IAdapter * ad) = 0;
-        virtual IAdapter * adapter() const = 0;
+        virtual void setAdapter(IAdapterPtr ad) = 0;
+        virtual IAdapterPtr adapter() const = 0;
+
+        virtual void addProcessor(IProcessorPtr pro) = 0;
+        virtual const std::deque<IProcessorPtr> & processors() const = 0;
 
         virtual mac_addr & src_mac() = 0;
         virtual mac_addr & dst_mac() = 0;

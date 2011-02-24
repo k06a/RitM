@@ -1,22 +1,24 @@
-#include "TcpSplitterProcessor.h"
+#include "TcpSplitter.h"
 #include "tcp_header.h"
 
 using namespace DiplomBukov;
 
-TcpSplitterProcessor::TcpSplitterProcessor(IProcessorPtr router)
+TcpSplitter::TcpSplitter(IProcessorPtr router)
 {
     setNextProcessor(router);
 }
 
-IProcessorPtr TcpSplitterProcessor::CreateCopy() const
+IProcessorPtr TcpSplitter::CreateCopy() const
 {
-    return IProcessorPtr(new TcpSplitterProcessor(nextProcessor->CreateCopy()));
+    return IProcessorPtr(new TcpSplitter(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus TcpSplitterProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
+
+    packet->addProcessor(Self);
 
     tcp_header * tcp = (tcp_header *)(packet->data() + offset);
 
@@ -39,12 +41,12 @@ ProcessingStatus TcpSplitterProcessor::forwardProcess(Protocol proto, IPacketPtr
     return ProcessingStatus::Accepted;
 }
 
-const char * TcpSplitterProcessor::getProcessorName()
+const char * TcpSplitter::getProcessorName()
 {
-    return "TcpSplitterProcessor";
+    return "TcpSplitter";
 }
 
-Protocol TcpSplitterProcessor::getProtocol()
+Protocol TcpSplitter::getProtocol()
 {
     return Protocol::TCP;
 }
