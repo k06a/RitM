@@ -10,8 +10,8 @@ namespace DiplomBukov
     public:
         virtual ~IRouterModule() {}
         
-        virtual IRouter * getBaseRouter() = 0;
-        virtual void setBaseRouter(IRouter * router) = 0;
+        virtual IRouterPtr getBaseRouter() = 0;
+        virtual void setBaseRouter(IRouterPtr router) = 0;
     };
     // class IRouterModule
 }

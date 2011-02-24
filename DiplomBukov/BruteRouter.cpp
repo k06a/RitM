@@ -14,14 +14,14 @@ BruteRouter::BruteRouter(const MyDeque & d)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
-        IProcessor * proc = (IProcessor*)((*it)->CreateCopy());
+        IProcessorPtr proc = (*it)->CreateCopy();
         procList.push_back(proc);
     }
 }
 
-IRouter * BruteRouter::CreateCopy() const
+IProcessorPtr BruteRouter::CreateCopy() const
 {
-    return new BruteRouter(procList);
+    return IProcessorPtr(new BruteRouter(procList));
 }
 
 ProcessingStatus BruteRouter::forwardProcess(Protocol proto, Packet & packet, unsigned offset)

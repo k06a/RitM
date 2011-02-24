@@ -256,10 +256,6 @@
 				Name="IObjects"
 				>
 				<File
-					RelativePath=".\AbstractPacketProcessor.h"
-					>
-				</File>
-				<File
 					RelativePath=".\AbstractProcessor.h"
 					>
 				</File>
@@ -272,7 +268,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\IPacketProcessor.h"
+					RelativePath=".\IPacket.h"
 					>
 				</File>
 				<File
@@ -281,14 +277,6 @@
 				</File>
 				<File
 					RelativePath=".\IRouter.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ISwitch.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ISwitchPort.h"
 					>
 				</File>
 			</Filter>
@@ -423,6 +411,14 @@
 			<Filter
 				Name="Objects"
 				>
+				<File
+					RelativePath=".\RawPacket.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RawPacket.h"
+					>
+				</File>
 				<Filter
 					Name="Adapters"
 					>

@@ -1,3 +1,4 @@
+#include <memory>
 #include "Packet.h"
 #include "Protocol.h"
 #include "ProcessingStatus.h"
@@ -9,7 +10,6 @@ namespace DiplomBukov
     #define extends public
     #define implements public
 
-    class IPacketProcessor;
     class IRouter;
     class IAdapter;
     class IProcessor;
@@ -27,4 +27,8 @@ namespace DiplomBukov
     class IProcessorPlugin;
 
     class ILibrary;
+
+    typedef std::tr1::shared_ptr<IRouter> IRouterPtr;
+    typedef std::tr1::shared_ptr<IAdapter> IAdapterPtr;
+    typedef std::tr1::shared_ptr<IProcessor> IProcessorPtr;
 }

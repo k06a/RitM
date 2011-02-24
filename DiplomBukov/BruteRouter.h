@@ -12,7 +12,7 @@ namespace DiplomBukov
     public:
         BruteRouter();
         BruteRouter(const MyDeque & d);
-        virtual IRouter * CreateCopy() const;
+        virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
     };

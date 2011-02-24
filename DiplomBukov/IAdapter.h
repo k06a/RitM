@@ -5,7 +5,7 @@
 
 namespace DiplomBukov
 {
-    class IAdapter : public virtual IPacketProcessor
+    class IAdapter : public virtual IProcessor
 	{
 	public:
 		virtual ~IAdapter() {}

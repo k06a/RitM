@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include "CommonInclude.h"
-#include "IPacketProcessor.h"
+#include "IProcessor.h"
 #include "AbstractProcessor.h"
 #include "mac_header.h"
 
@@ -18,10 +18,11 @@ namespace DiplomBukov
         MyList macList;
 
     public:
-        MacSwitchPort(IPacketProcessor * const nextProcessor);
+        MacSwitchPort(IProcessorPtr const nextProcessor);
         MacSwitchPort(const MacSwitchPort & macSwitchPort);
-        void Init(const IPacketProcessor * np, const IPacketProcessor * pp);
-        virtual IProcessor * CreateCopy() const;
+        void Init(const IProcessorPtr np, const IProcessorPtr pp);
+
+        virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);

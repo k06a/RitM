@@ -8,13 +8,13 @@ namespace DiplomBukov
 {
     class ProcessorModule : public IProcessorModule
     {
-        IProcessor * baseProcessor;
+        IProcessorPtr baseProcessor;
 
     public:
-        ProcessorModule(IProcessor * processor = NULL);
+        ProcessorModule(IProcessorPtr processor = IProcessorPtr());
 
-        virtual IProcessor * getBaseProcessor();
-        virtual void setBaseProcessor(IProcessor * processor);
+        virtual IProcessorPtr getBaseProcessor();
+        virtual void setBaseProcessor(IProcessorPtr processor);
     };
     // class ProcessorModule
 }

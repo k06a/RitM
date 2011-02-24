@@ -8,13 +8,13 @@ namespace DiplomBukov
 {
     class RouterModule : public IRouterModule
     {
-        IRouter * baseRouter;
+        IRouterPtr baseRouter;
 
     public:
-        RouterModule(IRouter * router = NULL);
+        RouterModule(IRouterPtr router = IRouterPtr());
 
-        virtual IRouter * getBaseRouter();
-        virtual void setBaseRouter(IRouter * router);
+        virtual IRouterPtr getBaseRouter();
+        virtual void setBaseRouter(IRouterPtr router);
     };
     // class RouterModule
 }

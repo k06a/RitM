@@ -3,15 +3,15 @@
 
 using namespace DiplomBukov;
 
-Ipv4DefragProcessor::Ipv4DefragProcessor(IPacketProcessor * router)
+Ipv4DefragProcessor::Ipv4DefragProcessor(IProcessorPtr router)
 	: fullPacket(NULL)
 {
     setNextProcessor(router);
 }
 
-IProcessor * Ipv4DefragProcessor::CreateCopy() const
+IProcessorPtr Ipv4DefragProcessor::CreateCopy() const
 {
-    return new Ipv4DefragProcessor(nextProcessor->CreateCopy());
+    return IProcessorPtr(new Ipv4DefragProcessor(nextProcessor->CreateCopy()));
 }
 
 ProcessingStatus Ipv4DefragProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)

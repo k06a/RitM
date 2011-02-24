@@ -1,5 +1,5 @@
-#ifndef IPROCESSORPLUGIN_H
-#define IPROCESSORPLUGIN_H
+#ifndef IProcessorPlugin_H
+#define IProcessorPlugin_H
 
 #include "CommonInclude.h"
 
@@ -17,4 +17,4 @@ namespace DiplomBukov
 }
 // namespace DiplomBukov
 
-#endif // IPROCESSORPLUGIN_H
+#endif // IProcessorPlugin_H

@@ -16,12 +16,12 @@ namespace DiplomBukov
         std::deque<MacSwitchPort*> ports;
 
     public:
-        MacSwitch(IPacketProcessor * router = NULL);
+        MacSwitch(IProcessorPtr router = IProcessorPtr());
         MacSwitch(const MacSwitch & macSwitch);
 
-        virtual IProcessor * CreateCopy() const;
+        virtual IProcessorPtr CreateCopy() const;
 
-        virtual IPacketProcessor * getPointer();
+        virtual IProcessorPtr getPointer();
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset);
     };

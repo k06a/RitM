@@ -1,33 +1,33 @@
-#ifndef ABSTRACTPROCESSOR_H
-#define ABSTRACTPROCESSOR_H
+#ifndef AbstractProcessor_H
+#define AbstractProcessor_H
 
 #include "CommonInclude.h"
 #include "IProcessor.h"
-#include "AbstractPacketProcessor.h"
 
 namespace DiplomBukov
 {
-    class AbstractProcessor
-        : public AbstractPacketProcessor
-        , public IProcessor
+    class AbstractProcessor : public virtual IProcessor
     {
     protected:
+        IProcessorPtr prevProcessor;
+        IProcessorPtr nextProcessor;
         IProcessorModule * module;
 
     public:
         AbstractProcessor::AbstractProcessor()
-            : module(NULL)
+            : prevProcessor(), nextProcessor()
         {
         }
 
-        virtual void setModule(IProcessorModule * mod)
+        virtual IProcessorPtr getPointer()
         {
-            module = mod;
+            return IProcessorPtr(this);
         }
 
-        virtual IProcessorModule * getModule()
+        virtual void ping(IProcessorPtr prevProcessor)
         {
-            return module;
+            setPrevProcessor(prevProcessor);
+            prevProcessor->ping(IProcessorPtr(this));
         }
 
         virtual Protocol getProtocol()
@@ -39,9 +39,53 @@ namespace DiplomBukov
         {
             return "EMPTY";
         }
+
+        virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset)
+        {
+            if (nextProcessor != NULL)
+                return nextProcessor->forwardProcess(proto, packet, offset);
+            return ProcessingStatus::Rejected;
+        }
+
+        virtual ProcessingStatus backwardProcess(Protocol proto, Packet & packet, unsigned offset)
+        {
+            if (prevProcessor != NULL)
+                return prevProcessor->backwardProcess(proto, packet, offset);
+            return ProcessingStatus::Rejected;
+        }
+
+        virtual void setNextProcessor(IProcessorPtr processor)
+        {
+            nextProcessor = processor;
+        }
+
+        virtual IProcessorPtr getNextProcessor()
+        {
+            return nextProcessor;
+        }
+
+        virtual void setPrevProcessor(IProcessorPtr processor)
+        {
+            prevProcessor = processor;
+        }
+
+        virtual IProcessorPtr getPrevProcessor()
+        {
+            return prevProcessor;
+        }
+
+        virtual void setModule(IProcessorModule * mod)
+        {
+            module = mod;
+        }
+
+        virtual IProcessorModule * getModule()
+        {
+            return module;
+        }
     };
     // class AbstractProcessor
 }
 // namespace DiplomBukov
 
-#endif // ABSTRACTPROCESSOR_H
+#endif // AbstractProcessor_H

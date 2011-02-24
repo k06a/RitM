@@ -1,5 +1,5 @@
-#ifndef IPROCESSORCREATOR_H
-#define IPROCESSORCREATOR_H
+#ifndef IProcessorCreator_H
+#define IProcessorCreator_H
 
 #include "CommonInclude.h"
 
@@ -10,10 +10,10 @@ namespace DiplomBukov
     public:
         virtual ~IProcessorCreator() {}
 
-        virtual IProcessor * createProcessor(IRouter * router) const = 0;
+        virtual IProcessorPtr createProcessor(IRouterPtr router) const = 0;
     };
     // class IProcessorCreator
 }
 // namespace DiplomBukov
 
-#endif // IPROCESSORCREATOR_H
+#endif // IProcessorCreator_H

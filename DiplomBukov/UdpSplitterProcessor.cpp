@@ -2,7 +2,7 @@
 
 using namespace DiplomBukov;
 
-UdpSplitterProcessor::UdpSplitterProcessor(IPacketProcessor * router)
+UdpSplitterProcessor::UdpSplitterProcessor(IProcessorPtr router)
     : TcpSplitterProcessor(router)
 {
 }

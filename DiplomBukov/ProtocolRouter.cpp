@@ -23,15 +23,15 @@ void ProtocolRouter::Init(const MyDeque & d)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
-        IProcessor * proc = (IProcessor*)((*it)->CreateCopy());
+        IProcessorPtr proc = (*it)->CreateCopy();
         procMap.insert(std::make_pair(proc->getProtocol(), proc));
         AbstractRouter::addNextProcessor(proc);
     }
 }
 
-IRouter * ProtocolRouter::CreateCopy() const
+IProcessorPtr ProtocolRouter::CreateCopy() const
 {
-    return new ProtocolRouter(*this);
+    return IProcessorPtr(new ProtocolRouter(*this));
 }
 
 ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
@@ -49,14 +49,14 @@ ProcessingStatus ProtocolRouter::forwardProcess(Protocol proto, Packet & packet,
     return ans;
 }
 
-void ProtocolRouter::addNextProcessor(IProcessor * processor)
+void ProtocolRouter::addNextProcessor(IProcessorPtr processor)
 {
     Protocol proto = processor->getProtocol();
     procMap.insert(std::make_pair(proto, processor));
     AbstractRouter::addNextProcessor(processor);
 }
 
-void ProtocolRouter::removeNextProcessor(IProcessor * processor)
+void ProtocolRouter::removeNextProcessor(IProcessorPtr processor)
 {
     for(MyMap::iterator it = procMap.begin(); it != procMap.end(); ++it)
     {
@@ -69,7 +69,7 @@ void ProtocolRouter::removeNextProcessor(IProcessor * processor)
     AbstractRouter::removeNextProcessor(processor);
 }
 
-const std::deque<IProcessor*> & ProtocolRouter::nextProcessors()
+const std::deque<IProcessorPtr> & ProtocolRouter::nextProcessors()
 {
     return AbstractRouter::nextProcessors();
 }

@@ -3,14 +3,14 @@
 
 using namespace DiplomBukov;
 
-IcmpProcessor::IcmpProcessor(IPacketProcessor * router)
+IcmpProcessor::IcmpProcessor(IProcessorPtr router)
 {
     setNextProcessor(router);
 }
 
-IProcessor * IcmpProcessor::CreateCopy() const
+IProcessorPtr IcmpProcessor::CreateCopy() const
 {
-    return new IcmpProcessor(nextProcessor->CreateCopy());
+    return IProcessorPtr(new IcmpProcessor(nextProcessor->CreateCopy()));
 }
 
 ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)

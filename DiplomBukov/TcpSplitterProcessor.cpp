@@ -3,14 +3,14 @@
 
 using namespace DiplomBukov;
 
-TcpSplitterProcessor::TcpSplitterProcessor(IPacketProcessor * router)
+TcpSplitterProcessor::TcpSplitterProcessor(IProcessorPtr router)
 {
     setNextProcessor(router);
 }
 
-IProcessor * TcpSplitterProcessor::CreateCopy() const
+IProcessorPtr TcpSplitterProcessor::CreateCopy() const
 {
-    return new TcpSplitterProcessor(nextProcessor->CreateCopy());
+    return IProcessorPtr(new TcpSplitterProcessor(nextProcessor->CreateCopy()));
 }
 
 ProcessingStatus TcpSplitterProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)

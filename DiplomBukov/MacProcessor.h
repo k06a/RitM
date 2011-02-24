@@ -2,7 +2,6 @@
 #define MACPROCESSOR_H
 
 #include "CommonInclude.h"
-#include "AbstractPacketProcessor.h"
 #include "AbstractProcessor.h"
 
 namespace DiplomBukov
@@ -10,8 +9,8 @@ namespace DiplomBukov
     class MacProcessor : public AbstractProcessor
 	{
 	public:
-		MacProcessor(IPacketProcessor * router = NULL);
-        virtual IProcessor * CreateCopy() const;
+		MacProcessor(IProcessorPtr router = IProcessorPtr());
+        virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
 

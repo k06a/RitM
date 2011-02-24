@@ -2,7 +2,7 @@
 #define IPV4DEFRAGPROCESSOR_H
 
 #include "CommonInclude.h"
-#include "AbstractPacketProcessor.h"
+#include "AbstractProcessor.h"
 #include "AbstractProcessor.h"
 
 namespace DiplomBukov
@@ -13,8 +13,8 @@ namespace DiplomBukov
         int ipDataOffset;
 
 	public:
-		Ipv4DefragProcessor(IPacketProcessor * router = NULL);
-        virtual IProcessor * CreateCopy() const;
+		Ipv4DefragProcessor(IProcessorPtr router = IProcessorPtr());
+        virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
 

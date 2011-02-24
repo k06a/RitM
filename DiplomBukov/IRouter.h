@@ -2,27 +2,27 @@
 #define IROUTER_H
 
 #include <deque>
+
 #include "CommonInclude.h"
-#include "IPacketProcessor.h"
+#include "IProcessor.h"
 
 namespace DiplomBukov
 {
-    class IRouter : public virtual IPacketProcessor
+    class IRouter : public virtual IProcessor
 	{
 	public:
 		virtual ~IRouter() {}
 
-        // Cast IPacketProcessor* to IRouter*
-        virtual IRouter * CreateCopy() const = 0;
-		
-        virtual void setModule(IRouterModule * module) = 0;
-        virtual IRouterModule * getModule() = 0;
+        // Cast IProcessor* to IRouterPtr
+        virtual IProcessorPtr CreateCopy() const = 0;
 
-        virtual void addNextProcessor(IProcessor * processor) = 0;
-        virtual void removeNextProcessor(IProcessor * processor) = 0;
-        virtual const std::deque<IProcessor*> & nextProcessors() = 0;
+        virtual void addNextProcessor(IProcessorPtr processor) = 0;
+        virtual void removeNextProcessor(IProcessorPtr processor) = 0;
+        virtual const std::deque<IProcessorPtr> & nextProcessors() = 0;
 	};
 	// class IRouter
+
+    typedef std::tr1::shared_ptr<IRouter> IRouterPtr;
 }
 // namespace DiplomBukov
 

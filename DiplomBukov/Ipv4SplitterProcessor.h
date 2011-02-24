@@ -5,7 +5,6 @@
 #include <utility>
 
 #include "CommonInclude.h"
-#include "AbstractPacketProcessor.h"
 #include "AbstractProcessor.h"
 #include "ipv4_header.h"
 
@@ -14,13 +13,13 @@ namespace DiplomBukov
     class Ipv4SplitterProcessor : public AbstractProcessor
 	{
         typedef std::pair<ipv4_addr,ipv4_addr> ipv4_pair;
-        typedef std::map<ipv4_pair,IPacketProcessor*> MyMap;
+        typedef std::map<ipv4_pair,IProcessorPtr> MyMap;
 
         MyMap routers;
 		
 	public:
-		Ipv4SplitterProcessor(IPacketProcessor * router = NULL);
-        virtual IProcessor * CreateCopy() const;
+		Ipv4SplitterProcessor(IProcessorPtr router = IProcessorPtr());
+        virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
 

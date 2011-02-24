@@ -2,17 +2,17 @@
 
 using namespace DiplomBukov;
 
-RouterModule::RouterModule(IRouter * router)
+RouterModule::RouterModule(IRouterPtr router)
     : baseRouter(router)
 {
 }
 
-IRouter * RouterModule::getBaseRouter()
+IRouterPtr RouterModule::getBaseRouter()
 {
     return baseRouter;
 }
 
-void RouterModule::setBaseRouter(IRouter * router)
+void RouterModule::setBaseRouter(IRouterPtr router)
 {
     baseRouter = router;
 }

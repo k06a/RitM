@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-IProcessor * MacProcessorCreator::createProcessor(IRouter * router) const
+IProcessorPtr MacProcessorCreator::createProcessor(IRouterPtr router) const
 {
-    return new MacProcessor(router);
+    return IProcessorPtr(new MacProcessor(router));
 }

@@ -11,7 +11,7 @@ namespace DiplomBukov
 {
     class ProtocolRouter : public AbstractRouter
     {
-        typedef std::multimap<Protocol,IProcessor*> MyMap;
+        typedef std::multimap<Protocol,IProcessorPtr> MyMap;
 
         MyMap procMap;
 
@@ -19,13 +19,13 @@ namespace DiplomBukov
         ProtocolRouter();
         ProtocolRouter(const ProtocolRouter & router);
         void Init(const MyDeque & d);
-        virtual IRouter * CreateCopy() const;
+        virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, Packet & packet, unsigned offset);
         
-        virtual void addNextProcessor(IProcessor * processor);
-        virtual void removeNextProcessor(IProcessor * processor);
-        virtual const std::deque<IProcessor*> & nextProcessors();
+        virtual void addNextProcessor(IProcessorPtr processor);
+        virtual void removeNextProcessor(IProcessorPtr processor);
+        virtual const std::deque<IProcessorPtr> & nextProcessors();
     };
     // class ProtocolRouter
 }

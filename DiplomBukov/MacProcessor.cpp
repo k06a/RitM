@@ -3,14 +3,14 @@
 
 using namespace DiplomBukov;
 
-MacProcessor::MacProcessor(IPacketProcessor * router)
+MacProcessor::MacProcessor(IProcessorPtr router)
 {
     setNextProcessor(router);
 }
 
-IProcessor * MacProcessor::CreateCopy() const
+IProcessorPtr MacProcessor::CreateCopy() const
 {
-    return new MacProcessor(nextProcessor->CreateCopy());
+    return IProcessorPtr(new MacProcessor(nextProcessor->CreateCopy()));
 }
 
 ProcessingStatus MacProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)

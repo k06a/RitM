@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-FileAdapter::FileAdapter(char * filename1, char * filename2, IPacketProcessor * router)
+FileAdapter::FileAdapter(char * filename1, char * filename2, IProcessorPtr router)
 	: file1(NULL), file2(NULL)
 {
     setNextProcessor(router);
@@ -15,9 +15,9 @@ FileAdapter::FileAdapter(char * filename1, char * filename2, IPacketProcessor * 
         throw "Ошибка открытия файла";
 }
 
-IPacketProcessor * FileAdapter::CreateCopy() const
+IProcessorPtr FileAdapter::CreateCopy() const
 {
-    return NULL;
+    return IProcessorPtr();
 }
 
 FileAdapter::~FileAdapter()

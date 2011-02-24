@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-MacSwitch::MacSwitch(IPacketProcessor * router)
+MacSwitch::MacSwitch(IProcessorPtr router)
 {
     nextProcessor = router;
 }
@@ -12,16 +12,16 @@ MacSwitch::MacSwitch(const MacSwitch & macSwitch)
 {
 }
 
-IProcessor * MacSwitch::CreateCopy() const
+IProcessorPtr MacSwitch::CreateCopy() const
 {
-    return new MacSwitch(*this);
+    return IProcessorPtr(new MacSwitch(*this));
 }
 
-IPacketProcessor * MacSwitch::getPointer()
+IProcessorPtr MacSwitch::getPointer()
 {
-    MacSwitchPort * port = new MacSwitchPort(this);
+    MacSwitchPort * port = new MacSwitchPort(IProcessorPtr(this));
     ports.push_back(port);
-    return port;
+    return IProcessorPtr(port);
 }
 
 ProcessingStatus MacSwitch::forwardProcess(Protocol proto, Packet & packet, unsigned offset)

@@ -5,18 +5,18 @@
 #include <algorithm>
 
 #include "CommonInclude.h"
-#include "AbstractPacketProcessor.h"
+#include "AbstractProcessor.h"
 #include "IProcessor.h"
 #include "IRouter.h"
 
 namespace DiplomBukov
 {
     class AbstractRouter
-        : public AbstractPacketProcessor
+        : public AbstractProcessor
         , public IRouter
     {
     protected:
-        typedef std::deque<IProcessor*> MyDeque;
+        typedef std::deque<IProcessorPtr> MyDeque;
 
         IRouterModule * module;
         MyDeque procList;
@@ -27,40 +27,31 @@ namespace DiplomBukov
         {
         }
 
-        virtual void setNextProcessor(IPacketProcessor * processor)
+        virtual void setNextProcessor(IProcessorPtr processor)
         {
-            IProcessor * ip = dynamic_cast<IProcessor*>(processor);
-            if (ip != NULL)
-                addNextProcessor(ip);
+            // TODO: realize
+            //IProcessorPtr ip = dynamic_cast<IProcessorPtr>(processor);
+            //if (ip != NULL)
+            //    addNextProcessor(ip);
         }
 
-        virtual void ping(IPacketProcessor * prevProcessor)
+        virtual void ping(IProcessorPtr prevProcessor)
         {
             for(MyDeque::iterator it = procList.begin(); it != procList.end(); ++it)
                 (*it)->ping(prevProcessor);
         }
 
-        virtual void setModule(IRouterModule * mod)
-        {
-            module = mod;
-        }
-
-        virtual IRouterModule * getModule()
-        {
-            return module;
-        }
-
-        virtual void addNextProcessor(IProcessor * processor)
+        virtual void addNextProcessor(IProcessorPtr processor)
         {
             procList.push_back(processor);
         }
 
-        virtual void removeNextProcessor(IProcessor * processor)
+        virtual void removeNextProcessor(IProcessorPtr processor)
         {
             std::remove(procList.begin(), procList.end(), processor);
         }
 
-        virtual const std::deque<IProcessor*> & nextProcessors()
+        virtual const std::deque<IProcessorPtr> & nextProcessors()
         {
             return procList;
         }

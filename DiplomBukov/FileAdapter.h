@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "AbstractPacketProcessor.h"
+#include "AbstractProcessor.h"
 #include "IAdapter.h"
 
 namespace DiplomBukov
@@ -28,15 +28,15 @@ namespace DiplomBukov
 	};
 
 	class FileAdapter
-        : public AbstractPacketProcessor
+        : public AbstractProcessor
         , public IAdapter
 	{
 		FILE * file1;
         FILE * file2;
 
 	public:
-		FileAdapter(char * filename1, char * filename2, IPacketProcessor * router = NULL);
-		virtual IPacketProcessor * CreateCopy() const;
+		FileAdapter(char * filename1, char * filename2, IProcessorPtr router = IProcessorPtr());
+		virtual IProcessorPtr CreateCopy() const;
         ~FileAdapter();
         
 		virtual void run();

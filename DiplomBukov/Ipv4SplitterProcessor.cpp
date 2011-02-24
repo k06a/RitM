@@ -3,14 +3,14 @@
 
 using namespace DiplomBukov;
 
-Ipv4SplitterProcessor::Ipv4SplitterProcessor(IPacketProcessor * router)
+Ipv4SplitterProcessor::Ipv4SplitterProcessor(IProcessorPtr router)
 {
     setNextProcessor(router);
 }
 
-IProcessor * Ipv4SplitterProcessor::CreateCopy() const
+IProcessorPtr Ipv4SplitterProcessor::CreateCopy() const
 {
-    return new Ipv4SplitterProcessor(nextProcessor->CreateCopy());
+    return IProcessorPtr(new Ipv4SplitterProcessor(nextProcessor->CreateCopy()));
 }
 
 ProcessingStatus Ipv4SplitterProcessor::forwardProcess(Protocol proto, Packet & packet, unsigned offset)
