@@ -31,6 +31,8 @@ namespace DiplomBukov
         bool checkMac(const mac_addr & mac);
     };
     // class MacSwitchPort
+
+    typedef std::tr1::shared_ptr<MacSwitchPort> MacSwitchPortPtr;
 }
 // namespace DiplomBukov
 

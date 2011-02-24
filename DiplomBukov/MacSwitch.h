@@ -6,6 +6,7 @@
 #include "IProcessor.h"
 #include "AbstractProcessor.h"
 #include "ProtocolRouter.h"
+#include "MacSwitchPort.h"
 
 namespace DiplomBukov
 {
@@ -13,7 +14,9 @@ namespace DiplomBukov
 
     class MacSwitch : public AbstractProcessor
     {
-        std::deque<MacSwitchPort*> ports;
+        typedef std::deque<MacSwitchPortPtr> MyDeque;
+
+        MyDeque ports;
 
     public:
         MacSwitch(IProcessorPtr router = IProcessorPtr());

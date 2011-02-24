@@ -66,6 +66,11 @@ namespace DiplomBukov
                 && (words[2] == 0x0000);
         }
 
+        bool isConcrete()
+        {
+            return !isBroadcast() && !isZero();
+        }
+
         static mac_addr broadcast()
         {
             return mac_addr(0xffff,0xffff,0xffff);
