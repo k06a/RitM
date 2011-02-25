@@ -16,7 +16,7 @@ MacSwitchPort::MacSwitchPort(const MacSwitchPort & macSwitchPort)
 void MacSwitchPort::Init(const IProcessorPtr np, const IProcessorPtr pp)
 {
     nextProcessor = np->CreateCopy();
-    prevProcessor = pp->CreateCopy();
+    prevProcessor = IProcessorPtr();
 }
 
 IProcessorPtr MacSwitchPort::CreateCopy() const

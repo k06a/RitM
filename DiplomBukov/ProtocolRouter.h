@@ -22,8 +22,6 @@ namespace DiplomBukov
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
-        
-        
 
         virtual void addNextProcessor(IProcessorPtr processor);
         virtual void removeNextProcessor(IProcessorPtr processor);

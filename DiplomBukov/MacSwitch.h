@@ -14,7 +14,7 @@ namespace DiplomBukov
 
     class MacSwitch : public AbstractProcessor
     {
-        typedef std::deque<MacSwitchPortPtr> MyDeque;
+        typedef std::deque<IProcessorPtr> MyDeque;
 
         MyDeque ports;
 
