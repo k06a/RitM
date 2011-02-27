@@ -3,10 +3,10 @@
 
 using namespace DiplomBukov;
 
-Ipv4Defragger::Ipv4Defragger(IProcessorPtr router)
+Ipv4Defragger::Ipv4Defragger(IProcessorPtr Connector)
 	: fullPacket(NULL)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr Ipv4Defragger::CreateCopy() const

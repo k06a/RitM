@@ -13,10 +13,10 @@ namespace DiplomBukov
         typedef std::pair<unsigned short,unsigned short> port_pair;
         typedef std::map<port_pair,IProcessorPtr> MyMap;
 
-        MyMap routers;
+        MyMap Connectors;
 
     public:
-        TcpSplitter(IProcessorPtr router = IProcessorPtr());
+        TcpSplitter(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);

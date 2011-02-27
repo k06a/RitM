@@ -10,7 +10,7 @@ namespace DiplomBukov
     public:
         virtual ~IProcessorCreator() {}
 
-        virtual IProcessorPtr createProcessor(IRouterPtr router) const = 0;
+        virtual IProcessorPtr createProcessor(IConnectorPtr Connector) const = 0;
     };
     // class IProcessorCreator
 }

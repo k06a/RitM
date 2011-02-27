@@ -16,10 +16,10 @@ namespace DiplomBukov
         typedef std::pair<ipv4_addr,ipv4_addr> ipv4_pair;
         typedef std::map<ipv4_pair,IProcessorPtr> MyMap;
 
-        MyMap routers;
+        MyMap Connectors;
 		
 	public:
-		Ipv4Splitter(IProcessorPtr router = IProcessorPtr());
+		Ipv4Splitter(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);

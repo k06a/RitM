@@ -1,23 +1,23 @@
-#ifndef BRUTEROUTER_H
-#define BRUTEROUTER_H
+#ifndef BRUTECONNECTOR_H
+#define BRUTECONNECTOR_H
 
 #include <deque>
 
-#include "AbstractRouter.h"
+#include "AbstractConnector.h"
 
 namespace DiplomBukov
 {
-	class BruteRouter : public AbstractRouter
+	class BruteConnector : public AbstractConnector
 	{
     public:
-        BruteRouter();
-        BruteRouter(const MyDeque & d);
+        BruteConnector();
+        BruteConnector(const MyDeque & d);
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
     };
-	// class BruteRouter
+	// class BruteConnector
 }
 // namespace DiplomBukov
 
-#endif // BRUTEROUTER_H
+#endif // BRUTECONNECTOR_H

@@ -4,10 +4,10 @@
 
 using namespace DiplomBukov;
 
-FileAdapter::FileAdapter(char * filename1, char * filename2, IProcessorPtr router)
+FileAdapter::FileAdapter(char * filename1, char * filename2, IProcessorPtr Connector)
 	: file1(NULL), file2(NULL)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 
 	if (fopen_s(&file1, filename1, "rb") != 0)
 		throw "Ошибка открытия файла";

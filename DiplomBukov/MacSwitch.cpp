@@ -3,9 +3,9 @@
 
 using namespace DiplomBukov;
 
-MacSwitch::MacSwitch(IProcessorPtr router)
+MacSwitch::MacSwitch(IProcessorPtr Connector)
 {
-    nextProcessor = router;
+    nextProcessor = Connector;
 }
 
 MacSwitch::MacSwitch(const MacSwitch & macSwitch)

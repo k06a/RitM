@@ -14,7 +14,7 @@ namespace DiplomBukov
     class Ipv4Processor : public AbstractProcessor
     {
     public:
-        Ipv4Processor(IProcessorPtr router = IProcessorPtr());
+        Ipv4Processor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);

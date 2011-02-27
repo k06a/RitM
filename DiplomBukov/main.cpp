@@ -2,15 +2,15 @@
 #include <string>
 #include <iostream>
 
-#include "IRouter.h"
+#include "IConnector.h"
 #include "IAdapter.h"
 #include "IProcessor.h"
 
 #include "ProcessorModule.h"
 
 #include "FileAdapter.h"
-#include "BruteRouter.h"
-#include "ProtocolRouter.h"
+#include "BruteConnector.h"
+#include "ProtocolConnector.h"
 
 #include "AcceptProcessor.h"
 #include "RejectProcessor.h"
@@ -33,13 +33,13 @@ void print_arch(IProcessorPtr proc, std::string prefix = "")
     if (proc == NULL) return;
 
     IProcessor * ipp = proc.get();
-    IRouter    * ir = dynamic_cast<IRouter*>(ipp);
+    IConnector    * ir = dynamic_cast<IConnector*>(ipp);
     IAdapter   * ia = dynamic_cast<IAdapter*>(ipp);
     IProcessor * ip = dynamic_cast<IProcessor*>(ipp);
 
     if (ir != NULL)
     {
-        std::cout << " [ Router ]:";
+        std::cout << " [ Connector ]:";
         const std::deque<IProcessorPtr> & procList = ir->nextProcessors();
         for (size_t i = 0; i < procList.size(); i++)
             print_arch(procList[i], prefix + "    ");
@@ -64,17 +64,17 @@ void print_arch(IProcessorPtr proc, std::string prefix = "")
 
 int main(int argc, char * argv[])
 {
-    #define NEW_ROUTER IProcessorPtr(new ProtocolRouter())
+    #define NEW_Connector IProcessorPtr(new ProtocolConnector())
 
-    IAdapterPtr fileAdapter(new FileAdapter("icmp_native_64k.pcap", "icmp_defraged_64k.pcap", NEW_ROUTER));
+    IAdapterPtr fileAdapter(new FileAdapter("icmp_native_64k.pcap", "icmp_defraged_64k.pcap", NEW_Connector));
     
     /*
-	IProcessorPtr macProcessor(new MacProcessor(NEW_ROUTER));
-    IProcessorPtr ipv4Splitter(new Ipv4Splitter(NEW_ROUTER));
-    IProcessorPtr ipdfProcessor(new Ipv4Defragger(NEW_ROUTER));
-    IProcessorPtr tcpProcessor(new TcpSplitter(NEW_ROUTER));
-    IProcessorPtr udpProcessor(new UdpSplitter(NEW_ROUTER));
-    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_ROUTER));
+	IProcessorPtr macProcessor(new MacProcessor(NEW_Connector));
+    IProcessorPtr ipv4Splitter(new Ipv4Splitter(NEW_Connector));
+    IProcessorPtr ipdfProcessor(new Ipv4Defragger(NEW_Connector));
+    IProcessorPtr tcpProcessor(new TcpSplitter(NEW_Connector));
+    IProcessorPtr udpProcessor(new UdpSplitter(NEW_Connector));
+    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
 
     ProcessorModule * macModule  = new ProcessorModule(macProcessor);
     ProcessorModule * ipv4Module = new ProcessorModule(ipv4Splitter);
@@ -93,13 +93,13 @@ int main(int argc, char * argv[])
                 connect(ipdfProcessor, icmpProcessor);
     */
 
-    IProcessorPtr macProcessor(new MacProcessor(NEW_ROUTER));
-    IProcessorPtr rejector(new RejectProcessor(NEW_ROUTER));
-    IProcessorPtr ipv4Processor(new Ipv4Processor(NEW_ROUTER));
-    IProcessorPtr tcpProcessor(new TcpProcessor(NEW_ROUTER));
-    IProcessorPtr udpProcessor(new UdpProcessor(NEW_ROUTER));
-    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_ROUTER));
-    IProcessorPtr acceptor(new AcceptProcessor(NEW_ROUTER));
+    IProcessorPtr macProcessor(new MacProcessor(NEW_Connector));
+    IProcessorPtr rejector(new RejectProcessor(NEW_Connector));
+    IProcessorPtr ipv4Processor(new Ipv4Processor(NEW_Connector));
+    IProcessorPtr tcpProcessor(new TcpProcessor(NEW_Connector));
+    IProcessorPtr udpProcessor(new UdpProcessor(NEW_Connector));
+    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
+    IProcessorPtr acceptor(new AcceptProcessor(NEW_Connector));
 
     ProcessorModule * macModule  = new ProcessorModule(macProcessor);
     ProcessorModule * ipv4Module = new ProcessorModule(ipv4Processor);

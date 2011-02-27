@@ -2,8 +2,8 @@
 
 using namespace DiplomBukov;
 
-UdpProcessor::UdpProcessor(IProcessorPtr router)
-    : TcpProcessor(router)
+UdpProcessor::UdpProcessor(IProcessorPtr Connector)
+    : TcpProcessor(Connector)
 {
 }
 

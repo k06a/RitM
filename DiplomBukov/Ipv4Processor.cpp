@@ -3,9 +3,9 @@
 
 using namespace DiplomBukov;
 
-Ipv4Processor::Ipv4Processor(IProcessorPtr router)
+Ipv4Processor::Ipv4Processor(IProcessorPtr Connector)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr Ipv4Processor::CreateCopy() const

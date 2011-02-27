@@ -35,7 +35,7 @@ namespace DiplomBukov
         FILE * file2;
 
 	public:
-		FileAdapter(char * filename1, char * filename2, IProcessorPtr router = IProcessorPtr());
+		FileAdapter(char * filename1, char * filename2, IProcessorPtr Connector = IProcessorPtr());
 		virtual IProcessorPtr CreateCopy() const;
         ~FileAdapter();
         

@@ -8,9 +8,9 @@ BasicLibrary::BasicLibrary()
     //
 }
 
-const std::deque<IRouterCreator*> & BasicLibrary::getRouterCreators()
+const std::deque<IConnectorCreator*> & BasicLibrary::getConnectorCreators()
 {
-    return routerCreatorList;
+    return ConnectorCreatorList;
 }
 
 const std::deque<IAdapterCreator*> & BasicLibrary::getAdapterCreators()

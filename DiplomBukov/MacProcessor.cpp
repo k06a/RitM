@@ -3,9 +3,9 @@
 
 using namespace DiplomBukov;
 
-MacProcessor::MacProcessor(IProcessorPtr router)
+MacProcessor::MacProcessor(IProcessorPtr Connector)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr MacProcessor::CreateCopy() const

@@ -11,7 +11,7 @@ namespace DiplomBukov
     class TcpProcessor : public AbstractProcessor
     {
     public:
-        TcpProcessor(IProcessorPtr router = IProcessorPtr());
+        TcpProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);

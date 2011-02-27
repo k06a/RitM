@@ -2,9 +2,9 @@
 
 using namespace DiplomBukov;
 
-RejectProcessor::RejectProcessor(IProcessorPtr router)
+RejectProcessor::RejectProcessor(IProcessorPtr Connector)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr RejectProcessor::CreateCopy() const

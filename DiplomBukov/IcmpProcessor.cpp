@@ -3,9 +3,9 @@
 
 using namespace DiplomBukov;
 
-IcmpProcessor::IcmpProcessor(IProcessorPtr router)
+IcmpProcessor::IcmpProcessor(IProcessorPtr Connector)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr IcmpProcessor::CreateCopy() const

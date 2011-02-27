@@ -10,7 +10,7 @@ namespace DiplomBukov
     class MacProcessor : public AbstractProcessor
 	{
 	public:
-		MacProcessor(IProcessorPtr router = IProcessorPtr());
+		MacProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);

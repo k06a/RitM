@@ -1,5 +1,5 @@
-#ifndef IROUTER_H
-#define IROUTER_H
+#ifndef ICONNECTOR_H
+#define ICONNECTOR_H
 
 #include <deque>
 
@@ -8,22 +8,17 @@
 
 namespace DiplomBukov
 {
-    class IRouter : public virtual IProcessor
+    class IConnector : public virtual IProcessor
 	{
 	public:
-		virtual ~IRouter() {}
-
-        // Cast IProcessor* to IRouterPtr
-        virtual IProcessorPtr CreateCopy() const = 0;
+		virtual ~IConnector() {}
 
         virtual void addNextProcessor(IProcessorPtr processor) = 0;
         virtual void removeNextProcessor(IProcessorPtr processor) = 0;
         virtual const std::deque<IProcessorPtr> & nextProcessors() const = 0;
 	};
-	// class IRouter
-
-    typedef std::tr1::shared_ptr<IRouter> IRouterPtr;
+	// class IConnector
 }
 // namespace DiplomBukov
 
-#endif //IROUTER_H
+#endif // ICONNECTOR_H

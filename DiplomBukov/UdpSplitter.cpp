@@ -2,8 +2,8 @@
 
 using namespace DiplomBukov;
 
-UdpSplitter::UdpSplitter(IProcessorPtr router)
-    : TcpSplitter(router)
+UdpSplitter::UdpSplitter(IProcessorPtr Connector)
+    : TcpSplitter(Connector)
 {
 }
 

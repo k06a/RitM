@@ -40,7 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/wd42501"
+				AdditionalOptions="/wd4250"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
@@ -212,11 +212,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\IProcessorPlugin.h"
+					RelativePath=".\IConnectorPlugin.h"
 					>
 				</File>
 				<File
-					RelativePath=".\IRouterPlugin.h"
+					RelativePath=".\IProcessorPlugin.h"
 					>
 				</File>
 			</Filter>
@@ -228,11 +228,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\IProcessorCreator.h"
+					RelativePath=".\IConnectorCreator.h"
 					>
 				</File>
 				<File
-					RelativePath=".\IRouterCreator.h"
+					RelativePath=".\IProcessorCreator.h"
 					>
 				</File>
 			</Filter>
@@ -244,11 +244,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\IProcessorModule.h"
+					RelativePath=".\IConnectorModule.h"
 					>
 				</File>
 				<File
-					RelativePath=".\IRouterModule.h"
+					RelativePath=".\IProcessorModule.h"
 					>
 				</File>
 			</Filter>
@@ -256,15 +256,19 @@
 				Name="IObjects"
 				>
 				<File
+					RelativePath=".\AbstractConnector.h"
+					>
+				</File>
+				<File
 					RelativePath=".\AbstractProcessor.h"
 					>
 				</File>
 				<File
-					RelativePath=".\AbstractRouter.h"
+					RelativePath=".\IAdapter.h"
 					>
 				</File>
 				<File
-					RelativePath=".\IAdapter.h"
+					RelativePath=".\IConnector.h"
 					>
 				</File>
 				<File
@@ -273,10 +277,6 @@
 				</File>
 				<File
 					RelativePath=".\IProcessor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\IRouter.h"
 					>
 				</File>
 			</Filter>
@@ -364,19 +364,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ConnectorModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ConnectorModule.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ProcessorModule.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\ProcessorModule.h"
-					>
-				</File>
-				<File
-					RelativePath=".\RouterModule.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\RouterModule.h"
 					>
 				</File>
 			</Filter>
@@ -392,19 +392,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ConnectorPlugin.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ConnectorPlugin.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ProcessorPlugin.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\ProcessorPlugin.h"
-					>
-				</File>
-				<File
-					RelativePath=".\RouterPlugin.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\RouterPlugin.h"
 					>
 				</File>
 			</Filter>
@@ -536,22 +536,22 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="Routers"
+					Name="Connectors"
 					>
 					<File
-						RelativePath=".\BruteRouter.cpp"
+						RelativePath=".\BruteConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\BruteRouter.h"
+						RelativePath=".\BruteConnector.h"
 						>
 					</File>
 					<File
-						RelativePath=".\ProtocolRouter.cpp"
+						RelativePath=".\ProtocolConnector.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\ProtocolRouter.h"
+						RelativePath=".\ProtocolConnector.h"
 						>
 					</File>
 				</Filter>

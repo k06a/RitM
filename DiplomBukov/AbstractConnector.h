@@ -1,5 +1,5 @@
-#ifndef ABSTRACTROUTER_H
-#define ABSTRACTROUTER_H
+#ifndef ABSTRACTCONNECTOR_H
+#define ABSTRACTCONNECTOR_H
 
 #include <deque>
 #include <algorithm>
@@ -7,22 +7,22 @@
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 #include "IProcessor.h"
-#include "IRouter.h"
+#include "IConnector.h"
 
 namespace DiplomBukov
 {
-    class AbstractRouter
+    class AbstractConnector
         : public AbstractProcessor
-        , public IRouter
+        , public IConnector
     {
     protected:
         typedef std::deque<IProcessorPtr> MyDeque;
 
-        IRouterModule * module;
+        IConnectorModule * module;
         MyDeque procList;
 
     public:
-        AbstractRouter::AbstractRouter()
+        AbstractConnector::AbstractConnector()
             : module(NULL)
         {
         }
@@ -59,8 +59,8 @@ namespace DiplomBukov
             return procList;
         }
     };
-    // class AbstractRouter
+    // class AbstractConnector
 }
 // namespace DiplomBukov
 
-#endif // ABSTRACTROUTER_H
+#endif // ABSTRACTCONNECTOR_H

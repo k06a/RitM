@@ -5,7 +5,7 @@
 #include "CommonInclude.h"
 #include "IProcessor.h"
 #include "AbstractProcessor.h"
-#include "ProtocolRouter.h"
+#include "ProtocolConnector.h"
 #include "MacSwitchPort.h"
 
 namespace DiplomBukov
@@ -19,7 +19,7 @@ namespace DiplomBukov
         MyDeque ports;
 
     public:
-        MacSwitch(IProcessorPtr router = IProcessorPtr());
+        MacSwitch(IProcessorPtr Connector = IProcessorPtr());
         MacSwitch(const MacSwitch & macSwitch);
 
         virtual IProcessorPtr CreateCopy() const;

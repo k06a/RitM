@@ -1,23 +1,23 @@
-#ifndef PROTOCOLROUTER_H
-#define PROTOCOLROUTER_H
+#ifndef PROTOCOLCONNECTOR_H
+#define PROTOCOLCONNECTOR_H
 
 #include <map>
 #include <deque>
 
 #include "CommonInclude.h"
-#include "AbstractRouter.h"
+#include "AbstractConnector.h"
 
 namespace DiplomBukov
 {
-    class ProtocolRouter : public AbstractRouter
+    class ProtocolConnector : public AbstractConnector
     {
         typedef std::multimap<Protocol,IProcessorPtr> MyMap;
 
         MyMap procMap;
 
     public:
-        ProtocolRouter();
-        ProtocolRouter(const ProtocolRouter & router);
+        ProtocolConnector();
+        ProtocolConnector(const ProtocolConnector & Connector);
         void Init(const MyDeque & d);
         virtual IProcessorPtr CreateCopy() const;
 
@@ -27,8 +27,8 @@ namespace DiplomBukov
         virtual void removeNextProcessor(IProcessorPtr processor);
         virtual const std::deque<IProcessorPtr> & nextProcessors();
     };
-    // class ProtocolRouter
+    // class ProtocolConnector
 }
 // namespace DiplomBukov
 
-#endif // PROTOCOLROUTER_H
+#endif // PROTOCOLCONNECTOR_H

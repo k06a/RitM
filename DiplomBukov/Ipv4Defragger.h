@@ -47,7 +47,7 @@ namespace DiplomBukov
         int ipDataOffset;
 
 	public:
-		Ipv4Defragger(IProcessorPtr router = IProcessorPtr());
+		Ipv4Defragger(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);

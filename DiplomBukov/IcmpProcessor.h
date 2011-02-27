@@ -10,7 +10,7 @@ namespace DiplomBukov
     class IcmpProcessor : public AbstractProcessor
     {
     public:
-        IcmpProcessor(IProcessorPtr router = IProcessorPtr());
+        IcmpProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);

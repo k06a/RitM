@@ -8,14 +8,14 @@ namespace DiplomBukov
 {
     class BasicLibrary : public ILibrary
     {
-        std::deque<IRouterCreator*> routerCreatorList;
+        std::deque<IConnectorCreator*> ConnectorCreatorList;
         std::deque<IAdapterCreator*> adapterCreatorList;
         std::deque<IProcessorCreator*> processorCreatorList;
         
     public:
         BasicLibrary();
 
-        virtual const std::deque<IRouterCreator*> & getRouterCreators();
+        virtual const std::deque<IConnectorCreator*> & getConnectorCreators();
         virtual const std::deque<IAdapterCreator*> & getAdapterCreators();
         virtual const std::deque<IProcessorCreator*> & getProcessorCreators();
     };

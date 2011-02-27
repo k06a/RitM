@@ -3,9 +3,9 @@
 
 using namespace DiplomBukov;
 
-TcpProcessor::TcpProcessor(IProcessorPtr router)
+TcpProcessor::TcpProcessor(IProcessorPtr Connector)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr TcpProcessor::CreateCopy() const

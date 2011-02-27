@@ -8,7 +8,7 @@ namespace DiplomBukov
     class UdpProcessor : public TcpProcessor
     {
     public:
-        UdpProcessor(IProcessorPtr router = IProcessorPtr());
+        UdpProcessor(IProcessorPtr Connector = IProcessorPtr());
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

@@ -1,4 +1,4 @@
-#include "BruteRouter.h"
+#include "BruteConnector.h"
 #include "ProcessingStatus.h"
 #include "IProcessor.h"
 
@@ -6,11 +6,11 @@
 
 using namespace DiplomBukov;
 
-BruteRouter::BruteRouter()
+BruteConnector::BruteConnector()
 {
 }
 
-BruteRouter::BruteRouter(const MyDeque & d)
+BruteConnector::BruteConnector(const MyDeque & d)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
@@ -19,12 +19,12 @@ BruteRouter::BruteRouter(const MyDeque & d)
     }
 }
 
-IProcessorPtr BruteRouter::CreateCopy() const
+IProcessorPtr BruteConnector::CreateCopy() const
 {
-    return IProcessorPtr(new BruteRouter(procList));
+    return IProcessorPtr(new BruteConnector(procList));
 }
 
-ProcessingStatus BruteRouter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus BruteConnector::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
 	for(MyDeque::iterator it = procList.begin(); it != procList.end(); it++)

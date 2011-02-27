@@ -3,9 +3,9 @@
 
 using namespace DiplomBukov;
 
-Ipv4Splitter::Ipv4Splitter(IProcessorPtr router)
+Ipv4Splitter::Ipv4Splitter(IProcessorPtr Connector)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr Ipv4Splitter::CreateCopy() const
@@ -25,17 +25,17 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
     ipv4_addr adr2 = ipv4->dst_data;
     if (adr2 < adr1) std::swap(adr1, adr2);
 
-    // Create new router if needed
+    // Create new Connector if needed
     ipv4_pair para(adr1,adr2);
-    MyMap::iterator it = routers.find(para);
-    if (it == routers.end())
+    MyMap::iterator it = Connectors.find(para);
+    if (it == Connectors.end())
     {
         if (nextProcessor != NULL)
-            routers[para] = nextProcessor->CreateCopy();
+            Connectors[para] = nextProcessor->CreateCopy();
     }
 
     if (nextProcessor != NULL)
-        routers[para]->forwardProcess(proto, packet, offset);
+        Connectors[para]->forwardProcess(proto, packet, offset);
 
 	return ProcessingStatus::Accepted;
 }

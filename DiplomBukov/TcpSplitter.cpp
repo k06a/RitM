@@ -3,9 +3,9 @@
 
 using namespace DiplomBukov;
 
-TcpSplitter::TcpSplitter(IProcessorPtr router)
+TcpSplitter::TcpSplitter(IProcessorPtr Connector)
 {
-    setNextProcessor(router);
+    setNextProcessor(Connector);
 }
 
 IProcessorPtr TcpSplitter::CreateCopy() const
@@ -26,17 +26,17 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
     unsigned short adr2 = tcp->dst_port;
     if (adr2 < adr1) std::swap(adr1, adr2);
 
-    // Create new router if needed
+    // Create new Connector if needed
     port_pair para(adr1,adr2);
-    MyMap::iterator it = routers.find(para);
-    if (it == routers.end())
+    MyMap::iterator it = Connectors.find(para);
+    if (it == Connectors.end())
     {
         if (nextProcessor != NULL)
-            routers[para] = nextProcessor->CreateCopy();
+            Connectors[para] = nextProcessor->CreateCopy();
     }
 
     if (nextProcessor != NULL)
-        routers[para]->forwardProcess(Protocol::None, packet, offset + tcp->header_size());
+        Connectors[para]->forwardProcess(Protocol::None, packet, offset + tcp->header_size());
 
     return ProcessingStatus::Accepted;
 }
