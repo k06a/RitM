@@ -27,7 +27,10 @@ ProcessingStatus Ipv4Processor::forwardProcess(Protocol proto, IPacketPtr & pack
     //
 
     if (nextProcessor != NULL)
-        nextProcessor->forwardProcess(ip->proto, packet, offset + ip->size());
+    {
+        Protocol::TransportLayer prot = (Protocol::TransportLayer)ip->proto;
+        nextProcessor->forwardProcess(prot, packet, offset + ip->size());
+    }
 
     return ProcessingStatus::Accepted;
 }

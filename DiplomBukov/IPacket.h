@@ -44,6 +44,9 @@ namespace DiplomBukov
         virtual void addProcessor(IProcessorPtr pro) = 0;
         virtual const std::deque<IProcessorPtr> & processors() const = 0;
 
+        virtual void addProtocol(Protocol pro) = 0;
+        virtual const std::deque<Protocol> & protocols() const = 0;
+
         virtual mac_addr & src_mac() = 0;
         virtual mac_addr & dst_mac() = 0;
     };

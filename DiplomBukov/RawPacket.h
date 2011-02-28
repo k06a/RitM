@@ -18,6 +18,7 @@ namespace DiplomBukov
         std::vector<u8> data_;
         IAdapterPtr adapter_;
         std::deque<IProcessorPtr> processors_;
+        std::deque<Protocol> protocols_;
         mac_addr src_mac_addr;
         mac_addr dst_mac_addr;
 
@@ -47,6 +48,9 @@ namespace DiplomBukov
 
         virtual void addProcessor(IProcessorPtr pro);
         virtual const std::deque<IProcessorPtr> & processors() const;
+
+        virtual void addProtocol(Protocol pro);
+        virtual const std::deque<Protocol> & protocols() const;
 
         virtual mac_addr & src_mac();
         virtual mac_addr & dst_mac();

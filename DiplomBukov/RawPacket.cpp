@@ -95,6 +95,16 @@ const std::deque<IProcessorPtr> & RawPacket::processors() const
     return processors_;
 }
 
+void RawPacket::addProtocol(Protocol pro)
+{
+    protocols_.push_back(pro);
+}
+
+const std::deque<Protocol> & RawPacket::protocols() const
+{
+    return protocols_;
+}
+
 mac_addr & RawPacket::src_mac()
 {
     return src_mac_addr;

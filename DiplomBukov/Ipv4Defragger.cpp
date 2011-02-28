@@ -52,7 +52,10 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, IPacketPtr & pack
             fullPacket = NULL;
 
             if (nextProcessor != 0)
-                nextProcessor->forwardProcess(ipv4->proto, packet, offset + ipv4->size());
+            {
+                Protocol::TransportLayer prot = (Protocol::TransportLayer)ipv4->proto;
+                nextProcessor->forwardProcess(prot, packet, offset + ipv4->size());
+            }
         }
     }
 

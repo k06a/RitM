@@ -56,7 +56,8 @@ void FileAdapter::run()
         if (fread_s(packet->data(), packet->size(), 1, pph.orig_len, file1) == 0)
             break;
         
-        nextProcessor->forwardProcess(pfh.network, packet, 0); // Protocol::Ethernet_II
+        Protocol::NetworkLayer proto = (Protocol::NetworkLayer)pfh.network;
+        nextProcessor->forwardProcess(proto, packet, 0); // Protocol::Ethernet_II
 
         if (packet->status() == Packet::Accepted)
         {
