@@ -272,6 +272,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\IDuplexConnector.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IDuplexProcessor.h"
+					>
+				</File>
+				<File
 					RelativePath=".\IPacket.h"
 					>
 				</File>

@@ -12,8 +12,10 @@ namespace DiplomBukov
 
     class IPacket;
     class IConnector;
+    class IDuplexConnector;
     class IAdapter;
     class IProcessor;
+    class IDuplexProcessor;
 
     class IConnectorCreator;
     class IAdapterCreator;
@@ -31,9 +33,11 @@ namespace DiplomBukov
 
     typedef std::tr1::shared_ptr<IPacket> IPacketPtr;
     typedef std::tr1::shared_ptr<IConnector> IConnectorPtr;
+    typedef std::tr1::shared_ptr<IDuplexConnector> IDuplexConnectorPtr;
     typedef std::tr1::shared_ptr<IAdapter> IAdapterPtr;
     typedef std::tr1::shared_ptr<IProcessor> IProcessorPtr;
-
+    typedef std::tr1::shared_ptr<IDuplexProcessor> IDuplexProcessorPtr;
+    
     typedef std::tr1::shared_ptr<IConnectorCreator> IConnectorCreatorPtr;
     typedef std::tr1::shared_ptr<IAdapterCreator> IAdapterCreatorPtr;
     typedef std::tr1::shared_ptr<IProcessorCreator> IProcessorCreatorPtr;
