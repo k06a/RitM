@@ -435,6 +435,10 @@
 					Name="Processors"
 					>
 					<File
+						RelativePath=".\DuplexProcessor.h"
+						>
+					</File>
+					<File
 						RelativePath=".\Ipv4Defragger.cpp"
 						>
 					</File>

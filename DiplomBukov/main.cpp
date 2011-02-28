@@ -56,7 +56,7 @@ void print_arch(IProcessorPtr proc, std::string prefix = "")
     if (ip != 0)
     {
         std::cout << std::endl << prefix << ip->getProcessorName()
-                  << "(" << Protocol::text(ip->getProtocol()) << ")";
+                  << "(" << ip->getProtocol().name << ")";
         print_arch(ipp->getNextProcessor(), prefix + "    ");
         return;
     }
