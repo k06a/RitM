@@ -5,12 +5,15 @@ using namespace DiplomBukov;
 RawPacket::RawPacket(int size)
     : id_(0), time_(0), status_(Accepted)
     , real_size(size), data_(size)
+    , direction_(Unknown)
+
 {
 }
 
 RawPacket::RawPacket(u8 * ptr, int size)
     : id_(0), time_(0), status_(Accepted)
     , real_size(size), data_(ptr, ptr+size)
+    , direction_(Unknown)
 {
 }
 
@@ -46,7 +49,7 @@ IPacket::PacketPolicy RawPacket::status() const
 
 void RawPacket::setData(u8 * ptr, unsigned size)
 {
-    std::vector<u8> tmp(ptr, ptr+size);
+    std::deque<u8> tmp(ptr, ptr+size);
     data_.swap(tmp);    
 }
 
@@ -63,6 +66,12 @@ unsigned RawPacket::size() const
 u8 * RawPacket::data()
 {
     return &data_[0];
+}
+
+void RawPacket::push_front(int length)
+{
+    for (int i = 0; i < length; i++)
+        data_.push_front(0);
 }
 
 void RawPacket::setRealSize(unsigned size)
@@ -103,6 +112,16 @@ void RawPacket::addProtocol(Protocol pro)
 const std::deque<Protocol> & RawPacket::protocols() const
 {
     return protocols_;
+}
+
+void RawPacket::setDirection(IPacket::Direction dir)
+{
+    direction_ = dir;
+}
+
+IPacket::Direction RawPacket::direction() const
+{
+    return direction_;
 }
 
 mac_addr & RawPacket::src_mac()

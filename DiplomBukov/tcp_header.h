@@ -34,6 +34,11 @@ namespace DiplomBukov
         u16 window_size;    /* window */
         u16 check_sum;      /* checksum */
         u16 urgent_ptr;     /* urgent pointer */
+
+        tcp_header()
+        {
+            memset(this, 0, sizeof(tcp_header));
+        }
     };
     #pragma pack(pop)
 }

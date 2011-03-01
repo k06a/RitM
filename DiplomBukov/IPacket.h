@@ -13,6 +13,13 @@ namespace DiplomBukov
     class IPacket
     {
     public:
+        enum Direction
+        {
+            Unknown,
+            ClientToServer,
+            ServerToClient
+        };
+
         enum PacketPolicy
         {
             Accepted,
@@ -34,6 +41,7 @@ namespace DiplomBukov
         virtual u8 & operator [] (unsigned index) = 0;
         virtual unsigned size() const = 0;
         virtual u8 * data() = 0;
+        virtual void push_front(int length) = 0;
 
         virtual void setRealSize(unsigned size) = 0;
         virtual unsigned realSize() const = 0;
@@ -46,6 +54,9 @@ namespace DiplomBukov
 
         virtual void addProtocol(Protocol pro) = 0;
         virtual const std::deque<Protocol> & protocols() const = 0;
+
+        virtual void setDirection(Direction dir) = 0;
+        virtual Direction direction() const = 0;
 
         virtual mac_addr & src_mac() = 0;
         virtual mac_addr & dst_mac() = 0;
