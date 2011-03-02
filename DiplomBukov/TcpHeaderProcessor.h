@@ -1,5 +1,5 @@
-#ifndef TCPPROCESSOR_H
-#define TCPPROCESSOR_H
+#ifndef TCPHEADERPROCESSOR_H
+#define TCPHEADERPROCESSOR_H
 
 #include <map>
 #include "IPacket.h"
@@ -9,7 +9,7 @@
 
 namespace DiplomBukov
 {
-    class TcpProcessor : public AbstractProcessor
+    class TcpHeaderProcessor : public AbstractProcessor
     {
         tcp_header header;
         u16 & server_port;
@@ -18,7 +18,7 @@ namespace DiplomBukov
         u32 & clientSequenceNumber;
 
     public:
-        TcpProcessor(IProcessorPtr Connector = IProcessorPtr());
+        TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -27,8 +27,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpSplitter
+    // class TcpHeaderProcessor
 }
 // namespace DiplomBukov
 
-#endif // TCPPROCESSOR_H
+#endif // TCPHEADERPROCESSOR_H

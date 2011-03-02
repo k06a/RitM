@@ -1,9 +1,9 @@
-#include "TcpProcessor.h"
+#include "TcpHeaderProcessor.h"
 #include "tcp_header.h"
 
 using namespace DiplomBukov;
 
-TcpProcessor::TcpProcessor(IProcessorPtr Connector)
+TcpHeaderProcessor::TcpHeaderProcessor(IProcessorPtr Connector)
     : server_port(header.dst_port)
     , client_port(header.src_port)
     , serverSequenceNumber(header.ack)
@@ -12,12 +12,12 @@ TcpProcessor::TcpProcessor(IProcessorPtr Connector)
     setNextProcessor(Connector);
 }
 
-IProcessorPtr TcpProcessor::CreateCopy() const
+IProcessorPtr TcpHeaderProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new TcpProcessor(nextProcessor->CreateCopy()));
+    return IProcessorPtr(new TcpHeaderProcessor(nextProcessor->CreateCopy()));
 }
 
-ProcessingStatus TcpProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -54,7 +54,7 @@ ProcessingStatus TcpProcessor::forwardProcess(Protocol proto, IPacketPtr & packe
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     int dataLength = packet->size() - offset;
 
@@ -84,12 +84,12 @@ ProcessingStatus TcpProcessor::backwardProcess(Protocol proto, IPacketPtr & pack
     return ProcessingStatus::Accepted;
 }
 
-const char * TcpProcessor::getProcessorName()
+const char * TcpHeaderProcessor::getProcessorName()
 {
-    return "TcpProcessor";
+    return "TcpHeaderProcessor";
 }
 
-Protocol TcpProcessor::getProtocol()
+Protocol TcpHeaderProcessor::getProtocol()
 {
     return Protocol::TCP;
 }

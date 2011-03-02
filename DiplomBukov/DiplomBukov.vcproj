@@ -482,11 +482,11 @@
 							>
 						</File>
 						<File
-							RelativePath=".\TcpProcessor.cpp"
+							RelativePath=".\TcpHeaderProcessor.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TcpProcessor.h"
+							RelativePath=".\TcpHeaderProcessor.h"
 							>
 						</File>
 						<File

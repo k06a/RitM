@@ -18,7 +18,7 @@
 #include "MacProcessor.h"
 #include "Ipv4Processor.h"
 #include "IcmpProcessor.h"
-#include "TcpProcessor.h"
+#include "TcpHeaderProcessor.h"
 #include "UdpProcessor.h"
 
 #include "Ipv4Splitter.h"
@@ -96,7 +96,7 @@ int main(int argc, char * argv[])
     IProcessorPtr macProcessor(new MacProcessor(NEW_Connector));
     IProcessorPtr rejector(new RejectProcessor(NEW_Connector));
     IProcessorPtr ipv4Processor(new Ipv4Processor(NEW_Connector));
-    IProcessorPtr tcpProcessor(new TcpProcessor(NEW_Connector));
+    IProcessorPtr tcpProcessor(new TcpHeaderProcessor(NEW_Connector));
     IProcessorPtr udpProcessor(new UdpProcessor(NEW_Connector));
     IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
     IProcessorPtr acceptor(new AcceptProcessor(NEW_Connector));

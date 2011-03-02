@@ -3,7 +3,7 @@
 using namespace DiplomBukov;
 
 UdpProcessor::UdpProcessor(IProcessorPtr Connector)
-    : TcpProcessor(Connector)
+    : TcpHeaderProcessor(Connector)
 {
 }
 

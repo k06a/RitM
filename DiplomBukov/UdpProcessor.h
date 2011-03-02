@@ -1,11 +1,11 @@
 #ifndef UDPPROCESSOR_H
 #define UDPPROCESSOR_H
 
-#include "TcpProcessor.h"
+#include "TcpHeaderProcessor.h"
 
 namespace DiplomBukov
 {
-    class UdpProcessor : public TcpProcessor
+    class UdpProcessor : public TcpHeaderProcessor
     {
     public:
         UdpProcessor(IProcessorPtr Connector = IProcessorPtr());
