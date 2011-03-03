@@ -1,5 +1,5 @@
-#ifndef MACPROCESSOR_H
-#define MACPROCESSOR_H
+#ifndef MACHEADERPROCESSOR_H
+#define MACHEADERPROCESSOR_H
 
 #include "CommonInclude.h"
 #include "IPacket.h"
@@ -7,19 +7,22 @@
 
 namespace DiplomBukov
 {
-    class MacProcessor : public AbstractProcessor
+    class MacHeaderProcessor : public AbstractProcessor
 	{
+        mac_header header;
+
 	public:
-		MacProcessor(IProcessorPtr Connector = IProcessorPtr());
+		MacHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 	};
-	// class MacProcessor
+	// class MacHeaderProcessor
 }
 // namespace DiplomBukov
 
-#endif // MACPROCESSOR_H
+#endif // MACHEADERPROCESSOR_H

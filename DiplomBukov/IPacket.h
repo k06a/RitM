@@ -40,14 +40,14 @@ namespace DiplomBukov
         virtual void setData(u8 * ptr, unsigned size) = 0;
         virtual u8 & operator [] (unsigned index) = 0;
         virtual unsigned size() const = 0;
-        virtual u8 * data() = 0;
+        virtual std::vector<u8> & data() = 0;
         virtual void push_front(int length) = 0;
 
         virtual void setRealSize(unsigned size) = 0;
         virtual unsigned realSize() const = 0;
 
-        virtual void setAdapter(IAdapterPtr ad) = 0;
-        virtual IAdapterPtr adapter() const = 0;
+        virtual void setAdapter(IAdapter * ad) = 0;
+        virtual IAdapter * adapter() const = 0;
 
         virtual void addProcessor(IProcessorPtr pro) = 0;
         virtual const std::deque<IProcessorPtr> & processors() const = 0;
@@ -60,6 +60,7 @@ namespace DiplomBukov
 
         virtual mac_addr & src_mac() = 0;
         virtual mac_addr & dst_mac() = 0;
+        virtual Protocol::NetworkLayer & format() = 0;
     };
     // class IPacket
 

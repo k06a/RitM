@@ -9,8 +9,8 @@ namespace DiplomBukov
     #pragma pack(push,1)
     struct tcp_header
     {
-        u16 src_port;   /* source port */
-        u16 dst_port;   /* destination port */
+        boolib::util::BigEndian<u16> src_port;   /* source port */
+        boolib::util::BigEndian<u16> dst_port;   /* destination port */
         u32 seq;        /* sequence number */
         u32 ack;        /* acknowledgment number */
         u8  reserved:4; /* (unused) */
@@ -72,7 +72,7 @@ namespace DiplomBukov
                 unsigned int dst_addr;      // адрес получателя
                 unsigned char zero ;        // начальная установка
                 unsigned char proto;        // протокол
-                boolib::util::LittleEndian<u16> length;   // длина заголовка
+                boolib::util::BigEndian<u16> length;   // длина заголовка
             
                 #pragma warning(push)
                 #pragma warning(disable:4200)

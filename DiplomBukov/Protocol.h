@@ -76,7 +76,7 @@ namespace DiplomBukov
         {
         }
 
-        Protocol(std::string name)
+        Protocol(const std::string & name)
             : name(name)
         {
         }

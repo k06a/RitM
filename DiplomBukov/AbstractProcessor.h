@@ -16,7 +16,8 @@ namespace DiplomBukov
 
     public:
         AbstractProcessor::AbstractProcessor()
-            : prevProcessor(), nextProcessor()
+            : Self(), prevProcessor()
+            , nextProcessor(), module()
         {
         }
 

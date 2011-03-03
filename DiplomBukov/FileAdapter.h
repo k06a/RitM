@@ -39,6 +39,8 @@ namespace DiplomBukov
 		virtual IProcessorPtr CreateCopy() const;
         ~FileAdapter();
         
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+
         virtual const char * getProcessorName();
 
 		virtual void run();

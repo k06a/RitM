@@ -1,25 +1,22 @@
-#ifndef TCPHEADERPROCESSOR_H
-#define TCPHEADERPROCESSOR_H
+#ifndef HTTPSWAPPROCESSOR_H
+#define HTTPSWAPPROCESSOR_H
 
-#include <map>
-#include "IPacket.h"
+#include <deque>
+
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
-#include "tcp_header.h"
-#include "i64u64.h"
 
 namespace DiplomBukov
 {
-    class TcpHeaderProcessor : public AbstractProcessor
+    class HttpSwapProcessor : public AbstractProcessor
     {
-        tcp_header header;
-        u16be & server_port;
-        u16be & client_port;
-        u32 & serverSequenceNumber;
-        u32 & clientSequenceNumber;
+        typedef std::deque<u8> MyDeque;
+
+        MyDeque blob;
+        int markCount;
 
     public:
-        TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
+        HttpSwapProcessor(IProcessorPtr processor = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -28,8 +25,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpHeaderProcessor
+    // class HttpSwapProcessor
 }
 // namespace DiplomBukov
 
-#endif // TCPHEADERPROCESSOR_H
+#endif // HTTPSWAPPROCESSOR_H

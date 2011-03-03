@@ -101,7 +101,7 @@ namespace DiplomBukov
 	{
 		mac_addr src;
 		mac_addr dst;
-		Protocol proto;
+        u16 proto;
 	};
 	#pragma pack(pop)
 }

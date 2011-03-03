@@ -1,5 +1,5 @@
-#ifndef IPV4PROCESSOR_H
-#define IPV4PROCESSOR_H
+#ifndef IPV4HEADERPROCESSOR_H
+#define IPV4HEADERPROCESSOR_H
 
 #include <map>
 #include <utility>
@@ -11,10 +11,14 @@
 
 namespace DiplomBukov
 {
-    class Ipv4Processor : public AbstractProcessor
+    class Ipv4HeaderProcessor : public AbstractProcessor
     {
+        ipv4_header header;
+        ipv4_addr & client_ip;
+        ipv4_addr & server_ip;
+        
     public:
-        Ipv4Processor(IProcessorPtr Connector = IProcessorPtr());
+        Ipv4HeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -22,8 +26,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class Ipv4Processor
+    // class Ipv4HeaderProcessor
 }
 // namespace DiplomBukov
 
-#endif // IPV4PROCESSOR_H
+#endif // IPV4HEADERPROCESSOR_H

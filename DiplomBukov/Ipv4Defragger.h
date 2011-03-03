@@ -24,7 +24,7 @@ namespace DiplomBukov
 
         void append(int offset, u8 * ptr, int size, bool flag_mf)
         {
-            memcpy(pack->data() + offset, ptr, size);
+            std::copy(pack->data().begin() + offset, pack->data().end(), ptr);
             std::fill(mask.begin()+offset, mask.begin()+offset+size, true);
 
             if (!flag_mf)

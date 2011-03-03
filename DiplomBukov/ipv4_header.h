@@ -16,12 +16,29 @@ namespace DiplomBukov
 			u32 dword;
 		};
 
+        ipv4_addr(const int value = 0)
+        {
+            dword = value;
+        }
+
         bool operator < (const ipv4_addr & addr) const
         {
             return (dword < addr.dword);
         }
+
+        bool operator == (const ipv4_addr & addr) const
+        {
+            return (dword == addr.dword);
+        }
+
+        bool operator != (const ipv4_addr & addr) const
+        {
+            return (dword != addr.dword);
+        }
 	};
 	#pragma pack(pop)
+
+    //
 
 	#pragma pack(push,1)
 	struct ipv4_header
@@ -72,11 +89,6 @@ namespace DiplomBukov
 		ipv4_addr src_data;
 		ipv4_addr dst_data;
 
-        // ----------------------------------------------
-        #pragma warning(push)
-        #pragma warning(disable:4200)
-        u8 data[];
-        #pragma warning(pop)
         // ----------------------------------------------
 
         /*
@@ -134,6 +146,18 @@ namespace DiplomBukov
         }
 	};
 	#pragma pack(pop)
+
+    //
+
+    #pragma pack(push,1)
+    struct ipv4_header_data : public ipv4_header
+    {
+        #pragma warning(push)
+        #pragma warning(disable:4200)
+        u8 data[0];
+        #pragma warning(pop)
+    };
+    #pragma pack(pop)
 }
 // namespace DiplomBukov
 

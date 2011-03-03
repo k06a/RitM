@@ -34,6 +34,27 @@ const char * FileAdapter::getProcessorName()
     return "FileAdapter";
 }
 
+
+ProcessingStatus FileAdapter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+{
+    if (packet->status() == Packet::Rejected)
+        return ProcessingStatus::Accepted;
+
+    pcap_packet_header pph;
+    pph.ts_sec = packet->time();
+    pph.ts_usec = 0;
+    pph.incl_len = packet->realSize();
+    pph.orig_len = packet->realSize();
+    fwrite(&pph, sizeof(pph), 1, file2);
+
+    char * buf = new char [65536];
+    std::copy(packet->data().begin(), packet->data().end(), buf);
+    fwrite(buf+offset, packet->realSize()-offset, 1, file2);
+    delete [] buf;
+
+    return ProcessingStatus::Accepted;
+}
+
 void FileAdapter::run()
 {
     pcap_file_header pfh;
@@ -41,6 +62,8 @@ void FileAdapter::run()
     fwrite(&pfh, sizeof(pfh), 1, file2);
 
     unsigned id = 1;
+    std::deque<IPacketPtr> * packets = new std::deque<IPacketPtr>();
+    u8 * buf = new u8 [65536];
     while (true)
 	{
         int ret;
@@ -48,17 +71,21 @@ void FileAdapter::run()
         ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file1);
         if (ret == 0) break;
 
-        IPacketPtr packet(new RawPacket(pph.incl_len));
+        ret = fread_s(buf, 65536, 1, pph.orig_len, file1);
+        if (ret == 0)
+            break;
+
+        IPacketPtr packet(new RawPacket(buf, ret));
         packet->setId(id++);
         packet->setTime(pph.ts_sec);
-        packet->setAdapter(IAdapterPtr(this));
-
-        if (fread_s(packet->data(), packet->size(), 1, pph.orig_len, file1) == 0)
-            break;
+        packet->setAdapter(this);
         
-        Protocol::NetworkLayer proto = (Protocol::NetworkLayer)pfh.network;
+        Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)pfh.network;
         nextProcessor->forwardProcess(proto, packet, 0); // Protocol::Ethernet_II
 
+        packets->push_front(packet);
+        
+        /*
         if (packet->status() == Packet::Accepted)
         {
             pph.incl_len = packet->realSize();
@@ -66,5 +93,7 @@ void FileAdapter::run()
             fwrite(&pph, sizeof(pph), 1, file2);
             fwrite(packet->data(), packet->realSize(), 1, file2);
         }
+        */
 	}
+    delete [] buf;
 }

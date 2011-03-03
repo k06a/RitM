@@ -15,11 +15,12 @@ namespace DiplomBukov
         unsigned time_;
         PacketPolicy status_;
         unsigned real_size;
-        std::deque<u8> data_;
-        IAdapterPtr adapter_;
+        std::vector<u8> data_;
+        IAdapter * adapter_;
         std::deque<IProcessorPtr> processors_;
         std::deque<Protocol> protocols_;
         Direction direction_;
+        Protocol::NetworkLayer format_;
         mac_addr src_mac_addr;
         mac_addr dst_mac_addr;
 
@@ -39,14 +40,14 @@ namespace DiplomBukov
         virtual void setData(u8 * ptr, unsigned size);
         virtual u8 & operator [] (unsigned index);
         virtual unsigned size() const;
-        virtual u8 * data();
+        virtual std::vector<u8> & data();
         virtual void push_front(int length);
 
         virtual void setRealSize(unsigned size);
         virtual unsigned realSize() const;
 
-        virtual void setAdapter(IAdapterPtr ad);
-        virtual IAdapterPtr adapter() const;
+        virtual void setAdapter(IAdapter * ad);
+        virtual IAdapter * adapter() const;
 
         virtual void addProcessor(IProcessorPtr pro);
         virtual const std::deque<IProcessorPtr> & processors() const;
@@ -59,6 +60,7 @@ namespace DiplomBukov
 
         virtual mac_addr & src_mac();
         virtual mac_addr & dst_mac();
+        virtual Protocol::NetworkLayer & format();
     };
     // class RawPacket
 }

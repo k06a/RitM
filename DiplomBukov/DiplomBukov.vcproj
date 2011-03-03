@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4250"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -327,6 +327,10 @@
 					RelativePath=".\tcp_header.h"
 					>
 				</File>
+				<File
+					RelativePath=".\udp_header.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -466,19 +470,19 @@
 							>
 						</File>
 						<File
-							RelativePath=".\Ipv4Processor.cpp"
+							RelativePath=".\Ipv4HeaderProcessor.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\Ipv4Processor.h"
+							RelativePath=".\Ipv4HeaderProcessor.h"
 							>
 						</File>
 						<File
-							RelativePath=".\MacProcessor.cpp"
+							RelativePath=".\MacHeaderProcessor.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\MacProcessor.h"
+							RelativePath=".\MacHeaderProcessor.h"
 							>
 						</File>
 						<File
@@ -490,11 +494,11 @@
 							>
 						</File>
 						<File
-							RelativePath=".\UdpProcessor.cpp"
+							RelativePath=".\UdpHeaderProcessor.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\UdpProcessor.h"
+							RelativePath=".\UdpHeaderProcessor.h"
 							>
 						</File>
 					</Filter>
@@ -543,6 +547,18 @@
 						</File>
 						<File
 							RelativePath=".\RejectProcessor.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Applicative"
+						>
+						<File
+							RelativePath=".\HttpSwapProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\HttpSwapProcessor.h"
 							>
 						</File>
 					</Filter>

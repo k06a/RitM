@@ -18,9 +18,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(Self);
-
-    tcp_header * tcp = (tcp_header *)(packet->data() + offset);
+    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
 
     unsigned short adr1 = tcp->src_port;
     unsigned short adr2 = tcp->dst_port;
@@ -35,8 +33,9 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
             Connectors[para] = nextProcessor->CreateCopy();
     }
 
+    packet->addProcessor(Self);
     if (nextProcessor != NULL)
-        Connectors[para]->forwardProcess(Protocol::None, packet, offset + tcp->header_size());
+        Connectors[para]->forwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

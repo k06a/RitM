@@ -22,19 +22,17 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(packet->data() + offset);
+    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
 
     // Copy header of first packet ClientToServer
     if ((server_port == 0) && (client_port == 0))
-    {
         header = *tcp;
-    }
     
     // Determine direction
     if ((packet->direction() == IPacket::Unknown) && (tcp->src_port != tcp->dst_port))
     {
         bool cts = (tcp->src_port == client_port);
-        packet->setDirection(cts ? IPacket::ServerToClient : IPacket::ClientToServer);
+        packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
 
     switch (packet->direction())
@@ -47,9 +45,15 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
             break;
     }
 
+    char pr[10];
+    if (packet->direction() == IPacket::ClientToServer)
+        sprintf_s(pr, sizeof(pr), "TCP_%d", (int)(tcp->dst_port));
+    else
+        sprintf_s(pr, sizeof(pr), "TCP_%d", (int)(tcp->src_port));
+
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
-        nextProcessor->forwardProcess(Protocol::None, packet, offset + tcp->header_size());
+        nextProcessor->forwardProcess(std::string(pr), packet, offset + tcp->header_size());
 
     return ProcessingStatus::Accepted;
 }
@@ -64,7 +68,7 @@ ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
         offset = sizeof(header);
     }
 
-    tcp_header * tcp = (tcp_header *)(packet->data() + offset - sizeof(header));
+    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset - sizeof(header));
     *tcp = header;
     if (packet->direction() == IPacket::ServerToClient)
     {
@@ -76,10 +80,12 @@ ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
     {
         clientSequenceNumber += dataLength;
     }
-    
+
+    // Or server if swapped
+    tcp->seq += dataLength;
     
     if (prevProcessor != NULL)
-        prevProcessor->forwardProcess(Protocol::None, packet, offset + tcp->header_size());
+        prevProcessor->backwardProcess(Protocol::None, packet, offset - tcp->header_size());
 
     return ProcessingStatus::Accepted;
 }

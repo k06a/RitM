@@ -49,7 +49,7 @@ IPacket::PacketPolicy RawPacket::status() const
 
 void RawPacket::setData(u8 * ptr, unsigned size)
 {
-    std::deque<u8> tmp(ptr, ptr+size);
+    std::vector<u8> tmp(ptr, ptr+size);
     data_.swap(tmp);    
 }
 
@@ -63,15 +63,15 @@ unsigned RawPacket::size() const
     return data_.size();
 }
 
-u8 * RawPacket::data()
+std::vector<u8> & RawPacket::data()
 {
-    return &data_[0];
+    return data_;
 }
 
 void RawPacket::push_front(int length)
 {
-    for (int i = 0; i < length; i++)
-        data_.push_front(0);
+    std::vector<u8> tmp(data_.size() + length, 0);
+    std::copy(data_.begin(), data_.end(), tmp.begin() + length);
 }
 
 void RawPacket::setRealSize(unsigned size)
@@ -84,19 +84,19 @@ unsigned RawPacket::realSize() const
     return real_size;
 }
 
-void RawPacket::setAdapter(IAdapterPtr ad)
+void RawPacket::setAdapter(IAdapter * ad)
 {
     adapter_ = ad;
 }
 
-IAdapterPtr RawPacket::adapter() const
+IAdapter * RawPacket::adapter() const
 {
     return adapter_;
 }
 
 void RawPacket::addProcessor(IProcessorPtr pro)
 {
-    processors_.push_back(pro);
+    //processors_.push_back(pro);
 }
 
 const std::deque<IProcessorPtr> & RawPacket::processors() const
@@ -106,7 +106,7 @@ const std::deque<IProcessorPtr> & RawPacket::processors() const
 
 void RawPacket::addProtocol(Protocol pro)
 {
-    protocols_.push_back(pro);
+    //protocols_.push_back(pro);
 }
 
 const std::deque<Protocol> & RawPacket::protocols() const
@@ -132,4 +132,9 @@ mac_addr & RawPacket::src_mac()
 mac_addr & RawPacket::dst_mac()
 {
     return dst_mac_addr;
+}
+
+Protocol::NetworkLayer & RawPacket::format()
+{
+    return format_;
 }
