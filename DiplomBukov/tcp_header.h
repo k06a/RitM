@@ -9,19 +9,20 @@ namespace DiplomBukov
     #pragma pack(push,1)
     struct tcp_header
     {
-        boolib::util::BigEndian<u16> src_port;   /* source port */
-        boolib::util::BigEndian<u16> dst_port;   /* destination port */
-        u32 seq;        /* sequence number */
-        u32 ack;        /* acknowledgment number */
-        u8  reserved:4; /* (unused) */
+        u16be src_port;   /* source port */
+        u16be dst_port;   /* destination port */
+        u32be seq;        /* sequence number */
+        u32be ack;        /* acknowledgment number */
+        u8 reserved:4;    /* (unused) */
     private:
-        u8  offset:4;   /* data offset */
+        u8 offset:4;      /* data offset */
     public:
-        const int header_size() const {
+        const int header_size() const
+        {
             return (offset << 2);
         }
 
-        struct {
+        struct flags_struct {
             u8 flags_fin:1;  // 0x01
             u8 flags_syn:1;  // 0x02
             u8 flags_rst:1;  // 0x04
@@ -30,18 +31,23 @@ namespace DiplomBukov
             u8 flags_urg:1;  // 0x20
             u8 flags_res2:1; // 0x40
             u8 flags_res1:1; // 0x80
+
+            flags_struct()
+            {
+                *(u8*)this = 0;
+            }
         } flags;
 
-        u16 window_size;    /* window */
-        u16 check_sum;      /* checksum */
-        u16 urgent_ptr;     /* urgent pointer */
+        u16be window_size;    /* window */
+        u16be check_sum;      /* checksum */
+        u16be urgent_ptr;     /* urgent pointer */
 
         tcp_header()
         {
             memset(this, 0, sizeof(tcp_header));
         }
 
-        //Вычисление контрольной суммы TCP сегмента
+        // Вычисление контрольной суммы TCP сегмента
         static u16 crc16(u16 * buffer, int length)
         {
             u32 crc = 0;
@@ -68,11 +74,11 @@ namespace DiplomBukov
             #pragma pack(push,1)
             struct pseudo_header
             {
-                unsigned int src_addr;      // адрес отправителя
-                unsigned int dst_addr;      // адрес получателя
-                unsigned char zero ;        // начальная установка
-                unsigned char proto;        // протокол
-                boolib::util::BigEndian<u16> length;   // длина заголовка
+                u32be src_addr;      // адрес отправителя
+                u32be dst_addr;      // адрес получателя
+                u8    zero;         // начальная установка
+                u8    proto;        // протокол
+                u16be length;   // длина заголовка
             
                 #pragma warning(push)
                 #pragma warning(disable:4200)

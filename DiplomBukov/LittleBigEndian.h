@@ -17,6 +17,14 @@ namespace boolib
 		#define IS_BIG_ENDIAN    (CURRENT_BYTE_ORDER == BIG_ENDIAN_BYTE_ORDER)
 		#define IS_PDP_ENDIAN    (CURRENT_BYTE_ORDER == PDP_ENDIAN_BYTE_ORDER)
 
+        // Forward declaration
+
+        template<typename T>
+        class LittleEndian;
+
+        template<typename T>
+        class BigEndian;
+
 		// Little-Endian template
 
 		#pragma pack(push,1)
@@ -30,6 +38,18 @@ namespace boolib
 			{
 				operator =(t);
 			}
+
+            LittleEndian(const LittleEndian<T> & t)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                    bytes[i] = t.bytes[i];
+            }
+
+            LittleEndian(const BigEndian<T> & t)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                    bytes[i] = t.bytes[sizeof(T)-1-i];
+            }
 
 			operator const T() const
 			{
@@ -47,6 +67,31 @@ namespace boolib
 					bytes[i] = t >> (i << 3);
 				return t;
 			}
+
+            const T operator += (const T t)
+            {
+                return (*this = *this + t);
+            }
+
+            const T operator -= (const T t)
+            {
+                return (*this = *this - t);
+            }
+
+            const T operator *= (const T t)
+            {
+                return (*this = *this * t);
+            }
+
+            const T operator /= (const T t)
+            {
+                return (*this = *this / t);
+            }
+
+            const T operator %= (const T t)
+            {
+                return (*this = *this % t);
+            }
 		};
 		#pragma pack(pop)
 
@@ -64,6 +109,18 @@ namespace boolib
 				operator =(t);
 			}
 
+            BigEndian(const BigEndian<T> & t)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                    bytes[i] = t.bytes[i];
+            }
+
+            BigEndian(const LittleEndian<T> & t)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                    bytes[i] = t.bytes[sizeof(T)-1-i];
+            }
+
 			operator const T() const
 			{
 				T t = T();
@@ -80,6 +137,31 @@ namespace boolib
 					bytes[sizeof(T) - 1 - i] = t >> (i << 3);
 				return t;
 			}
+
+            const T operator += (const T t)
+            {
+                return (*this = *this + t);
+            }
+
+            const T operator -= (const T t)
+            {
+                return (*this = *this - t);
+            }
+
+            const T operator *= (const T t)
+            {
+                return (*this = *this * t);
+            }
+
+            const T operator /= (const T t)
+            {
+                return (*this = *this / t);
+            }
+
+            const T operator %= (const T t)
+            {
+                return (*this = *this % t);
+            }
 		};
 		#pragma pack(pop)
 

@@ -328,6 +328,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\tcpudp_header.h"
+					>
+				</File>
+				<File
 					RelativePath=".\udp_header.h"
 					>
 				</File>
@@ -486,21 +490,41 @@
 							>
 						</File>
 						<File
-							RelativePath=".\TcpHeaderProcessor.cpp"
+							RelativePath=".\TransportPortProcessor.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\TcpHeaderProcessor.h"
+							RelativePath=".\TransportPortProcessor.h"
 							>
 						</File>
-						<File
-							RelativePath=".\UdpHeaderProcessor.cpp"
+						<Filter
+							Name="Tcp"
 							>
-						</File>
-						<File
-							RelativePath=".\UdpHeaderProcessor.h"
-							>
-						</File>
+							<File
+								RelativePath=".\TcpFlagsProcessor.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\TcpFlagsProcessor.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TcpHeaderProcessor.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\TcpHeaderProcessor.h"
+								>
+							</File>
+							<File
+								RelativePath=".\TcpSequenceProcessor.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\TcpSequenceProcessor.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Splitters"

@@ -18,8 +18,7 @@
 #include "MacHeaderProcessor.h"
 #include "Ipv4HeaderProcessor.h"
 #include "IcmpProcessor.h"
-#include "TcpHeaderProcessor.h"
-#include "UdpHeaderProcessor.h"
+#include "TransportPortProcessor.h"
 #include "HttpSwapProcessor.h"
 
 #include "Ipv4Splitter.h"
@@ -98,15 +97,13 @@ int main(int argc, char * argv[])
     IProcessorPtr ipSplitter(new Ipv4Splitter(NEW_Connector));
     IProcessorPtr ipProcessor(new Ipv4HeaderProcessor(NEW_Connector));
     IProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
-    IProcessorPtr tcpProcessor(new TcpHeaderProcessor(NEW_Connector));
-    IProcessorPtr udpProcessor(new UdpHeaderProcessor(NEW_Connector));
+    IProcessorPtr portProcessor(new TransportPortProcessor(NEW_Connector));
     IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
     IProcessorPtr httpProcessor(new HttpSwapProcessor(NEW_Connector));
     
     ProcessorModule * macModule  = new ProcessorModule(macProcessor);
     ProcessorModule * ipModule = new ProcessorModule(ipProcessor);
-    ProcessorModule * tcpModule  = new ProcessorModule(tcpProcessor);
-    ProcessorModule * udpModule  = new ProcessorModule(udpProcessor);
+    ProcessorModule * tcpModule  = new ProcessorModule(portProcessor);
     ProcessorModule * icmpModule = new ProcessorModule(icmpProcessor);
 
     #define connect(a,b) a->getNextProcessor()->setNextProcessor(b)
@@ -115,14 +112,13 @@ int main(int argc, char * argv[])
         connect(macProcessor, ipSplitter);
             connect(ipSplitter, ipProcessor);
                 connect(ipProcessor, tcpSplitter);
-                    connect(tcpSplitter, tcpProcessor);
-                    connect(tcpProcessor, httpProcessor);
+                    connect(tcpSplitter, portProcessor);
+                    connect(portProcessor, httpProcessor);
     
     fileAdapter->setSelf(fileAdapter);
     macProcessor->setSelf(macProcessor);
     ipProcessor->setSelf(ipProcessor);
-    tcpProcessor->setSelf(tcpProcessor);
-    udpProcessor->setSelf(udpProcessor);
+    portProcessor->setSelf(portProcessor);
     icmpProcessor->setSelf(icmpProcessor);
     
     print_arch(fileAdapter);

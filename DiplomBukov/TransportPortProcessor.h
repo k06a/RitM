@@ -1,19 +1,23 @@
-#ifndef TCPHEADERPROCESSOR_H
-#define TCPHEADERPROCESSOR_H
+#ifndef TCPPORTPROCESSOR_H
+#define TCPPORTPROCESSOR_H
 
 #include <map>
-
+#include "IPacket.h"
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
-#include "IPacket.h"
 #include "tcp_header.h"
+#include "i64u64.h"
 
 namespace DiplomBukov
 {
-    class TcpHeaderProcessor : public AbstractProcessor
+    class TransportPortProcessor : public AbstractProcessor
     {
+        Protocol inProt;
+        u16be server_port;
+        u16be client_port;
+        
     public:
-        TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
+        TransportPortProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -22,8 +26,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpHeaderProcessor
+    // class TransportPortProcessor
 }
 // namespace DiplomBukov
 
-#endif // TCPHEADERPROCESSOR_H
+#endif // TCPPORTPROCESSOR_H

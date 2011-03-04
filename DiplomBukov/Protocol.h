@@ -81,6 +81,17 @@ namespace DiplomBukov
         {
         }
 
+        Protocol(const Protocol & proto)
+            : name(proto.name)
+        {
+        }
+
+        Protocol & operator = (const Protocol & proto)
+        {
+            name = proto.name;
+            return (*this);
+        }
+
 		bool operator < (const Protocol & proto) const
         {
             return name < proto.name;

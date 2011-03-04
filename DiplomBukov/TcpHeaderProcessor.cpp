@@ -1,13 +1,8 @@
 #include "TcpHeaderProcessor.h"
-#include "tcp_header.h"
 
 using namespace DiplomBukov;
 
 TcpHeaderProcessor::TcpHeaderProcessor(IProcessorPtr Connector)
-    : server_port(header.dst_port)
-    , client_port(header.src_port)
-    , serverSequenceNumber(header.ack)
-    , clientSequenceNumber(header.seq)
 {
     setNextProcessor(Connector);
 }
@@ -23,69 +18,30 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
-
-    // Copy header of first packet ClientToServer
-    if ((server_port == 0) && (client_port == 0))
-        header = *tcp;
-    
-    // Determine direction
-    if ((packet->direction() == IPacket::Unknown) && (tcp->src_port != tcp->dst_port))
-    {
-        bool cts = (tcp->src_port == client_port);
-        packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
-    }
-
-    switch (packet->direction())
-    {
-        case IPacket::ClientToServer:
-            clientSequenceNumber += packet->size() - offset;
-            break;
-        case IPacket::ServerToClient:
-            serverSequenceNumber += packet->size() - offset;
-            break;
-    }
-
-    char pr[10];
-    if (packet->direction() == IPacket::ClientToServer)
-        sprintf_s(pr, sizeof(pr), "TCP_%d", (int)(tcp->dst_port));
-    else
-        sprintf_s(pr, sizeof(pr), "TCP_%d", (int)(tcp->src_port));
+    offset += tcp->header_size();
 
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
-        nextProcessor->forwardProcess(std::string(pr), packet, offset + tcp->header_size());
+        nextProcessor->forwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;
 }
 
 ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    int dataLength = packet->size() - offset;
-
-    if (offset < sizeof(header))
+    if (sizeof(tcp_header) > offset)
     {
-        packet->push_front(sizeof(header) - offset);
-        offset = sizeof(header);
+        int needBytes = sizeof(tcp_header) - offset;
+        packet->push_front(needBytes);
+        offset = sizeof(tcp_header);
     }
+    offset -= sizeof(tcp_header);
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset - sizeof(header));
-    *tcp = header;
-    if (packet->direction() == IPacket::ServerToClient)
-    {
-        std::swap(tcp->seq, tcp->ack);
-        std::swap(tcp->src_port, tcp->dst_port);
-        serverSequenceNumber += dataLength;
-    }
-    else
-    {
-        clientSequenceNumber += dataLength;
-    }
-
-    // Or server if swapped
-    tcp->seq += dataLength;
+    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+    memset(tcp, 0, sizeof(tcp_header));
     
     if (prevProcessor != NULL)
-        prevProcessor->backwardProcess(Protocol::None, packet, offset - tcp->header_size());
+        prevProcessor->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

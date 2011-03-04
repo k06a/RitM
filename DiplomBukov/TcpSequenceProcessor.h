@@ -1,19 +1,24 @@
-#ifndef TCPHEADERPROCESSOR_H
-#define TCPHEADERPROCESSOR_H
+#ifndef TCPSEQUENCEPROCESSOR_H
+#define TCPSEQUENCEPROCESSOR_H
 
 #include <map>
-
+#include "IPacket.h"
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
-#include "IPacket.h"
 #include "tcp_header.h"
+#include "i64u64.h"
 
 namespace DiplomBukov
 {
-    class TcpHeaderProcessor : public AbstractProcessor
+    class TcpSequenceProcessor : public AbstractProcessor
     {
+        u32be originClientSN;
+        u32be originServerSN;
+        u32be actualClientSN;
+        u32be actualServerSN;
+
     public:
-        TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
+        TcpSequenceProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -22,8 +27,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpHeaderProcessor
+    // class TcpSequenceProcessor
 }
 // namespace DiplomBukov
 
-#endif // TCPHEADERPROCESSOR_H
+#endif // TCPSEQUENCEPROCESSOR_H
