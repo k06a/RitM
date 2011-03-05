@@ -46,6 +46,30 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr 
     return ProcessingStatus::Accepted;
 }
 
+ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+{
+    if (sizeof(ipv4_header) > offset)
+    {
+        int needBytes = sizeof(ipv4_header) - offset;
+        packet->push_front(needBytes);
+        offset = sizeof(ipv4_header);
+    }
+    offset -= sizeof(ipv4_header);
+
+    ipv4_header * ip = (ipv4_header *)(&packet->data()[0] + offset);
+    *ip = header;
+
+    ip->proto = proto.code;
+    ip->totalLength = packet->realSize() - offset;
+    if (packet->direction() == IPacket::ServerToClient)
+        std::swap(ip->src_data, ip->dst_data);
+    
+    if (prevProcessor != NULL)
+        nextProcessor->forwardProcess(getProtocol(), packet, offset + ip->size());
+    
+    return ProcessingStatus::Accepted;
+}
+
 const char * Ipv4HeaderProcessor::getProcessorName()
 {
     return "Ipv4HeaderProcessor";

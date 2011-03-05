@@ -28,6 +28,8 @@ namespace DiplomBukov
 
         virtual ~IPacket() {}
 
+        virtual IPacketPtr CreateCopy() const = 0;
+
         virtual void setId(unsigned id) = 0;
         virtual unsigned id() const = 0;
 
@@ -57,6 +59,7 @@ namespace DiplomBukov
 
         virtual void setDirection(Direction dir) = 0;
         virtual Direction direction() const = 0;
+        virtual bool swapDirection() = 0;
 
         virtual mac_addr & src_mac() = 0;
         virtual mac_addr & dst_mac() = 0;

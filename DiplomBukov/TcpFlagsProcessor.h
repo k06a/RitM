@@ -14,22 +14,16 @@ namespace DiplomBukov
     {
         enum ConnectionStatus
         {
-            CLOSED,         // Server wait for anyone connection
-            LISTEN,         // Server waits for client requests
-            SYN_SENT,       // Client sends SYN and waits
-            SYN_RECEIVED,   // Server answered ACK, and send SYN and waits
-            ESTABLISHED,    // Connection established
-            FIN_WAIT_1,     // One side send FIN and waits
-            CLOSE_WAIT,     // Other side answers ACK, ans sends data
-            FIN_WAIT_2,     // Person witch sends first FIN receive data
-            LAST_ACK,       // Other side sends FIN too
-            TIME_WAIT,      // Person received FIN and waits for 2*MSL secs
-            CLOSING         // First send FIN, and second send ACK+FIN and wait ACK
+            CLOSED,      // No any activity
+            SYN_FIRST,   // Client sends SYN and waits
+            SYN_SECOND,  // Server answered ACK, and send SYN and waits
+            ESTABLISHED, // Connection established
+            TIME_WAIT    // Person received FIN and waits for 2*MSL secs
         };
 
         ConnectionStatus connectionStatus;
-        tcp_header::flags_struct serverExpextedFlags;
-        tcp_header::flags_struct clientExpextedFlags;
+        tcp_header::flags_struct flagsForClient;
+        tcp_header::flags_struct flagsForServer;
 
     public:
         TcpFlagsProcessor(IProcessorPtr Connector = IProcessorPtr());

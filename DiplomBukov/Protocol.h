@@ -9,6 +9,7 @@ namespace DiplomBukov
 	struct Protocol
 	{
         std::string name;
+        int code;
 
         enum PhysicalLayer
 		{
@@ -62,54 +63,55 @@ namespace DiplomBukov
         }
 
 		Protocol(PhysicalLayer proto = None)
-			: name(text(proto))
+			: name(text(proto)), code(proto)
 		{
 		}
 
         Protocol(NetworkLayer proto)
-            : name(text(proto))
+            : name(text(proto)), code(proto)
         {
         }
 
         Protocol(TransportLayer proto)
-            : name(text(proto))
+            : name(text(proto)), code(proto)
         {
         }
 
-        Protocol(const std::string & name)
-            : name(name)
+        Protocol(const std::string & name, int proto)
+            : name(name), code(proto)
         {
         }
 
         Protocol(const Protocol & proto)
-            : name(proto.name)
+            : name(proto.name), code(proto.code)
         {
         }
 
         Protocol & operator = (const Protocol & proto)
         {
             name = proto.name;
+            code = proto.code;
             return (*this);
         }
 
 		bool operator < (const Protocol & proto) const
         {
-            return name < proto.name;
+            return (name < proto.name);
         }
 
         bool operator == (const Protocol & proto) const
         {
-            return name == proto.name;
+            return (name == proto.name);
         }
 
         bool operator != (const Protocol & proto) const
         {
-            return name != proto.name;
+            return (name != proto.name);
         }
 
         bool operator == (const std::string & proto) const
         {
-            return name == proto;
+            return (name == proto);
         }
 	};
 	#pragma pack(pop)

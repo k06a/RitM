@@ -17,6 +17,19 @@ RawPacket::RawPacket(u8 * ptr, int size)
 {
 }
 
+RawPacket::RawPacket(const RawPacket & packet)
+    : id_(packet.id_), time_(packet.time_), status_(packet.status_)
+    , real_size(packet.real_size), data_(packet.data_)
+    , direction_(packet.direction_)
+{
+}
+
+
+IPacketPtr RawPacket::CreateCopy() const
+{
+    return IPacketPtr(new RawPacket(*this));
+}
+
 void RawPacket::setId(unsigned id)
 {
     id_ = id;
@@ -122,6 +135,19 @@ void RawPacket::setDirection(IPacket::Direction dir)
 IPacket::Direction RawPacket::direction() const
 {
     return direction_;
+}
+
+bool RawPacket::swapDirection()
+{
+    if (direction_ == IPacket::Unknown)
+        return false;
+
+    if (direction_ == IPacket::ClientToServer)
+        direction_ = IPacket::ServerToClient;
+    else
+        direction_ = IPacket::ClientToServer;
+
+    return true;
 }
 
 mac_addr & RawPacket::src_mac()

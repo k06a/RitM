@@ -27,6 +27,9 @@ namespace DiplomBukov
     public:
         RawPacket(int size = 0);
         RawPacket(u8 * ptr, int size);
+        RawPacket(const RawPacket & packet);
+
+        virtual IPacketPtr CreateCopy() const;
 
         virtual void setId(unsigned id);
         virtual unsigned id() const;
@@ -57,6 +60,7 @@ namespace DiplomBukov
 
         virtual void setDirection(Direction dir);
         virtual Direction direction() const;
+        virtual bool swapDirection();
 
         virtual mac_addr & src_mac();
         virtual mac_addr & dst_mac();

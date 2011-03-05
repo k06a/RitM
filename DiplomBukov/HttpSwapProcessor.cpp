@@ -56,7 +56,7 @@ ProcessingStatus HttpSwapProcessor::backwardProcess(Protocol proto, IPacketPtr &
 
 Protocol HttpSwapProcessor::getProtocol()
 {
-    return "TCP_80";
+    return Protocol("TCP_80", 80);
 }
 
 const char * HttpSwapProcessor::getProcessorName()

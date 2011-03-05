@@ -22,20 +22,51 @@ namespace DiplomBukov
             return (offset << 2);
         }
 
-        struct flags_struct {
-            u8 flags_fin:1;  // 0x01
-            u8 flags_syn:1;  // 0x02
-            u8 flags_rst:1;  // 0x04
-            u8 flags_psh:1;  // 0x08
-            u8 flags_ack:1;  // 0x10
-            u8 flags_urg:1;  // 0x20
-            u8 flags_res2:1; // 0x40
-            u8 flags_res1:1; // 0x80
+        struct flags_struct
+        {
+            #define PTR_TO_BYTE(x) (*(u8*)(x))
 
-            flags_struct()
+            enum Flags
             {
-                *(u8*)this = 0;
+                FIN = 0x01,
+                SYN = 0x02,
+                RST = 0x04,
+                PSH = 0x08,
+                ACK = 0x10,
+                URG = 0x20
+            };
+
+            u8 fin:1;  // 0x01
+            u8 syn:1;  // 0x02
+            u8 rst:1;  // 0x04
+            u8 psh:1;  // 0x08
+            u8 ack:1;  // 0x10
+            u8 urg:1;  // 0x20
+            u8 res2:1; // 0x40
+            u8 res1:1; // 0x80
+
+            flags_struct(int flags = 0)
+            {
+                PTR_TO_BYTE(this) = flags;
             }
+
+            flags_struct & operator = (const flags_struct & a)
+            {
+                PTR_TO_BYTE(this) = PTR_TO_BYTE(&a);
+                return *this;
+            }
+
+            bool operator == (const flags_struct & a) const
+            {
+                return PTR_TO_BYTE(this) == PTR_TO_BYTE(&a);
+            }
+
+            bool operator >= (const flags_struct & a)
+            {
+                return (PTR_TO_BYTE(this) & PTR_TO_BYTE(&a)) == PTR_TO_BYTE(&a);
+            }
+
+            #undef PTR_TO_BYTE
         } flags;
 
         u16be window_size;    /* window */

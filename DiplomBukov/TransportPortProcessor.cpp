@@ -30,7 +30,7 @@ ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, IPacketP
 
         char text[10];
         sprintf_s(text, sizeof(text), "TCP_%d", server_port);
-        inProt = Protocol(text);
+        inProt = Protocol(text, server_port);
     }
     
     // Determine direction
