@@ -1,13 +1,10 @@
 #include "TcpSequenceProcessor.h"
 #include "tcp_header.h"
+#include <algorithm>
 
 using namespace DiplomBukov;
 
 TcpSequenceProcessor::TcpSequenceProcessor(IProcessorPtr Connector)
-    : originClientSN(0)
-    , originServerSN(0)
-    , actualClientSN(0)
-    , actualServerSN(0)
 {
     setNextProcessor(Connector);
 }
@@ -23,39 +20,77 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
-    int dataInTcp = packet->size() - offset - tcp->header_size();
+    int dataInTcp = packet->realSize() - offset - tcp->header_size();
 
-    // First packet - get client SEQ
-    if (originClientSN == 0)
-    {
-        originClientSN = tcp->seq;
-        actualClientSN = tcp->seq;
-    }
-
-    // Second packet - get server SEQ
-    if ((originServerSN == 0) && (originClientSN != 0))
-    {
-        originServerSN = tcp->seq;
-        actualServerSN = tcp->seq;
-    }
-
-    // Aliasing
-    u32be & actualSn =
+    AbonentSN & abonent =
         (packet->direction() == IPacket::ClientToServer)
-        ? actualClientSN : actualServerSN;
+        ? client : server;
 
-    if (tcp->seq != actualSn)
+    AbonentSN & toAbonent =
+        (packet->direction() == IPacket::ClientToServer)
+        ? server : client;
+
+    if (abonent.initialSN == 0)
     {
-        // Invalid sequence number
-        //
-        return ProcessingStatus::Accepted;
+        abonent.initialSN = tcp->seq;
+        abonent.currentRecvSN = tcp->seq;
+        if (toAbonent.currentSendSN == 0)
+            toAbonent.currentSendSN = tcp->seq;
     }
 
-    actualSn += dataInTcp;
+    //                   <Seq>
+    //   |--------|--------V--------|--------|
+    // 1.    |--------|
+    // 2.                  |
+    // 3.            |--------|
+    // 4.                      |--------|
+    //
 
-    packet->addProcessor(Self);
-    if (nextProcessor != NULL)
-        nextProcessor->forwardProcess(proto, packet, offset);
+    // Empty packet or in range
+    if (tcp->seq + dataInTcp < abonent.currentRecvSN)
+    {
+        // Skip old packet
+        return ProcessingStatus::Accepted;            
+    } else
+    if ((tcp->seq + dataInTcp == abonent.currentRecvSN) && (dataInTcp == 0))
+    {
+        // Add to queue
+    } else
+    if ((tcp->seq < abonent.currentRecvSN) &&
+        (tcp->seq + dataInTcp > abonent.currentRecvSN))
+    {
+        // Cut begin of the packet
+        int sizeToRemove = abonent.currentRecvSN - tcp->seq;
+        packet->data().erase(
+            packet->data().begin() + offset,
+            packet->data().begin() + offset + sizeToRemove);
+        packet->setRealSize(packet->realSize() - sizeToRemove);
+    } else
+    if (tcp->seq > abonent.currentRecvSN)
+    {
+        // Add to queue
+    }
+
+    // Add to the end
+    abonent.recvBuffer.push_back(
+        AbonentSN::QuededPacket(tcp->seq, proto, packet, offset, dataInTcp));
+
+    // Sort elements
+    std::inplace_merge(
+        abonent.recvBuffer.begin(),
+        abonent.recvBuffer.end()-1,
+        abonent.recvBuffer.end());
+
+    AbonentSN::QuededPacket * first = &abonent.recvBuffer.front();
+    while (first->offset == abonent.currentRecvSN)
+    {
+        first->packet->addProcessor(Self);
+        if (nextProcessor != NULL)
+            nextProcessor->forwardProcess(first->proto, first->packet, first->offset);
+
+        abonent.currentRecvSN += first->dataInTcp;
+        abonent.recvBuffer.pop_front();
+    }
 
     return ProcessingStatus::Accepted;
 }
@@ -65,19 +100,14 @@ ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPt
     tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
     int dataInTcp = packet->size() - offset - tcp->header_size();
     
-    if (packet->direction() == IPacket::ServerToClient)
-    {
-        actualServerSN += dataInTcp;
-        tcp->seq = actualServerSN;
-        tcp->ack = actualClientSN;
-    }
-    else
-    {
-        actualClientSN += dataInTcp;
-        tcp->seq = actualClientSN;
-        tcp->ack = actualServerSN;
-    }
+    AbonentSN & abonent =
+        (packet->direction() == IPacket::ClientToServer)
+        ? client : server;
 
+    tcp->seq = abonent.currentSendSN;
+    tcp->ack = abonent.currentRecvSN;
+    abonent.currentSendSN += dataInTcp;
+    
     if (prevProcessor != NULL)
         prevProcessor->backwardProcess(proto, packet, offset);
 

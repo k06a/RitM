@@ -13,9 +13,9 @@ namespace DiplomBukov
         u16be dst_port;   /* destination port */
         u32be seq;        /* sequence number */
         u32be ack;        /* acknowledgment number */
-        u8 reserved:4;    /* (unused) */
+        u8    reserved:4; /* (unused) */
     private:
-        u8 offset:4;      /* data offset */
+        u8    offset:4;   /* data offset */
     public:
         const int header_size() const
         {
@@ -61,7 +61,7 @@ namespace DiplomBukov
                 return PTR_TO_BYTE(this) == PTR_TO_BYTE(&a);
             }
 
-            bool operator >= (const flags_struct & a)
+            bool haveFlags(const flags_struct & a)
             {
                 return (PTR_TO_BYTE(this) & PTR_TO_BYTE(&a)) == PTR_TO_BYTE(&a);
             }

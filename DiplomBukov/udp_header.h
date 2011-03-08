@@ -9,8 +9,8 @@ struct udp_header
 {
     u16be src_port;
     u16be dst_port;
-    u16 length;
-    u16 checksum;
+    u16be length;
+    u16be checksum;
 };
 #pragma pack(pop)
 

@@ -42,6 +42,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4250"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\winpcap\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="wpcap.lib Packet.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\winpcap\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -308,6 +311,10 @@
 				RelativePath=".\Protocol.h"
 				>
 			</File>
+			<File
+				RelativePath=".\triplet.h"
+				>
+			</File>
 			<Filter
 				Name="NetStack"
 				>
@@ -444,6 +451,14 @@
 					</File>
 					<File
 						RelativePath=".\FileAdapter.h"
+						>
+					</File>
+					<File
+						RelativePath=".\PcapAdapter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\PcapAdapter.h"
 						>
 					</File>
 				</Filter>
