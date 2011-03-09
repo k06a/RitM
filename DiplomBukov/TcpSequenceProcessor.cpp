@@ -30,6 +30,8 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
         (packet->direction() == IPacket::ClientToServer)
         ? server : client;
 
+    //////////////////////////////////////////////////////////////////////////
+
     if (abonent.initialSN == 0)
     {
         abonent.initialSN = tcp->seq;
@@ -38,38 +40,54 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
             toAbonent.currentSendSN = tcp->seq;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+
     //                   <Seq>
     //   |--------|--------V--------|--------|
-    // 1.    |--------|
-    // 2.                  |
-    // 3.            |--------|
-    // 4.                      |--------|
+    // 1.    |--------|                         // LastPacket
+    // 2.                  |                    // ExpectedPacket
+    // 4.            |--------|                 // CutPacket
+    // 8.                      |--------|       // FuturePacket
     //
 
-    // Empty packet or in range
-    if (tcp->seq + dataInTcp < abonent.currentRecvSN)
+    enum PacketSituation
     {
-        // Skip old packet
-        return ProcessingStatus::Accepted;            
-    } else
-    if ((tcp->seq + dataInTcp == abonent.currentRecvSN) && (dataInTcp == 0))
+        LastPacket     = 1, // Пакет из прошлого
+        ExpectedPacket = 2, // Пакет с ожидаемым номером
+        CutPacket      = 4, // Пакет с частью новых данных
+        FuturePacket   = 8  // Пакет из будущего
+    };
+
+    int situation = 0;
+    situation += LastPacket*(tcp->seq + dataInTcp < abonent.currentRecvSN);
+    situation += ExpectedPacket*((tcp->seq + dataInTcp == abonent.currentRecvSN) && (dataInTcp == 0));
+    situation += CutPacket*((tcp->seq < abonent.currentRecvSN) && (tcp->seq + dataInTcp > abonent.currentRecvSN));
+    situation += FuturePacket*(tcp->seq > abonent.currentRecvSN);
+
+    switch (situation)
     {
-        // Add to queue
-    } else
-    if ((tcp->seq < abonent.currentRecvSN) &&
-        (tcp->seq + dataInTcp > abonent.currentRecvSN))
-    {
-        // Cut begin of the packet
-        int sizeToRemove = abonent.currentRecvSN - tcp->seq;
-        packet->data().erase(
-            packet->data().begin() + offset,
-            packet->data().begin() + offset + sizeToRemove);
-        packet->setRealSize(packet->realSize() - sizeToRemove);
-    } else
-    if (tcp->seq > abonent.currentRecvSN)
-    {
-        // Add to queue
+        case LastPacket:
+            return ProcessingStatus::Accepted; 
+            
+        case ExpectedPacket:
+            break;
+
+        case CutPacket: {
+            int sizeToRemove = abonent.currentRecvSN - tcp->seq;
+            packet->data().erase(
+                packet->data().begin() + offset,
+                packet->data().begin() + offset + sizeToRemove);
+            packet->setRealSize(packet->realSize() - sizeToRemove);
+            break; }
+
+        case FuturePacket:
+            break;
+
+        default:
+            throw "Unknown situation";
     }
+
+    //////////////////////////////////////////////////////////////////////////
 
     // Add to the end
     abonent.recvBuffer.push_back(
@@ -80,6 +98,8 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
         abonent.recvBuffer.begin(),
         abonent.recvBuffer.end()-1,
         abonent.recvBuffer.end());
+
+    //////////////////////////////////////////////////////////////////////////
 
     AbonentSN::QuededPacket * first = &abonent.recvBuffer.front();
     while (first->offset == abonent.currentRecvSN)

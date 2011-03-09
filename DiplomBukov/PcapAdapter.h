@@ -2,6 +2,7 @@
 #define PCAPADAPTER_H
 
 #include <stdio.h>
+#include <algorithm>
 
 #include "AbstractProcessor.h"
 #include "IAdapter.h"

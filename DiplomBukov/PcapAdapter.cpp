@@ -6,7 +6,6 @@ using namespace DiplomBukov;
 
 PcapAdapter::PcapAdapter(std::string adapterName, IProcessorPtr Connector)
 {
-    /*
     int i=0;
     char errbuf[PCAP_ERRBUF_SIZE];
 
@@ -15,10 +14,10 @@ PcapAdapter::PcapAdapter(std::string adapterName, IProcessorPtr Connector)
         throw std::string("Error in pcap_findalldevs_ex: %s\n") + errbuf;
     
     // Print the list
-    for(dev = deviceList; dev != NULL; dev = dev->next)
+    for(device = deviceList; device != NULL; device = device->next)
     {
-        std::string name = dev.name;
-        std::string descr = dev.description;
+        std::string name = device->name;
+        std::string descr = device->description;
         std::string::iterator it =
             std::search(name.begin(), name.end(),
                         adapterName.begin(),
@@ -38,7 +37,6 @@ PcapAdapter::PcapAdapter(std::string adapterName, IProcessorPtr Connector)
     }
 
     throw "No such device found";
-    */
 }
 
 IProcessorPtr PcapAdapter::CreateCopy() const

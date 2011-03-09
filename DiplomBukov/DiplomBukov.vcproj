@@ -291,6 +291,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="IOptions"
+				>
+				<File
+					RelativePath=".\IOption.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Structs"
@@ -642,6 +650,26 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Options"
+				>
+				<File
+					RelativePath=".\CheckOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CheckOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SwitchOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SwitchOption.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>

@@ -2,12 +2,11 @@
 #define TCPSEQUENCEPROCESSOR_H
 
 #include <deque>
-#include "IPacket.h"
+#include "i64u64.h"
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
+#include "IPacket.h"
 #include "tcp_header.h"
-#include "triplet.h"
-#include "i64u64.h"
 
 namespace DiplomBukov
 {
@@ -26,11 +25,8 @@ namespace DiplomBukov
                 QuededPacket(u32be sequnceNumber, Protocol proto,
                              IPacketPtr packet, unsigned offset,
                              unsigned dataInTcp)
-                    : sequnceNumber(sequnceNumber)
-                    , proto(proto)
-                    , packet(packet)
-                    , offset(offset)
-                    , dataInTcp(dataInTcp)
+                    : sequnceNumber(sequnceNumber), proto(proto)
+                    , packet(packet), offset(offset), dataInTcp(dataInTcp)
                 {
                 }
 
@@ -50,7 +46,6 @@ namespace DiplomBukov
             u32be currentRecvSN;
             std::deque<QuededPacket> sendBuffer;
             std::deque<QuededPacket> recvBuffer;
-            // We need triplet for sorting by seq using std::inplace_merge()
         };
 
         AbonentSN client;
@@ -62,7 +57,7 @@ namespace DiplomBukov
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
-
+        
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
