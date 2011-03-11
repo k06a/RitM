@@ -9,6 +9,7 @@
 #include "ProcessorModule.h"
 
 #include "FileAdapter.h"
+#include "PcapAdapter.h"
 #include "BruteConnector.h"
 #include "ProtocolConnector.h"
 
@@ -67,7 +68,8 @@ int main(int argc, char * argv[])
     #define NEW_Connector IProcessorPtr(new ProtocolConnector())
 
     IAdapterPtr fileAdapter(new FileAdapter("tcp.pcap", "tcp_out.pcap", NEW_Connector));
-    
+    IAdapterPtr pcapAdapter(new PcapAdapter(NEW_Connector));
+
     /*
 	IProcessorPtr macProcessor(new MacHeaderProcessor(NEW_Connector));
     IProcessorPtr ipv4Splitter(new Ipv4Splitter(NEW_Connector));
@@ -108,7 +110,7 @@ int main(int argc, char * argv[])
 
     #define connect(a,b) a->getNextProcessor()->setNextProcessor(b)
 
-    connect(fileAdapter, macProcessor);
+    connect(pcapAdapter, macProcessor);
         connect(macProcessor, ipSplitter);
             connect(ipSplitter, ipProcessor);
                 connect(ipProcessor, tcpSplitter);
@@ -116,11 +118,18 @@ int main(int argc, char * argv[])
                     connect(portProcessor, httpProcessor);
     
     fileAdapter->setSelf(fileAdapter);
+    pcapAdapter->setSelf(pcapAdapter);
     macProcessor->setSelf(macProcessor);
     ipProcessor->setSelf(ipProcessor);
     portProcessor->setSelf(portProcessor);
     icmpProcessor->setSelf(icmpProcessor);
     
+    SwitchOption * opt = (SwitchOption *)pcapAdapter->getOptions().front().get();
+    for (int i = 0; i < opt->getTextItems().size(); i++)
+        std::cout << i << ". " << opt->getTextItems()[i] << std::endl;
+
+    opt->setSelectedIndex(1);
+
     print_arch(fileAdapter);
     std::cout << std::endl;
 

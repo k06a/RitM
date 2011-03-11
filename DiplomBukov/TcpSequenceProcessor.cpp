@@ -42,31 +42,16 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
 
     //////////////////////////////////////////////////////////////////////////
 
-    //                   <Seq>
-    //   |--------|--------V--------|--------|
-    // 1.    |--------|                         // LastPacket
-    // 2.                  |                    // ExpectedPacket
-    // 4.            |--------|                 // CutPacket
-    // 8.                      |--------|       // FuturePacket
-    //
-
-    enum PacketSituation
-    {
-        LastPacket     = 1, // Пакет из прошлого
-        ExpectedPacket = 2, // Пакет с ожидаемым номером
-        CutPacket      = 4, // Пакет с частью новых данных
-        FuturePacket   = 8  // Пакет из будущего
-    };
-
     int situation = 0;
-    situation += LastPacket*(tcp->seq + dataInTcp < abonent.currentRecvSN);
+    situation += OldPacket*(tcp->seq + dataInTcp < abonent.currentRecvSN);
     situation += ExpectedPacket*((tcp->seq + dataInTcp == abonent.currentRecvSN) && (dataInTcp == 0));
     situation += CutPacket*((tcp->seq < abonent.currentRecvSN) && (tcp->seq + dataInTcp > abonent.currentRecvSN));
     situation += FuturePacket*(tcp->seq > abonent.currentRecvSN);
 
+    bool shouldProcess = false;
     switch (situation)
     {
-        case LastPacket:
+        case OldPacket:
             return ProcessingStatus::Accepted; 
             
         case ExpectedPacket:
@@ -78,9 +63,12 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
                 packet->data().begin() + offset,
                 packet->data().begin() + offset + sizeToRemove);
             packet->setRealSize(packet->realSize() - sizeToRemove);
-            break; }
+            tcp->seq += sizeToRemove;
+            situation = ExpectedPacket;
+            } break;
 
         case FuturePacket:
+            shouldProcess = true;
             break;
 
         default:
@@ -90,26 +78,72 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
     //////////////////////////////////////////////////////////////////////////
 
     // Add to the end
-    abonent.recvBuffer.push_back(
+    abonent.recvWaitQueue.push_back(
         AbonentSN::QuededPacket(tcp->seq, proto, packet, offset, dataInTcp));
+
+    if (shouldProcess)
+        forwardProcess2(&abonent.recvWaitQueue.back(), (PacketSituation)situation);
 
     // Sort elements
     std::inplace_merge(
-        abonent.recvBuffer.begin(),
-        abonent.recvBuffer.end()-1,
-        abonent.recvBuffer.end());
+        abonent.recvWaitQueue.begin(),
+        abonent.recvWaitQueue.end()-1,
+        abonent.recvWaitQueue.end());
 
     //////////////////////////////////////////////////////////////////////////
 
-    AbonentSN::QuededPacket * first = &abonent.recvBuffer.front();
+    AbonentSN::QuededPacket * first = &abonent.recvWaitQueue.front();
     while (first->offset == abonent.currentRecvSN)
     {
         first->packet->addProcessor(Self);
-        if (nextProcessor != NULL)
-            nextProcessor->forwardProcess(first->proto, first->packet, first->offset);
+        forwardProcess2(first, (PacketSituation)situation);
 
         abonent.currentRecvSN += first->dataInTcp;
-        abonent.recvBuffer.pop_front();
+        abonent.recvWaitQueue.pop_front();
+    }
+
+    return ProcessingStatus::Accepted;
+}
+
+ProcessingStatus TcpSequenceProcessor::forwardProcess2(AbonentSN::QuededPacket * packet, PacketSituation situation)
+{
+    AbonentSN & abonent =
+        (packet->packet->direction() == IPacket::ClientToServer)
+        ? client : server;
+
+    AbonentSN & toAbonent =
+        (packet->packet->direction() == IPacket::ClientToServer)
+        ? server : client;
+
+    switch (situation)
+    {
+        case OldPacket:
+            return ProcessingStatus::Accepted; 
+
+        case ExpectedPacket:
+            abonent.toRecvBuffer.push_back(*packet);
+
+        case FuturePacket: {
+            Protocol proto = packet->proto;
+            IPacketPtr pack = packet->packet->CreateCopy();
+            unsigned offset = packet->offset;
+            int dataInTcp = packet->dataInTcp;
+            
+            pack->setDirection(
+                (pack->direction() == IPacket::ClientToServer)
+                ? IPacket::ServerToClient
+                : IPacket::ClientToServer);
+            pack->setRealSize(pack->realSize() - dataInTcp);
+            pack->data().resize(pack->realSize());
+            tcp_header * tcp = (tcp_header *)(&pack->data()[0] + offset);
+            tcp->seq = abonent.currentSendSN;
+            tcp->ack = abonent.currentRecvSN;
+            if (prevProcessor != NULL)
+                prevProcessor->backwardProcess(proto, pack, offset);
+            } break;
+
+        default:
+            throw "Unknown situation";
     }
 
     return ProcessingStatus::Accepted;

@@ -3,9 +3,11 @@
 
 #include <string>
 
+#include "IOption.h"
+
 namespace DiplomBukov
 {
-    class CheckOption
+    class CheckOption : public IOption
     {
         std::string label;
         bool value;

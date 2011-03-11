@@ -31,6 +31,8 @@ namespace DiplomBukov
 
     class ILibrary;
 
+    class IOption;
+
     typedef std::tr1::shared_ptr<IPacket> IPacketPtr;
     typedef std::tr1::shared_ptr<IConnector> IConnectorPtr;
     typedef std::tr1::shared_ptr<IDuplexConnector> IDuplexConnectorPtr;
@@ -51,4 +53,6 @@ namespace DiplomBukov
     typedef std::tr1::shared_ptr<IProcessorPlugin> IProcessorPluginPtr;
 
     typedef std::tr1::shared_ptr<ILibrary> ILibraryPtr;
+
+    typedef std::tr1::shared_ptr<IOption> IOptionPtr;
 }

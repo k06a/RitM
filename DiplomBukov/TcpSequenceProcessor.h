@@ -12,6 +12,22 @@ namespace DiplomBukov
 {
     class TcpSequenceProcessor : public AbstractProcessor
     {
+        //                   <Seq>
+        //   |--------|--------V--------|--------|
+        // 1.    |--------|                         // OldPacket
+        // 2.                  |                    // ExpectedPacket
+        // 4.            |--------|                 // CutPacket
+        // 8.                      |--------|       // FuturePacket
+        //
+
+        enum PacketSituation
+        {
+            OldPacket      = 1, // Пакет из прошлого
+            ExpectedPacket = 2, // Пакет с ожидаемым номером
+            CutPacket      = 4, // Пакет с частью новых данных
+            FuturePacket   = 8  // Пакет из будущего
+        };
+
         struct AbonentSN
         {
             struct QuededPacket
@@ -44,8 +60,10 @@ namespace DiplomBukov
             u32be initialSN;
             u32be currentSendSN;
             u32be currentRecvSN;
-            std::deque<QuededPacket> sendBuffer;
-            std::deque<QuededPacket> recvBuffer;
+            std::deque<QuededPacket> sendWaitQueue;
+            std::deque<QuededPacket> recvWaitQueue;
+            std::deque<QuededPacket> toSendBuffer;
+            std::deque<QuededPacket> toRecvBuffer;
         };
 
         AbonentSN client;
@@ -56,6 +74,7 @@ namespace DiplomBukov
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess2(AbonentSN::QuededPacket * packet, PacketSituation situation);
         virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
         
         virtual Protocol getProtocol();

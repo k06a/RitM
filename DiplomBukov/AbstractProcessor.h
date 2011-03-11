@@ -95,6 +95,11 @@ namespace DiplomBukov
         {
             return module;
         }
+
+        virtual std::deque<IOptionPtr> getOptions()
+        {
+            return std::deque<IOptionPtr>();
+        }
     };
     // class AbstractProcessor
 }

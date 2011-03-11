@@ -4,9 +4,11 @@
 #include <deque>
 #include <string>
 
+#include "IOption.h"
+
 namespace DiplomBukov
 {
-    class SwitchOption
+    class SwitchOption : public IOption
     {
         std::string label;
         std::deque<std::string> labels;

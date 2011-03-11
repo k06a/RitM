@@ -1,42 +1,37 @@
 #include "PcapAdapter.h"
 #include "RawPacket.h"
+#include <pcap.h>
 #include <list>
 
 using namespace DiplomBukov;
 
-PcapAdapter::PcapAdapter(std::string adapterName, IProcessorPtr Connector)
+PcapAdapter::PcapAdapter(IProcessorPtr Connector)
+    : devicesSwitch(IOptionPtr())
+    , options()
+    , deviceList(NULL)
+    , device(NULL)
 {
-    int i=0;
+    setNextProcessor(Connector);
+
     char errbuf[PCAP_ERRBUF_SIZE];
 
     // Retrieve the device list from the local machine
     if (pcap_findalldevs(&deviceList, errbuf) == -1)
-        throw std::string("Error in pcap_findalldevs_ex: %s\n") + errbuf;
+        throw std::string("Error in pcap_findalldevs: ") + errbuf + "\n";
     
-    // Print the list
-    for(device = deviceList; device != NULL; device = device->next)
+    std::deque<std::string> arr;
+    for(pcap_if_t * dev = deviceList; dev != NULL; dev = dev->next)
     {
-        std::string name = device->name;
-        std::string descr = device->description;
-        std::string::iterator it =
-            std::search(name.begin(), name.end(),
-                        adapterName.begin(),
-                        adapterName.end());
-
-        if (it == name.end())
-        {
-            it = std::search(name.begin(), name.end(),
-                             adapterName.begin(),
-                             adapterName.end());
-        }
-
-        if (it != name.end())
-        {
-            return;
-        }
+        std::string about;
+        about = about + dev->description + " (" + dev->name + ")";
+        arr.push_back(about);
     }
+    
+    SwitchOption * opt = new SwitchOption();
+    opt->setTextItems(arr);
+    devicesSwitch = IOptionPtr(opt);
 
-    throw "No such device found";
+    options.push_back(devicesSwitch);
 }
 
 IProcessorPtr PcapAdapter::CreateCopy() const
@@ -77,8 +72,51 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr & packe
     return ProcessingStatus::Accepted;
 }
 
+std::deque<IOptionPtr> PcapAdapter::getOptions()
+{
+    return options;
+}
+
 void PcapAdapter::run()
 {
+    SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
+    pcap_if_t * dev = deviceList;
+    for (int i = 0; i < opt->getSelectedIndex(); i++)
+        dev = dev->next;
+    
+    char errbuf[PCAP_ERRBUF_SIZE];
+
+    /* Open the device */
+    pcap_t * adhandle = pcap_open(
+        dev->name,          // name of the device
+        65536,            // portion of the packet to capture. 
+        // 65536 guarantees that the whole packet will be captured on all the link layers
+        1, //PCAP_OPENFLAG_PROMISCUOUS,    // promiscuous mode
+        1000,             // read timeout
+        NULL,             // authentication on the remote machine
+        errbuf);            // error buffer
+
+    if (adhandle == NULL)
+    {
+        throw std::string("Unable to open the adapter. %s is not supported by WinPcap");
+        return;
+    }
+
+    int id = 0;
+    while (true)
+    {
+        pcap_pkthdr header;
+        u8 * pkt_data = pcap_next(adhandle, &header);
+        
+        IPacketPtr packet(new RawPacket(pkt_data, header->caplen));
+        packet->setId(id++);
+        packet->setTime(header->ts.tv_sec);
+        packet->setAdapter(this);
+
+        Protocol::PhysicalLayer proto = Protocol::PhysicalLayer::Ethernet_II;
+        nextProcessor->forwardProcess(proto, packet, 0); // Protocol::Ethernet_II
+    }
+
     /*
     pcap_file_header pfh;
     fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file1);
