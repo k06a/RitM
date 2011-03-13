@@ -12,7 +12,9 @@ TransportPortProcessor::TransportPortProcessor(IProcessorPtr Connector)
 
 IProcessorPtr TransportPortProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new TransportPortProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new TransportPortProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
@@ -56,8 +58,8 @@ ProcessingStatus TransportPortProcessor::backwardProcess(Protocol proto, IPacket
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
     
-    if (prevProcessor != NULL)
-        prevProcessor->backwardProcess(proto, packet, offset);
+    if (packet->prevProcessor(Self) != NULL)
+        packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

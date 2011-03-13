@@ -3,6 +3,7 @@
 
 #include "i64u64.h"
 #include "LittleBigEndian.h"
+#include "ipv4_header.h"
 
 namespace DiplomBukov
 {
@@ -70,7 +71,7 @@ namespace DiplomBukov
         } flags;
 
         u16be window_size;    /* window */
-        u16be check_sum;      /* checksum */
+        u16   check_sum;      /* checksum */
         u16be urgent_ptr;     /* urgent pointer */
 
         tcp_header()
@@ -78,67 +79,48 @@ namespace DiplomBukov
             memset(this, 0, sizeof(tcp_header));
         }
 
-        // Вычисление контрольной суммы TCP сегмента
-        static u16 crc16(u16 * buffer, int length)
+        u16 CheckSum(u16 *buffer, int size)
         {
-            u32 crc = 0;
-
-            // Вычисление CRC
-            while (length > 1)
+            unsigned long cksum = 0;
+            while(size > 1)
             {
-                crc += *buffer++;
-                length -= 2;
+                cksum += *buffer++;
+                size -= sizeof(u16);
             }
+            if(size)
+                cksum += *(u16*)buffer;
 
-            if (length)
-                crc += *(u8*)buffer;
+            cksum = (cksum >> 16) + (cksum & 0xffff);
+            cksum += (cksum >>16);
 
-            // Закончить вычисления
-            while (crc >> 16)
-                crc = (crc >> 16) + (crc & 0xffff);
-            
-            return ~crc;
+            return (u16)(~cksum);
         }
 
-        static u16 countCheckSum(u32 src_addr, u32 dst_addr, char * data, u16 packet_length)
+        u16 TcpCheckSum(ipv4_header * iph, tcp_header * tcph, u8 * data, int size)
         {
-            #pragma pack(push,1)
-            struct pseudo_header
+            struct PSD_HEADER
             {
-                u32be src_addr;      // адрес отправителя
-                u32be dst_addr;      // адрес получателя
-                u8    zero;         // начальная установка
-                u8    proto;        // протокол
-                u16be length;   // длина заголовка
-            
-                #pragma warning(push)
-                #pragma warning(disable:4200)
-                unsigned char data[];
-                #pragma warning(pop)
+                ipv4_addr m_daddr;
+                ipv4_addr m_saddr;
+                u8 m_mbz;
+                u8 m_ptcl;
+                u16be m_tcpl;
             };
-            #pragma pack(pop)
 
-            int full_length = sizeof(pseudo_header) + packet_length;
-            pseudo_header * ph = (pseudo_header *)new char [full_length];
+            tcph->check_sum = 0;
+            PSD_HEADER psd_header;
+            psd_header.m_daddr = iph->dst_data;
+            psd_header.m_saddr = iph->src_data;
+            psd_header.m_mbz = 0;
+            psd_header.m_ptcl = 6;  // TCP
+            psd_header.m_tcpl = tcph->header_size() + size;
 
-            ph->src_addr = src_addr;
-            ph->dst_addr = dst_addr;
-            ph->zero = 0;
-            ph->proto = 6;  // TCP
-            ph->length = packet_length;
-            memcpy(ph->data, data, packet_length);
-
-            u16 crc = crc16((u16*)ph, full_length);
-            delete [] ph;
-
-            return crc;
-        }
-
-        const u16 recountSum(u32 src_ip, u32 dst_ip, int dataLength)
-        {
-            check_sum = 0;
-            check_sum = countCheckSum(src_ip, dst_ip, (char*)this, dataLength);
-            return check_sum;
+            char tcpBuf[65536];
+            memcpy(tcpBuf,&psd_header,sizeof(PSD_HEADER));
+            memcpy(tcpBuf+sizeof(PSD_HEADER),tcph,tcph->header_size());
+            memcpy(tcpBuf+sizeof(PSD_HEADER)+tcph->header_size(),data,size);
+            return tcph->check_sum = CheckSum((u16*)tcpBuf,
+                sizeof(PSD_HEADER)+tcph->header_size()+size);
         }
     };
     #pragma pack(pop)

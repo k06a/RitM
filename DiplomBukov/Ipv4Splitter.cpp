@@ -10,7 +10,9 @@ Ipv4Splitter::Ipv4Splitter(IProcessorPtr Connector)
 
 IProcessorPtr Ipv4Splitter::CreateCopy() const
 {
-    return IProcessorPtr(new Ipv4Splitter(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new Ipv4Splitter(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
@@ -21,15 +23,24 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
     ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[0] + offset);
     ipv4_addr adr1 = ipv4->src_data;
     ipv4_addr adr2 = ipv4->dst_data;
-    if (adr2 < adr1) std::swap(adr1, adr2);
 
     // Create new Connector if needed
-    ipv4_pair para(adr1,adr2);
-    MyMap::iterator it = Connectors.find(para);
-    if (it == Connectors.end())
+    ipv4_pair para1(adr1,adr2);
+    ipv4_pair para2(adr2,adr1);
+    MyMap::iterator it1 = Connectors.find(para1);
+    MyMap::iterator it2 = Connectors.find(para2);
+    ipv4_pair & para = (it1 == Connectors.end()) ? para2 : para1;
+    if ((it1 == Connectors.end()) && (it2 == Connectors.end()))
     {
         if (nextProcessor != NULL)
             Connectors[para] = nextProcessor->CreateCopy();
+    }
+
+    // Determine direction
+    if ((packet->direction() == IPacket::Unknown) && (adr1 != adr2))
+    {
+        bool cts = (adr1 == para.first);
+        packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
 
     packet->addProcessor(Self);

@@ -67,7 +67,7 @@ typedef u64 u64be;
 
 #else
 
-#pragma message("Please define LITTLE_ENDIAN of BIG_ENDIAN before include" __FILE__)
+#pragma message("Please define LITTLE_ENDIAN of BIG_ENDIAN before include " __FILE__)
 
 #endif
 

@@ -10,7 +10,8 @@ namespace DiplomBukov
 	public:
 		virtual ~IAdapter() {}
 
-		virtual void run() = 0;
+		virtual void run(bool always) = 0;
+        virtual void tick() = 0;
 	};
 	// class IAdapter
 }

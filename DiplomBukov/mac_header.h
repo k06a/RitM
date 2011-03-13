@@ -36,20 +36,36 @@ namespace DiplomBukov
             words[2] = c;
         }
 
-        mac_addr(char * str)
+        mac_addr(const char * str)
         {
+            *this = str;
+        }
+
+        mac_addr & operator = (const char * str)
+        {
+            unsigned arr[6];
+
             if (str[2] == ':')
             {
                 sscanf_s(str, "%2x:%2x:%2x:%2x:%2x:%2x",
-                       bytes+0, bytes+1, bytes+2,
-                       bytes+3, bytes+4, bytes+5);
+                         arr + 0, arr + 1, arr + 2,
+                         arr + 3, arr + 4, arr + 5);
+            }
+            else
+            if (str[2] == '-')
+            {
+                sscanf_s(str, "%2x-%2x-%2x-%2x-%2x-%2x",
+                         arr + 0, arr + 1, arr + 2,
+                         arr + 3, arr + 4, arr + 5);
             }
             else
             {
                 sscanf_s(str, "%2x%2x%2x%2x%2x%2x",
-                    bytes+0, bytes+1, bytes+2,
-                    bytes+3, bytes+4, bytes+5);
+                         arr + 0, arr + 1, arr + 2,
+                         arr + 3, arr + 4, arr + 5);
             }
+            std::copy(arr, arr+6, bytes);
+            return *this;
         }
 
         bool isBroadcast()
@@ -99,8 +115,8 @@ namespace DiplomBukov
 	#pragma pack(push,1)
 	struct mac_header
 	{
-		mac_addr src;
 		mac_addr dst;
+		mac_addr src;
         u16 proto;
 	};
 	#pragma pack(pop)

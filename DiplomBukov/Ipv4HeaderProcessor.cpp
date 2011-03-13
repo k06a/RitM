@@ -1,5 +1,6 @@
 #include "Ipv4HeaderProcessor.h"
 #include "ipv4_header.h"
+#include "tcp_header.h"
 
 using namespace DiplomBukov;
 
@@ -13,7 +14,9 @@ Ipv4HeaderProcessor::Ipv4HeaderProcessor(IProcessorPtr Connector)
 
 IProcessorPtr Ipv4HeaderProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new Ipv4HeaderProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new Ipv4HeaderProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
@@ -28,14 +31,14 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr 
     // Copy header of first packet ClientToServer
     if ((server_ip == 0) && (client_ip == 0))
         header = *ip;
-
+/*
     // Determine direction
     if ((packet->direction() == IPacket::Unknown) && (ip->src_data != ip->dst_data))
     {
         bool cts = (ip->src_data == client_ip);
         packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
-
+*/
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
     {
@@ -58,14 +61,32 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr
 
     ipv4_header * ip = (ipv4_header *)(&packet->data()[0] + offset);
     *ip = header;
-
+    
     ip->proto = proto.code;
     ip->totalLength = packet->realSize() - offset;
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(ip->src_data, ip->dst_data);
     
-    if (prevProcessor != NULL)
-        nextProcessor->forwardProcess(getProtocol(), packet, offset + ip->size());
+    //FIX
+    //ip->src_data = "192.168.1.25";
+
+    ip->recountSum();
+    if (proto == Protocol::TCP)
+    {
+        tcp_header * tcp = (tcp_header *)(((char*)ip) + ip->size());
+        u8 * data = (u8 *)(((char*)tcp) + tcp->header_size());
+        int size = ip->totalLength - ip->size() - tcp->header_size();
+        tcp->TcpCheckSum(ip, tcp, data, size);
+        /*
+        tcp->recountSum(
+            ip->src_data.dword,
+            ip->dst_data.dword,
+            ip->totalLength-ip->size());
+            */
+    }
+
+    if (packet->prevProcessor(Self) != NULL)
+        packet->prevProcessor(Self)->backwardProcess(getProtocol(), packet, offset);
     
     return ProcessingStatus::Accepted;
 }

@@ -3,6 +3,7 @@
 
 #include <deque>
 #include "CommonInclude.h"
+#include "IPacket.h"
 #include "IProcessor.h"
 #include "AbstractProcessor.h"
 #include "ProtocolConnector.h"
@@ -27,6 +28,8 @@ namespace DiplomBukov
         virtual IProcessorPtr getPointer();
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+
+        virtual const char * MacSwitch::getProcessorName();
     };
     // class MacSwitch
 }

@@ -12,7 +12,9 @@ HttpSwapProcessor::HttpSwapProcessor(IProcessorPtr processor)
 
 IProcessorPtr HttpSwapProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new HttpSwapProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new HttpSwapProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)

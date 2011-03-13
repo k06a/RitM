@@ -1,5 +1,6 @@
 #include "PcapAdapter.h"
 #include "RawPacket.h"
+#include "crc.h"
 #include <pcap.h>
 #include <list>
 
@@ -23,7 +24,7 @@ PcapAdapter::PcapAdapter(IProcessorPtr Connector)
     for(pcap_if_t * dev = deviceList; dev != NULL; dev = dev->next)
     {
         std::string about;
-        about = about + dev->description + " (" + dev->name + ")";
+        about = about + dev->description + "\n   (" + dev->name + ")";
         arr.push_back(about);
     }
     
@@ -49,25 +50,28 @@ const char * PcapAdapter::getProcessorName()
     return "PcapAdapter";
 }
 
+//static bool znak;
 
 ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if (packet->status() == Packet::Rejected)
         return ProcessingStatus::Accepted;
 
-    /*
-    pcap_packet_header pph;
-    pph.ts_sec = packet->time();
-    pph.ts_usec = 0;
-    pph.incl_len = packet->realSize();
-    pph.orig_len = packet->realSize();
-    fwrite(&pph, sizeof(pph), 1, file2);
+    // Save hash
+    u32 hash = Crc32(&packet->data()[offset], packet->realSize() - offset);
+    hashes.push_back(hash);
 
-    char * buf = new char [65536];
-    std::copy(packet->data().begin(), packet->data().end(), buf);
-    fwrite(buf+offset, packet->realSize()-offset, 1, file2);
-    delete [] buf;
+    /*
+    SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
+    std::cout << '-' << opt->getSelectedIndex();
+    if (!znak)
+    {
+        znak = false;
+    }
+    znak = false;
     */
+
+    pcap_sendpacket(device, &packet->data()[offset], packet->realSize() - offset);
 
     return ProcessingStatus::Accepted;
 }
@@ -77,7 +81,7 @@ std::deque<IOptionPtr> PcapAdapter::getOptions()
     return options;
 }
 
-void PcapAdapter::run()
+void PcapAdapter::run(bool always)
 {
     SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
     pcap_if_t * dev = deviceList;
@@ -86,74 +90,53 @@ void PcapAdapter::run()
     
     char errbuf[PCAP_ERRBUF_SIZE];
 
-    /* Open the device */
-    pcap_t * adhandle = pcap_open(
-        dev->name,          // name of the device
-        65536,            // portion of the packet to capture. 
-        // 65536 guarantees that the whole packet will be captured on all the link layers
-        1, //PCAP_OPENFLAG_PROMISCUOUS,    // promiscuous mode
-        1000,             // read timeout
-        NULL,             // authentication on the remote machine
-        errbuf);            // error buffer
+    device = pcap_open_live(
+        dev->name,  // name of the device
+        65536,      // portion of the packet to capture. 
+        1,          // PCAP_OPENFLAG_PROMISCUOUS, for promiscuous mode
+        1,          // read timeout
+        errbuf);    // error buffer
 
-    if (adhandle == NULL)
-    {
+    if (device == NULL)
         throw std::string("Unable to open the adapter. %s is not supported by WinPcap");
+
+    id = 0;
+    linkType = pcap_datalink(device);
+    while (always)
+    {
+        tick();
+    }
+}
+
+void PcapAdapter::tick()
+{
+    pcap_pkthdr header;
+    const u8 * pkt_data = pcap_next(device, &header);
+    if (pkt_data == NULL)
+        return;
+
+    // Find in hash
+    u32 hash = Crc32(pkt_data, header.caplen);
+    std::deque<u32>::iterator it = std::find(hashes.begin(), hashes.end(), hash);
+    if (it != hashes.end())
+    {
+        hashes.erase(it);
         return;
     }
 
-    int id = 0;
-    while (true)
-    {
-        pcap_pkthdr header;
-        u8 * pkt_data = pcap_next(adhandle, &header);
-        
-        IPacketPtr packet(new RawPacket(pkt_data, header->caplen));
-        packet->setId(id++);
-        packet->setTime(header->ts.tv_sec);
-        packet->setAdapter(this);
-
-        Protocol::PhysicalLayer proto = Protocol::PhysicalLayer::Ethernet_II;
-        nextProcessor->forwardProcess(proto, packet, 0); // Protocol::Ethernet_II
-    }
+    IPacketPtr packet(new RawPacket(pkt_data, header.caplen));
+    packet->setStatus(IPacket::Accepted);
+    packet->setId(id++);
+    packet->setTime(header.ts.tv_sec);
+    packet->setAdapter(this);
+    packet->addProcessor(Self);
 
     /*
-    pcap_file_header pfh;
-    fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file1);
-    fwrite(&pfh, sizeof(pfh), 1, file2);
-
-    unsigned id = 1;
-    std::deque<IPacketPtr> * packets = new std::deque<IPacketPtr>();
-    u8 * buf = new u8 [65536];
-    while (true)
-	{
-        int ret;
-        pcap_packet_header pph;
-        ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file1);
-        if (ret == 0) break;
-
-        ret = fread_s(buf, 65536, 1, pph.orig_len, file1);
-        if (ret == 0)
-            break;
-
-        IPacketPtr packet(new RawPacket(buf, ret));
-        packet->setId(id++);
-        packet->setTime(pph.ts_sec);
-        packet->setAdapter(this);
-        
-        Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)pfh.network;
-        nextProcessor->forwardProcess(proto, packet, 0); // Protocol::Ethernet_II
-
-        packets->push_front(packet);
-        
-        //if (packet->status() == Packet::Accepted)
-        //{
-        //    pph.incl_len = packet->realSize();
-        //    pph.orig_len = packet->realSize();
-        //    fwrite(&pph, sizeof(pph), 1, file2);
-        //    fwrite(packet->data(), packet->realSize(), 1, file2);
-        //}
-	}
-    delete [] buf;
+    SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
+    std::cout << '+' << opt->getSelectedIndex();
+    znak = true;
     */
+
+    Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
+    nextProcessor->forwardProcess(proto, packet, 0);
 }

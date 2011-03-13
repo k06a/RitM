@@ -22,42 +22,16 @@ namespace DiplomBukov
         MyDeque procList;
 
     public:
-        AbstractConnector::AbstractConnector()
-            : module(NULL)
-        {
-        }
+        AbstractConnector();
 
-        virtual void setNextProcessor(IProcessorPtr processor)
-        {
-            addNextProcessor(processor);
-            AbstractProcessor::setNextProcessor(processor);
-        }
+        virtual void setNextProcessor(IProcessorPtr processor);
+        virtual IProcessorPtr getNextProcessor();
 
-        virtual IProcessorPtr getNextProcessor()
-        {
-            return AbstractProcessor::getNextProcessor();
-        }
+        virtual void ping(IProcessorPtr prevProcessor);
 
-        virtual void ping(IProcessorPtr prevProcessor)
-        {
-            for(MyDeque::iterator it = procList.begin(); it != procList.end(); ++it)
-                (*it)->ping(prevProcessor);
-        }
-
-        virtual void addNextProcessor(IProcessorPtr processor)
-        {
-            procList.push_back(processor);
-        }
-
-        virtual void removeNextProcessor(IProcessorPtr processor)
-        {
-            std::remove(procList.begin(), procList.end(), processor);
-        }
-
-        virtual const MyDeque & nextProcessors() const
-        {
-            return procList;
-        }
+        virtual void addNextProcessor(IProcessorPtr processor);
+        virtual void removeNextProcessor(IProcessorPtr processor);
+        virtual const MyDeque & nextProcessors() const;
     };
     // class AbstractConnector
 }

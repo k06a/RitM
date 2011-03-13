@@ -10,7 +10,9 @@ TcpSplitter::TcpSplitter(IProcessorPtr Connector)
 
 IProcessorPtr TcpSplitter::CreateCopy() const
 {
-    return IProcessorPtr(new TcpSplitter(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new TcpSplitter(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
@@ -19,18 +21,26 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
-
     unsigned short adr1 = tcp->src_port;
     unsigned short adr2 = tcp->dst_port;
-    if (adr2 < adr1) std::swap(adr1, adr2);
-
+    
     // Create new Connector if needed
-    port_pair para(adr1,adr2);
-    MyMap::iterator it = Connectors.find(para);
-    if (it == Connectors.end())
+    port_pair para1(adr1,adr2);
+    port_pair para2(adr2,adr1);
+    MyMap::iterator it1 = Connectors.find(para1);
+    MyMap::iterator it2 = Connectors.find(para2);
+    port_pair & para = (it1 == Connectors.end()) ? para2 : para1;
+    if ((it1 == Connectors.end()) && (it2 == Connectors.end()))
     {
         if (nextProcessor != NULL)
             Connectors[para] = nextProcessor->CreateCopy();
+    }
+
+    // Determine direction
+    if ((packet->direction() == IPacket::Unknown) && (adr1 != adr2))
+    {
+        bool cts = (adr1 == para.first);
+        packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
 
     packet->addProcessor(Self);

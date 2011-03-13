@@ -5,7 +5,7 @@ using namespace DiplomBukov;
 
 MacSwitch::MacSwitch(IProcessorPtr Connector)
 {
-    nextProcessor = Connector;
+    setNextProcessor(Connector);
 }
 
 MacSwitch::MacSwitch(const MacSwitch & macSwitch)
@@ -19,23 +19,59 @@ MacSwitch::MacSwitch(const MacSwitch & macSwitch)
 
 IProcessorPtr MacSwitch::CreateCopy() const
 {
-    return IProcessorPtr(new MacSwitch(*this));
+    IProcessorPtr ptr(new MacSwitch(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 IProcessorPtr MacSwitch::getPointer()
 {
     IProcessorPtr port(new MacSwitchPort(Self));
+    port->setSelf(port);
     ports.push_back(port);
     return port;
 }
 
 ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    return nextProcessor->forwardProcess(proto, packet, offset);
+    packet->addProcessor(Self);
+    if (nextProcessor != NULL)
+        nextProcessor->forwardProcess(proto, packet, offset);
+
+    if (packet->status() == IPacket::Accepted)
+        backwardProcess(packet->format(), packet, offset);
+
+    return ProcessingStatus::Accepted;
 }
 
 ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    //
+    int count = 0;
+    for(MyDeque::iterator it = ports.begin(); it != ports.end(); ++it)
+    {
+        // Не отправлять обратно
+        if (packet->haveProcessor(*it))
+            continue;
+
+        MacSwitchPort * port = dynamic_cast<MacSwitchPort *>(it->get());
+        if (port->checkMac(packet->dst_mac()))
+        {
+            port->backwardProcess(proto, packet, offset);  
+            count++;
+        }
+    }
+    
+    // If was sent to nobody, then send to all
+    if (count == 0)
+    {
+        for(MyDeque::iterator it = ports.begin(); it != ports.end(); ++it)
+            (*it)->backwardProcess(proto, packet, offset);
+    }
+    
     return ProcessingStatus::Accepted;
+}
+
+const char * MacSwitch::getProcessorName()
+{
+    return "MacSwitch";
 }

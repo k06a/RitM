@@ -21,6 +21,26 @@ namespace DiplomBukov
             dword = value;
         }
 
+        ipv4_addr(const char * text)
+        {
+            unsigned arr[4];
+            sscanf_s(text, "%d.%d.%d.%d",
+                     arr + 0, arr + 1,
+                     arr + 2, arr + 3);
+            std::copy(arr, arr+4, bytes);
+        }
+
+        ipv4_addr(const ipv4_addr & addr)
+        {
+            dword = addr.dword;
+        }
+
+        ipv4_addr & operator = (const ipv4_addr & addr)
+        {
+            dword = addr.dword;
+            return *this;
+        }
+
         bool operator < (const ipv4_addr & addr) const
         {
             return (dword < addr.dword);
@@ -54,7 +74,7 @@ namespace DiplomBukov
 			u8 ce:1;
 		} dsfield;
 
-		boolib::util::BigEndian<u16> totalLength;
+		u16be totalLength;
 
 		// ---------------- Second DWORD ----------------
 
@@ -80,8 +100,8 @@ namespace DiplomBukov
 
 		// ---------------- Third DWORD -----------------
 
-		u8 ttl;
-		u8 proto;
+		u8  ttl;
+		u8  proto;
 		u16 checksum;
 
 		// ---------- Fourth and Fifth DWORD ------------

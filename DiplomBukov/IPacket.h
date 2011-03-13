@@ -64,6 +64,9 @@ namespace DiplomBukov
         virtual mac_addr & src_mac() = 0;
         virtual mac_addr & dst_mac() = 0;
         virtual Protocol::NetworkLayer & format() = 0;
+
+        virtual IProcessorPtr prevProcessor(IProcessorPtr current) const = 0;
+        virtual bool haveProcessor(IProcessorPtr proc) const = 0;
     };
     // class IPacket
 

@@ -34,6 +34,10 @@ namespace DiplomBukov
 		FILE * file1;
         FILE * file2;
 
+        unsigned id;
+        int linkType;
+        u8 * buffer;
+
 	public:
 		FileAdapter(char * filename1, char * filename2, IProcessorPtr Connector = IProcessorPtr());
 		virtual IProcessorPtr CreateCopy() const;
@@ -43,7 +47,8 @@ namespace DiplomBukov
 
         virtual const char * getProcessorName();
 
-		virtual void run();
+		virtual void run(bool always);
+        virtual void tick();
 	};
 	// class FileAdapter
 }

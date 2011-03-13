@@ -11,7 +11,9 @@ Ipv4Defragger::Ipv4Defragger(IProcessorPtr Connector)
 
 IProcessorPtr Ipv4Defragger::CreateCopy() const
 {
-    return IProcessorPtr(new Ipv4Defragger(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new Ipv4Defragger(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)

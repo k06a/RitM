@@ -26,7 +26,7 @@ namespace DiplomBukov
 
     public:
         RawPacket(int size = 0);
-        RawPacket(u8 * ptr, int size);
+        RawPacket(const u8 * ptr, int size);
         RawPacket(const RawPacket & packet);
 
         virtual IPacketPtr CreateCopy() const;
@@ -65,6 +65,9 @@ namespace DiplomBukov
         virtual mac_addr & src_mac();
         virtual mac_addr & dst_mac();
         virtual Protocol::NetworkLayer & format();
+
+        virtual IProcessorPtr prevProcessor(IProcessorPtr current) const;
+        virtual bool haveProcessor(IProcessorPtr proc) const;
     };
     // class RawPacket
 }

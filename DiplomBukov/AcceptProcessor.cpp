@@ -9,7 +9,9 @@ AcceptProcessor::AcceptProcessor(IProcessorPtr Connector)
 
 IProcessorPtr AcceptProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new AcceptProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new AcceptProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)

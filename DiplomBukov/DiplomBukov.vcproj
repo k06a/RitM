@@ -40,7 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/wd4250"
+				AdditionalOptions="/wd4250 -D_SCL_SECURE_NO_WARNINGS"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\winpcap\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
@@ -116,10 +116,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/wd4250"
+				AdditionalOptions="/wd4250 -D_SCL_SECURE_NO_WARNINGS"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\winpcap\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;LITTLE_ENDIAN"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -137,7 +138,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="wpcap.lib Packet.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\winpcap\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -259,7 +262,15 @@
 				Name="IObjects"
 				>
 				<File
+					RelativePath=".\AbstractConnector.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\AbstractConnector.h"
+					>
+				</File>
+				<File
+					RelativePath=".\AbstractProcessor.cpp"
 					>
 				</File>
 				<File
@@ -303,6 +314,10 @@
 		<Filter
 			Name="Structs"
 			>
+			<File
+				RelativePath=".\crc.h"
+				>
+			</File>
 			<File
 				RelativePath=".\LittleBigEndian.h"
 				>

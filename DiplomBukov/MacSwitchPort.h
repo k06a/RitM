@@ -20,7 +20,6 @@ namespace DiplomBukov
     public:
         MacSwitchPort(IProcessorPtr const nextProcessor);
         MacSwitchPort(const MacSwitchPort & macSwitchPort);
-        void Init(const IProcessorPtr np, const IProcessorPtr pp);
 
         virtual IProcessorPtr CreateCopy() const;
 
@@ -29,6 +28,7 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
 
         bool checkMac(const mac_addr & mac);
+        //bool operator == (const mac_addr & mac);
     };
     // class MacSwitchPort
 

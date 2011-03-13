@@ -10,7 +10,9 @@ IcmpProcessor::IcmpProcessor(IProcessorPtr Connector)
 
 IProcessorPtr IcmpProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new IcmpProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new IcmpProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)

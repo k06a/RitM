@@ -10,7 +10,6 @@
 #include "IAdapter.h"
 #include "SwitchOption.h"
 
-
 namespace DiplomBukov
 {
     class PcapAdapter
@@ -22,7 +21,12 @@ namespace DiplomBukov
 
         pcap_if_t * deviceList;
         unsigned deviceCount;
-        pcap_if_t * device;
+        pcap_t * device;
+
+        unsigned id;
+        int linkType;
+
+        std::deque<u32> hashes;
 
     public:
         PcapAdapter(IProcessorPtr Connector = IProcessorPtr());
@@ -34,7 +38,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
         virtual std::deque<IOptionPtr> getOptions();
 
-        virtual void run();
+        virtual void run(bool always);
+        virtual void tick();
     };
     // class PcapAdapter
 }

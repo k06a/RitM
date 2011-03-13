@@ -1,4 +1,5 @@
 #include "MacSwitchPort.h"
+#include "IPacket.h"
 
 using namespace DiplomBukov;
 
@@ -6,33 +7,38 @@ MacSwitchPort::MacSwitchPort(IProcessorPtr const nextProcessor)
 {
     this->nextProcessor = nextProcessor;
     this->prevProcessor = IProcessorPtr();
+    macList.push_back(mac_addr::broadcast());
 }
 
 MacSwitchPort::MacSwitchPort(const MacSwitchPort & macSwitchPort)
 {
-    Init(macSwitchPort.nextProcessor, macSwitchPort.prevProcessor);
-}
-
-void MacSwitchPort::Init(const IProcessorPtr np, const IProcessorPtr pp)
-{
-    nextProcessor = np->CreateCopy();
+    nextProcessor = macSwitchPort.nextProcessor;
     prevProcessor = IProcessorPtr();
 }
 
 IProcessorPtr MacSwitchPort::CreateCopy() const
 {
-    return IProcessorPtr(new MacSwitchPort(*this));
+    IProcessorPtr ptr(new MacSwitchPort(*this));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    nextProcessor->forwardProcess(proto, packet, offset);
+    if (packet->src_mac().isConcrete() && !checkMac(packet->src_mac()))
+        macList.push_back(packet->src_mac());
+    
+    packet->addProcessor(Self);
+    if (nextProcessor != NULL)
+        nextProcessor->forwardProcess(proto, packet, offset);
+
     return ProcessingStatus::Accepted;
 }
 
 ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    prevProcessor->backwardProcess(proto, packet, offset);
+    if (prevProcessor != NULL)
+        prevProcessor->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Accepted;
 }
 
@@ -46,3 +52,9 @@ bool MacSwitchPort::checkMac(const mac_addr & mac)
     MyList::iterator it = std::find(macList.begin(), macList.end(), mac);
     return (it != macList.end());
 }
+/*
+bool MacSwitchPort::operator == (const mac_addr & mac)
+{
+    return checkMac(mac);
+}
+*/

@@ -1,4 +1,5 @@
 #include "RawPacket.h"
+#include <algorithm>
 
 using namespace DiplomBukov;
 
@@ -10,7 +11,7 @@ RawPacket::RawPacket(int size)
 {
 }
 
-RawPacket::RawPacket(u8 * ptr, int size)
+RawPacket::RawPacket(const u8 * ptr, int size)
     : id_(0), time_(0), status_(Accepted)
     , real_size(size), data_(ptr, ptr+size)
     , direction_(Unknown)
@@ -109,7 +110,7 @@ IAdapter * RawPacket::adapter() const
 
 void RawPacket::addProcessor(IProcessorPtr pro)
 {
-    //processors_.push_back(pro);
+    processors_.push_back(pro);
 }
 
 const std::deque<IProcessorPtr> & RawPacket::processors() const
@@ -119,7 +120,7 @@ const std::deque<IProcessorPtr> & RawPacket::processors() const
 
 void RawPacket::addProtocol(Protocol pro)
 {
-    //protocols_.push_back(pro);
+    protocols_.push_back(pro);
 }
 
 const std::deque<Protocol> & RawPacket::protocols() const
@@ -163,4 +164,20 @@ mac_addr & RawPacket::dst_mac()
 Protocol::NetworkLayer & RawPacket::format()
 {
     return format_;
+}
+
+IProcessorPtr RawPacket::prevProcessor(IProcessorPtr current) const
+{
+    std::deque<IProcessorPtr>::const_iterator it =
+        std::find(processors_.begin(), processors_.end(), current);
+    if ((it != processors_.end()) && (it != processors_.begin()))
+        return *(--it);
+    return IProcessorPtr();
+}
+
+bool RawPacket::haveProcessor(IProcessorPtr proc) const
+{
+    std::deque<IProcessorPtr>::const_iterator it =
+        std::find(processors_.begin(), processors_.end(), proc);
+    return (it != processors_.end());
 }

@@ -21,6 +21,8 @@ namespace DiplomBukov
         void Init(const MyDeque & d);
         virtual IProcessorPtr CreateCopy() const;
 
+        virtual void ping(IProcessorPtr prevProcessor);
+
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
 
         virtual void addNextProcessor(IProcessorPtr processor);

@@ -20,6 +20,9 @@
 #include "Ipv4HeaderProcessor.h"
 #include "IcmpProcessor.h"
 #include "TransportPortProcessor.h"
+#include "TcpFlagsProcessor.h"
+#include "TcpSequenceProcessor.h"
+#include "TcpHeaderProcessor.h"
 #include "HttpSwapProcessor.h"
 
 #include "Ipv4Splitter.h"
@@ -27,111 +30,160 @@
 #include "TcpSplitter.h"
 #include "UdpSplitter.h"
 
+#include "MacSwitch.h"
+
 using namespace DiplomBukov;
 
-void print_arch(IProcessorPtr proc, std::string prefix = "")
+void print_arch(IProcessorPtr proc, std::string prefix = "", int deep = 0)
 {
     if (proc == NULL) return;
 
-    IProcessor * ipp = proc.get();
-    IConnector * ir = dynamic_cast<IConnector*>(ipp);
-    IAdapter   * ia = dynamic_cast<IAdapter*>(ipp);
-    IProcessor * ip = dynamic_cast<IProcessor*>(ipp);
+    IProcessor * ptr = proc.get();
+    IConnector * ic = dynamic_cast<IConnector*>(ptr);
+    IAdapter   * ia = dynamic_cast<IAdapter*>(ptr);
+    IProcessor * ip = dynamic_cast<IProcessor*>(ptr);
 
-    if (ir != NULL)
+    if (ic != NULL)
     {
-        std::cout << " [ Connector ]:";
-        const std::deque<IProcessorPtr> & procList = ir->nextProcessors();
+        if (deep == 1)
+        std::cout << " [ Connector"
+            << '{' << dynamic_cast<IAdapter*>(ic->getPrevProcessor().get())
+            << ',' << (IProcessor *)ic
+            << ',' << (IProcessor *)ic->getNextProcessor().get() << '}'
+            << " ]:";
+        else
+        std::cout << " [ Connector"
+            << '{' << (IProcessor *)ic->getPrevProcessor().get()
+            << ',' << (IProcessor *)ic
+            << ',' << (IProcessor *)ic->getNextProcessor().get() << '}'
+            << " ]:";
+        const std::deque<IProcessorPtr> & procList = ic->nextProcessors();
         for (size_t i = 0; i < procList.size(); i++)
-            print_arch(procList[i], prefix + "    ");
+            print_arch(procList[i], prefix, deep+1);
         return;
     }
 
     if (ia != NULL)
     {
-        std::cout << prefix << ia->getProcessorName();
-        print_arch(ipp->getNextProcessor(), prefix + "    ");
+        std::cout << prefix << ia->getProcessorName()
+                  << '{' << (IProcessor *)ia->getPrevProcessor().get()
+                  << ',' << (IAdapter   *)ia
+                  << ',' << (IProcessor *)ia->getNextProcessor().get() << '}';
+        print_arch(ia->getNextProcessor(), prefix + "  ", deep+1);
         return;
     }
 
-    if (ip != 0)
+    if (ip != NULL)
     {
         std::cout << std::endl << prefix << ip->getProcessorName()
+                  << '{' << (IProcessor *)ip->getPrevProcessor().get()
+                  << ',' << (IProcessor *)ip
+                  << ',' << (IProcessor *)ip->getNextProcessor().get() << '}'
                   << "(" << ip->getProtocol().name << ")";
-        print_arch(ipp->getNextProcessor(), prefix + "    ");
+        print_arch(ip->getNextProcessor(), prefix + "  ", deep+1);
         return;
     }
+}
+
+void connect(IProcessorPtr a, IProcessorPtr b)
+{
+    a->getNextProcessor()->setNextProcessor(b->getPointer());
+    //a->getNextProcessor()->setPrevProcessor(a->getPointer());
 }
 
 int main(int argc, char * argv[])
 {
     #define NEW_Connector IProcessorPtr(new ProtocolConnector())
 
-    IAdapterPtr fileAdapter(new FileAdapter("tcp.pcap", "tcp_out.pcap", NEW_Connector));
-    IAdapterPtr pcapAdapter(new PcapAdapter(NEW_Connector));
+    //IAdapterPtr fileAdapter(new FileAdapter("tcp.pcap", "tcp_out.pcap", NEW_Connector));
+    IAdapterPtr pcap1Adapter(new PcapAdapter(NEW_Connector));
+    IAdapterPtr pcap2Adapter(new PcapAdapter(NEW_Connector));
 
-    /*
-	IProcessorPtr macProcessor(new MacHeaderProcessor(NEW_Connector));
-    IProcessorPtr ipv4Splitter(new Ipv4Splitter(NEW_Connector));
-    IProcessorPtr ipdfProcessor(new Ipv4Defragger(NEW_Connector));
-    IProcessorPtr tcpProcessor(new TcpSplitter(NEW_Connector));
-    IProcessorPtr udpProcessor(new UdpSplitter(NEW_Connector));
-    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
+    IProcessorPtr mac1HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
+    IProcessorPtr mac2HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
 
-    ProcessorModule * macModule  = new ProcessorModule(macProcessor);
-    ProcessorModule * ipv4Module = new ProcessorModule(ipv4Splitter);
-    ProcessorModule * ipdfModule = new ProcessorModule(ipdfProcessor);
-    ProcessorModule * tcpModule  = new ProcessorModule(tcpProcessor);
-    ProcessorModule * udpModule  = new ProcessorModule(udpProcessor);
-    ProcessorModule * icmpModule = new ProcessorModule(icmpProcessor);
+    IProcessorPtr macSwitch(new MacSwitch(NEW_Connector));
 
-    #define connect(a,b) a->getNextProcessor()->setNextProcessor(b)
-
-    connect(fileAdapter, macProcessor);
-    connect(macProcessor, ipv4Splitter);
-            connect(ipv4Splitter, ipdfProcessor);
-                connect(ipdfProcessor, tcpProcessor);
-                connect(ipdfProcessor, udpProcessor);
-                connect(ipdfProcessor, icmpProcessor);
-    */
-    
-    IProcessorPtr macProcessor(new MacHeaderProcessor(NEW_Connector));
     IProcessorPtr ipSplitter(new Ipv4Splitter(NEW_Connector));
-    IProcessorPtr ipProcessor(new Ipv4HeaderProcessor(NEW_Connector));
-    IProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
-    IProcessorPtr portProcessor(new TransportPortProcessor(NEW_Connector));
+    IProcessorPtr ipHeaderProcessor(new Ipv4HeaderProcessor(NEW_Connector));
+    
     IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
+    IProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
+    IProcessorPtr tcpFlagsProcessor(new TcpFlagsProcessor(NEW_Connector));
+    IProcessorPtr tcpSeqProcessor(new TcpSequenceProcessor(NEW_Connector));
+    IProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
     IProcessorPtr httpProcessor(new HttpSwapProcessor(NEW_Connector));
     
-    ProcessorModule * macModule  = new ProcessorModule(macProcessor);
-    ProcessorModule * ipModule = new ProcessorModule(ipProcessor);
+    /*
+    ProcessorModule * macModule  = new ProcessorModule(macHeaderProcessor);
+    ProcessorModule * ipModule = new ProcessorModule(ipHeaderProcessor);
     ProcessorModule * tcpModule  = new ProcessorModule(portProcessor);
     ProcessorModule * icmpModule = new ProcessorModule(icmpProcessor);
+    */
 
-    #define connect(a,b) a->getNextProcessor()->setNextProcessor(b)
+    pcap1Adapter->setSelf(pcap1Adapter);
+    pcap2Adapter->setSelf(pcap2Adapter);
+    mac1HeaderProcessor->setSelf(mac1HeaderProcessor);
+    mac2HeaderProcessor->setSelf(mac2HeaderProcessor);
 
-    connect(pcapAdapter, macProcessor);
-        connect(macProcessor, ipSplitter);
-            connect(ipSplitter, ipProcessor);
-                connect(ipProcessor, tcpSplitter);
-                    connect(tcpSplitter, portProcessor);
-                    connect(portProcessor, httpProcessor);
-    
-    fileAdapter->setSelf(fileAdapter);
-    pcapAdapter->setSelf(pcapAdapter);
-    macProcessor->setSelf(macProcessor);
-    ipProcessor->setSelf(ipProcessor);
-    portProcessor->setSelf(portProcessor);
+    macSwitch->setSelf(macSwitch);
+
+    ipSplitter->setSelf(ipSplitter);
+    ipHeaderProcessor->setSelf(ipHeaderProcessor);
+
     icmpProcessor->setSelf(icmpProcessor);
+    tcpSplitter->setSelf(tcpSplitter);
+    tcpFlagsProcessor->setSelf(tcpFlagsProcessor);
+    tcpSeqProcessor->setSelf(tcpSeqProcessor);
+    tcpHeaderProcessor->setSelf(tcpHeaderProcessor);
+    httpProcessor->setSelf(httpProcessor);
+
+    connect(pcap1Adapter, mac1HeaderProcessor);
+    connect(pcap2Adapter, mac2HeaderProcessor);
     
-    SwitchOption * opt = (SwitchOption *)pcapAdapter->getOptions().front().get();
-    for (int i = 0; i < opt->getTextItems().size(); i++)
-        std::cout << i << ". " << opt->getTextItems()[i] << std::endl;
+    connect(mac1HeaderProcessor, macSwitch);
+    connect(mac2HeaderProcessor, macSwitch);
 
-    opt->setSelectedIndex(1);
+    connect(macSwitch, ipSplitter);
+        connect(ipSplitter, ipHeaderProcessor);
+        connect(ipHeaderProcessor, icmpProcessor);
+        connect(ipHeaderProcessor, tcpSplitter);
+            connect(tcpSplitter, tcpFlagsProcessor);
+            connect(tcpFlagsProcessor, tcpSeqProcessor);
+            connect(tcpSeqProcessor, tcpHeaderProcessor);
+            connect(tcpHeaderProcessor, httpProcessor);
+    
+    SwitchOption * opt1 = (SwitchOption *)pcap1Adapter->getOptions().front().get();
+    for (unsigned i = 0; i < opt1->getTextItems().size(); i++)
+        std::cout << i << ". " << opt1->getTextItems()[i] << std::endl;
 
-    print_arch(fileAdapter);
-    std::cout << std::endl;
+    int index1;
+    std::cin >> index1;
+    opt1->setSelectedIndex(index1);
 
-    fileAdapter->run();
+    SwitchOption * opt2 = (SwitchOption *)pcap2Adapter->getOptions().front().get();
+    for (unsigned i = 0; i < opt2->getTextItems().size(); i++)
+        std::cout << i << ". " << opt2->getTextItems()[i] << std::endl;
+
+    int index2;
+    std::cin >> index2;
+    opt2->setSelectedIndex(index2);
+    
+    /*
+    print_arch(pcap1Adapter);
+    std::cout << std::endl << std::endl;
+    print_arch(pcap2Adapter);
+    std::cout << std::endl << std::endl;
+    */
+
+    pcap1Adapter->ping(IProcessorPtr());
+    pcap2Adapter->ping(IProcessorPtr());
+
+    pcap1Adapter->run(false);
+    pcap2Adapter->run(false);
+    while (true)
+    {
+        pcap1Adapter->tick();
+        pcap2Adapter->tick();
+    }
 }

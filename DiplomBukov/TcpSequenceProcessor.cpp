@@ -11,7 +11,9 @@ TcpSequenceProcessor::TcpSequenceProcessor(IProcessorPtr Connector)
 
 IProcessorPtr TcpSequenceProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new TcpSequenceProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new TcpSequenceProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
@@ -138,8 +140,9 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess2(AbonentSN::QuededPacket *
             tcp_header * tcp = (tcp_header *)(&pack->data()[0] + offset);
             tcp->seq = abonent.currentSendSN;
             tcp->ack = abonent.currentRecvSN;
-            if (prevProcessor != NULL)
-                prevProcessor->backwardProcess(proto, pack, offset);
+
+            if (pack->prevProcessor(Self) != NULL)
+                pack->prevProcessor(Self)->backwardProcess(proto, pack, offset);
             } break;
 
         default:
@@ -162,8 +165,8 @@ ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPt
     tcp->ack = abonent.currentRecvSN;
     abonent.currentSendSN += dataInTcp;
     
-    if (prevProcessor != NULL)
-        prevProcessor->backwardProcess(proto, packet, offset);
+    if (packet->prevProcessor(Self) != NULL)
+        packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

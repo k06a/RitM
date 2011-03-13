@@ -11,7 +11,9 @@ TcpFlagsProcessor::TcpFlagsProcessor(IProcessorPtr Connector)
 
 IProcessorPtr TcpFlagsProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new TcpFlagsProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new TcpFlagsProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
@@ -31,8 +33,8 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 (packet->direction() == IPacket::ClientToServer))
             {
                 connectionStatus = FIRST_SYN;
-                if (prevProcessor != NULL)
-                    prevProcessor->backwardProcess(Protocol::TCP, packet, offset);
+                if (packet->prevProcessor(Self) != NULL)
+                    packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
             }
             break;
 
@@ -41,7 +43,8 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 (packet->direction() == IPacket::ServerToClient))
             {
                 connectionStatus = FIRST_ACK;
-            }
+            } else
+                break;
             //break;
 
         case FIRST_ACK:
@@ -53,18 +56,18 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 if (tcp->flags.haveFlags(FLAGS::SYN + FLAGS::ACK))
                 {
                     tcp->flags = FLAGS::SYN + FLAGS::ACK;
-                    if (prevProcessor != NULL)
-                        prevProcessor->backwardProcess(Protocol::TCP, packet, offset);
+                    if (packet->prevProcessor(Self) != NULL)
+                        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
                 }
                 else
                 {
                     tcp->flags = FLAGS::ACK;
-                    if (prevProcessor != NULL)
-                        prevProcessor->backwardProcess(Protocol::TCP, packet, offset);
+                    if (packet->prevProcessor(Self) != NULL)
+                        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
 
                     tcp->flags = FLAGS::SYN;
-                    if (prevProcessor != NULL)
-                        prevProcessor->backwardProcess(Protocol::TCP, packet, offset);
+                    if (packet->prevProcessor(Self) != NULL)
+                        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
                 }
             }
             break;
@@ -75,8 +78,8 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
             {
                 connectionStatus = ESTABLISHED;
 
-                if (prevProcessor != NULL)
-                    prevProcessor->backwardProcess(Protocol::TCP, packet, offset);
+                if (packet->prevProcessor(Self) != NULL)
+                    packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
             }
             break;
 
@@ -129,8 +132,8 @@ ProcessingStatus TcpFlagsProcessor::backwardProcess(Protocol proto, IPacketPtr &
 {
     tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
     
-    if (prevProcessor != NULL)
-        prevProcessor->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->prevProcessor(Self) != NULL)
+        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

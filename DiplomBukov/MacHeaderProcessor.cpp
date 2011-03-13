@@ -10,7 +10,9 @@ MacHeaderProcessor::MacHeaderProcessor(IProcessorPtr Connector)
 
 IProcessorPtr MacHeaderProcessor::CreateCopy() const
 {
-    return IProcessorPtr(new MacHeaderProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new MacHeaderProcessor(nextProcessor->CreateCopy()));
+    ptr->setSelf(ptr);
+    return ptr;
 }
 
 ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
@@ -18,6 +20,7 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
     if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
 
+    packet->addProcessor(Self);
     mac_header * mac = (mac_header *)(&packet->data()[0] + offset);
     packet->src_mac() = mac->src;
     packet->dst_mac() = mac->dst;
@@ -34,22 +37,27 @@ ProcessingStatus MacHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
 {
     int dataLength = packet->size() - offset;
 
-    if (offset < sizeof(header))
+    if (offset < sizeof(mac_header))
     {
         packet->push_front(sizeof(mac_header) - offset);
         offset = sizeof(mac_header);
     }
+    offset -= sizeof(mac_header);
 
-    mac_header * mac = (mac_header *)(&packet->data()[0] + offset - sizeof(mac_header));
+    mac_header * mac = (mac_header *)(&packet->data()[0] + offset);
     mac->src = packet->src_mac();
     mac->dst = packet->dst_mac();
-    mac->proto = packet->format();
+    mac->proto = proto.code;
 
-    if (packet->direction() == IPacket::ServerToClient)
-        std::swap(mac->src, mac->dst);
+    //if (packet->direction() == IPacket::ServerToClient)
+    //    std::swap(mac->src, mac->dst);
     
+    //FIX
+    //mac->src = "00:22:15:48:78:8e";
+    //mac->dst = "00:19:cb:be:28:d3";
+
     if (prevProcessor != NULL)
-        prevProcessor->backwardProcess(Protocol::None, packet, offset - sizeof(mac_header));
+        prevProcessor->backwardProcess(Protocol::Ethernet_II, packet, offset);
 
     return ProcessingStatus::Accepted;
 }
