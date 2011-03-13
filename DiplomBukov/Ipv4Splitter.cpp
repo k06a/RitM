@@ -50,6 +50,16 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
 	return ProcessingStatus::Accepted;
 }
 
+ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+{
+    ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[0] + offset);
+
+    if (packet->direction() == IPacket::ServerToClient)
+        std::swap(ipv4->src_data, ipv4->dst_data);
+
+    return ProcessingStatus::Accepted;
+}
+
 Protocol Ipv4Splitter::getProtocol()
 {
     return Protocol::IPv4;

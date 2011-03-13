@@ -50,6 +50,16 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
     return ProcessingStatus::Accepted;
 }
 
+ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+{
+    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+
+    if (packet->direction() == IPacket::ServerToClient)
+        std::swap(tcp->src_port, tcp->dst_port);
+
+    return ProcessingStatus::Accepted;
+}
+
 const char * TcpSplitter::getProcessorName()
 {
     return "TcpSplitter";
