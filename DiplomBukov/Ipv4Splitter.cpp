@@ -29,7 +29,6 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
     ipv4_pair para2(adr2,adr1);
     MyMap::iterator it1 = Connectors.find(para1);
     MyMap::iterator it2 = Connectors.find(para2);
-    para = (it1 == Connectors.end()) ? para2 : para1;
     if ((it1 == Connectors.end()) && (it2 == Connectors.end()))
     {
         para = para1;
