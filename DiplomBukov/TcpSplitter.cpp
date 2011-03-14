@@ -32,6 +32,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
     para = (it1 == Connectors.end()) ? para2 : para1;
     if ((it1 == Connectors.end()) && (it2 == Connectors.end()))
     {
+        para = para1;
         if (nextProcessor != NULL)
             Connectors[para] = nextProcessor->CreateCopy();
     }
@@ -59,6 +60,9 @@ ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr & packe
 
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
+
+    if (packet->prevProcessor(Self) != NULL)
+        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

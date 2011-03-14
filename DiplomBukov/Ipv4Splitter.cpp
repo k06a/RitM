@@ -32,6 +32,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
     para = (it1 == Connectors.end()) ? para2 : para1;
     if ((it1 == Connectors.end()) && (it2 == Connectors.end()))
     {
+        para = para1;
         if (nextProcessor != NULL)
             Connectors[para] = nextProcessor->CreateCopy();
     }
@@ -59,6 +60,9 @@ ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr & pack
 
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(ipv4->src_data, ipv4->dst_data);
+
+    if (packet->prevProcessor(Self) != NULL)
+        packet->prevProcessor(Self)->backwardProcess(Protocol::IPv4, packet, offset);
 
     return ProcessingStatus::Accepted;
 }
