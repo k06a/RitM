@@ -14,6 +14,7 @@ namespace DiplomBukov
         typedef std::map<port_pair,IProcessorPtr> MyMap;
 
         MyMap Connectors;
+        port_pair para;
 
     public:
         TcpSplitter(IProcessorPtr Connector = IProcessorPtr());
@@ -21,7 +22,6 @@ namespace DiplomBukov
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
-
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

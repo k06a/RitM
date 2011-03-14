@@ -17,6 +17,7 @@ namespace DiplomBukov
         typedef std::map<ipv4_pair,IProcessorPtr> MyMap;
 
         MyMap Connectors;
+        ipv4_pair para;
 		
 	public:
 		Ipv4Splitter(IProcessorPtr Connector = IProcessorPtr());

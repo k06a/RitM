@@ -29,7 +29,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
     ipv4_pair para2(adr2,adr1);
     MyMap::iterator it1 = Connectors.find(para1);
     MyMap::iterator it2 = Connectors.find(para2);
-    ipv4_pair & para = (it1 == Connectors.end()) ? para2 : para1;
+    para = (it1 == Connectors.end()) ? para2 : para1;
     if ((it1 == Connectors.end()) && (it2 == Connectors.end()))
     {
         if (nextProcessor != NULL)
@@ -53,6 +53,9 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
 ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[0] + offset);
+
+    ipv4->src_data = para.first;
+    ipv4->dst_data = para.second;
 
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(ipv4->src_data, ipv4->dst_data);

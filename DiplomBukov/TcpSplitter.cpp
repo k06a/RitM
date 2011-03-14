@@ -29,7 +29,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
     port_pair para2(adr2,adr1);
     MyMap::iterator it1 = Connectors.find(para1);
     MyMap::iterator it2 = Connectors.find(para2);
-    port_pair & para = (it1 == Connectors.end()) ? para2 : para1;
+    para = (it1 == Connectors.end()) ? para2 : para1;
     if ((it1 == Connectors.end()) && (it2 == Connectors.end()))
     {
         if (nextProcessor != NULL)
@@ -53,6 +53,9 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
 ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+
+    tcp->src_port = para.first;
+    tcp->dst_port = para.second;
 
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
