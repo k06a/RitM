@@ -44,14 +44,14 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
             if ((tcp->flags.haveFlags(FLAGS::SYN + FLAGS::ACK)) &&
                 (packet->direction() == IPacket::ServerToClient))
             {
-                connectionStatus = SECOND_SYN;
+                connectionStatus = SECOND_SYNACK;
                 if (packet->prevProcessor(Self) != NULL)
                     packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
                 reject = true;
             }
             break;
 
-        case SECOND_SYN:
+        case SECOND_SYNACK:
             if ((tcp->flags.haveFlags(FLAGS::ACK)) &&
                 (packet->direction() == IPacket::ClientToServer))
             {
@@ -80,25 +80,15 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
 
         case PRELAST_FIN:
             {
-                if (tcp->flags.haveFlags(FLAGS::ACK))
+                if (tcp->flags.haveFlags(FLAGS::FIN + FLAGS::ACK))
                 {
-                    connectionStatus = PRELAST_ACK;
+                    connectionStatus = LAST_FINACK;
                     reject = true;
                 }
             }
             break;
 
-        case PRELAST_ACK:
-            {
-                if (tcp->flags.haveFlags(FLAGS::FIN))
-                {
-                    connectionStatus = LAST_FIN;
-                    reject = true;
-                }
-            }
-            break;
-
-        case LAST_FIN:
+        case LAST_FINACK:
             {
                 if (tcp->flags.haveFlags(FLAGS::ACK))
                 {
