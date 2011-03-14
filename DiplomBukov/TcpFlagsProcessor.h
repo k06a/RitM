@@ -16,9 +16,8 @@ namespace DiplomBukov
         {
             CLOSED,        // No any activity
             FIRST_SYN,     // Client sends SYN and waits
-            FIRST_ACK,     // Server answered ACK
-            SECOND_SYN,    // Server sends SYN
-            SECOND_ACK,    // Server sends SYN
+            SECOND_SYN,    // Server sends SYN + ACK
+            SECOND_ACK,    // Client sends ACK
             ESTABLISHED,   // Connection established
             PRELAST_FIN,   // One send FIN and waits for 2*MSL secs
             PRELAST_ACK,   // Second send 

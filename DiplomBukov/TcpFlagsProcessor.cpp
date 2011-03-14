@@ -26,6 +26,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
     
     typedef tcp_header::flags_struct FLAGS;
 
+    bool reject = false;
     switch (connectionStatus)
     {
         case CLOSED:
@@ -35,40 +36,18 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 connectionStatus = FIRST_SYN;
                 if (packet->prevProcessor(Self) != NULL)
                     packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+                reject = true;
             }
             break;
 
         case FIRST_SYN:
-            if ((tcp->flags.haveFlags(FLAGS::ACK)) &&
-                (packet->direction() == IPacket::ServerToClient))
-            {
-                connectionStatus = FIRST_ACK;
-            } else
-                break;
-            //break;
-
-        case FIRST_ACK:
-            if ((tcp->flags.haveFlags(FLAGS::SYN)) &&
+            if ((tcp->flags.haveFlags(FLAGS::SYN + FLAGS::ACK)) &&
                 (packet->direction() == IPacket::ServerToClient))
             {
                 connectionStatus = SECOND_SYN;
-
-                if (tcp->flags.haveFlags(FLAGS::SYN + FLAGS::ACK))
-                {
-                    tcp->flags = FLAGS::SYN + FLAGS::ACK;
-                    if (packet->prevProcessor(Self) != NULL)
-                        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
-                }
-                else
-                {
-                    tcp->flags = FLAGS::ACK;
-                    if (packet->prevProcessor(Self) != NULL)
-                        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
-
-                    tcp->flags = FLAGS::SYN;
-                    if (packet->prevProcessor(Self) != NULL)
-                        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
-                }
+                if (packet->prevProcessor(Self) != NULL)
+                    packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+                reject = true;
             }
             break;
 
@@ -77,9 +56,9 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 (packet->direction() == IPacket::ClientToServer))
             {
                 connectionStatus = ESTABLISHED;
-
                 if (packet->prevProcessor(Self) != NULL)
                     packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+                reject = true;
             }
             break;
 
@@ -87,6 +66,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
             if (tcp->flags.haveFlags(FLAGS::FIN))
             {
                 connectionStatus = PRELAST_FIN;
+                reject = true;
                 break;
             }
 
@@ -94,6 +74,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
             {
                 if (nextProcessor != NULL)
                     nextProcessor->forwardProcess(proto, packet, offset);
+                reject = true;
             }
             break;
 
@@ -102,6 +83,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 if (tcp->flags.haveFlags(FLAGS::ACK))
                 {
                     connectionStatus = PRELAST_ACK;
+                    reject = true;
                 }
             }
             break;
@@ -111,6 +93,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 if (tcp->flags.haveFlags(FLAGS::FIN))
                 {
                     connectionStatus = LAST_FIN;
+                    reject = true;
                 }
             }
             break;
@@ -120,10 +103,14 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 if (tcp->flags.haveFlags(FLAGS::ACK))
                 {
                     connectionStatus = CLOSED;
+                    reject = true;
                 }
             }
             break;
     }
+
+    if (reject)
+        packet->setStatus(IPacket::Rejected);
 
     return ProcessingStatus::Accepted;
 }
