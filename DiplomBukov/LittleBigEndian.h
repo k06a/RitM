@@ -92,6 +92,50 @@ namespace boolib
             {
                 return (*this = *this % t);
             }
+
+            LittleEndian<T> operator ++ (int)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    bytes[i]++;
+                    if (bytes[i] != 0)
+                        break;
+                }
+                return (*this);
+            }
+
+            LittleEndian<T> & operator ++ ()
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    ++bytes[i];
+                    if (bytes[i] != 0)
+                        break;
+                }
+                return (*this);
+            }
+
+            LittleEndian<T> operator -- (int)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    bytes[i]--;
+                    if (bytes[i] != (T)(-1))
+                        break;
+                }
+                return (*this);
+            }
+
+            LittleEndian<T> & operator -- ()
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    --bytes[i];
+                    if (bytes[i] != (T)(-1))
+                        break;
+                }
+                return (*this);
+            }
 		};
 		#pragma pack(pop)
 
@@ -161,6 +205,50 @@ namespace boolib
             const T operator %= (const T t)
             {
                 return (*this = *this % t);
+            }
+
+            LittleEndian<T> operator ++ (int)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    bytes[sizeof(T) - 1 - i]++;
+                    if (bytes[sizeof(T) - 1 - i] != 0)
+                        break;
+                }
+                return (*this);
+            }
+
+            LittleEndian<T> & operator ++ ()
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    ++bytes[sizeof(T) - 1 - i];
+                    if (bytes[sizeof(T) - 1 - i] != 0)
+                        break;
+                }
+                return (*this);
+            }
+
+            LittleEndian<T> operator -- (int)
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    bytes[sizeof(T) - 1 - i]--;
+                    if (bytes[sizeof(T) - 1 - i] != (T)(-1))
+                        break;
+                }
+                return (*this);
+            }
+
+            LittleEndian<T> & operator -- ()
+            {
+                for (unsigned i = 0; i < sizeof(T); i++)
+                {
+                    --bytes[sizeof(T) - 1 - i];
+                    if (bytes[sizeof(T) - 1 - i] != (T)(-1))
+                        break;
+                }
+                return (*this);
             }
 		};
 		#pragma pack(pop)
