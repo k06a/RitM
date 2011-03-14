@@ -23,7 +23,7 @@
 #include "TcpFlagsProcessor.h"
 #include "TcpSequenceProcessor.h"
 #include "TcpHeaderProcessor.h"
-#include "HttpSwapProcessor.h"
+#include "TelnetSwapper.h"
 
 #include "Ipv4Splitter.h"
 #include "Ipv4Defragger.h"
@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
     IProcessorPtr tcpFlagsProcessor(new TcpFlagsProcessor(NEW_Connector));
     IProcessorPtr tcpSeqProcessor(new TcpSequenceProcessor(NEW_Connector));
     IProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
-    IProcessorPtr httpProcessor(new HttpSwapProcessor(NEW_Connector));
+    IProcessorPtr telnetProcessor(new TelnetSwapper(NEW_Connector));
     
     /*
     ProcessorModule * macModule  = new ProcessorModule(macHeaderProcessor);
@@ -136,7 +136,7 @@ int main(int argc, char * argv[])
     tcpFlagsProcessor->setSelf(tcpFlagsProcessor);
     tcpSeqProcessor->setSelf(tcpSeqProcessor);
     tcpHeaderProcessor->setSelf(tcpHeaderProcessor);
-    httpProcessor->setSelf(httpProcessor);
+    telnetProcessor->setSelf(telnetProcessor);
 
     connect(pcap1Adapter, mac1HeaderProcessor);
     connect(pcap2Adapter, mac2HeaderProcessor);
@@ -151,7 +151,7 @@ int main(int argc, char * argv[])
             connect(tcpSplitter, tcpFlagsProcessor);
             connect(tcpFlagsProcessor, tcpSeqProcessor);
             connect(tcpSeqProcessor, tcpHeaderProcessor);
-            connect(tcpHeaderProcessor, httpProcessor);
+            connect(tcpHeaderProcessor, telnetProcessor);
     
     SwitchOption * opt1 = (SwitchOption *)pcap1Adapter->getOptions().front().get();
     for (unsigned i = 0; i < opt1->getTextItems().size(); i++)

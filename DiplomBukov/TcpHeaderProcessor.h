@@ -12,6 +12,8 @@ namespace DiplomBukov
 {
     class TcpHeaderProcessor : public AbstractProcessor
     {
+        Protocol inproto;
+
     public:
         TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;

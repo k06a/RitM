@@ -61,15 +61,8 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr & packe
     u32 hash = Crc32(&packet->data()[offset], packet->realSize() - offset);
     hashes.push_back(hash);
 
-    /*
     SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
     std::cout << '-' << opt->getSelectedIndex();
-    if (!znak)
-    {
-        znak = false;
-    }
-    znak = false;
-    */
 
     pcap_sendpacket(device, &packet->data()[offset], packet->realSize() - offset);
 
@@ -131,11 +124,8 @@ void PcapAdapter::tick()
     packet->setAdapter(this);
     packet->addProcessor(Self);
 
-    /*
     SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
     std::cout << '+' << opt->getSelectedIndex();
-    znak = true;
-    */
 
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
     nextProcessor->forwardProcess(proto, packet, 0);

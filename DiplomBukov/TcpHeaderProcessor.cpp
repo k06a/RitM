@@ -3,6 +3,7 @@
 using namespace DiplomBukov;
 
 TcpHeaderProcessor::TcpHeaderProcessor(IProcessorPtr Connector)
+    : inproto(Protocol::None)
 {
     setNextProcessor(Connector);
 }
@@ -19,12 +20,23 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+    tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
     offset += tcp->header_size();
+    u16 server_port =
+        (packet->direction() == IPacket::ClientToServer)
+        ? tcp->dst_port : tcp->src_port;
+
+    // First session packet (ClientToServer)
+    if (inproto == Protocol::None)
+    {
+        char text[10];
+        sprintf_s(text, sizeof(text), "TCP_%d", server_port);
+        inproto = Protocol(text, server_port);
+    }
 
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
-        nextProcessor->forwardProcess(proto, packet, offset);
+        nextProcessor->forwardProcess(inproto, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

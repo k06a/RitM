@@ -25,7 +25,8 @@ namespace DiplomBukov
             OldPacket      = 1, // Пакет из прошлого
             ExpectedPacket = 2, // Пакет с ожидаемым номером
             CutPacket      = 4, // Пакет с частью новых данных
-            FuturePacket   = 8  // Пакет из будущего
+            FuturePacket   = 8, // Пакет из будущего
+            CommitPacket   = 16 // Пакет с подтверждением
         };
 
         struct AbonentSN
@@ -79,6 +80,10 @@ namespace DiplomBukov
         
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
+
+    private:
+        IPacketPtr createAck(AbonentSN::QuededPacket * qpacket, AbonentSN & abonent);
+        std::pair<IPacketPtr,unsigned> mergePackets(const std::deque<AbonentSN::QuededPacket> & arr);
     };
     // class TcpSequenceProcessor
 }

@@ -623,6 +623,14 @@
 							RelativePath=".\HttpSwapProcessor.h"
 							>
 						</File>
+						<File
+							RelativePath=".\TelnetSwapper.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TelnetSwapper.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
