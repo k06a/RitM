@@ -65,7 +65,13 @@ ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr & packet,
     if (count == 0)
     {
         for(MyDeque::iterator it = ports.begin(); it != ports.end(); ++it)
+        {
+            // Не отправлять обратно
+            if (packet->haveProcessor(*it))
+                continue;
+
             (*it)->backwardProcess(proto, packet, offset);
+        }
     }
     
     return ProcessingStatus::Accepted;
