@@ -22,6 +22,8 @@ RawPacket::RawPacket(const RawPacket & packet)
     : id_(packet.id_), time_(packet.time_), status_(packet.status_)
     , real_size(packet.real_size), data_(packet.data_)
     , direction_(packet.direction_)
+    , processors_(packet.processors_)
+    , protocols_(packet.protocols_)
 {
 }
 

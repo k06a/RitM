@@ -37,15 +37,17 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
     if (abonent.initialSN == 0)
     {
         abonent.initialSN = tcp->seq;
-        abonent.currentRecvSN = tcp->seq;
-        if (toAbonent.currentSendSN == 0)
-            toAbonent.currentSendSN = tcp->seq;
+        abonent.currentRecvSN = tcp->seq+1;
+        toAbonent.currentSendSN = tcp->seq;
     }
+
+    if (tcp->flags.haveFlags(tcp_header::flags_struct::SYN))
+        return ProcessingStatus::Accepted;
 
     //////////////////////////////////////////////////////////////////////////
 
     int situation = 0;
-    situation += OldPacket*(tcp->seq + dataInTcp < abonent.currentRecvSN);
+    situation += OldPacket*(tcp->seq + dataInTcp <= abonent.currentRecvSN);
     situation += ExpectedPacket*(tcp->seq == abonent.currentRecvSN);
     situation += CutPacket*((tcp->seq < abonent.currentRecvSN) && (tcp->seq + dataInTcp > abonent.currentRecvSN));
     situation += FuturePacket*(tcp->seq > abonent.currentRecvSN);

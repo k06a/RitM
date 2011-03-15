@@ -21,14 +21,21 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
+    header.resize(tcp->header_size());
+    std::copy(
+        &packet->data()[offset],
+        &packet->data()[offset+tcp->header_size()],
+        header.begin());
+
     offset += tcp->header_size();
-    u16 server_port =
-        (packet->direction() == IPacket::ClientToServer)
-        ? tcp->dst_port : tcp->src_port;
 
     // First session packet (ClientToServer)
     if (inproto == Protocol::None)
     {
+        u16 server_port =
+            (packet->direction() == IPacket::ClientToServer)
+            ? tcp->dst_port : tcp->src_port;
+
         char text[10];
         sprintf_s(text, sizeof(text), "TCP_%d", server_port);
         inproto = Protocol(text, server_port);
@@ -43,19 +50,17 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
 
 ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    if (sizeof(tcp_header) > offset)
+    if (header.size() > offset)
     {
-        int needBytes = sizeof(tcp_header) - offset;
+        int needBytes = header.size() - offset;
         packet->push_front(needBytes);
-        offset = sizeof(tcp_header);
+        offset = header.size();
     }
-    offset -= sizeof(tcp_header);
+    offset -= header.size();
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
-    //memset(tcp, 0, sizeof(tcp_header));
+    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
+    std::copy(header.begin(), header.end(), &packet->data()[offset]);
     
-    //tcp->recountSum()
-
     if (packet->prevProcessor(Self) != NULL)
         packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
 

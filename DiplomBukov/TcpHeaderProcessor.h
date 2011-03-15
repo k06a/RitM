@@ -2,6 +2,7 @@
 #define TCPHEADERPROCESSOR_H
 
 #include <map>
+#include <vector>
 
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
@@ -13,6 +14,7 @@ namespace DiplomBukov
     class TcpHeaderProcessor : public AbstractProcessor
     {
         Protocol inproto;
+        std::vector<u8> header;
 
     public:
         TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());

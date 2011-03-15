@@ -36,6 +36,8 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 connectionStatus = FIRST_SYN;
                 if (packet->prevProcessor(Self) != NULL)
                     packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+                if (nextProcessor != NULL)
+                    nextProcessor->forwardProcess(proto, packet, offset);
                 reject = true;
             }
             break;
@@ -47,6 +49,8 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 connectionStatus = SECOND_SYNACK;
                 if (packet->prevProcessor(Self) != NULL)
                     packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+                if (nextProcessor != NULL)
+                    nextProcessor->forwardProcess(proto, packet, offset);
                 reject = true;
             }
             break;
