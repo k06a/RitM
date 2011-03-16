@@ -38,7 +38,7 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
     {
         abonent.initialSN = tcp->seq;
         abonent.currentRecvSN = tcp->seq+1;
-        toAbonent.currentSendSN = tcp->seq;
+        toAbonent.currentSendSN = tcp->seq+1;
     }
 
     if (tcp->flags.haveFlags(tcp_header::flags_struct::SYN))
@@ -47,12 +47,20 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
     //////////////////////////////////////////////////////////////////////////
 
     int situation = 0;
-    situation += OldPacket*(tcp->seq + dataInTcp <= abonent.currentRecvSN);
-    situation += ExpectedPacket*(tcp->seq == abonent.currentRecvSN);
-    situation += CutPacket*((tcp->seq < abonent.currentRecvSN) && (tcp->seq + dataInTcp > abonent.currentRecvSN));
-    situation += FuturePacket*(tcp->seq > abonent.currentRecvSN);
+    if (dataInTcp == 0)
+    {
+        situation += OldPacket*(tcp->seq < abonent.currentRecvSN);
+        situation += CommitPacket*(tcp->seq >= abonent.currentRecvSN);
+    }
+    else
+        situation += OldPacket*(tcp->seq + dataInTcp <= abonent.currentRecvSN);
+
     if (situation == 0)
-        situation += CommitPacket*(dataInTcp == 0);
+        situation += ExpectedPacket*(tcp->seq == abonent.currentRecvSN);
+    if (situation == 0)
+        situation += CutPacket*((tcp->seq < abonent.currentRecvSN) && (tcp->seq + dataInTcp > abonent.currentRecvSN));
+    if (situation == 0)
+        situation += FuturePacket*(tcp->seq > abonent.currentRecvSN);
 
     bool shouldSave = true;
     bool shouldProcess = false;
@@ -117,9 +125,9 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
     while (tcp_h->seq == abonent.currentRecvSN)
     {
         first->packet->addProcessor(Self);
+        abonent.currentRecvSN += first->dataInTcp;
         forwardProcess2(first, ExpectedPacket);
 
-        abonent.currentRecvSN += first->dataInTcp;
         abonent.recvWaitQueue.pop_front();
         if (abonent.recvWaitQueue.size() == 0)
             break;
@@ -192,10 +200,18 @@ ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPt
         (packet->direction() == IPacket::ClientToServer)
         ? client : server;
 
-    tcp->seq = abonent.currentSendSN;
-    tcp->ack = abonent.currentRecvSN;
-    abonent.currentSendSN += dataInTcp;
-    
+    AbonentSN & toAbonent =
+        (packet->direction() == IPacket::ClientToServer)
+        ? server : client;
+
+    tcp->seq = toAbonent.currentSendSN;
+    tcp->ack = toAbonent.currentRecvSN;
+    toAbonent.currentSendSN += dataInTcp;
+
+    if (dataInTcp != 0)
+        toAbonent.sendWaitQueue.push_back(
+            AbonentSN::QuededPacket(tcp->seq, proto, packet, offset, dataInTcp));
+
     if (packet->prevProcessor(Self) != NULL)
         packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
 
@@ -217,14 +233,12 @@ IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket, Ab
     IPacketPtr pack = qpacket->packet->CreateCopy();
     int dataInTcp = qpacket->dataInTcp;
 
-    pack->setDirection(
-        (pack->direction() == IPacket::ClientToServer)
-        ? IPacket::ServerToClient
-        : IPacket::ClientToServer);
+    pack->swapDirection();
     pack->setRealSize(pack->realSize() - dataInTcp);
     pack->data().resize(pack->realSize());
 
     tcp_header * tcp = (tcp_header *)&pack->data()[qpacket->offset];
+    tcp->flags = tcp_header::flags_struct::ACK;
     tcp->seq = abonent.currentSendSN;
     tcp->ack = abonent.currentRecvSN;
 

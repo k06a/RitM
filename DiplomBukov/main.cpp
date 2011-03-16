@@ -153,6 +153,11 @@ int main(int argc, char * argv[])
             connect(tcpSeqProcessor, tcpHeaderProcessor);
             connect(tcpHeaderProcessor, telnetProcessor);
     
+    pcap1Adapter->ping(IProcessorPtr());
+    pcap2Adapter->ping(IProcessorPtr());
+
+    //
+
     SwitchOption * opt1 = (SwitchOption *)pcap1Adapter->getOptions().front().get();
     for (unsigned i = 0; i < opt1->getTextItems().size(); i++)
         std::cout << i << ". " << opt1->getTextItems()[i] << std::endl;
@@ -175,9 +180,6 @@ int main(int argc, char * argv[])
     print_arch(pcap2Adapter);
     std::cout << std::endl << std::endl;
     */
-
-    pcap1Adapter->ping(IProcessorPtr());
-    pcap2Adapter->ping(IProcessorPtr());
 
     pcap1Adapter->run(false);
     pcap2Adapter->run(false);

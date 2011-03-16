@@ -24,6 +24,9 @@ RawPacket::RawPacket(const RawPacket & packet)
     , direction_(packet.direction_)
     , processors_(packet.processors_)
     , protocols_(packet.protocols_)
+    , src_mac_addr(packet.src_mac_addr)
+    , dst_mac_addr(packet.dst_mac_addr)
+    , format_(packet.format_)
 {
 }
 
@@ -149,6 +152,8 @@ bool RawPacket::swapDirection()
         direction_ = IPacket::ServerToClient;
     else
         direction_ = IPacket::ClientToServer;
+
+    std::swap(src_mac_addr, dst_mac_addr);
 
     return true;
 }
