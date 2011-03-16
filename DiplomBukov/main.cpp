@@ -99,6 +99,9 @@ int main(int argc, char * argv[])
     IAdapterPtr pcap1Adapter(new PcapAdapter(NEW_Connector));
     IAdapterPtr pcap2Adapter(new PcapAdapter(NEW_Connector));
 
+    //IAdapterPtr pcap1Adapter(new FileAdapter("client_talk.pcap", "client_talk_out.pcap", NEW_Connector));
+    //IAdapterPtr pcap2Adapter(new FileAdapter("server_talk.pcap", "server_talk_out.pcap", NEW_Connector));
+
     IProcessorPtr mac1HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
     IProcessorPtr mac2HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
 
@@ -152,7 +155,7 @@ int main(int argc, char * argv[])
             connect(tcpFlagsProcessor, tcpSeqProcessor);
             connect(tcpSeqProcessor, tcpHeaderProcessor);
             connect(tcpHeaderProcessor, telnetProcessor);
-    
+  
     pcap1Adapter->ping(IProcessorPtr());
     pcap2Adapter->ping(IProcessorPtr());
 
@@ -173,7 +176,7 @@ int main(int argc, char * argv[])
     int index2;
     std::cin >> index2;
     opt2->setSelectedIndex(index2);
-    
+
     /*
     print_arch(pcap1Adapter);
     std::cout << std::endl << std::endl;

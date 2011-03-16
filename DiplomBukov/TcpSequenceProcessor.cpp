@@ -21,7 +21,7 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     int dataInTcp = packet->realSize() - offset - tcp->header_size();
 
     AbonentSN & abonent =
@@ -46,155 +46,70 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
 
     //////////////////////////////////////////////////////////////////////////
 
-    int situation = 0;
-    if (dataInTcp == 0)
+    if ((dataInTcp == 0) && (tcp->flags == tcp_header::flags_struct::ACK))
     {
-        situation += OldPacket*(tcp->seq < abonent.currentRecvSN);
-        situation += CommitPacket*(tcp->seq >= abonent.currentRecvSN);
-    }
-    else
-        situation += OldPacket*(tcp->seq + dataInTcp <= abonent.currentRecvSN);
+        // Commit packet
+        std::deque<AbonentSN::QuededPacket>::iterator it = 
+            std::find(abonent.sendWaitQueue.begin(),
+            abonent.sendWaitQueue.end(), tcp->ack);
 
-    if (situation == 0)
-        situation += ExpectedPacket*(tcp->seq == abonent.currentRecvSN);
-    if (situation == 0)
-        situation += CutPacket*((tcp->seq < abonent.currentRecvSN) && (tcp->seq + dataInTcp > abonent.currentRecvSN));
-    if (situation == 0)
-        situation += FuturePacket*(tcp->seq > abonent.currentRecvSN);
+        if (it != abonent.sendWaitQueue.end())
+            abonent.sendWaitQueue.erase(it);
 
-    bool shouldSave = true;
-    bool shouldProcess = false;
-    switch (situation)
-    {
-        case OldPacket:
-            return ProcessingStatus::Accepted; 
-            
-        case ExpectedPacket:
-            break;
-
-        case CutPacket:
-            {
-                int sizeToRemove = abonent.currentRecvSN - tcp->seq;
-                packet->data().erase(
-                    packet->data().begin() + offset,
-                    packet->data().begin() + offset + sizeToRemove);
-                packet->setRealSize(packet->realSize() - sizeToRemove);
-                tcp->seq += sizeToRemove;
-                situation = ExpectedPacket;
-            } break;
-
-        case FuturePacket:
-            shouldProcess = true;
-            break;
-
-        case CommitPacket:
-            shouldProcess = true;
-            shouldSave = false;
-            break;
-
-        default:
-            throw "Unknown situation";
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-
-    AbonentSN::QuededPacket qpack(tcp->seq, proto, packet, offset, dataInTcp);
-
-    if (shouldProcess)
-        forwardProcess2(&qpack, (PacketSituation)situation);
-
-    if (shouldSave)
-    {
-        // Add to the end
-        abonent.recvWaitQueue.push_back(qpack);
-        
-        // Sort elements
-        std::inplace_merge(
-            abonent.recvWaitQueue.begin(),
-            abonent.recvWaitQueue.end()-1,
-            abonent.recvWaitQueue.end());
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-
-    if (abonent.recvWaitQueue.size() == 0)
         return ProcessingStatus::Accepted;
-
-    AbonentSN::QuededPacket * first = &abonent.recvWaitQueue.front();
-    tcp_header * tcp_h = (tcp_header*)&first->packet->data()[first->offset];
-    while (tcp_h->seq == abonent.currentRecvSN)
-    {
-        first->packet->addProcessor(Self);
-        abonent.currentRecvSN += first->dataInTcp;
-        forwardProcess2(first, ExpectedPacket);
-
-        abonent.recvWaitQueue.pop_front();
-        if (abonent.recvWaitQueue.size() == 0)
-            break;
-        first = &abonent.recvWaitQueue.front();
     }
 
-    return ProcessingStatus::Accepted;
-}
-
-ProcessingStatus TcpSequenceProcessor::forwardProcess2(AbonentSN::QuededPacket * qpacket, PacketSituation situation)
-{
-    AbonentSN & abonent =
-        (qpacket->packet->direction() == IPacket::ClientToServer)
-        ? client : server;
-
-    AbonentSN & toAbonent =
-        (qpacket->packet->direction() == IPacket::ClientToServer)
-        ? server : client;
-
-    if (situation == CommitPacket)
+    if (dataInTcp != 0)
     {
-        tcp_header * tcp = (tcp_header *)&qpacket->packet->data()[qpacket->offset];
-
-        // ѕоиск и удаление пакета с подтвержденным номером
-        for(std::deque<AbonentSN::QuededPacket>::const_iterator it =
-            abonent.sendWaitQueue.begin(); it != abonent.sendWaitQueue.end(); ++it)
+        if (tcp->seq != abonent.currentRecvSN)
         {
-            tcp_header * tcp_h = (tcp_header *)&it->packet->data()[it->offset];
-            if (tcp->seq == tcp_h->seq)
+            // Send last ack
+            /*
+            if (abonent.lastAck.packet->prevProcessor(Self) != NULL)
+                abonent.lastAck.packet->prevProcessor(Self)->backwardProcess(
+                    abonent.lastAck.proto,
+                    abonent.lastAck.packet,
+                    abonent.lastAck.offset);
+            */
+        }
+        else
+        {
+            packet->addProcessor(Self);
+            abonent.currentRecvSN += dataInTcp;
+
+            // Add to queue
+            AbonentSN::QuededPacket qpacket = 
+                AbonentSN::QuededPacket(tcp->seq, proto, packet, offset, dataInTcp);
+            abonent.recvWaitQueue.push_back(qpacket);
+
+            // Send ACK
+            //IPacketPtr ackpack = createAck(abonent.currentSendSN, abonent.currentRecvSN, packet, dataInTcp, offset, abonent);
+            IPacketPtr ackpack = createAck(&qpacket, abonent);
+            backwardProcess(proto, ackpack, offset);
+            abonent.lastAck = AbonentSN::QuededPacket(tcp->seq, proto, ackpack, offset, 0);
+            
+            if (tcp->flags.haveFlags(tcp_header::flags_struct::PSH))
             {
-                abonent.sendWaitQueue.erase(it);
-                break;
+                // End of message
+                std::pair<IPacketPtr,unsigned> para = mergePackets(abonent.recvWaitQueue);
+                IPacketPtr pack = para.first;
+                unsigned offset = para.second;
+                abonent.recvWaitQueue.clear();
+                if (nextProcessor != NULL)
+                    nextProcessor->forwardProcess(proto, pack, offset);
             }
         }
-        
-        return ProcessingStatus::Accepted;
     }
 
-    Protocol proto = qpacket->proto;
-    unsigned offset = qpacket->offset;
-    IPacketPtr ackpack = createAck(qpacket, abonent);
-
-    if (ackpack->prevProcessor(Self) != NULL)
-        ackpack->prevProcessor(Self)->backwardProcess(proto, ackpack, offset);
-
-    if (situation == ExpectedPacket)
-    {
-        abonent.toRecvBuffer.push_back(*qpacket);
-        tcp_header * tcp = (tcp_header *)(&qpacket->packet->data()[0] + qpacket->offset);
-        if (tcp->flags.haveFlags(tcp_header::flags_struct::PSH))
-        {
-            std::pair<IPacketPtr,unsigned> para = mergePackets(abonent.toRecvBuffer);
-            IPacketPtr pack = para.first;
-            unsigned offset = para.second;
-            abonent.toRecvBuffer.clear();
-            if (nextProcessor != NULL)
-                nextProcessor->forwardProcess(proto, pack, offset);
-        }
-    }
+    //////////////////////////////////////////////////////////////////////////
 
     return ProcessingStatus::Accepted;
 }
 
 ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
-    int dataInTcp = packet->size() - offset - tcp->header_size();
+    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
+    int dataInTcp = packet->realSize() - offset - tcp->header_size();
     
     AbonentSN & abonent =
         (packet->direction() == IPacket::ClientToServer)
@@ -206,15 +121,17 @@ ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPt
 
     tcp->seq = toAbonent.currentSendSN;
     tcp->ack = toAbonent.currentRecvSN;
+    
+    if (packet->prevProcessor(Self) != NULL)
+        packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
+
     toAbonent.currentSendSN += dataInTcp;
+    tcp->seq = toAbonent.currentSendSN;
 
     if (dataInTcp != 0)
         toAbonent.sendWaitQueue.push_back(
             AbonentSN::QuededPacket(tcp->seq, proto, packet, offset, dataInTcp));
-
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
-
+    
     return ProcessingStatus::Accepted;
 }
 
@@ -226,6 +143,22 @@ const char * TcpSequenceProcessor::getProcessorName()
 Protocol TcpSequenceProcessor::getProtocol()
 {
     return Protocol::TCP;
+}
+
+IPacketPtr TcpSequenceProcessor::createAck(u32be seq, u32be ack, IPacketPtr packet, int dataInTcp, unsigned offset, AbonentSN & abonent)
+{
+    IPacketPtr pack = packet->CreateCopy();
+
+    pack->swapDirection();
+    pack->setRealSize(pack->realSize() - dataInTcp);
+    pack->data().resize(pack->realSize());
+
+    tcp_header * tcp = (tcp_header *)&pack->data()[offset];
+    tcp->flags = tcp_header::flags_struct::ACK;
+    tcp->seq = seq;
+    tcp->ack = ack;
+
+    return pack;
 }
 
 IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket, AbonentSN & abonent)
@@ -248,7 +181,6 @@ IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket, Ab
 std::pair<IPacketPtr,unsigned> TcpSequenceProcessor::mergePackets(const std::deque<AbonentSN::QuededPacket> & arr)
 {
     IPacketPtr pack = arr[0].packet->CreateCopy();
-    unsigned offset = arr[0].offset;
     pack->data().resize(arr[0].offset);
     
     for (std::deque<AbonentSN::QuededPacket>::const_iterator it = arr.begin();
@@ -262,5 +194,5 @@ std::pair<IPacketPtr,unsigned> TcpSequenceProcessor::mergePackets(const std::deq
     }
 
     pack->setRealSize(pack->data().size());
-    return std::make_pair(pack,offset);
+    return std::make_pair(pack, arr[0].offset);
 }
