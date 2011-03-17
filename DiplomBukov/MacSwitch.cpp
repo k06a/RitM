@@ -52,6 +52,10 @@ ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr & packet,
         MacSwitchPort * port = dynamic_cast<MacSwitchPort *>(it->get());
         if (port->checkMac(packet->dst_mac()))
         {
+            // Не отправлять обратно широковещательные пакеты
+            if ((packet->haveProcessor(*it)) && packet->dst_mac().isBroadcast())
+                continue;
+
             port->backwardProcess(proto, packet, offset);  
             count++;
         }
