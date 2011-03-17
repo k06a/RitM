@@ -61,7 +61,11 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr
 
     ipv4_header * ip = (ipv4_header *)(&packet->data()[0] + offset);
     *ip = header;
-    
+    /*ip->dsfield.ce = 0;
+    ip->dsfield.ect = 0;
+    ip->dsfield.dscp = 0;
+    */
+
     ip->proto = proto.code;
     ip->totalLength = packet->realSize() - offset;
     if (packet->direction() == IPacket::ServerToClient)

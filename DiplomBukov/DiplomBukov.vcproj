@@ -192,10 +192,6 @@
 				RelativePath=".\CommonInclude.h"
 				>
 			</File>
-			<File
-				RelativePath=".\i64u64.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -316,6 +312,10 @@
 			>
 			<File
 				RelativePath=".\crc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\i64u64.h"
 				>
 			</File>
 			<File
