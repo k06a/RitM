@@ -70,7 +70,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
             if (tcp->flags.haveFlags(FLAGS::FIN))
             {
                 connectionStatus = PRELAST_FIN;
-                reject = true;
+                //reject = true;
                 break;
             }
 
@@ -87,7 +87,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 if (tcp->flags.haveFlags(FLAGS::FIN + FLAGS::ACK))
                 {
                     connectionStatus = LAST_FINACK;
-                    reject = true;
+                    //reject = true;
                 }
             }
             break;
@@ -97,7 +97,7 @@ ProcessingStatus TcpFlagsProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 if (tcp->flags.haveFlags(FLAGS::ACK))
                 {
                     connectionStatus = CLOSED;
-                    reject = true;
+                    //reject = true;
                 }
             }
             break;

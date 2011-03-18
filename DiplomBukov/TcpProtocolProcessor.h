@@ -10,7 +10,7 @@
 
 namespace DiplomBukov
 {
-    class TcpSequenceProcessor : public AbstractProcessor
+    class TcpProtocolProcessor : public AbstractProcessor
     {
         struct AbonentSN
         {
@@ -64,7 +64,7 @@ namespace DiplomBukov
         AbonentSN server;
         
     public:
-        TcpSequenceProcessor(IProcessorPtr Connector = IProcessorPtr());
+        TcpProtocolProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -78,7 +78,7 @@ namespace DiplomBukov
         IPacketPtr createAck(AbonentSN::QuededPacket * qpacket);
         std::pair<IPacketPtr,unsigned> mergePackets(const std::deque<AbonentSN::QuededPacket> & arr);
     };
-    // class TcpSequenceProcessor
+    // class TcpProtocolProcessor
 }
 // namespace DiplomBukov
 

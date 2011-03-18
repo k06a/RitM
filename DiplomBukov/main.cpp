@@ -21,7 +21,7 @@
 #include "IcmpProcessor.h"
 #include "TransportPortProcessor.h"
 #include "TcpFlagsProcessor.h"
-#include "TcpSequenceProcessor.h"
+#include "TcpProtocolProcessor.h"
 #include "TcpHeaderProcessor.h"
 #include "TelnetSwapper.h"
 
@@ -113,7 +113,7 @@ int main(int argc, char * argv[])
     IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
     IProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
     IProcessorPtr tcpFlagsProcessor(new TcpFlagsProcessor(NEW_Connector));
-    IProcessorPtr tcpSeqProcessor(new TcpSequenceProcessor(NEW_Connector));
+    IProcessorPtr tcpSeqProcessor(new TcpProtocolProcessor(NEW_Connector));
     IProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
     IProcessorPtr telnetProcessor(new TelnetSwapper(NEW_Connector));
     

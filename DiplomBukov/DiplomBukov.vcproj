@@ -555,11 +555,11 @@
 								>
 							</File>
 							<File
-								RelativePath=".\TcpSequenceProcessor.cpp"
+								RelativePath=".\TcpProtocolProcessor.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TcpSequenceProcessor.h"
+								RelativePath=".\TcpProtocolProcessor.h"
 								>
 							</File>
 						</Filter>

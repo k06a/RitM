@@ -115,10 +115,15 @@ namespace DiplomBukov
             psd_header.m_ptcl = 6;  // TCP
             psd_header.m_tcpl = tcph->header_size() + size;
 
-            char tcpBuf[65536];
+            char tcpBuf[65536] = {};
             memcpy(tcpBuf,&psd_header,sizeof(PSD_HEADER));
             memcpy(tcpBuf+sizeof(PSD_HEADER),tcph,tcph->header_size());
             memcpy(tcpBuf+sizeof(PSD_HEADER)+tcph->header_size(),data,size);
+            if ((sizeof(PSD_HEADER)+tcph->header_size()+size) & 1)
+            {
+                tcpBuf[sizeof(PSD_HEADER)+tcph->header_size()+size] = 0;
+                size++;
+            }
             return tcph->check_sum = CheckSum((u16*)tcpBuf,
                 sizeof(PSD_HEADER)+tcph->header_size()+size);
         }

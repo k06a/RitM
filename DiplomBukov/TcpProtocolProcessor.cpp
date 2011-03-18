@@ -1,22 +1,22 @@
-#include "TcpSequenceProcessor.h"
+#include "TcpProtocolProcessor.h"
 #include "tcp_header.h"
 #include <algorithm>
 
 using namespace DiplomBukov;
 
-TcpSequenceProcessor::TcpSequenceProcessor(IProcessorPtr Connector)
+TcpProtocolProcessor::TcpProtocolProcessor(IProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr TcpSequenceProcessor::CreateCopy() const
+IProcessorPtr TcpProtocolProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new TcpSequenceProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new TcpProtocolProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpProtocolProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -106,7 +106,7 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpProtocolProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     int dataInTcp = packet->data().size() - offset - tcp->header_size();
@@ -135,17 +135,17 @@ ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPt
     return ProcessingStatus::Accepted;
 }
 
-const char * TcpSequenceProcessor::getProcessorName()
+const char * TcpProtocolProcessor::getProcessorName()
 {
-    return "TcpSequenceProcessor";
+    return "TcpProtocolProcessor";
 }
 
-Protocol TcpSequenceProcessor::getProtocol()
+Protocol TcpProtocolProcessor::getProtocol()
 {
     return Protocol::TCP;
 }
 
-IPacketPtr TcpSequenceProcessor::createAck(u32be seq, u32be ack, IPacketPtr packet, int dataInTcp, unsigned offset, AbonentSN & abonent)
+IPacketPtr TcpProtocolProcessor::createAck(u32be seq, u32be ack, IPacketPtr packet, int dataInTcp, unsigned offset, AbonentSN & abonent)
 {
     IPacketPtr pack = packet->CreateCopy();
 
@@ -161,7 +161,7 @@ IPacketPtr TcpSequenceProcessor::createAck(u32be seq, u32be ack, IPacketPtr pack
     return pack;
 }
 
-IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket)
+IPacketPtr TcpProtocolProcessor::createAck(AbonentSN::QuededPacket * qpacket)
 {
     IPacketPtr pack = qpacket->packet->CreateCopy();
     int dataInTcp = qpacket->dataInTcp;
@@ -182,7 +182,7 @@ IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket)
     return pack;
 }
 
-std::pair<IPacketPtr,unsigned> TcpSequenceProcessor::mergePackets(const std::deque<AbonentSN::QuededPacket> & arr)
+std::pair<IPacketPtr,unsigned> TcpProtocolProcessor::mergePackets(const std::deque<AbonentSN::QuededPacket> & arr)
 {
     IPacketPtr pack = arr[0].packet->CreateCopy();
     pack->data().resize(arr[0].offset);
