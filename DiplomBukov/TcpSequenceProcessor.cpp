@@ -84,7 +84,7 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
 
             // Send ACK
             //IPacketPtr ackpack = createAck(abonent.currentSendSN, abonent.currentRecvSN, packet, dataInTcp, offset, abonent);
-            IPacketPtr ackpack = createAck(&qpacket, abonent);
+            IPacketPtr ackpack = createAck(&qpacket);
             backwardProcess(proto, ackpack, offset);
             abonent.lastAck = AbonentSN::QuededPacket(tcp->seq, proto, ackpack, offset, 0);
             
@@ -109,11 +109,11 @@ ProcessingStatus TcpSequenceProcessor::forwardProcess(Protocol proto, IPacketPtr
 ProcessingStatus TcpSequenceProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
-    int dataInTcp = packet->realSize() - offset - tcp->header_size();
+    int dataInTcp = packet->data().size() - offset - tcp->header_size();
     
-    AbonentSN & abonent =
+    /*AbonentSN & abonent =
         (packet->direction() == IPacket::ClientToServer)
-        ? client : server;
+        ? client : server;*/
 
     AbonentSN & toAbonent =
         (packet->direction() == IPacket::ClientToServer)
@@ -161,7 +161,7 @@ IPacketPtr TcpSequenceProcessor::createAck(u32be seq, u32be ack, IPacketPtr pack
     return pack;
 }
 
-IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket, AbonentSN & abonent)
+IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket)
 {
     IPacketPtr pack = qpacket->packet->CreateCopy();
     int dataInTcp = qpacket->dataInTcp;
@@ -170,10 +170,14 @@ IPacketPtr TcpSequenceProcessor::createAck(AbonentSN::QuededPacket * qpacket, Ab
     pack->setRealSize(pack->realSize() - dataInTcp);
     pack->data().resize(pack->realSize());
 
+    AbonentSN & toAbonent =
+        (pack->direction() == IPacket::ClientToServer)
+        ? server : client;
+
     tcp_header * tcp = (tcp_header *)&pack->data()[qpacket->offset];
     tcp->flags = tcp_header::flags_struct::ACK;
-    tcp->seq = abonent.currentSendSN;
-    tcp->ack = abonent.currentRecvSN;
+    tcp->seq = toAbonent.currentSendSN;
+    tcp->ack = toAbonent.currentRecvSN;
 
     return pack;
 }

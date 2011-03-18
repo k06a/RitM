@@ -27,16 +27,26 @@ ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, IPacketPtr & pack
     if (offset == packet->size())
         return ProcessingStatus::Accepted;
 
-    char w[] = "fuck";
+    char w[] = "hello";
 
-    std::string line((char*)&packet->data()[offset]);
-    std::string::iterator it = std::search(line.begin(), line.end(), w, w+4);
-    if (it != line.end())
+    std::string text(packet->data().begin() + offset, packet->data().end());
+    std::string::iterator it = std::search(text.begin(), text.end(), w, w+4);
+    bool cut = false;
+    if (it != text.end())
     {
-        *(++it) = '*';
-        *(++it) = '*';
+        (*it++) = 'b';
+        (*it++) = 'y';
+        (*it++) = 'e';
+        text.erase(it, it+2);
+        cut = true;
     }
-    std::copy(line.begin(), line.end(), &packet->data()[offset]);
+
+    if (packet->data().size() != offset + text.size())
+    {
+        packet->data().resize(offset + text.size());
+        packet->setRealSize(offset + text.size());
+    }
+    std::copy(text.begin(), text.end(), &packet->data()[offset]);
 
     backwardProcess(proto, packet, offset);
     packet->setStatus(IPacket::Rejected);

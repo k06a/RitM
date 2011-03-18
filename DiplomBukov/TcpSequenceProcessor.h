@@ -75,7 +75,7 @@ namespace DiplomBukov
 
     private:
         IPacketPtr createAck(u32be seq, u32be ack, IPacketPtr packet, int dataInTcp, unsigned offset, AbonentSN & abonent);
-        IPacketPtr createAck(AbonentSN::QuededPacket * qpacket, AbonentSN & abonent);
+        IPacketPtr createAck(AbonentSN::QuededPacket * qpacket);
         std::pair<IPacketPtr,unsigned> mergePackets(const std::deque<AbonentSN::QuededPacket> & arr);
     };
     // class TcpSequenceProcessor
