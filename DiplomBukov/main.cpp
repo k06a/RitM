@@ -19,7 +19,7 @@
 #include "MacHeaderProcessor.h"
 #include "Ipv4HeaderProcessor.h"
 #include "IcmpProcessor.h"
-#include "TransportPortProcessor.h"
+#include "TcpSequenceProcessor.h"
 #include "TcpFlagsProcessor.h"
 #include "TcpProtocolProcessor.h"
 #include "TcpHeaderProcessor.h"
@@ -112,6 +112,7 @@ int main(int argc, char * argv[])
     
     IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
     IProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
+    IProcessorPtr tcpSequenceProcessor(new TcpSequenceProcessor(NEW_Connector));
     IProcessorPtr tcpFlagsProcessor(new TcpFlagsProcessor(NEW_Connector));
     IProcessorPtr tcpSeqProcessor(new TcpProtocolProcessor(NEW_Connector));
     IProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
@@ -137,6 +138,7 @@ int main(int argc, char * argv[])
     icmpProcessor->setSelf(icmpProcessor);
     tcpSplitter->setSelf(tcpSplitter);
     tcpFlagsProcessor->setSelf(tcpFlagsProcessor);
+    tcpSequenceProcessor->setSelf(tcpSequenceProcessor);
     tcpSeqProcessor->setSelf(tcpSeqProcessor);
     tcpHeaderProcessor->setSelf(tcpHeaderProcessor);
     telnetProcessor->setSelf(telnetProcessor);
@@ -151,7 +153,8 @@ int main(int argc, char * argv[])
         connect(ipSplitter, ipHeaderProcessor);
         connect(ipHeaderProcessor, icmpProcessor);
         connect(ipHeaderProcessor, tcpSplitter);
-            connect(tcpSplitter, tcpFlagsProcessor);
+            connect(tcpSplitter, tcpSequenceProcessor);
+            connect(tcpSequenceProcessor, tcpFlagsProcessor);
             connect(tcpFlagsProcessor, tcpSeqProcessor);
             connect(tcpSeqProcessor, tcpHeaderProcessor);
             connect(tcpHeaderProcessor, telnetProcessor);

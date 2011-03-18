@@ -1,5 +1,5 @@
-#ifndef TCPSEQUENCEPROCESSOR_H
-#define TCPSEQUENCEPROCESSOR_H
+#ifndef TCPPROTOCOLPROCESSOR_H
+#define TCPPROTOCOLPROCESSOR_H
 
 #include <deque>
 #include "i64u64.h"
@@ -82,4 +82,4 @@ namespace DiplomBukov
 }
 // namespace DiplomBukov
 
-#endif // TCPSEQUENCEPROCESSOR_H
+#endif // TCPPROTOCOLPROCESSOR_H

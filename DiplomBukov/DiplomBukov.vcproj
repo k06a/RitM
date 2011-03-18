@@ -562,6 +562,14 @@
 								RelativePath=".\TcpProtocolProcessor.h"
 								>
 							</File>
+							<File
+								RelativePath=".\TcpSequenceProcessor.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\TcpSequenceProcessor.h"
+								>
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
