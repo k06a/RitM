@@ -616,6 +616,14 @@
 						Name="Applicative"
 						>
 						<File
+							RelativePath=".\HttpDefragProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\HttpDefragProcessor.h"
+							>
+						</File>
+						<File
 							RelativePath=".\HttpSwapProcessor.cpp"
 							>
 						</File>

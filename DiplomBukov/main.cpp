@@ -22,7 +22,9 @@
 #include "TcpOptionsRemover.h"
 #include "TcpLayerProcessor.h"
 #include "TcpHeaderProcessor.h"
+
 #include "TelnetSwapper.h"
+#include "HttpDefragProcessor.h"
 
 #include "Ipv4Splitter.h"
 #include "Ipv4Defragger.h"
@@ -110,7 +112,9 @@ int main(int argc, char * argv[])
     IProcessorPtr tcpOptionsRemover(new TcpOptionsRemover(NEW_Connector));
     IProcessorPtr tcpLayerProcessor(new TcpLayerProcessor(NEW_Connector));
     IProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
+
     IProcessorPtr telnetProcessor(new TelnetSwapper(NEW_Connector));
+    IProcessorPtr httpDefragProcessor(new HttpDefragProcessor(NEW_Connector));
     
     /*
     ProcessorModule * macModule  = new ProcessorModule(macHeaderProcessor);
@@ -135,7 +139,11 @@ int main(int argc, char * argv[])
     tcpOptionsRemover->setSelf(tcpOptionsRemover);
     tcpLayerProcessor->setSelf(tcpLayerProcessor);
     tcpHeaderProcessor->setSelf(tcpHeaderProcessor);
+
     telnetProcessor->setSelf(telnetProcessor);
+    httpDefragProcessor->setSelf(httpDefragProcessor);
+
+    //////////////////////////////////////////////////////////////////////////
 
     connect(pcap1Adapter, mac1HeaderProcessor);
     connect(pcap2Adapter, mac2HeaderProcessor);
@@ -151,12 +159,12 @@ int main(int argc, char * argv[])
             connect(tcpSplitter, tcpOptionsRemover);
             connect(tcpOptionsRemover, tcpLayerProcessor);
             connect(tcpLayerProcessor, tcpHeaderProcessor);
-            connect(tcpHeaderProcessor, telnetProcessor);
+            connect(tcpHeaderProcessor, httpDefragProcessor);
   
     pcap1Adapter->ping(IProcessorPtr());
     pcap2Adapter->ping(IProcessorPtr());
 
-    //
+    //////////////////////////////////////////////////////////////////////////
 
     SwitchOption * opt1 = (SwitchOption *)pcap1Adapter->getOptions().front().get();
     for (unsigned i = 0; i < opt1->getTextItems().size(); i++)
@@ -174,12 +182,16 @@ int main(int argc, char * argv[])
     std::cin >> index2;
     opt2->setSelectedIndex(index2);
 
+    //////////////////////////////////////////////////////////////////////////
+
     /*
     print_arch(pcap1Adapter);
     std::cout << std::endl << std::endl;
     print_arch(pcap2Adapter);
     std::cout << std::endl << std::endl;
     */
+
+    //////////////////////////////////////////////////////////////////////////
 
     pcap1Adapter->run(false);
     pcap2Adapter->run(false);

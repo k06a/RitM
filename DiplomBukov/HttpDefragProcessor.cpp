@@ -1,23 +1,23 @@
-#include "HttpSwapProcessor.h"
+#include "HttpDefragProcessor.h"
 #include "IPacket.h"
 #include <algorithm>
 
 using namespace DiplomBukov;
 
-HttpSwapProcessor::HttpSwapProcessor(IProcessorPtr processor)
-: markCount(0), positionOfData(0)
+HttpDefragProcessor::HttpDefragProcessor(IProcessorPtr processor)
+    : markCount(0), positionOfData(0)
 {
     setNextProcessor(processor);
 }
 
-IProcessorPtr HttpSwapProcessor::CreateCopy() const
+IProcessorPtr HttpDefragProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new HttpSwapProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr ptr(new HttpDefragProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     //if ((proto != Protocol::None) && (proto != getProtocol()))
     //    return ProcessingStatus::Rejected;
@@ -63,7 +63,7 @@ ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr & 
             line.resize(line.size() - 1);
             if (line.size() == 0)
                 break;
-
+            
             optionName = line.substr(0, line.find(':'));
             optionValue = line.substr(optionName.size()+2);
 
@@ -72,31 +72,31 @@ ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr & 
         positionOfData = stream.tellg();
     }
 
+    // Length determine from RFC2616 Section 4.4
     switch (type)
     {
-    case GetRequest:
-        {
-            int a = 0;
-            a = 1;
-        }
-        break;
-    case PostRequest:
-        {
-            int a = 0;
-            a = 1;
-        }
-        break;
-    case HttpAnswer:
-        {
-
-            int a = 0;
-            a = 1;
-        }
-        break;
+        case GetRequest:
+            {
+                int a = 0;
+                a = 1;
+            }
+            break;
+        case PostRequest:
+            {
+                int a = 0;
+                a = 1;
+            }
+            break;
+        case HttpAnswer:
+            {
+                int a = 0;
+                a = 1;
+            }
+            break;
     }
 
-
-
+    
+    
     return ProcessingStatus::Accepted;
 
     //packet->addProcessor(Self);
@@ -104,17 +104,17 @@ ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr & 
     //    nextProcessor->forwardProcess("HTTP", packet, 0);
 }
 
-ProcessingStatus HttpSwapProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus HttpDefragProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
     return ProcessingStatus::Accepted;
 }
 
-Protocol HttpSwapProcessor::getProtocol()
+Protocol HttpDefragProcessor::getProtocol()
 {
     return Protocol::None;//Protocol("TCP_80", 80);
 }
 
-const char * HttpSwapProcessor::getProcessorName()
+const char * HttpDefragProcessor::getProcessorName()
 {
-    return "HttpSwapProcessor";
+    return "HttpDefragProcessor";
 }

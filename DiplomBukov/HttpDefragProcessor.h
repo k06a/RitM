@@ -1,5 +1,5 @@
-#ifndef HTTPSWAPPROCESSOR_H
-#define HTTPSWAPPROCESSOR_H
+#ifndef HTTPDEFRAGPROCESSOR_H
+#define HTTPDEFRAGPROCESSOR_H
 
 #include <string>
 #include <vector>
@@ -11,7 +11,7 @@
 
 namespace DiplomBukov
 {
-    class HttpSwapProcessor : public AbstractProcessor
+    class HttpDefragProcessor : public AbstractProcessor
     {
         typedef std::vector<u8> Blob;
         typedef std::vector<std::pair<std::string,std::string> > OptionList;
@@ -22,7 +22,7 @@ namespace DiplomBukov
         int markCount;
 
     public:
-        HttpSwapProcessor(IProcessorPtr processor = IProcessorPtr());
+        HttpDefragProcessor(IProcessorPtr processor = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -31,8 +31,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class HttpSwapProcessor
+    // class HttpDefragProcessor
 }
 // namespace DiplomBukov
 
-#endif // HTTPSWAPPROCESSOR_H
+#endif // HTTPDEFRAGPROCESSOR_H

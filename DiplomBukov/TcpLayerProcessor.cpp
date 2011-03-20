@@ -167,7 +167,8 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                     case OldMessage:
                         {
                             QuededPacket & qp = abonent.lastAck;
-                            privateBackwardProcess(qp.proto, qp.packet, qp.offset);
+                            if (qp.packet != NULL)
+                                privateBackwardProcess(qp.proto, qp.packet, qp.offset);
                         }
                         break;
                     case GoodMessage:
@@ -199,7 +200,8 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                     case FutureMessage:
                         {
                             QuededPacket & qp = abonent.lastAck;
-                            privateBackwardProcess(qp.proto, qp.packet, qp.offset);
+                            if (qp.packet != NULL)
+                                privateBackwardProcess(qp.proto, qp.packet, qp.offset);
                         }
                         break;
                 }
@@ -257,11 +259,11 @@ ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, IPacketPtr &
                 b_delete_from = b_delete_to;
 
             packetCopy->data().erase(
-                packetCopy->data().begin()+a_delete_from,
-                packetCopy->data().begin()+a_delete_to);
-            packetCopy->data().erase(
                 packetCopy->data().begin()+b_delete_from,
                 packetCopy->data().begin()+b_delete_to);
+            packetCopy->data().erase(
+                packetCopy->data().begin()+a_delete_from,
+                packetCopy->data().begin()+a_delete_to);
 
             toAbonent.toSendBuffer.push_back(
                 QuededPacket(0, proto, packetCopy, offset,
