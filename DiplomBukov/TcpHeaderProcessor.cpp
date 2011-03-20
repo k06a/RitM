@@ -21,26 +21,20 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
-    header.resize(sizeof(tcp_header));
+    header.resize(tcp->header_size());
     std::copy(
-        &packet->data()[offset],
-        &packet->data()[offset + sizeof(tcp_header)],
+        packet->data().begin() + offset,
+        packet->data().begin() + offset + tcp->header_size(),
         header.begin());
-    tcp_header * tcp2 = (tcp_header *)(&header[0]);
-    tcp2->set_header_size(sizeof(tcp_header));
 
     offset += tcp->header_size();
 
     // First session packet (ClientToServer)
     if (inproto == Protocol::None)
     {
-        u16 server_port =
-            (packet->direction() == IPacket::ClientToServer)
-            ? tcp->dst_port : tcp->src_port;
-
         char text[10];
-        sprintf_s(text, sizeof(text), "TCP_%d", server_port);
-        inproto = Protocol(text, server_port);
+        sprintf_s(text, sizeof(text), "TCP_%d", (int)tcp->dst_port);
+        inproto = Protocol(text, tcp->dst_port);
     }
 
     packet->addProcessor(Self);

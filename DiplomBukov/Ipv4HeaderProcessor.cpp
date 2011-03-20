@@ -6,8 +6,6 @@ using namespace DiplomBukov;
 
 Ipv4HeaderProcessor::Ipv4HeaderProcessor(IProcessorPtr Connector)
     : header()
-    , client_ip(header.src_data)
-    , server_ip(header.dst_data)
 {
     setNextProcessor(Connector);
 }
@@ -24,26 +22,16 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr 
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    ipv4_header * ip = (ipv4_header *)(&packet->data()[0] + offset);
-    if (ip->version != 4)
-        return ProcessingStatus::Rejected;
+    ipv4_header * ip = (ipv4_header *)(&packet->data()[offset]);
+    header = *ip;
 
-    // Copy header of first packet ClientToServer
-    if ((server_ip == 0) && (client_ip == 0))
-        header = *ip;
-/*
-    // Determine direction
-    if ((packet->direction() == IPacket::Unknown) && (ip->src_data != ip->dst_data))
-    {
-        bool cts = (ip->src_data == client_ip);
-        packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
-    }
-*/
+    offset += ip->size();
+
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
     {
         Protocol::TransportLayer inprot = (Protocol::TransportLayer)ip->proto;
-        nextProcessor->forwardProcess(inprot, packet, offset + ip->size());
+        nextProcessor->forwardProcess(inprot, packet, offset);
     }
 
     return ProcessingStatus::Accepted;

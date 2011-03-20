@@ -14,8 +14,6 @@ namespace DiplomBukov
     class Ipv4HeaderProcessor : public AbstractProcessor
     {
         ipv4_header header;
-        ipv4_addr & client_ip;
-        ipv4_addr & server_ip;
         
     public:
         Ipv4HeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
