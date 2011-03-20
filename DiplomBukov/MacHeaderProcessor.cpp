@@ -24,7 +24,7 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
     mac_header * mac = (mac_header *)(&packet->data()[0] + offset);
     packet->src_mac() = mac->src;
     packet->dst_mac() = mac->dst;
-    packet->format() = (Protocol::NetworkLayer)mac->proto;
+    packet->format() = (Protocol::NetworkLayer)(int)mac->proto;
 
     packet->addProcessor(Self);
     if (nextProcessor != NULL)

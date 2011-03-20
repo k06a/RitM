@@ -19,9 +19,8 @@
 #include "MacHeaderProcessor.h"
 #include "Ipv4HeaderProcessor.h"
 #include "IcmpProcessor.h"
-#include "TcpSequenceProcessor.h"
-#include "TcpFlagsProcessor.h"
-#include "TcpProtocolProcessor.h"
+#include "TcpOptionsRemover.h"
+#include "TcpLayerProcessor.h"
 #include "TcpHeaderProcessor.h"
 #include "TelnetSwapper.h"
 
@@ -88,33 +87,28 @@ void print_arch(IProcessorPtr proc, std::string prefix = "", int deep = 0)
 void connect(IProcessorPtr a, IProcessorPtr b)
 {
     a->getNextProcessor()->setNextProcessor(b->getPointer());
-    //a->getNextProcessor()->setPrevProcessor(a->getPointer());
 }
 
 int main(int argc, char * argv[])
 {
     #define NEW_Connector IProcessorPtr(new ProtocolConnector())
 
-    //IAdapterPtr fileAdapter(new FileAdapter("tcp.pcap", "tcp_out.pcap", NEW_Connector));
     IAdapterPtr pcap1Adapter(new PcapAdapter(NEW_Connector));
     IAdapterPtr pcap2Adapter(new PcapAdapter(NEW_Connector));
-
-    //IAdapterPtr pcap1Adapter(new FileAdapter("client_talk.pcap", "client_talk_out.pcap", NEW_Connector));
-    //IAdapterPtr pcap2Adapter(new FileAdapter("server_talk.pcap", "server_talk_out.pcap", NEW_Connector));
 
     IProcessorPtr mac1HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
     IProcessorPtr mac2HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
 
     IProcessorPtr macSwitch(new MacSwitch(NEW_Connector));
 
+    IProcessorPtr acceptProcessor(new AcceptProcessor(NEW_Connector));
     IProcessorPtr ipSplitter(new Ipv4Splitter(NEW_Connector));
     IProcessorPtr ipHeaderProcessor(new Ipv4HeaderProcessor(NEW_Connector));
     
     IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
     IProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
-    IProcessorPtr tcpSequenceProcessor(new TcpSequenceProcessor(NEW_Connector));
-    IProcessorPtr tcpFlagsProcessor(new TcpFlagsProcessor(NEW_Connector));
-    IProcessorPtr tcpSeqProcessor(new TcpProtocolProcessor(NEW_Connector));
+    IProcessorPtr tcpOptionsRemover(new TcpOptionsRemover(NEW_Connector));
+    IProcessorPtr tcpLayerProcessor(new TcpLayerProcessor(NEW_Connector));
     IProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
     IProcessorPtr telnetProcessor(new TelnetSwapper(NEW_Connector));
     
@@ -132,14 +126,14 @@ int main(int argc, char * argv[])
 
     macSwitch->setSelf(macSwitch);
 
+    acceptProcessor->setSelf(acceptProcessor);
     ipSplitter->setSelf(ipSplitter);
     ipHeaderProcessor->setSelf(ipHeaderProcessor);
 
     icmpProcessor->setSelf(icmpProcessor);
     tcpSplitter->setSelf(tcpSplitter);
-    tcpFlagsProcessor->setSelf(tcpFlagsProcessor);
-    tcpSequenceProcessor->setSelf(tcpSequenceProcessor);
-    tcpSeqProcessor->setSelf(tcpSeqProcessor);
+    tcpOptionsRemover->setSelf(tcpOptionsRemover);
+    tcpLayerProcessor->setSelf(tcpLayerProcessor);
     tcpHeaderProcessor->setSelf(tcpHeaderProcessor);
     telnetProcessor->setSelf(telnetProcessor);
 
@@ -150,13 +144,13 @@ int main(int argc, char * argv[])
     connect(mac2HeaderProcessor, macSwitch);
 
     connect(macSwitch, ipSplitter);
+    connect(macSwitch, acceptProcessor);
         connect(ipSplitter, ipHeaderProcessor);
         connect(ipHeaderProcessor, icmpProcessor);
         connect(ipHeaderProcessor, tcpSplitter);
-            connect(tcpSplitter, tcpSequenceProcessor);
-            connect(tcpSequenceProcessor, tcpFlagsProcessor);
-            connect(tcpFlagsProcessor, tcpSeqProcessor);
-            connect(tcpSeqProcessor, tcpHeaderProcessor);
+            connect(tcpSplitter, tcpOptionsRemover);
+            connect(tcpOptionsRemover, tcpLayerProcessor);
+            connect(tcpLayerProcessor, tcpHeaderProcessor);
             connect(tcpHeaderProcessor, telnetProcessor);
   
     pcap1Adapter->ping(IProcessorPtr());

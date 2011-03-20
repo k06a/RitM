@@ -539,14 +539,6 @@
 							Name="Tcp"
 							>
 							<File
-								RelativePath=".\TcpFlagsProcessor.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TcpFlagsProcessor.h"
-								>
-							</File>
-							<File
 								RelativePath=".\TcpHeaderProcessor.cpp"
 								>
 							</File>
@@ -555,19 +547,19 @@
 								>
 							</File>
 							<File
-								RelativePath=".\TcpProtocolProcessor.cpp"
+								RelativePath=".\TcpLayerProcessor.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TcpProtocolProcessor.h"
+								RelativePath=".\TcpLayerProcessor.h"
 								>
 							</File>
 							<File
-								RelativePath=".\TcpSequenceProcessor.cpp"
+								RelativePath=".\TcpOptionsRemover.cpp"
 								>
 							</File>
 							<File
-								RelativePath=".\TcpSequenceProcessor.h"
+								RelativePath=".\TcpOptionsRemover.h"
 								>
 							</File>
 						</Filter>

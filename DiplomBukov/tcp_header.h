@@ -15,12 +15,15 @@ namespace DiplomBukov
         u32be seq;        /* sequence number */
         u32be ack;        /* acknowledgment number */
         u8    reserved:4; /* (unused) */
-    private:
-        u8    offset:4;   /* data offset */
-    public:
+    
+        u8    data_offset:4;   /* data data_offset */
         const int header_size() const
         {
-            return (offset << 2);
+            return (data_offset << 2);
+        }
+        void set_header_size(const int value)
+        {
+            data_offset = (value >> 2);
         }
 
         struct flags_struct

@@ -18,9 +18,6 @@ ProcessingStatus RejectProcessor::forwardProcess(Protocol proto, IPacketPtr & pa
 {
     packet->setStatus(IPacket::Rejected);
 
-    if (nextProcessor != NULL)
-        nextProcessor->forwardProcess(proto, packet, offset);
-
     return ProcessingStatus::Accepted;
 }
 

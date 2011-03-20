@@ -42,8 +42,8 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr 
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
     {
-        Protocol::TransportLayer prot = (Protocol::TransportLayer)ip->proto;
-        nextProcessor->forwardProcess(prot, packet, offset + ip->size());
+        Protocol::TransportLayer inprot = (Protocol::TransportLayer)ip->proto;
+        nextProcessor->forwardProcess(inprot, packet, offset + ip->size());
     }
 
     return ProcessingStatus::Accepted;
@@ -61,10 +61,6 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr
 
     ipv4_header * ip = (ipv4_header *)(&packet->data()[0] + offset);
     *ip = header;
-    /*ip->dsfield.ce = 0;
-    ip->dsfield.ect = 0;
-    ip->dsfield.dscp = 0;
-    */
 
     ip->proto = proto.code;
     ip->totalLength = packet->data().size() - offset;

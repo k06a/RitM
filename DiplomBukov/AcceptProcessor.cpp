@@ -18,9 +18,9 @@ ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, IPacketPtr & pa
 {
     packet->setStatus(IPacket::Accepted);
 
-    if (nextProcessor != NULL)
-        nextProcessor->forwardProcess(proto, packet, offset);
-
+    packet->addProcessor(Self);
+    backwardProcess(proto, packet, offset);
+    
     return ProcessingStatus::Accepted;
 }
 

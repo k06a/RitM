@@ -1,8 +1,9 @@
-#ifndef TCPSEQUENCEPROCESSOR_H
-#define TCPSEQUENCEPROCESSOR_H
+#ifndef TCPOPTIONSREMOVER_H
+#define TCPOPTIONSREMOVER_H
 
-#include <deque>
-#include "i64u64.h"
+#include <map>
+#include <vector>
+
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 #include "IPacket.h"
@@ -10,20 +11,10 @@
 
 namespace DiplomBukov
 {
-    class TcpSequenceProcessor : public AbstractProcessor
+    class TcpOptionsRemover : public AbstractProcessor
     {
-        struct Abonent
-        {
-            u32be initialSN;
-            u32be currentSendSN;
-            u32be currentRecvSN;
-        };
-
-        Abonent client;
-        Abonent server;
-
     public:
-        TcpSequenceProcessor(IProcessorPtr Connector = IProcessorPtr());
+        TcpOptionsRemover(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
@@ -32,8 +23,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpSequenceProcessor
+    // class TcpOptionsRemover
 }
 // namespace DiplomBukov
 
-#endif // TCPSEQUENCEPROCESSOR_H
+#endif // TCPOPTIONSREMOVER_H

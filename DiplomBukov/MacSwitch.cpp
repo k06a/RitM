@@ -38,8 +38,8 @@ ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr & packet, 
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, offset);
 
-    if (packet->status() == IPacket::Accepted)
-        backwardProcess(packet->format(), packet, offset);
+    //if (packet->status() == IPacket::Accepted)
+    //    backwardProcess(packet->format(), packet, offset);
 
     return ProcessingStatus::Accepted;
 }

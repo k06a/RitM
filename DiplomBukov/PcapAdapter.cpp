@@ -58,13 +58,13 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr & packe
         return ProcessingStatus::Accepted;
 
     // Save hash
-    u32 hash = Crc32(&packet->data()[offset], packet->realSize() - offset);
+    u32 hash = Crc32(&packet->data()[offset], packet->size() - offset);
     hashes.push_back(hash);
 
     SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
     std::cout << '-' << opt->getSelectedIndex();
 
-    pcap_sendpacket(device, &packet->data()[offset], packet->realSize() - offset);
+    int ret = pcap_sendpacket(device, &packet->data()[offset], packet->size() - offset);
 
     return ProcessingStatus::Accepted;
 }

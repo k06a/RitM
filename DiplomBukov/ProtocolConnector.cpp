@@ -54,7 +54,7 @@ ProcessingStatus ProtocolConnector::forwardProcess(Protocol proto, IPacketPtr & 
             ans = ProcessingStatus::Accepted;
     }
 
-    if (proto != Protocol::None)
+    if ((proto != Protocol::None) && (ans != ProcessingStatus::Accepted))
     {
         for (MyMap::iterator it = procMap.find(Protocol::None);
             (it != procMap.end()) && (it->first == Protocol::None);

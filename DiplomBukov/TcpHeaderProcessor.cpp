@@ -21,11 +21,13 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
-    header.resize(tcp->header_size());
+    header.resize(sizeof(tcp_header));
     std::copy(
         &packet->data()[offset],
-        &packet->data()[offset+tcp->header_size()],
+        &packet->data()[offset + sizeof(tcp_header)],
         header.begin());
+    tcp_header * tcp2 = (tcp_header *)(&header[0]);
+    tcp2->set_header_size(sizeof(tcp_header));
 
     offset += tcp->header_size();
 

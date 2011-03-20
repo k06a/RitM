@@ -5,6 +5,7 @@
 using namespace DiplomBukov;
 
 TcpProtocolProcessor::TcpProtocolProcessor(IProcessorPtr Connector)
+    : maxDataInTcp(0)
 {
     setNextProcessor(Connector);
 }
@@ -22,7 +23,9 @@ ProcessingStatus TcpProtocolProcessor::forwardProcess(Protocol proto, IPacketPtr
         return ProcessingStatus::Rejected;
 
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
-    int dataInTcp = packet->realSize() - offset - tcp->header_size();
+    unsigned dataInTcp = packet->size() - offset - tcp->header_size();
+    if (dataInTcp > maxDataInTcp)
+        maxDataInTcp = dataInTcp;
 
     AbonentSN & abonent =
         (packet->direction() == IPacket::ClientToServer)
@@ -50,11 +53,21 @@ ProcessingStatus TcpProtocolProcessor::forwardProcess(Protocol proto, IPacketPtr
     {
         // Commit packet
         std::deque<AbonentSN::QuededPacket>::iterator it = 
-            std::find(abonent.sendWaitQueue.begin(),
-            abonent.sendWaitQueue.end(), tcp->ack);
+            std::find(abonent.commitWaitQueue.begin(),
+            abonent.commitWaitQueue.end(), tcp->ack);
 
-        if (it != abonent.sendWaitQueue.end())
-            abonent.sendWaitQueue.erase(it);
+        if (it != abonent.commitWaitQueue.end())
+        {
+            abonent.commitWaitQueue.erase(it);
+            abonent.currentSendSN = tcp->ack;
+        }
+
+        if (abonent.toSendBuffer.size() > 0)
+        {
+            AbonentSN::QuededPacket & pack = abonent.toSendBuffer.front();
+            privateBackwardProcess(pack.proto, pack.packet, pack.offset);
+            abonent.toSendBuffer.pop_front();
+        }
 
         return ProcessingStatus::Accepted;
     }
@@ -65,8 +78,7 @@ ProcessingStatus TcpProtocolProcessor::forwardProcess(Protocol proto, IPacketPtr
         {
             // Send last ack
             /*
-            if (abonent.lastAck.packet->prevProcessor(Self) != NULL)
-                abonent.lastAck.packet->prevProcessor(Self)->backwardProcess(
+            privateBackwardProcess(
                     abonent.lastAck.proto,
                     abonent.lastAck.packet,
                     abonent.lastAck.offset);
@@ -83,9 +95,8 @@ ProcessingStatus TcpProtocolProcessor::forwardProcess(Protocol proto, IPacketPtr
             abonent.recvWaitQueue.push_back(qpacket);
 
             // Send ACK
-            //IPacketPtr ackpack = createAck(abonent.currentSendSN, abonent.currentRecvSN, packet, dataInTcp, offset, abonent);
-            IPacketPtr ackpack = createAck(&qpacket);
-            backwardProcess(proto, ackpack, offset);
+            IPacketPtr ackpack = createAck(qpacket);
+            privateBackwardProcess(proto, ackpack, offset);
             abonent.lastAck = AbonentSN::QuededPacket(tcp->seq, proto, ackpack, offset, 0);
             
             if (tcp->flags.haveFlags(tcp_header::flags_struct::PSH))
@@ -110,10 +121,52 @@ ProcessingStatus TcpProtocolProcessor::backwardProcess(Protocol proto, IPacketPt
 {
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     int dataInTcp = packet->data().size() - offset - tcp->header_size();
-    
-    /*AbonentSN & abonent =
+
+    AbonentSN & toAbonent =
         (packet->direction() == IPacket::ClientToServer)
-        ? client : server;*/
+        ? server : client;
+
+    if (dataInTcp != 0)
+    {
+        for (int i = 0; true; i++)
+        {
+            IPacketPtr packetCopy = packet->CreateCopy();
+
+            int a_delete_from = offset + tcp->header_size();
+            int a_delete_to = a_delete_from + i*maxDataInTcp;
+            int b_delete_from = a_delete_to + maxDataInTcp;
+            int b_delete_to = packetCopy->size();
+
+            if (b_delete_from > b_delete_to)
+                b_delete_from = b_delete_to;
+
+            packetCopy->data().erase(
+                packetCopy->data().begin()+a_delete_from,
+                packetCopy->data().begin()+a_delete_to);
+            packetCopy->data().erase(
+                packetCopy->data().begin()+b_delete_from,
+                packetCopy->data().begin()+b_delete_to);
+
+            toAbonent.toSendBuffer.push_back(
+                AbonentSN::QuededPacket(0, proto, packetCopy, offset,
+                                        b_delete_from-a_delete_to));
+
+            if (b_delete_from == b_delete_to)
+                break;
+        }
+    }
+
+    AbonentSN::QuededPacket & qp = toAbonent.toSendBuffer.front();
+    privateBackwardProcess(qp.proto, qp.packet, qp.offset);
+    toAbonent.toSendBuffer.pop_front();
+
+    return ProcessingStatus::Accepted;
+}
+
+ProcessingStatus TcpProtocolProcessor::privateBackwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+{
+    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
+    int dataInTcp = packet->data().size() - offset - tcp->header_size();
 
     AbonentSN & toAbonent =
         (packet->direction() == IPacket::ClientToServer)
@@ -125,13 +178,9 @@ ProcessingStatus TcpProtocolProcessor::backwardProcess(Protocol proto, IPacketPt
     if (packet->prevProcessor(Self) != NULL)
         packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
 
-    toAbonent.currentSendSN += dataInTcp;
-    tcp->seq = toAbonent.currentSendSN;
+    toAbonent.commitWaitQueue.push_back(
+        AbonentSN::QuededPacket(tcp->seq+dataInTcp, proto, packet, offset, dataInTcp));
 
-    if (dataInTcp != 0)
-        toAbonent.sendWaitQueue.push_back(
-            AbonentSN::QuededPacket(tcp->seq, proto, packet, offset, dataInTcp));
-    
     return ProcessingStatus::Accepted;
 }
 
@@ -145,26 +194,10 @@ Protocol TcpProtocolProcessor::getProtocol()
     return Protocol::TCP;
 }
 
-IPacketPtr TcpProtocolProcessor::createAck(u32be seq, u32be ack, IPacketPtr packet, int dataInTcp, unsigned offset, AbonentSN & abonent)
+IPacketPtr TcpProtocolProcessor::createAck(const AbonentSN::QuededPacket & qpacket)
 {
-    IPacketPtr pack = packet->CreateCopy();
-
-    pack->swapDirection();
-    pack->setRealSize(pack->realSize() - dataInTcp);
-    pack->data().resize(pack->realSize());
-
-    tcp_header * tcp = (tcp_header *)&pack->data()[offset];
-    tcp->flags = tcp_header::flags_struct::ACK;
-    tcp->seq = seq;
-    tcp->ack = ack;
-
-    return pack;
-}
-
-IPacketPtr TcpProtocolProcessor::createAck(AbonentSN::QuededPacket * qpacket)
-{
-    IPacketPtr pack = qpacket->packet->CreateCopy();
-    int dataInTcp = qpacket->dataInTcp;
+    IPacketPtr pack = qpacket.packet->CreateCopy();
+    int dataInTcp = qpacket.dataInTcp;
 
     pack->swapDirection();
     pack->setRealSize(pack->realSize() - dataInTcp);
@@ -174,7 +207,7 @@ IPacketPtr TcpProtocolProcessor::createAck(AbonentSN::QuededPacket * qpacket)
         (pack->direction() == IPacket::ClientToServer)
         ? server : client;
 
-    tcp_header * tcp = (tcp_header *)&pack->data()[qpacket->offset];
+    tcp_header * tcp = (tcp_header *)&pack->data()[qpacket.offset];
     tcp->flags = tcp_header::flags_struct::ACK;
     tcp->seq = toAbonent.currentSendSN;
     tcp->ack = toAbonent.currentRecvSN;
