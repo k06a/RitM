@@ -46,23 +46,25 @@ ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, IPacketPtr 
     type |= PostRequest * (blob[0] == 'P');
     type |= HttpAnswer  * (blob[0] == 'H');
 
-    if (oldSize == 0)   // Read options only one time
+    if (oldSize == 0)   // Read options only first time
     {
         httpOptions.clear();
+        std::string keyword;
         std::string firstLine;
 
         std::string str((char*)&blob[0], blob.size());
         std::istringstream stream(str);
+        stream >> keyword;
         std::getline(stream, firstLine, '\n');
         while (true)
         {
             std::string line;
             std::string optionName;
             std::string optionValue;
+
             std::getline(stream, line, '\n');
+            if (line.size() < 2) break;
             line.resize(line.size() - 1);
-            if (line.size() == 0)
-                break;
             
             optionName = line.substr(0, line.find(':'));
             optionValue = line.substr(optionName.size()+2);

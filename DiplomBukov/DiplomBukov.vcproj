@@ -335,6 +335,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\stdbuk.h"
+				>
+			</File>
+			<File
 				RelativePath=".\triplet.h"
 				>
 			</File>
