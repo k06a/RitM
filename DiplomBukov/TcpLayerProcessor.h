@@ -6,7 +6,7 @@
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 #include "IPacket.h"
-#include "tcp_header.h"
+#include "network/tcp_header.h"
 
 namespace DiplomBukov
 {

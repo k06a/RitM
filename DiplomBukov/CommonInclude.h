@@ -1,5 +1,4 @@
 #include <memory>
-#include "Packet.h"
 #include "Protocol.h"
 #include "ProcessingStatus.h"
 
@@ -7,9 +6,6 @@
 
 namespace DiplomBukov
 {
-    #define extends public
-    #define implements public
-
     class IPacket;
     class IConnector;
     class IDuplexConnector;

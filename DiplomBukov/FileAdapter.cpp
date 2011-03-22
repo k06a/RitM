@@ -4,15 +4,18 @@
 
 using namespace DiplomBukov;
 
-FileAdapter::FileAdapter(char * filename1, char * filename2, IProcessorPtr Connector)
+FileAdapter::FileAdapter(const std::string & filename1,
+                         const std::string & filename2,
+                         IProcessorPtr Connector)
 	: file1(NULL), file2(NULL), id(0), linkType(0), buffer(NULL)
 {
     setNextProcessor(Connector);
 
-	if (fopen_s(&file1, filename1, "rb") != 0)
+	if (fopen_s(&file1, filename1.c_str(), "rb") != 0)
 		throw "Ошибка открытия файла";
 
-    if (fopen_s(&file2, filename2, "wb") != 0)
+    if (!filename2.empty())
+    if (fopen_s(&file2, filename2.c_str(), "wb") != 0)
         throw "Ошибка открытия файла";
 }
 
@@ -38,7 +41,9 @@ const char * FileAdapter::getProcessorName()
 
 ProcessingStatus FileAdapter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    if (packet->status() == Packet::Rejected)
+    if (file2 == NULL) return ProcessingStatus::Accepted;
+
+    if (packet->status() == IPacket::Rejected)
         return ProcessingStatus::Accepted;
 
     pcap_packet_header pph;
@@ -68,19 +73,19 @@ void FileAdapter::run(bool always)
 
     while (always)
 	{
-        tick();
+        if (!tick()) break;
 	}
 }
 
-void FileAdapter::tick()
+bool FileAdapter::tick()
 {
     int ret;
     pcap_packet_header pph;
     ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file1);
-    if (ret == 0) return;
+    if (ret == 0) return false;
 
     ret = fread_s(buffer, 65536, 1, pph.orig_len, file1);
-    if (ret == 0) return;
+    if (ret == 0) return false;
 
     IPacketPtr packet(new RawPacket(buffer, ret));
     packet->setId(id++);
@@ -91,4 +96,6 @@ void FileAdapter::tick()
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, 0);
+
+    return true;
 }

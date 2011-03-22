@@ -11,7 +11,7 @@ namespace DiplomBukov
 		virtual ~IAdapter() {}
 
 		virtual void run(bool always) = 0;
-        virtual void tick() = 0;
+        virtual bool tick() = 0;
 	};
 	// class IAdapter
 }

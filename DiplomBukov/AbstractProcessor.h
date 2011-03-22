@@ -18,7 +18,6 @@ namespace DiplomBukov
         AbstractProcessor();
 
         virtual IProcessorPtr getPointer();
-
         virtual void ping(IProcessorPtr prevProcessor);
 
         virtual Protocol getProtocol();

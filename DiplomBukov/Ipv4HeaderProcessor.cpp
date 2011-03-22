@@ -1,6 +1,6 @@
 #include "Ipv4HeaderProcessor.h"
-#include "ipv4_header.h"
-#include "tcp_header.h"
+#include "network/ipv4_header.h"
+#include "network/tcp_header.h"
 
 using namespace DiplomBukov;
 

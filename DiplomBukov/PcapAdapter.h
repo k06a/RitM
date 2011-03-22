@@ -39,7 +39,7 @@ namespace DiplomBukov
         virtual std::deque<IOptionPtr> getOptions();
 
         virtual void run(bool always);
-        virtual void tick();
+        virtual bool tick();
     };
     // class PcapAdapter
 }

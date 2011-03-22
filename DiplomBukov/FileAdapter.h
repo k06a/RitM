@@ -2,6 +2,7 @@
 #define FILEADAPTER_H
 
 #include <stdio.h>
+#include <string>
 
 #include "AbstractProcessor.h"
 #include "IAdapter.h"
@@ -39,7 +40,9 @@ namespace DiplomBukov
         u8 * buffer;
 
 	public:
-		FileAdapter(char * filename1, char * filename2, IProcessorPtr Connector = IProcessorPtr());
+        FileAdapter(const std::string & filename1,
+                    const std::string & filename2 = "",
+                    IProcessorPtr Connector = IProcessorPtr());
 		virtual IProcessorPtr CreateCopy() const;
         ~FileAdapter();
         
@@ -48,7 +51,7 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
 
 		virtual void run(bool always);
-        virtual void tick();
+        virtual bool tick();
 	};
 	// class FileAdapter
 }

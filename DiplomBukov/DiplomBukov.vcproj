@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4250 -D_SCL_SECURE_NO_WARNINGS"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\winpcap\include"
+				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -119,7 +119,7 @@
 				AdditionalOptions="/wd4250 -D_SCL_SECURE_NO_WARNINGS"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\winpcap\include"
+				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;LITTLE_ENDIAN"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -181,6 +181,14 @@
 			<File
 				RelativePath=".\main.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\main\main.obj"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -190,6 +198,14 @@
 			>
 			<File
 				RelativePath=".\CommonInclude.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ProcessingStatus.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Protocol.h"
 				>
 			</File>
 		</Filter>
@@ -308,65 +324,53 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Structs"
+			Name="SrcTools"
 			>
 			<File
-				RelativePath=".\crc.h"
+				RelativePath="..\SrcTools\crc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\i64u64.h"
+				RelativePath="..\SrcTools\i64u64.h"
 				>
 			</File>
 			<File
-				RelativePath=".\LittleBigEndian.h"
+				RelativePath="..\SrcTools\LittleBigEndian.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Packet.h"
+				RelativePath="..\SrcTools\stdbuk.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ProcessingStatus.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Protocol.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdbuk.h"
-				>
-			</File>
-			<File
-				RelativePath=".\triplet.h"
+				RelativePath="..\SrcTools\triplet.h"
 				>
 			</File>
 			<Filter
-				Name="NetStack"
+				Name="network"
 				>
 				<File
-					RelativePath=".\icmp_header.h"
+					RelativePath="..\SrcTools\network\icmp_header.h"
 					>
 				</File>
 				<File
-					RelativePath=".\ipv4_header.h"
+					RelativePath="..\SrcTools\network\ipv4_header.h"
 					>
 				</File>
 				<File
-					RelativePath=".\mac_header.h"
+					RelativePath="..\SrcTools\network\mac_header.h"
 					>
 				</File>
 				<File
-					RelativePath=".\tcp_header.h"
+					RelativePath="..\SrcTools\network\tcp_header.h"
 					>
 				</File>
 				<File
-					RelativePath=".\tcpudp_header.h"
+					RelativePath="..\SrcTools\network\tcpudp_header.h"
 					>
 				</File>
 				<File
-					RelativePath=".\udp_header.h"
+					RelativePath="..\SrcTools\network\udp_header.h"
 					>
 				</File>
 			</Filter>
@@ -492,10 +496,6 @@
 				<Filter
 					Name="Processors"
 					>
-					<File
-						RelativePath=".\DuplexProcessor.h"
-						>
-					</File>
 					<File
 						RelativePath=".\Ipv4Defragger.cpp"
 						>
@@ -706,6 +706,10 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="tests"
+			>
 		</Filter>
 	</Files>
 	<Globals>

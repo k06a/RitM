@@ -4,3 +4,5 @@ relre:Debug/
 relre:Release/
 relre:.ncb$
 relre:.pcap$
+syntax: regexp
+gtest-1.6.0/

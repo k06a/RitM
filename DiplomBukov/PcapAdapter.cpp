@@ -2,6 +2,7 @@
 #include "RawPacket.h"
 #include "crc.h"
 #include <pcap.h>
+#include <iostream>
 #include <list>
 
 using namespace DiplomBukov;
@@ -54,7 +55,7 @@ const char * PcapAdapter::getProcessorName()
 
 ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    if (packet->status() == Packet::Rejected)
+    if (packet->status() == IPacket::Rejected)
         return ProcessingStatus::Accepted;
 
     // Save hash
@@ -101,12 +102,12 @@ void PcapAdapter::run(bool always)
     }
 }
 
-void PcapAdapter::tick()
+bool PcapAdapter::tick()
 {
     pcap_pkthdr header;
     const u8 * pkt_data = pcap_next(device, &header);
     if (pkt_data == NULL)
-        return;
+        return true;
 
     // Find in hash
     u32 hash = Crc32(pkt_data, header.caplen);
@@ -114,7 +115,7 @@ void PcapAdapter::tick()
     if (it != hashes.end())
     {
         hashes.erase(it);
-        return;
+        return true;
     }
 
     IPacketPtr packet(new RawPacket(pkt_data, header.caplen));
@@ -129,4 +130,6 @@ void PcapAdapter::tick()
 
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
     nextProcessor->forwardProcess(proto, packet, 0);
+
+    return true;
 }

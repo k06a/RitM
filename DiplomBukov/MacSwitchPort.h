@@ -7,7 +7,7 @@
 #include "CommonInclude.h"
 #include "IProcessor.h"
 #include "AbstractProcessor.h"
-#include "mac_header.h"
+#include "network/mac_header.h"
 
 namespace DiplomBukov
 {

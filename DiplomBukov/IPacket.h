@@ -5,8 +5,7 @@
 #include <memory>
 #include <vector>
 #include "CommonInclude.h"
-#include "i64u64.h"
-#include "mac_header.h"
+#include "network/mac_header.h"
 
 namespace DiplomBukov
 {
