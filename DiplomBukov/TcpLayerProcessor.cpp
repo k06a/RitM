@@ -79,6 +79,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
             {
                 abonent.status = LAST_FINACK;
                 toAbonent.shouldCloseConnection = true;
+                abonent.currentRecvSN++;
 
                 if ((toAbonent.recvWaitQueue.size() == 0) &&
                     (toAbonent.toSendBuffer.size() == 0))
@@ -96,36 +97,39 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
 
             if (tcp->flags.haveFlags(FLAGS::ACK))
             {
-                enum MessageType
+                enum CommitType
                 {
                     OldCommit     = 1,
                     GoodCommit    = 2,
                     FutureCommit  = 4,
-                    
-                    OldMessage    = 8,
-                    GoodMessage   = 16,
-                    FutureMessage = 32
                 };
 
-                int type = 0;
-                if (dataInTcp == 0)
+                enum MessageType
                 {
-                    type |= OldCommit    * (tcp->ack <  abonent.currentSendSN);
-                    type |= GoodCommit   * (tcp->ack == abonent.currentSendSN);
-                    type |= FutureCommit * (tcp->ack >  abonent.currentSendSN);
-                }
-                else
+                    OldMessage    = 1,
+                    GoodMessage   = 2,
+                    FutureMessage = 4
+                };
+
+                int commitType = 0;
+                commitType |= OldCommit    * (tcp->ack <  abonent.currentSendSN);
+                commitType |= GoodCommit   * (tcp->ack == abonent.currentSendSN);
+                commitType |= FutureCommit * (tcp->ack >  abonent.currentSendSN);
+
+                int messageType = 0;
+                if (dataInTcp != 0)
                 {
-                    type |= OldMessage    * (tcp->seq <  abonent.currentRecvSN);
-                    type |= GoodMessage   * (tcp->seq == abonent.currentRecvSN);
-                    type |= FutureMessage * (tcp->seq >  abonent.currentRecvSN);
+                    messageType |= OldMessage    * (tcp->seq <  abonent.currentRecvSN);
+                    messageType |= GoodMessage   * (tcp->seq == abonent.currentRecvSN);
+                    messageType |= FutureMessage * (tcp->seq >  abonent.currentRecvSN);
                 }
                 
-                switch (type)
+                switch (commitType)
                 {
                     case OldCommit:
                         {
-                            if (abonent.commitWaitQueue.size() != 0)
+                            if ((abonent.commitWaitQueue.size() != 0) &&
+                                (dataInTcp == 0))
                             {
                                 QuededPacket & qp = abonent.commitWaitQueue.front();
                                 privateBackwardProcess(qp.proto, qp.packet, qp.offset);
@@ -134,9 +138,11 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                         break;
                     case GoodCommit:
                         {
+                            // Очищаем очередь ожидания подтверждений
                             if (abonent.commitWaitQueue.size() != 0)
                                 abonent.commitWaitQueue.pop_front();
 
+                            // Если есть что отправлять
                             if (abonent.toSendBuffer.size() != 0)
                             {
                                 QuededPacket & qp = abonent.toSendBuffer.front();
@@ -145,14 +151,16 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                                 abonent.toSendBuffer.pop_front();
                             }
 
+                            // Если надо закрыть сеанс и нечего больше отправлять
                             if ((abonent.shouldCloseConnection) &&
                                 (abonent.recvWaitQueue.size() == 0) &&
                                 (abonent.toSendBuffer.size() == 0))
                             {
                                 abonent.status = PRELAST_FIN;
-                                tcp->flags = tcp_header::flags_struct::FIN;
-                                packet->swapDirection();
-                                privateBackwardProcess(proto, packet, offset);
+                                tcp->flags = FLAGS::FIN + FLAGS::ACK;
+                                IPacketPtr newPacket = packet->CreateCopy();
+                                newPacket->swapDirection();
+                                privateBackwardProcess(proto, newPacket, offset);
                             }
                         }
                         break;
@@ -161,9 +169,12 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                             // Wow)))
                         }
                         break;
+                }
 
-                    // ------------------------------------------------
+                // ------------------------------------------------
 
+                switch(messageType)
+                {
                     case OldMessage:
                         {
                             QuededPacket & qp = abonent.lastAck;
@@ -213,6 +224,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
                 if (tcp->flags.haveFlags(FLAGS::FIN + FLAGS::ACK))
                 {
                     abonent.status = CLOSED;
+                    abonent.currentRecvSN++;
                     tcp->flags = FLAGS::ACK;
                     packet->swapDirection();
                     privateBackwardProcess(proto, packet, offset);
@@ -297,6 +309,8 @@ ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, IPack
         packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
 
     if (tcp->flags.haveFlags(tcp_header::flags_struct::SYN))
+        toAbonent.currentSendSN++;
+    if (tcp->flags.haveFlags(tcp_header::flags_struct::FIN))
         toAbonent.currentSendSN++;
     toAbonent.currentSendSN += dataInTcp;
     tcp->seq = toAbonent.currentSendSN;

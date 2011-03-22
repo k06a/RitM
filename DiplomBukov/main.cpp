@@ -159,7 +159,7 @@ int main(int argc, char * argv[])
             connect(tcpSplitter, tcpOptionsRemover);
             connect(tcpOptionsRemover, tcpLayerProcessor);
             connect(tcpLayerProcessor, tcpHeaderProcessor);
-            connect(tcpHeaderProcessor, httpDefragProcessor);
+            connect(tcpHeaderProcessor, telnetProcessor);//httpDefragProcessor);
   
     pcap1Adapter->ping(IProcessorPtr());
     pcap2Adapter->ping(IProcessorPtr());

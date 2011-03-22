@@ -33,9 +33,13 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
     {
         para = para1;
         if (nextProcessor != NULL)
+        {
             Connectors[para] = nextProcessor->CreateCopy();
-    }
-
+            it1 = Connectors.find(para1);
+        }
+    } else
+        para = (it1 != Connectors.end()) ? para1 : para2;
+    
     // Determine direction
     if ((packet->direction() == IPacket::Unknown) && (adr1 != adr2))
     {

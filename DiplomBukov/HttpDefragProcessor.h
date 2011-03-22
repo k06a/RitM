@@ -14,11 +14,31 @@ namespace DiplomBukov
     class HttpDefragProcessor : public AbstractProcessor
     {
         typedef std::vector<u8> Blob;
-        typedef std::vector<std::pair<std::string,std::string> > OptionList;
+        typedef std::pair<std::string,std::string> HttpOption;
+        typedef std::vector<HttpOption> HttpOptionList;
+
+        struct HttpHeader
+        {
+            enum MessageType
+            {
+                GetRequest  = 1,
+                PostRequest = 2,
+                HttpAnswer  = 4
+            };
+
+            std::string firstLine;
+            std::string operation;  // HTTP, GET, POST
+            std::string url;        // /html/1.jpg
+            std::string version;    // HTTP/1.1
+            int         code;       // 200
+            MessageType type;
+
+            HttpOptionList options;
+        };
 
         Blob blob;
         unsigned positionOfData;
-        OptionList httpOptions;
+        HttpHeader httpHeader;
         int markCount;
 
     public:
@@ -30,6 +50,8 @@ namespace DiplomBukov
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
+
+        bool checkEofChunkedData(const Blob & blob, int positionOfData);
     };
     // class HttpDefragProcessor
 }

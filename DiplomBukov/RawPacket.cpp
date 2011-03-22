@@ -91,6 +91,7 @@ void RawPacket::push_front(int length)
 {
     std::vector<u8> tmp(data_.size() + length, 0);
     std::copy(data_.begin(), data_.end(), tmp.begin() + length);
+    data_.swap(tmp);
 }
 
 void RawPacket::setRealSize(unsigned size)
