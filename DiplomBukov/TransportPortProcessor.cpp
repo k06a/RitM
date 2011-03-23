@@ -58,8 +58,8 @@ ProcessingStatus TransportPortProcessor::backwardProcess(Protocol proto, IPacket
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
     
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

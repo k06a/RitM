@@ -56,8 +56,8 @@ ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, IPacketPtr & pack
 
 ProcessingStatus TelnetSwapper::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Accepted;
 }
 

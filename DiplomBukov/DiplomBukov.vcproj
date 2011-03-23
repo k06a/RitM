@@ -485,6 +485,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\FileAdapterPairReader.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\FileAdapterPairReader.h"
+						>
+					</File>
+					<File
 						RelativePath=".\PcapAdapter.cpp"
 						>
 					</File>
@@ -685,26 +693,26 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="Options"
-				>
-				<File
-					RelativePath=".\CheckOption.cpp"
+				<Filter
+					Name="Options"
 					>
-				</File>
-				<File
-					RelativePath=".\CheckOption.h"
-					>
-				</File>
-				<File
-					RelativePath=".\SwitchOption.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\SwitchOption.h"
-					>
-				</File>
+					<File
+						RelativePath=".\CheckOption.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CheckOption.h"
+						>
+					</File>
+					<File
+						RelativePath=".\SwitchOption.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SwitchOption.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

@@ -9,6 +9,14 @@ AbstractProcessor::AbstractProcessor()
 {
 }
 
+IProcessorPtr AbstractProcessor::CreateCopy() const
+{
+    if (this == NULL)
+        return IProcessorPtr();
+    else
+        throw "Not Implemented";
+}
+
 IProcessorPtr AbstractProcessor::getPointer()
 {
     return Self;
@@ -17,7 +25,8 @@ IProcessorPtr AbstractProcessor::getPointer()
 void AbstractProcessor::ping(IProcessorPtr prevProcessor)
 {
     setPrevProcessor(prevProcessor);
-    nextProcessor->ping(Self);
+    if (nextProcessor != NULL)
+        nextProcessor->ping(Self);
 }
 
 Protocol AbstractProcessor::getProtocol()
@@ -39,8 +48,8 @@ ProcessingStatus AbstractProcessor::forwardProcess(Protocol proto, IPacketPtr & 
 
 ProcessingStatus AbstractProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    if (packet->prevProcessor(Self) != NULL)
-        return packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        return packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Rejected;
 }
 

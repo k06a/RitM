@@ -1,6 +1,7 @@
 #include "FileAdapter.h"
 #include "RawPacket.h"
 #include <list>
+#include <iostream>
 
 using namespace DiplomBukov;
 
@@ -12,11 +13,17 @@ FileAdapter::FileAdapter(const std::string & filename1,
     setNextProcessor(Connector);
 
 	if (fopen_s(&file1, filename1.c_str(), "rb") != 0)
-		throw "Ошибка открытия файла";
+    {
+        std::cerr << "Error opening file \"" << filename1 << '"' << std::endl;
+		throw 1;
+    }
 
     if (!filename2.empty())
     if (fopen_s(&file2, filename2.c_str(), "wb") != 0)
-        throw "Ошибка открытия файла";
+    {
+        std::cerr << "Error opening file \"" << filename2 << '"' << std::endl;
+        throw 1;
+    }
 }
 
 IProcessorPtr FileAdapter::CreateCopy() const
@@ -47,17 +54,14 @@ ProcessingStatus FileAdapter::backwardProcess(Protocol proto, IPacketPtr & packe
         return ProcessingStatus::Accepted;
 
     pcap_packet_header pph;
-    pph.ts_sec = packet->time();
-    pph.ts_usec = 0;
+    pph.ts_sec = packet->time() >> 32;
+    pph.ts_usec = packet->time() & 0xffffffff;
     pph.incl_len = packet->realSize();
     pph.orig_len = packet->realSize();
     fwrite(&pph, sizeof(pph), 1, file2);
 
-    char * buf = new char [65536];
-    std::copy(packet->data().begin(), packet->data().end(), buf);
-    fwrite(buf+offset, packet->realSize()-offset, 1, file2);
-    delete [] buf;
-
+    fwrite(&packet->data()[offset], 1, packet->size() - offset, file2);
+    
     return ProcessingStatus::Accepted;
 }
 
@@ -65,7 +69,8 @@ void FileAdapter::run(bool always)
 {
     pcap_file_header pfh;
     fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file1);
-    fwrite(&pfh, sizeof(pfh), 1, file2);
+    if (file2 != NULL)
+        fwrite(&pfh, sizeof(pfh), 1, file2);
 
     id = 1;
     linkType = pfh.network;
@@ -89,7 +94,7 @@ bool FileAdapter::tick()
 
     IPacketPtr packet(new RawPacket(buffer, ret));
     packet->setId(id++);
-    packet->setTime(pph.ts_sec);
+    packet->setTime(pph.ts_sec, pph.ts_usec);
     packet->setAdapter(this);
     packet->addProcessor(Self);
 

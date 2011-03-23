@@ -68,21 +68,21 @@ namespace DiplomBukov
             return *this;
         }
 
-        bool isBroadcast()
+        bool isBroadcast() const
         {
             return (words[0] == 0xffff)
                 && (words[1] == 0xffff)
                 && (words[2] == 0xffff);
         }
 
-        bool isZero()
+        bool isZero() const
         {
             return (words[0] == 0x0000)
                 && (words[1] == 0x0000)
                 && (words[2] == 0x0000);
         }
 
-        bool isConcrete()
+        bool isConcrete() const
         {
             return !isBroadcast() && !isZero();
         }
@@ -117,7 +117,7 @@ namespace DiplomBukov
 	{
 		mac_addr dst;
 		mac_addr src;
-        u16 proto;
+        u16be proto;
 	};
 	#pragma pack(pop)
 }

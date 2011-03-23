@@ -38,8 +38,8 @@ ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, IPacketPtr & 
 
 ProcessingStatus TcpOptionsRemover::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

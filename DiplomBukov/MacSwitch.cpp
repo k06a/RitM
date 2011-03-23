@@ -50,10 +50,10 @@ ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr & packet,
     for(MyDeque::iterator it = ports.begin(); it != ports.end(); ++it)
     {
         MacSwitchPort * port = dynamic_cast<MacSwitchPort *>(it->get());
-        if (port->checkMac(packet->dst_mac()))
+        if (port->checkMac(packet->dstMac()))
         {
             // Не отправлять обратно широковещательные пакеты
-            if ((packet->haveProcessor(*it)) && packet->dst_mac().isBroadcast())
+            if ((packet->haveProcessor(*it)) && packet->dstMac().isBroadcast())
                 continue;
 
             port->backwardProcess(proto, packet, offset);  

@@ -60,8 +60,8 @@ ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr & packe
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
 
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

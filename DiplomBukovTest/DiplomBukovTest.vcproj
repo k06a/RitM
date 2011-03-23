@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/wd4250"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\SrcTools;..\DiplomBukov;..\gtest-1.6.0;..\gtest-1.6.0\include"
+				AdditionalIncludeDirectories="..\SrcTools;..\DiplomBukov;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -120,7 +120,7 @@
 				AdditionalOptions="/wd4250"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\SrcTools;..\DiplomBukov;..\gtest-1.6.0;..\gtest-1.6.0\include"
+				AdditionalIncludeDirectories="..\SrcTools;..\DiplomBukov;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;LITTLE_ENDIAN"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -139,7 +139,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wpcap.lib Packet.lib ..\DiplomBukov\Debug\*r.obj ..\DiplomBukov\Debug\*t.obj ..\DiplomBukov\Debug\*on.obj"
+				AdditionalDependencies="wpcap.lib Packet.lib ..\DiplomBukov\Release\*.obj"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\winpcap\lib"
 				GenerateDebugInformation="true"
@@ -180,6 +180,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\gmock-1.6.0\src\gmock-all.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\gtest-1.6.0\src\gtest-all.cc"
 				>
 			</File>
@@ -203,6 +207,10 @@
 				<Filter
 					Name="Adapters"
 					>
+					<File
+						RelativePath=".\FileAdapterTest.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Connectors"
@@ -218,7 +226,7 @@
 							Name="Tcp"
 							>
 							<File
-								RelativePath=".\FileAdapterTest.cpp"
+								RelativePath=".\TcpLayerProcessorTest.cpp"
 								>
 							</File>
 						</Filter>
@@ -243,6 +251,18 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+		</Filter>
+		<Filter
+			Name="Header files"
+			>
+			<File
+				RelativePath=".\expect_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\expect_file.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

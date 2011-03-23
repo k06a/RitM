@@ -12,7 +12,7 @@ namespace DiplomBukov
     class RawPacket : public IPacket
     {
         unsigned id_;
-        unsigned time_;
+        u64 time_;
         PacketPolicy status_;
         unsigned real_size;
         std::vector<u8> data_;
@@ -31,14 +31,16 @@ namespace DiplomBukov
 
         virtual IPacketPtr CreateCopy() const;
 
-        virtual void setId(unsigned id);
         virtual unsigned id() const;
+        virtual void setId(unsigned id);
 
-        virtual void setTime(unsigned secs);
-        virtual unsigned time() const;
+        virtual u64 time() const;
+        virtual void setTime(unsigned secs, unsigned usec);
+        virtual void setTime(u64 usecs);
 
-        virtual void setStatus(PacketPolicy status);
+
         virtual PacketPolicy status() const;
+        virtual void setStatus(PacketPolicy status);
 
         virtual void setData(u8 * ptr, unsigned size);
         virtual u8 & operator [] (unsigned index);
@@ -46,27 +48,32 @@ namespace DiplomBukov
         virtual std::vector<u8> & data();
         virtual void push_front(int length);
 
-        virtual void setRealSize(unsigned size);
         virtual unsigned realSize() const;
+        virtual void setRealSize(unsigned size);
 
-        virtual void setAdapter(IAdapter * ad);
         virtual IAdapter * adapter() const;
+        virtual void setAdapter(IAdapter * ad);
 
-        virtual void addProcessor(IProcessorPtr pro);
         virtual const std::deque<IProcessorPtr> & processors() const;
+        virtual void addProcessor(IProcessorPtr pro);
 
-        virtual void addProtocol(Protocol pro);
         virtual const std::deque<Protocol> & protocols() const;
+        virtual void addProtocol(Protocol pro);
 
-        virtual void setDirection(Direction dir);
         virtual Direction direction() const;
+        virtual void setDirection(Direction dir);
         virtual bool swapDirection();
 
-        virtual mac_addr & src_mac();
-        virtual mac_addr & dst_mac();
-        virtual Protocol::NetworkLayer & format();
+        virtual const mac_addr & srcMac() const;
+        virtual void setSrcMac(const mac_addr & src);
+        
+        virtual const mac_addr & dstMac() const;
+        virtual void setDstMac(const mac_addr & dst);
+        
+        virtual const Protocol::NetworkLayer & format() const;
+        virtual void setFormat(const Protocol::NetworkLayer & layer);
 
-        virtual IProcessorPtr prevProcessor(IProcessorPtr current) const;
+        virtual IProcessorPtr processorBefore(IProcessorPtr current) const;
         virtual bool haveProcessor(IProcessorPtr proc) const;
     };
     // class RawPacket

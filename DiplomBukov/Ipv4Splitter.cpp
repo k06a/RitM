@@ -64,8 +64,8 @@ ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr & pack
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(ipv4->src_data, ipv4->dst_data);
 
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(Protocol::IPv4, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(Protocol::IPv4, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

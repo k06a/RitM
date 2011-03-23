@@ -73,8 +73,8 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr
             */
     }
 
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(getProtocol(), packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(getProtocol(), packet, offset);
     
     return ProcessingStatus::Accepted;
 }

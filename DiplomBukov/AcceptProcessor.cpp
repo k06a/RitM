@@ -9,7 +9,11 @@ AcceptProcessor::AcceptProcessor(IProcessorPtr Connector)
 
 IProcessorPtr AcceptProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new AcceptProcessor(nextProcessor->CreateCopy()));
+    IProcessorPtr np = IProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    IProcessorPtr ptr(new AcceptProcessor(np));
     ptr->setSelf(ptr);
     return ptr;
 }

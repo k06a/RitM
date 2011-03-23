@@ -305,8 +305,8 @@ ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, IPack
     tcp->seq = toAbonent.currentSendSN;
     tcp->ack = toAbonent.currentRecvSN;
     
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
 
     if (tcp->flags.haveFlags(tcp_header::flags_struct::SYN))
         toAbonent.currentSendSN++;

@@ -16,6 +16,7 @@ namespace DiplomBukov
 
     public:
         AbstractProcessor();
+        virtual IProcessorPtr CreateCopy() const;
 
         virtual IProcessorPtr getPointer();
         virtual void ping(IProcessorPtr prevProcessor);

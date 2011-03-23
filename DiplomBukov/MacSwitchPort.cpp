@@ -25,8 +25,8 @@ IProcessorPtr MacSwitchPort::CreateCopy() const
 
 ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
 {
-    if (packet->src_mac().isConcrete() && !checkMac(packet->src_mac()))
-        macList.push_back(packet->src_mac());
+    if (packet->srcMac().isConcrete() && !checkMac(packet->srcMac()))
+        macList.push_back(packet->srcMac());
     
     packet->addProcessor(Self);
     if (nextProcessor != NULL)

@@ -3,6 +3,9 @@ relre:.user$
 relre:Debug/
 relre:Release/
 relre:.ncb$
-relre:.pcap$
 syntax: regexp
 gtest-1.6.0/
+gmock-1.6.0/
+syntax: glob
+DiplomBukov/*.pcap
+winpcap/

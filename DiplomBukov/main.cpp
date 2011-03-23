@@ -33,6 +33,8 @@
 
 #include "MacSwitch.h"
 
+#include "FileAdapterPairReader.h"
+
 using namespace DiplomBukov;
 
 void print_arch(IProcessorPtr proc, std::string prefix = "", int deep = 0)
@@ -195,9 +197,13 @@ int main(int argc, char * argv[])
 
     pcap1Adapter->run(false);
     pcap2Adapter->run(false);
-    while (true)
-    {
-        pcap1Adapter->tick();
-        pcap2Adapter->tick();
-    }
+
+    if (pcap1Adapter->getProcessorName() == std::string("FileAdapter"))
+        fileAdapterPairReader(pcap1Adapter, pcap2Adapter);
+    else
+        while (true)
+        {
+            pcap1Adapter->tick();
+            pcap2Adapter->tick();
+        }
 }

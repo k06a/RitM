@@ -57,8 +57,8 @@ ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     std::copy(header.begin(), header.end(), &packet->data()[offset]);
     
-    if (packet->prevProcessor(Self) != NULL)
-        packet->prevProcessor(Self)->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(Self) != NULL)
+        packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

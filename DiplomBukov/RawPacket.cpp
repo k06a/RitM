@@ -46,14 +46,19 @@ unsigned RawPacket::id() const
     return id_;
 }
 
-void RawPacket::setTime(unsigned secs)
-{
-    time_ = secs;
-}
-
-unsigned RawPacket::time() const
+u64 RawPacket::time() const
 {
     return time_;
+}
+
+void RawPacket::setTime(unsigned secs, unsigned usec)
+{
+    time_ = (((u64)secs) << 32) | usec;
+}
+
+void RawPacket::setTime(u64 usecs)
+{
+    time_ = usecs;
 }
 
 void RawPacket::setStatus(PacketPolicy status)
@@ -159,22 +164,37 @@ bool RawPacket::swapDirection()
     return true;
 }
 
-mac_addr & RawPacket::src_mac()
+const mac_addr & RawPacket::srcMac() const
 {
     return src_mac_addr;
 }
 
-mac_addr & RawPacket::dst_mac()
+const mac_addr & RawPacket::dstMac() const
 {
     return dst_mac_addr;
 }
 
-Protocol::NetworkLayer & RawPacket::format()
+const Protocol::NetworkLayer & RawPacket::format() const
 {
     return format_;
 }
 
-IProcessorPtr RawPacket::prevProcessor(IProcessorPtr current) const
+void RawPacket::setSrcMac(const mac_addr & src)
+{
+    src_mac_addr = src;
+}
+
+void RawPacket::setDstMac(const mac_addr & dst)
+{
+    dst_mac_addr = dst;
+}
+
+void RawPacket::setFormat(const Protocol::NetworkLayer & layer)
+{
+    format_ = layer;
+}
+
+IProcessorPtr RawPacket::processorBefore(IProcessorPtr current) const
 {
     std::deque<IProcessorPtr>::const_iterator it =
         std::find(processors_.begin(), processors_.end(), current);

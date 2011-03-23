@@ -28,9 +28,9 @@ namespace DiplomBukov
 
         enum NetworkLayer
         {
-            IPv4 = 0x0008,
-            IPv6 = 0xDD86,
-            ARP  = 0x0608
+            IPv4 = 0x0800,
+            IPv6 = 0x86DD,
+            ARP  = 0x0806
         };
 
         static std::string text(NetworkLayer pro)
