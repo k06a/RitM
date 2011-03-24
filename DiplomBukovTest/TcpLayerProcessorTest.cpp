@@ -24,11 +24,11 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 {
     {
         IAdapterPtr adapter1(
-            new FileAdapter("TcpLayerProcessorTest.clientToServer.in.pcap",
-            "TcpLayerProcessorTest.serverToClient.out.pcap"));
+            new FileAdapter("TcpLayerProcessorTest.clientSide.in.pcap",
+            "TcpLayerProcessorTest.serverSide.out.pcap"));
         IAdapterPtr adapter2(
-            new FileAdapter("TcpLayerProcessorTest.serverToClient.in.pcap",
-            "TcpLayerProcessorTest.clientToServer.out.pcap"));
+            new FileAdapter("TcpLayerProcessorTest.serverSide.in.pcap",
+            "TcpLayerProcessorTest.clientSide.out.pcap"));
 
         IProcessorPtr mac1(new MacHeaderProcessor());
         IProcessorPtr mac2(new MacHeaderProcessor());
@@ -81,10 +81,10 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
         adapter2->DestroyHierarchy();
     }
 
-    EXPECT_FILE_EQ("TcpLayerProcessorTest.clientToServer.in.pcap",
-                   "TcpLayerProcessorTest.serverToClient.out.pcap");
-    EXPECT_FILE_EQ("TcpLayerProcessorTest.serverToClient.in.pcap",
-                   "TcpLayerProcessorTest.clientToServer.out.pcap");
+    EXPECT_FILE_EQ("TcpLayerProcessorTest.clientSide.in.pcap",
+                   "TcpLayerProcessorTest.serverSide.out.pcap");
+    EXPECT_FILE_EQ("TcpLayerProcessorTest.serverSide.in.pcap",
+                   "TcpLayerProcessorTest.clientSide.out.pcap");
 }
 
 //////////////////////////////////////////////////////////////////////////
