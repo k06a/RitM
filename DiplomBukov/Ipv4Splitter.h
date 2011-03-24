@@ -22,7 +22,7 @@ namespace DiplomBukov
 	public:
 		Ipv4Splitter(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
-        void DestroyHierarchy();
+        virtual void DestroyHierarchy();
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);

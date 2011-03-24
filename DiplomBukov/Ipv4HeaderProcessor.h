@@ -13,7 +13,7 @@ namespace DiplomBukov
 {
     class Ipv4HeaderProcessor : public AbstractProcessor
     {
-        ipv4_header header;
+        std::vector<u8> header;
         
     public:
         Ipv4HeaderProcessor(IProcessorPtr Connector = IProcessorPtr());

@@ -31,7 +31,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr packet,
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[0] + offset);
+    ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[offset]);
     ipv4_addr adr1 = ipv4->src_data;
     ipv4_addr adr2 = ipv4->dst_data;
 
@@ -67,13 +67,13 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr packet,
 
 ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
-    ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[0] + offset);
+    ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[offset]);
 
     ipv4->src_data = para.first;
     ipv4->dst_data = para.second;
 
-    if (packet->direction() == IPacket::ServerToClient)
-        std::swap(ipv4->src_data, ipv4->dst_data);
+    //if (packet->direction() == IPacket::ServerToClient)
+    //    std::swap(ipv4->src_data, ipv4->dst_data);
 
     if (packet->processorBefore(Self) != NULL)
         packet->processorBefore(Self)->backwardProcess(Protocol::IPv4, packet, offset);

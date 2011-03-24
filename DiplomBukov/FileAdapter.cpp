@@ -55,7 +55,7 @@ ProcessingStatus FileAdapter::backwardProcess(Protocol proto, IPacketPtr packet,
 
     pcap_packet_header pph;
     pph.ts_sec = packet->time() >> 32;
-    pph.ts_usec = packet->time() & 0xffffffff;
+    pph.ts_usec = (unsigned)packet->time();
     pph.incl_len = packet->realSize();
     pph.orig_len = packet->realSize();
     fwrite(&pph, sizeof(pph), 1, file2);

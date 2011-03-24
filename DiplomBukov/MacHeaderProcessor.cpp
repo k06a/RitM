@@ -20,7 +20,7 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr p
     if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
 
-    mac_header * mac = (mac_header *)(&packet->data()[0] + offset);
+    mac_header * mac = (mac_header *)(&packet->data()[offset]);
     packet->setSrcMac(mac->src);
     packet->setDstMac(mac->dst);
     packet->setFormat((Protocol::NetworkLayer)(int)mac->proto);
@@ -43,7 +43,7 @@ ProcessingStatus MacHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
     }
     offset -= sizeof(mac_header);
 
-    mac_header * mac = (mac_header *)(&packet->data()[0] + offset);
+    mac_header * mac = (mac_header *)(&packet->data()[offset]);
     mac->src = packet->srcMac();
     mac->dst = packet->dstMac();
     mac->proto = proto.code;

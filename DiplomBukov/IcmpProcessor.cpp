@@ -22,7 +22,7 @@ ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, IPacketPtr packet
 
     packet->addProcessor(Self);
 
-    icmp_header * icmp = (icmp_header *)(&packet->data()[0] + offset);
+    icmp_header * icmp = (icmp_header *)(&packet->data()[offset]);
 
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(Protocol::None, packet, offset + sizeof(icmp_header));

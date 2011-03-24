@@ -17,6 +17,11 @@ IProcessorPtr TcpSplitter::CreateCopy() const
 
 void TcpSplitter::DestroyHierarchy()
 {
+    for (MyMap::iterator it = Connectors.begin();
+        it != Connectors.end(); ++it)
+    {
+        it->second->DestroyHierarchy();
+    }
     Connectors.clear();
     AbstractProcessor::DestroyHierarchy();
 }
@@ -26,7 +31,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr packet, 
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+    tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
     unsigned short adr1 = tcp->src_port;
     unsigned short adr2 = tcp->dst_port;
     
@@ -58,13 +63,13 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr packet, 
 
 ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+    tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
 
     tcp->src_port = para.first;
     tcp->dst_port = para.second;
 
-    if (packet->direction() == IPacket::ServerToClient)
-        std::swap(tcp->src_port, tcp->dst_port);
+    //if (packet->direction() == IPacket::ServerToClient)
+    //    std::swap(tcp->src_port, tcp->dst_port);
 
     if (packet->processorBefore(Self) != NULL)
         packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);

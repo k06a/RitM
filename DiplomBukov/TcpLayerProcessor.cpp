@@ -61,7 +61,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                 toAbonent.status = FIRST_SYN;
                 abonent.initialSN = tcp->seq;
                 abonent.currentRecvSN = tcp->seq + 1;
-                toAbonent.currentSendSN = tcp->seq + 1;
+                toAbonent.currentSendSN = tcp->seq;
                 privateBackwardProcess(proto, packet, offset);
             }
             break;
@@ -73,7 +73,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                 toAbonent.status = SECOND_SYNACK;
                 abonent.initialSN = tcp->seq;
                 abonent.currentRecvSN = tcp->seq + 1;
-                toAbonent.currentSendSN = tcp->seq + 1;
+                toAbonent.currentSendSN = tcp->seq;
                 privateBackwardProcess(proto, packet, offset);
             }
             break;
@@ -125,9 +125,9 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                 };
 
                 int commitType = 0;
-                commitType |= OldCommit    * (tcp->ack <  abonent.currentSendSN-1);
-                commitType |= GoodCommit   * (tcp->ack == abonent.currentSendSN-1);
-                commitType |= FutureCommit * (tcp->ack >  abonent.currentSendSN-1);
+                commitType |= OldCommit    * (tcp->ack <  abonent.currentSendSN);
+                commitType |= GoodCommit   * (tcp->ack == abonent.currentSendSN);
+                commitType |= FutureCommit * (tcp->ack >  abonent.currentSendSN);
 
                 int messageType = 0;
                 if (dataInTcp != 0)
@@ -180,6 +180,8 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                     case FutureCommit:
                         {
                             // Wow)))
+                            int a = 0;
+                            a = 1;
                         }
                         break;
                 }
@@ -250,7 +252,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                 if (tcp->flags.haveFlags(FLAGS::ACK))
                 {
                     abonent.status = CLOSED;
-                    privateBackwardProcess(proto, packet, offset);
+                    //privateBackwardProcess(proto, packet, offset);
                 }
             }
             break;

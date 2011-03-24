@@ -22,7 +22,7 @@ ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, IPacketP
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+    tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
 
     // First session packet (ClientToServer)
     if ((server_port == 0) && (client_port == 0))
@@ -51,7 +51,7 @@ ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, IPacketP
 
 ProcessingStatus TransportPortProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
-    tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
+    tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
     
     tcp->src_port = client_port;
     tcp->dst_port = server_port;

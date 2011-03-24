@@ -23,7 +23,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, IPacketPtr packet
     
     packet->addProcessor(Self);
 
-    ipv4_header_data * ipv4 = (ipv4_header_data *)(&packet->data()[0] + offset);
+    ipv4_header_data * ipv4 = (ipv4_header_data *)(&packet->data()[offset]);
 
     if (ipv4->flag_mf || (ipv4->fragmentOffset() != 0))
     {
