@@ -1,11 +1,12 @@
-relre:.suo$
-relre:.user$
-relre:Debug/
-relre:Release/
-relre:.ncb$
 syntax: regexp
+\.suo$
+\.user$
+\.ncb$
+\.out\.pcap$
+syntax: glob
+Debug/
+Release/
 gtest-1.6.0/
 gmock-1.6.0/
-syntax: glob
 DiplomBukov/*.pcap
 winpcap/

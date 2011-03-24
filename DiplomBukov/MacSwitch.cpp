@@ -24,6 +24,12 @@ IProcessorPtr MacSwitch::CreateCopy() const
     return ptr;
 }
 
+void MacSwitch::DestroyHierarchy()
+{
+    ports.clear();
+    AbstractProcessor::DestroyHierarchy();
+}
+
 IProcessorPtr MacSwitch::getPointer()
 {
     IProcessorPtr port(new MacSwitchPort(Self));

@@ -22,14 +22,14 @@ using namespace DiplomBukov;
 
 TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 {
-    IAdapterPtr adapter1(
-        new FileAdapter("TcpLayerProcessorTest.clientToServer.in.pcap",
-                        "TcpLayerProcessorTest.serverToClient.out.pcap"));
-    IAdapterPtr adapter2(
-        new FileAdapter("TcpLayerProcessorTest.serverToClient.in.pcap",
-                        "TcpLayerProcessorTest.clientToServer.out.pcap"));
-
     {
+        IAdapterPtr adapter1(
+            new FileAdapter("TcpLayerProcessorTest.clientToServer.in.pcap",
+            "TcpLayerProcessorTest.serverToClient.out.pcap"));
+        IAdapterPtr adapter2(
+            new FileAdapter("TcpLayerProcessorTest.serverToClient.in.pcap",
+            "TcpLayerProcessorTest.clientToServer.out.pcap"));
+
         IProcessorPtr mac1(new MacHeaderProcessor());
         IProcessorPtr mac2(new MacHeaderProcessor());
         IProcessorPtr macSwitch(new MacSwitch());

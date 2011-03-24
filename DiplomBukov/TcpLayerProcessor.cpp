@@ -125,9 +125,9 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                 };
 
                 int commitType = 0;
-                commitType |= OldCommit    * (tcp->ack <  abonent.currentSendSN);
-                commitType |= GoodCommit   * (tcp->ack == abonent.currentSendSN);
-                commitType |= FutureCommit * (tcp->ack >  abonent.currentSendSN);
+                commitType |= OldCommit    * (tcp->ack <  abonent.currentSendSN-1);
+                commitType |= GoodCommit   * (tcp->ack == abonent.currentSendSN-1);
+                commitType |= FutureCommit * (tcp->ack >  abonent.currentSendSN-1);
 
                 int messageType = 0;
                 if (dataInTcp != 0)

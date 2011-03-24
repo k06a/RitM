@@ -22,6 +22,7 @@ namespace DiplomBukov
     public:
         MacSwitch(IProcessorPtr Connector = IProcessorPtr());
         MacSwitch(const MacSwitch & macSwitch);
+        void DestroyHierarchy();
 
         virtual IProcessorPtr CreateCopy() const;
 

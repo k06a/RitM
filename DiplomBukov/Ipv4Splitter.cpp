@@ -17,6 +17,11 @@ IProcessorPtr Ipv4Splitter::CreateCopy() const
 
 void Ipv4Splitter::DestroyHierarchy()
 {
+    for (MyMap::iterator it = Connectors.begin();
+        it != Connectors.end(); ++it)
+    {
+        it->second->DestroyHierarchy();
+    }
     Connectors.clear();
     AbstractProcessor::DestroyHierarchy();
 }
