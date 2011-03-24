@@ -552,7 +552,7 @@
 							>
 						</File>
 						<Filter
-							Name="Tcp"
+							Name="Transport"
 							>
 							<File
 								RelativePath=".\TcpHeaderProcessor.cpp"
@@ -576,6 +576,14 @@
 							</File>
 							<File
 								RelativePath=".\TcpOptionsRemover.h"
+								>
+							</File>
+							<File
+								RelativePath=".\UdpHeaderProcessor.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\UdpHeaderProcessor.h"
 								>
 							</File>
 						</Filter>
@@ -632,6 +640,14 @@
 						Name="Applicative"
 						>
 						<File
+							RelativePath=".\DnsMessageProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\DnsMessageProcessor.h"
+							>
+						</File>
+						<File
 							RelativePath=".\HttpDefragProcessor.cpp"
 							>
 						</File>
@@ -653,6 +669,18 @@
 						</File>
 						<File
 							RelativePath=".\TelnetSwapper.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Filters"
+						>
+						<File
+							RelativePath=".\TransportPortFilter.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TransportPortFilter.h"
 							>
 						</File>
 					</Filter>
@@ -706,6 +734,14 @@
 					</File>
 					<File
 						RelativePath=".\CheckOption.h"
+						>
+					</File>
+					<File
+						RelativePath=".\IntOption.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\IntOption.h"
 						>
 					</File>
 					<File

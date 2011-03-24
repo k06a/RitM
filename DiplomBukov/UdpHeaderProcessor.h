@@ -1,22 +1,22 @@
-#ifndef TCPHEADERPROCESSOR_H
-#define TCPHEADERPROCESSOR_H
+#ifndef UDPHEADERPROCESSOR_H
+#define UDPHEADERPROCESSOR_H
 
 #include <vector>
 
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 #include "IPacket.h"
-#include "network/tcp_header.h"
+#include "network/udp_header.h"
 
 namespace DiplomBukov
 {
-    class TcpHeaderProcessor : public AbstractProcessor
+    class UdpHeaderProcessor : public AbstractProcessor
     {
         Protocol inproto;
-        std::vector<u8> header;
+        udp_header header;
 
     public:
-        TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
+        UdpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
@@ -25,8 +25,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpHeaderProcessor
+    // class UdpHeaderProcessor
 }
 // namespace DiplomBukov
 
-#endif // TCPHEADERPROCESSOR_H
+#endif // UDPHEADERPROCESSOR_H

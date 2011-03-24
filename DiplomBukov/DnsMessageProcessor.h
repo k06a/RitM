@@ -1,22 +1,23 @@
-#ifndef TCPHEADERPROCESSOR_H
-#define TCPHEADERPROCESSOR_H
+#ifndef DNSMESSAGEPROCESSOR_H
+#define DNSMESSAGEPROCESSOR_H
 
+#include <string>
 #include <vector>
+#include <utility>
+#include <sstream>
 
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
-#include "IPacket.h"
-#include "network/tcp_header.h"
+#include "network\dns_header.h"
 
 namespace DiplomBukov
 {
-    class TcpHeaderProcessor : public AbstractProcessor
+    class DnsMessageProcessor : public AbstractProcessor
     {
-        Protocol inproto;
-        std::vector<u8> header;
+        DnsMessage dnsMessage;
 
     public:
-        TcpHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
+        DnsMessageProcessor(IProcessorPtr processor = IProcessorPtr());
         virtual IProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
@@ -25,8 +26,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class TcpHeaderProcessor
+    // class DnsMessageProcessor
 }
 // namespace DiplomBukov
 
-#endif // TCPHEADERPROCESSOR_H
+#endif // DNSMESSAGEPROCESSOR_H
