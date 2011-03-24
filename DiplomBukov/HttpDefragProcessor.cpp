@@ -62,7 +62,7 @@ bool HttpDefragProcessor::checkEofChunkedData(const Blob & blob, int positionOfD
     return (line.size() == 0);
 }
 
-ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -175,7 +175,7 @@ ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, IPacketPtr 
     //    nextProcessor->forwardProcess("HTTP", packet, 0);
 }
 
-ProcessingStatus HttpDefragProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus HttpDefragProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (packet->processorBefore(Self) != NULL)
         packet->processorBefore(Self)->backwardProcess(proto, packet, offset);

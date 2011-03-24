@@ -15,7 +15,7 @@ IProcessorPtr MacHeaderProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
@@ -32,7 +32,7 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
 	return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus MacHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus MacHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     int dataLength = packet->size() - offset;
 

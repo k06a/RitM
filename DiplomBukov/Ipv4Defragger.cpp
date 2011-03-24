@@ -16,7 +16,7 @@ IProcessorPtr Ipv4Defragger::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;

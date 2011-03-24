@@ -17,7 +17,7 @@ IProcessorPtr HttpSwapProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     //if ((proto != Protocol::None) && (proto != getProtocol()))
     //    return ProcessingStatus::Rejected;
@@ -104,7 +104,7 @@ ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr & 
     //    nextProcessor->forwardProcess("HTTP", packet, 0);
 }
 
-ProcessingStatus HttpSwapProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus HttpSwapProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     return ProcessingStatus::Accepted;
 }

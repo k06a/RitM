@@ -14,7 +14,7 @@ IProcessorPtr RejectProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus RejectProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus RejectProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     packet->setStatus(IPacket::Rejected);
 

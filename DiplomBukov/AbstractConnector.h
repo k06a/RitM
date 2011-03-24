@@ -23,6 +23,7 @@ namespace DiplomBukov
 
     public:
         AbstractConnector();
+        virtual void DestroyHierarchy();
 
         virtual void setNextProcessor(IProcessorPtr processor);
         virtual IProcessorPtr getNextProcessor();

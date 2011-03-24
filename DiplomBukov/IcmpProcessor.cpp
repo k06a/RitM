@@ -15,7 +15,7 @@ IProcessorPtr IcmpProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;

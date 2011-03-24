@@ -18,7 +18,7 @@ IProcessorPtr AcceptProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     packet->setStatus(IPacket::Accepted);
 

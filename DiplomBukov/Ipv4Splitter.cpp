@@ -15,7 +15,13 @@ IProcessorPtr Ipv4Splitter::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+void Ipv4Splitter::DestroyHierarchy()
+{
+    Connectors.clear();
+    AbstractProcessor::DestroyHierarchy();
+}
+
+ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -54,7 +60,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr & packe
 	return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[0] + offset);
 

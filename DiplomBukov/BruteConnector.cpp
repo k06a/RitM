@@ -24,7 +24,7 @@ IProcessorPtr BruteConnector::CreateCopy() const
     return IProcessorPtr(new BruteConnector(procList));
 }
 
-ProcessingStatus BruteConnector::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus BruteConnector::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
 	for(MyDeque::iterator it = procList.begin(); it != procList.end(); it++)

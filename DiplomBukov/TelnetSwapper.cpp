@@ -16,7 +16,7 @@ IProcessorPtr TelnetSwapper::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     //if ((proto != Protocol::None) && (proto != getProtocol()))
     //    return ProcessingStatus::Rejected;
@@ -54,7 +54,7 @@ ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, IPacketPtr & pack
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TelnetSwapper::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TelnetSwapper::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (packet->processorBefore(Self) != NULL)
         packet->processorBefore(Self)->backwardProcess(proto, packet, offset);

@@ -17,6 +17,7 @@ namespace DiplomBukov
     public:
         AbstractProcessor();
         virtual IProcessorPtr CreateCopy() const;
+        virtual void DestroyHierarchy();
 
         virtual IProcessorPtr getPointer();
         virtual void ping(IProcessorPtr prevProcessor);
@@ -24,8 +25,8 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
 
         virtual void setSelf(IProcessorPtr proc);
         virtual IProcessorPtr self();

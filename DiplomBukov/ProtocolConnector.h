@@ -23,7 +23,7 @@ namespace DiplomBukov
 
         virtual void ping(IProcessorPtr prevProcessor);
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
 
         virtual void addNextProcessor(IProcessorPtr processor);
         virtual void removeNextProcessor(IProcessorPtr processor);

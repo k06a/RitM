@@ -12,10 +12,11 @@ namespace DiplomBukov
     public:
         virtual ~IProcessor() {}
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset) = 0;
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset) = 0;
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset) = 0;
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset) = 0;
 
         virtual IProcessorPtr CreateCopy() const = 0;
+        virtual void DestroyHierarchy() = 0;
         virtual IProcessorPtr getPointer() = 0;
         virtual void ping(IProcessorPtr prevProcessor) = 0;
 

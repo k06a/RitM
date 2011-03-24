@@ -15,7 +15,7 @@ IProcessorPtr TcpHeaderProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -44,7 +44,7 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr &
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (header.size() > offset)
     {

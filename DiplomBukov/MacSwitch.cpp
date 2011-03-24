@@ -32,7 +32,7 @@ IProcessorPtr MacSwitch::getPointer()
     return port;
 }
 
-ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
@@ -44,7 +44,7 @@ ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr & packet, 
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     int count = 0;
     for(MyDeque::iterator it = ports.begin(); it != ports.end(); ++it)

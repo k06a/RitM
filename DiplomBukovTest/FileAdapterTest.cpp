@@ -18,7 +18,7 @@ class TestingReadingProcessor
 public:
     MOCK_CONST_METHOD0(CreateCopy, IProcessorPtr());
     MOCK_METHOD3(forwardProcess,ProcessingStatus(Protocol proto,
-                                                 IPacketPtr & packet,
+                                                 IPacketPtr packet,
                                                  unsigned offset));
 };
 

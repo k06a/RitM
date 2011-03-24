@@ -17,6 +17,15 @@ IProcessorPtr AbstractProcessor::CreateCopy() const
         throw "Not Implemented";
 }
 
+void AbstractProcessor::DestroyHierarchy()
+{
+    if (nextProcessor != NULL)
+        nextProcessor->DestroyHierarchy();
+    setPrevProcessor(IProcessorPtr());
+    setNextProcessor(IProcessorPtr());
+    setSelf(IProcessorPtr());
+}
+
 IProcessorPtr AbstractProcessor::getPointer()
 {
     return Self;
@@ -39,14 +48,14 @@ const char * AbstractProcessor::getProcessorName()
     return "EMPTY";
 }
 
-ProcessingStatus AbstractProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus AbstractProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (nextProcessor != NULL)
         return nextProcessor->forwardProcess(proto, packet, offset);
     return ProcessingStatus::Rejected;
 }
 
-ProcessingStatus AbstractProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus AbstractProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (packet->processorBefore(Self) != NULL)
         return packet->processorBefore(Self)->backwardProcess(proto, packet, offset);

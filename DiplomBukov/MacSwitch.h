@@ -26,8 +26,8 @@ namespace DiplomBukov
         virtual IProcessorPtr CreateCopy() const;
 
         virtual IProcessorPtr getPointer();
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
 
         virtual const char * MacSwitch::getProcessorName();
     };

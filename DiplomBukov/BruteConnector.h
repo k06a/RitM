@@ -14,7 +14,7 @@ namespace DiplomBukov
         BruteConnector(const MyDeque & d);
         virtual IProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
     };
 	// class BruteConnector
 }

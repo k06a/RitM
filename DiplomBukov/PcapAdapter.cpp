@@ -53,7 +53,7 @@ const char * PcapAdapter::getProcessorName()
 
 //static bool znak;
 
-ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (packet->status() == IPacket::Rejected)
         return ProcessingStatus::Accepted;

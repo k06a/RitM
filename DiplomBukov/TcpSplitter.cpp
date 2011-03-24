@@ -15,7 +15,13 @@ IProcessorPtr TcpSplitter::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+void TcpSplitter::DestroyHierarchy()
+{
+    Connectors.clear();
+    AbstractProcessor::DestroyHierarchy();
+}
+
+ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -50,7 +56,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr & packet
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)(&packet->data()[0] + offset);
 

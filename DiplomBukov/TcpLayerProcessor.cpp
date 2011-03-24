@@ -17,7 +17,20 @@ IProcessorPtr TcpLayerProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+void TcpLayerProcessor::DestroyHierarchy()
+{
+    client.commitWaitQueue.clear();
+    client.recvWaitQueue.clear();
+    client.toSendBuffer.clear();
+    client.lastAck.packet = IPacketPtr();
+    server.commitWaitQueue.clear();
+    server.recvWaitQueue.clear();
+    server.toSendBuffer.clear();
+    server.lastAck.packet = IPacketPtr();
+    AbstractProcessor::DestroyHierarchy();
+}
+
+ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -247,7 +260,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr & 
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     int dataInTcp = packet->data().size() - offset - tcp->header_size();
@@ -293,7 +306,7 @@ ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, IPacketPtr &
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     int dataInTcp = packet->data().size() - offset - tcp->header_size();

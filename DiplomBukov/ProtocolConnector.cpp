@@ -41,7 +41,7 @@ void ProtocolConnector::ping(IProcessorPtr prevProcessor)
         it->second->ping(prevProcessor);
 }
 
-ProcessingStatus ProtocolConnector::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus ProtocolConnector::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
     

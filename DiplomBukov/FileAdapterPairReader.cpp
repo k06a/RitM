@@ -23,7 +23,7 @@ public:
     }
 
     ProcessingStatus forwardProcess(Protocol proto,
-                                    IPacketPtr & packet,
+                                    IPacketPtr packet,
                                     unsigned offset)
     {
         recvProto.push_back(proto);
@@ -33,7 +33,7 @@ public:
     }
 
     ProcessingStatus backwardProcess(Protocol proto,
-                                     IPacketPtr & packet,
+                                     IPacketPtr packet,
                                      unsigned offset)
     {
         if (prevProcessor != NULL)
@@ -71,23 +71,47 @@ void fileAdapterPairReader(IAdapterPtr ad1, IAdapterPtr ad2)
     proc1->setPrevProcessor(ad1);
     proc2->setPrevProcessor(ad2);
 
-    ad1->ping(IProcessorPtr());
-    ad2->ping(IProcessorPtr());
-
-    bool b1 = true;
-    bool b2 = true;
-    while (b1 && b2)
+    while (true)
     {
-        b1 = ad1->tick();
-        b2 = ad2->tick();
+        if (delay1->recvPacket.size() == 0)
+            ad1->tick();
+        if (delay2->recvPacket.size() == 0)
+            ad2->tick();
 
-        if (delay1->recvPacket.front()->time() <= delay2->recvPacket.front()->time())
-        {
-            delay1->go();
-        }
-        else
+        if ((delay1->recvPacket.size() == 0) && (delay2->recvPacket.size() == 0))
+            break;
+
+        if (delay1->recvPacket.size() == 0)
         {
             delay2->go();
+            continue;
         }
+
+        if (delay2->recvPacket.size() == 0)
+        {
+            delay1->go();
+            continue;
+        }
+
+        if (delay1->recvPacket.front()->time() <= delay2->recvPacket.front()->time())
+            delay1->go();
+        else
+            delay2->go();
     }
+
+    int a = 0;
+/*
+    ad1->setNextProcessor(proc1->getNextProcessor());
+    ad2->setNextProcessor(proc2->getNextProcessor());
+    proc1->getNextProcessor()->setPrevProcessor(ad1);
+    proc2->getNextProcessor()->setPrevProcessor(ad1);
+
+    proc1->setSelf(IProcessorPtr());
+    proc2->setSelf(IProcessorPtr());
+
+    proc1->setNextProcessor(IProcessorPtr());
+    proc2->setNextProcessor(IProcessorPtr());
+    proc1->setPrevProcessor(IProcessorPtr());
+    proc2->setPrevProcessor(IProcessorPtr());
+    */
 }

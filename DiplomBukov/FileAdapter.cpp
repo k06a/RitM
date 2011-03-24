@@ -46,7 +46,7 @@ const char * FileAdapter::getProcessorName()
 }
 
 
-ProcessingStatus FileAdapter::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus FileAdapter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (file2 == NULL) return ProcessingStatus::Accepted;
 

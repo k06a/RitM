@@ -33,7 +33,7 @@ namespace DiplomBukov
         virtual IProcessorPtr CreateCopy() const;
         ~PcapAdapter();
 
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
 
         virtual const char * getProcessorName();
         virtual std::deque<IOptionPtr> getOptions();

@@ -23,7 +23,7 @@ IProcessorPtr MacSwitchPort::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (packet->srcMac().isConcrete() && !checkMac(packet->srcMac()))
         macList.push_back(packet->srcMac());
@@ -35,7 +35,7 @@ ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr & pack
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (prevProcessor != NULL)
         prevProcessor->backwardProcess(proto, packet, offset);

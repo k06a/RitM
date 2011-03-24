@@ -22,13 +22,14 @@ using namespace DiplomBukov;
 
 TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 {
+    IAdapterPtr adapter1(
+        new FileAdapter("TcpLayerProcessorTest.clientToServer.in.pcap",
+                        "TcpLayerProcessorTest.serverToClient.out.pcap"));
+    IAdapterPtr adapter2(
+        new FileAdapter("TcpLayerProcessorTest.serverToClient.in.pcap",
+                        "TcpLayerProcessorTest.clientToServer.out.pcap"));
+
     {
-        IAdapterPtr adapter1(
-            new FileAdapter("TcpLayerProcessorTest.clientToServer.in.pcap",
-                            "TcpLayerProcessorTest.serverToClient.out.pcap"));
-        IAdapterPtr adapter2(
-            new FileAdapter("TcpLayerProcessorTest.serverToClient.in.pcap",
-                            "TcpLayerProcessorTest.clientToServer.out.pcap"));
         IProcessorPtr mac1(new MacHeaderProcessor());
         IProcessorPtr mac2(new MacHeaderProcessor());
         IProcessorPtr macSwitch(new MacSwitch());
@@ -76,23 +77,13 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 */
         // --------------------------------
 
-        adapter1->setSelf(IProcessorPtr());
-        adapter2->setSelf(IProcessorPtr());
-        mac1->setSelf(IProcessorPtr());
-        mac2->setSelf(IProcessorPtr());
-        macSwitch->setSelf(IProcessorPtr());
-        tcpProcessor->setSelf(IProcessorPtr());
-
-        adapter1->setNextProcessor(IProcessorPtr());
-        adapter2->setNextProcessor(IProcessorPtr());
-        mac1->setNextProcessor(IProcessorPtr());
-        mac2->setNextProcessor(IProcessorPtr());
-        macSwitch->setNextProcessor(IProcessorPtr());
+        adapter1->DestroyHierarchy();
+        adapter2->DestroyHierarchy();
     }
 
-    EXPECT_FILE_EQ("TcpLayerProcessorTest.serverToClient.good_out.pcap",
+    EXPECT_FILE_EQ("TcpLayerProcessorTest.clientToServer.in.pcap",
                    "TcpLayerProcessorTest.serverToClient.out.pcap");
-    EXPECT_FILE_EQ("TcpLayerProcessorTest.clientToServer.good_out.pcap",
+    EXPECT_FILE_EQ("TcpLayerProcessorTest.serverToClient.in.pcap",
                    "TcpLayerProcessorTest.clientToServer.out.pcap");
 }
 

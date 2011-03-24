@@ -17,7 +17,7 @@ IProcessorPtr Ipv4HeaderProcessor::CreateCopy() const
     return ptr;
 }
 
-ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -37,7 +37,7 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr 
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr & packet, unsigned offset)
+ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
 {
     if (sizeof(ipv4_header) > offset)
     {

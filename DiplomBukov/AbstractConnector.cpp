@@ -7,6 +7,16 @@ AbstractConnector::AbstractConnector()
 {
 }
 
+void AbstractConnector::DestroyHierarchy()
+{
+    for(MyDeque::iterator it = procList.begin(); it != procList.end(); ++it)
+        (*it)->DestroyHierarchy();
+    procList.clear();
+    setPrevProcessor(IProcessorPtr());
+    setNextProcessor(IProcessorPtr());
+    setSelf(IProcessorPtr());
+}
+
 void AbstractConnector::setNextProcessor(IProcessorPtr processor)
 {
     addNextProcessor(processor);
