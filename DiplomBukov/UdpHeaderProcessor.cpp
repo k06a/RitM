@@ -56,7 +56,7 @@ ProcessingStatus UdpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
         std::swap(udp->src_port, udp->dst_port);
 
     if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);
+        packet->processorBefore(Self)->backwardProcess(Protocol::UDP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

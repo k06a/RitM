@@ -1,6 +1,7 @@
 #include "DnsMessageProcessor.h"
-#include "IPacket.h"
 #include <algorithm>
+#include "IPacket.h"
+#include "network\ipv4_header.h"
 
 using namespace DiplomBukov;
 
@@ -27,7 +28,31 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, IPacketPtr 
 
     packet->addProcessor(Self);
 
+    dnsMessage.clear();
     dnsMessage.Init(&packet->data()[offset], packet->size()-offset);
+
+    // Подмена ответа
+    for (unsigned i = 0; i < dnsMessage.answers.size(); i++)
+    {
+        if (dnsMessage.answers[i].questionType != dns_header::A)
+            continue;
+
+        std::string host = DnsSymbolicName::readableName(dnsMessage.answers[i].symbolicName);
+        if (host == "www.netbsd.org")
+        {
+            ipv4_addr addr = "192.168.1.1";
+            dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
+            dnsMessage.header.NSCOUNT = 0;
+            dnsMessage.header.ARCOUNT = 0;
+            //dnsMessage.header.flags.RA = 0;
+            //dnsMessage.header.flags.RD = 0;
+
+            std::vector<u8> vec = dnsMessage.dumpToData();
+            packet->data().resize(offset + vec.size());
+            packet->setRealSize(offset + vec.size());
+            std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
+        }
+    }
 
     backwardProcess(proto, packet, offset);
 
