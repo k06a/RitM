@@ -4,6 +4,7 @@
 #include "i64u64.h"
 #include <vector>
 #include <string>
+#include <utility>
 
 #pragma pack(push,1)
 struct dns_header
@@ -57,9 +58,12 @@ struct dns_header
 
 struct DnsSymbolicName
 {
-    static std::vector<std::string> recursiveParse(u8 * data, int size, int pos)
+    typedef std::vector<std::string> NameList;
+    typedef std::vector<u8> Blob;
+
+    static NameList recursiveParse(u8 * data, int size, int pos)
     {
-        std::vector<std::string> vec;
+        NameList vec;
         u8 * ptr = data + pos;
         while ((*ptr != 0) && (ptr-data < size))
         {
@@ -71,8 +75,7 @@ struct DnsSymbolicName
             else
             {
                 int offset = (*(u16be*)ptr) & 0x3F;
-                std::vector<std::string> v =
-                    recursiveParse(data, size, offset);
+                NameList v = recursiveParse(data, size, offset);
                 //for (int i = 0; i < v.size(); i++)
                 //    vec.push_back(v[i]);
                 vec.insert(vec.end(), v.begin(), v.end());
@@ -100,9 +103,9 @@ struct DnsSymbolicName
         return ptr - (data + pos);
     }
 
-    static std::vector<u8> dumpToData(std::vector<std::string> names)
+    static Blob dumpToData(NameList names)
     {
-        std::vector<u8> data;
+        Blob data;
         for (unsigned i = 0; i < names.size(); i++)
         {
             data.push_back(names[i].size());
@@ -113,7 +116,46 @@ struct DnsSymbolicName
         return data;
     }
 
-    static std::string readableName(std::vector<std::string> names)
+    static Blob recursiveDumpToData(
+        std::vector<std::pair<int,NameList> > prevNames, NameList names)
+    {
+        Blob data;
+
+        unsigned longestIndex = (unsigned)-1;
+        unsigned longestData = (unsigned)-1;
+        for (unsigned i = 0; i < prevNames.size(); i++)
+        {
+            unsigned currentData = 0;
+            unsigned n = prevNames[i].second.size();
+            for (unsigned j = 0; j < n; j++)
+            {
+                if (names[names.size()-j] != prevNames[i].second[n-1-j])
+                    break;
+                currentData += names[j].size();
+            }
+            if (currentData > longestData)
+                longestIndex = i;
+        }
+
+        if (longestIndex != -1)
+        {
+            int elementsToCopy = names.size() - prevNames[longestIndex].second.size();
+            NameList vec(names.begin(), names.begin()+elementsToCopy);
+            data = dumpToData(vec);
+            data.pop_back();
+            // FIX 0xC0 to 14 bit offset
+            data.push_back(0xC0);
+            data.push_back(prevNames[longestIndex].first);
+        }
+        else
+        {
+            return dumpToData(names);
+        }
+
+        return data;
+    }
+
+    static std::string readableName(NameList names)
     {
         if (names.size() == 0)
             return "";
