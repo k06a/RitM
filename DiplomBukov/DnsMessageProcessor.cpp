@@ -37,7 +37,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, IPacketPtr 
         if (dnsMessage.answers[i].questionType != dns_header::A)
             continue;
 
-        std::string host = DnsSymbolicName::readableName(dnsMessage.answers[i].symbolicName);
+        std::string host = DnsName::readableName(dnsMessage.answers[i].symbolicName);
         if (host == "www.netbsd.org")
         {
             ipv4_addr addr = "192.168.1.1";
