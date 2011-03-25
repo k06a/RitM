@@ -17,7 +17,7 @@ using namespace DiplomBukov;
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(DnsMessageProcessorTest, AnswersHijacking)
+TEST(DnsMessageProcessorTest, ReparseDnsHeader)
 {
     {
         IAdapterPtr adapter(
@@ -50,7 +50,7 @@ TEST(DnsMessageProcessorTest, AnswersHijacking)
         adapter->DestroyHierarchy();
     }
 
-    EXPECT_FILE_EQ("DnsMessageProcessorTest.good_out.pcap",
+    EXPECT_FILE_EQ("DnsMessageProcessorTest.in.pcap",
                    "DnsMessageProcessorTest.out.pcap");
 }
 

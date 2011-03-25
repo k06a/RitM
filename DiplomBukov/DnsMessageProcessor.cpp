@@ -28,30 +28,53 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, IPacketPtr 
 
     packet->addProcessor(Self);
 
-    dnsMessage.clear();
-    dnsMessage.Init(&packet->data()[offset], packet->size()-offset);
+    dnsMessage.parse(&packet->data()[offset], packet->size()-offset);
 
+    bool podmena = false;
+    /*
     // Подмена ответа
     for (unsigned i = 0; i < dnsMessage.answers.size(); i++)
     {
-        if (dnsMessage.answers[i].questionType != dns_header::A)
-            continue;
-
-        std::string host = DnsName::readableName(dnsMessage.answers[i].symbolicName);
-        if (host == "www.netbsd.org")
+        if (dnsMessage.answers[i].questionType == DnsRequest::A)
         {
-            ipv4_addr addr = "192.168.1.1";
-            dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
-            dnsMessage.header.NSCOUNT = 0;
-            dnsMessage.header.ARCOUNT = 0;
-            //dnsMessage.header.flags.RA = 0;
-            //dnsMessage.header.flags.RD = 0;
+            std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
+            if (host == "www.netbsd.org")
+            {
+                ipv4_addr addr = "17.251.200.70"; // Apple.com IP address :-)
+                dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
 
-            std::vector<u8> vec = dnsMessage.dumpToData();
-            packet->data().resize(offset + vec.size());
-            packet->setRealSize(offset + vec.size());
-            std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
+                std::vector<u8> vec = dnsMessage.dump();
+                packet->data().resize(offset + vec.size());
+                packet->setRealSize(offset + vec.size());
+                std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
+            }
         }
+
+        if ((dnsMessage.answers[i].questionType == DnsRequest::A) ||
+            (dnsMessage.answers[i].questionType == DnsRequest::AAAA))
+        {
+            std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
+            if (host == "www.isc.org")
+            {
+                ipv4_addr addr = "77.88.21.11"; // Yandex.ru IP address :-)
+                dnsMessage.answers[i].questionType = DnsRequest::A;
+                dnsMessage.answers[i].resourceLength = sizeof(ipv4_addr);
+                dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
+
+                std::vector<u8> vec = dnsMessage.dump();
+                packet->data().resize(offset + vec.size());
+                packet->setRealSize(offset + vec.size());
+                std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
+            }
+        }
+    }
+    
+    if (podmena)*/
+    {
+        std::vector<u8> vec = dnsMessage.dump();
+        packet->data().resize(offset + vec.size());
+        packet->setRealSize(offset + vec.size());
+        std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
     }
 
     backwardProcess(proto, packet, offset);

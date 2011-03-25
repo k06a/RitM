@@ -35,24 +35,6 @@ struct dns_header
     u16be ANCOUNT;      // Number of Answers
     u16be NSCOUNT;      // Number of Authority
     u16be ARCOUNT;      // Number of Additional
-
-    enum RequestAnswerType
-    {
-        A	  = 1,      // IP-адрес
-        NS	  = 2,      // Сервер имен
-        CNAME = 5,      // Каноническое имя
-        SOA	  = 6,	    // Начало списка серверов. Большое число полей, определяющих часть иерархии имен, которую использует сервер
-        MB	  = 7,	    // Имя домена почтового ящика
-        WKS	  = 11,	    // well-known service — стандартная услуга
-        PTR	  = 12,	    // Запись указателя
-        HINFO = 13,	    // Информация об ЭВМ
-        MINFO = 14,	    // Информация о почтовом ящике или списке поч¬товых адресов
-        MX	  = 15,	    // Запись о почтовом сервере. Включает в себя при¬оритет обработчика почты
-        TXT	  = 16,	    // Не интерпретируемая строка ASCII-символов
-        //ISDN          // Связывает имя ЭВМ с адресом ISDN
-        AXFR  = 252,    // Запрос зонного обмена
-        ANY	  = 255,    // Запрос всех записей
-    };
 };
 #pragma pack(pop)
 
@@ -66,37 +48,18 @@ struct DnsName
     typedef std::pair<int,SymbolicName> OffsetNamePair;
     typedef std::vector<OffsetNamePair> OffsetNamePairList;
 
-    SymbolicName name;
-    
-    int parse(u8 * data, int size, int pos)
+    static std::string readableName(
+        const SymbolicName & names)
     {
-
-        SymbolicNameSizePair para = recursiveParse(data, size, pos);
-        name = para.first;
-        return para.second;
-    }
-
-    Blob dump()
-    {
-        return dumpToData(name);
-    }
-
-    Blob recursiveDump(OffsetNamePairList prevNames)
-    {
-        return recursiveDumpToData(prevNames, name);
-    }
-
-    std::string readable()
-    {
-        if (name.size() == 0)
+        if (names.size() == 0)
             return "";
-        std::string str = name[0];
-        for (unsigned i = 1; i < name.size(); i++)
-            str += "." + name[i];
+        std::string str = names[0];
+        for (unsigned i = 1; i < names.size(); i++)
+            str += "." + names[i];
         return str;
     }
 
-    static SymbolicNameSizePair recursiveParse(u8 * data, int size, int pos)
+    static SymbolicNameSizePair parse(u8 * data, int size, int pos)
     {
         SymbolicName vec;
         u8 * ptr = data + pos;
@@ -109,73 +72,90 @@ struct DnsName
             }
             else
             {
-                int offset = (*(u16be*)ptr) & 0x3F;
-                SymbolicNameSizePair vp = recursiveParse(data, size, offset);
+                int offset = (*(u16be*)ptr) & 0x3FFF;
+                SymbolicNameSizePair vp = parse(data, size, offset);
                 vec.insert(vec.end(), vp.first.begin(), vp.first.end());
                 ptr += 2;
-                return make_pair(vec, ptr - data + pos);
+                return make_pair(vec, ptr - (data + pos));
             }
         }
-        return make_pair(vec, ptr - data + pos);
+        if (ptr-data < size)
+            ptr++;
+        return make_pair(vec, ptr - (data + pos));
     }
 
-    static Blob dumpToData(SymbolicName names)
-    {
-        Blob data;
-        for (unsigned i = 0; i < names.size(); i++)
-        {
-            data.push_back(names[i].size());
-            data.insert(data.end(), names[i].begin(), names[i].end());
-        }
-        data.push_back(0);
-        return data;
-    }
-
-    static Blob recursiveDumpToData(OffsetNamePairList prevNames, SymbolicName names)
+    static Blob dump(
+        OffsetNamePairList & prevNames,
+        const SymbolicName & name, int offset)
     {
         Blob data;
 
         // Поиск наибольшего совпадения
         unsigned longestIndex = (unsigned)-1;
-        unsigned longestData = (unsigned)-1;
+        unsigned longestCount = 0;
+        unsigned longestData = 0;
         for (unsigned i = 0; i < prevNames.size(); i++)
         {
+            if (prevNames[i].second.size() > name.size())
+                continue;
+
             unsigned currentData = 0;
-            unsigned n1 = names.size();
+            unsigned n1 = name.size();
             unsigned n2 = prevNames[i].second.size();
-            for (unsigned j = 0; j < n2; j++)
+            bool good = true;
+            unsigned j;
+            for (j = 0; j < n2; j++)
             {
-                if (names[n1-1-j] != prevNames[i].second[n2-1-j])
+                if (name[n1-1-j] != prevNames[i].second[n2-1-j])
+                {
+                    good = false;
                     break;
-                currentData += names[n1-1-j].size();
+                }
+                currentData += name[n1-1-j].size();
             }
-            if (currentData > longestData)
+            if (good && (currentData > longestData))
+            {
                 longestIndex = i;
+                longestCount = j;
+                longestData = currentData;
+            }
         }
 
         // Если нет совпадения для рекурсии
         if (longestIndex == -1)
-            return dumpToData(names);
+        {
+            prevNames.push_back(make_pair(offset, name));
+            return privateDump(name, name.size(), true);
+        }
         
         // Если часть имени можно оформить рекурсией
-        int elementsToCopy = names.size() - prevNames[longestIndex].second.size();
-        SymbolicName vec(names.begin(), names.begin()+elementsToCopy);
-        data = dumpToData(vec);
-        data.pop_back();
+        int partsToCopy = name.size() - longestCount;
+        if (partsToCopy)
+        {
+            Blob vec = privateDump(name, partsToCopy, false);
+            data.insert(data.end(), vec.begin(), vec.end());
+        }
         u16 value = 0xC000 + prevNames[longestIndex].first;
         data.push_back(value >> 8);
         data.push_back((u8)value);
+
+        if (partsToCopy) // Не ссылаться на 0xC00C
+            prevNames.push_back(make_pair(offset, name));
         return data;
     }
 
-    static std::string readableName(SymbolicName names)
+private:
+    static Blob privateDump(const SymbolicName & name, unsigned sections, bool zero)
     {
-        if (names.size() == 0)
-            return "";
-        std::string str = names[0];
-        for (unsigned i = 1; i < names.size(); i++)
-            str += "." + names[i];
-        return str;
+        Blob data;
+        for (unsigned i = 0; (i < name.size()) && (i < sections); i++)
+        {
+            data.push_back(name[i].size());
+            data.insert(data.end(), name[i].begin(), name[i].end());
+        }
+        if (zero)
+            data.push_back(0);
+        return data;
     }
 };
 
@@ -183,119 +163,127 @@ struct DnsName
 
 struct DnsRequest
 {
+    enum QuestionType
+    {
+        A	  = 1,      // IPv4-адрес
+        NS	  = 2,      // Сервер имен
+        CNAME = 5,      // Каноническое имя
+        SOA	  = 6,	    // Начало списка серверов. Большое число полей, определяющих часть иерархии имен, которую использует сервер
+        MB	  = 7,	    // Имя домена почтового ящика
+        WKS	  = 11,	    // well-known service — стандартная услуга
+        PTR	  = 12,	    // Запись указателя
+        HINFO = 13,	    // Информация об ЭВМ
+        MINFO = 14,	    // Информация о почтовом ящике или списке поч¬товых адресов
+        MX	  = 15,	    // Запись о почтовом сервере. Включает в себя при¬оритет обработчика почты
+        TXT	  = 16,	    // Не интерпретируемая строка ASCII-символов
+        AAAA  = 28,     // IPv6-адрес
+        //ISDN          // Связывает имя ЭВМ с адресом ISDN
+        AXFR  = 252,    // Запрос зонного обмена
+        ANY	  = 255,    // Запрос всех записей
+    };
+
+    typedef std::vector<u8> Blob;
+    
     DnsName::SymbolicNameSizePair nameSize;
     u16be questionType;
     u16be questionClass;
 
+    DnsRequest()
+    {
+    }
+
     DnsRequest(u8 * data, int size, int pos)
     {
-        parseFromData(data, size, pos);
+        parse(data, size, pos);
     }
 
-    std::vector<u8> dumpToData()
+    int parse(u8 * data, int size, int pos)
     {
-        std::vector<u8> data = DnsName::dumpToData(nameSize);
+        nameSize = DnsName::parse(data, size, pos);
+        int length = nameSize.second;
+        std::copy(data+pos+length, data+pos+length+4, (u8*)&questionType);
+        return length + 4;
+    }
+
+    Blob dump(DnsName::OffsetNamePairList & prevNames, int offset)
+    {
+        Blob data = DnsName::dump(prevNames, nameSize.first, offset);
         data.insert(data.end(), (u8*)&questionType, (u8*)&questionType+4);
         return data;
-    }
-
-    void parseFromData(u8 * data, int size, int pos)
-    {
-        nameSize = DnsName::recursiveParse(data, size, pos);
-        int length = DnsName::countNameLength(data, size, pos);
-        //questionType  = (*(u16be*)(data+pos+length+0));
-        //questionClass = (*(u16be*)(data+pos+length+2));
-        std::copy(data+pos+length, data+pos+length+4, (u8*)&questionType);
     }
 };
 
 //////////////////////////////////////////////////////////////////////////
 
-struct DnsAnswer
+struct DnsAnswer : public DnsRequest
 {
     typedef std::vector<u8> Blob;
 
-    std::vector<std::string> symbolicName;
-    u16be questionType;
-    u16be questionClass;
     u32be ttl;
     u16be resourceLength;
-    std::vector<u8> resources;
-    std::vector<std::string> resText;
-    int fieldsSumSize;
+    Blob resources;
+
+    DnsName::SymbolicNameSizePair resText;
     
+    DnsAnswer()
+    {
+    }
 
     DnsAnswer(u8 * data, int size, int pos)
-        : fieldsSumSize(0)
+        : DnsRequest(data, size, pos)
     {
-        parseFromData(data, size, pos);
+        parse(data, size, pos + DnsRequest::nameSize.second + 4);
     }
 
-    Blob recursiveDumpToData(bool recursive,
-        std::vector<std::pair<int,DnsName::SymbolicName> > & prevNames)
+    int parse(u8 * data, int size, int pos)
     {
-        std::vector<u8> data = DnsName::recursiveDumpToData(symbolicName, prevNames);
-        data.insert(data.end(), (u8*)&questionType, (u8*)&questionType+10);
+        int offset = DnsRequest::parse(data, size, pos);
+        pos += offset;
+
+        std::copy(data+pos, data+pos+6, (u8*)&ttl);
+        resources.assign(data+pos+6, data+pos+6+resourceLength);
         switch (questionType)
         {
-            case dns_header::NS:
-            case dns_header::TXT:
-                resources = DnsName::recursiveDumpToData(resText, prevNames);
+            case DnsRequest::NS:
+            case DnsRequest::TXT:
+                resText = DnsName::parse(data, size, pos+6);
+                break;
+            case DnsRequest::MX:
+                resText = DnsName::parse(data, size, pos+8);
                 break;
             default:
                 break;
         }
+        return offset + 6 + resourceLength;
+    }
+
+    Blob dump(DnsName::OffsetNamePairList & prevNames, int offset)
+    {
+
+        Blob data = DnsRequest::dump(prevNames, offset);
+        data.insert(data.end(), (u8*)&ttl, (u8*)&ttl+6);
+        offset += data.size();
+
+        switch (questionType)
+        {
+            case DnsRequest::NS:
+            case DnsRequest::TXT:
+                resources = DnsName::dump(prevNames, resText.first, offset);
+                break;
+
+            case DnsRequest::MX:
+            {
+                resources.resize(2); // Keep field preference
+                Blob vec = DnsName::dump(prevNames, resText.first, offset+2);
+                resources.insert(resources.end(), vec.begin(), vec.end());
+                break;
+            }
+            default:
+                break;
+        }
+
         data.insert(data.end(), resources.begin(), resources.end());
         return data;
-    }
-
-    std::vector<u8> dumpToData(bool recursive, std::vector<std::pair<int,SymbolicName> > prevNames)
-    {
-        std::vector<u8> data = DnsName::dumpToData(symbolicName);
-        //data.push_back(questionType >> 8);
-        //data.push_back((u8)questionType);
-        //data.push_back(questionClass >> 8);
-        //data.push_back((u8)questionClass);
-        //data.push_back(ttl >> 24);
-        //data.push_back(ttl >> 16);
-        //data.push_back(ttl >> 8);
-        //data.push_back((u8)ttl);
-        //data.push_back(resourceLength >> 8);
-        //data.push_back((u8)resourceLength);
-        data.insert(data.end(), (u8*)&questionType, (u8*)&questionType+10);
-        switch (questionType)
-        {
-            case dns_header::NS:
-            case dns_header::TXT:
-                resources = DnsName::dumpToData(resText);
-                break;
-            default:
-                break;
-        }
-        data.insert(data.end(), resources.begin(), resources.end());
-        return data;
-    }
-
-    void parseFromData(u8 * data, int size, int pos)
-    {
-        symbolicName = DnsName::recursiveParse(data, size, pos);
-        int length = DnsName::countNameLength(data, size, pos);
-        //questionType   = (*(u16be*)(data+pos+length+0));
-        //questionClass  = (*(u16be*)(data+pos+length+2));
-        //ttl            = (*(u32be*)(data+pos+length+4));
-        //resourceLength = (*(u16be*)(data+pos+length+8));
-        std::copy(data+pos+length, data+pos+length+10, (u8*)&questionType);
-        resources.assign(data+pos+length+10, data+pos+length+10+resourceLength);
-        switch (questionType)
-        {
-            case dns_header::NS:
-            case dns_header::TXT:
-                resText = DnsName::recursiveParse(data, size, pos+length+10);
-                break;
-            default:
-                break;
-        }
-        fieldsSumSize = length + 10 + resourceLength;
     }
 };
 
@@ -308,6 +296,7 @@ struct DnsMessage
     dns_header header;
     std::vector<DnsRequest> requests;
     std::vector<DnsAnswer> answers;
+    std::vector<DnsAnswer> additions;
     
     DnsMessage()
     {
@@ -315,77 +304,99 @@ struct DnsMessage
 
     DnsMessage(u8 * data, int size)
     {
-        Init(data, size);
+        parse(data, size);
     }
 
-    void Init(u8 * data, int size)
+    void parse(u8 * data, int size)
     {
+        clear();
+
         header = *(dns_header*)data;
         int offset = sizeof(dns_header);
 
-        for (int i = 0; i < header.QDCOUNT; i++)
+        for (unsigned i = 0; i < header.QDCOUNT; i++)
         {
-            DnsRequest req(data, size, offset);
-            offset += req.fieldsSumSize;
+            DnsRequest req;
+            offset += req.parse(data, size, offset);
             requests.push_back(req);
         }
 
-        for (int i = 0; i < header.ANCOUNT; i++)
+        for (unsigned i = 0; i < header.ANCOUNT; i++)
         {
-            DnsAnswer ans(data, size, offset);
-            offset += ans.fieldsSumSize;
+            DnsAnswer ans;
+            offset += ans.parse(data, size, offset);
             answers.push_back(ans);
         }
 
-        for (int i = 0; i < header.NSCOUNT; i++)
+        for (unsigned i = 0; i < header.NSCOUNT; i++)
         {
         }
 
-        for (int i = 0; i < header.ARCOUNT; i++)
+        for (unsigned i = 0; i < header.ARCOUNT; i++)
         {
+            DnsAnswer add;
+            offset += add.parse(data, size, offset);
+            additions.push_back(add);
         }
     }
 
-    Blob dumpToData()
+    Blob dump()
     {
         header.QDCOUNT = requests.size();
         header.ANCOUNT = answers.size();
+        header.NSCOUNT = 0;
+        header.ARCOUNT = additions.size();
+        
+        int offset = 0;
+        DnsName::OffsetNamePairList prevNames;
 
         Blob data((u8*)&header, (u8*)&header+sizeof(dns_header));
-        for (int i = 0; i < requests.size(); i++)
-        {
-            Blob vec = requests[i].dumpToData();
-            data.insert(data.end(), vec.begin(), vec.end());
-        }
-        for (int i = 0; i < answers.size(); i++)
-        {
-            Blob vec = answers[i].dumpToData();
-            data.insert(data.end(), vec.begin(), vec.end());
-        }
-        return data;
-    }
+        offset = data.size();
 
-    Blob recursiveDumpToData()
-    {
-        header.QDCOUNT = requests.size();
-        header.ANCOUNT = answers.size();
-
-        std::vector<std::pair<int,DnsName::SymbolicName> > garage;
-        Blob data((u8*)&header, (u8*)&header+sizeof(dns_header));
-        for (int i = 0; i < requests.size(); i++)
+        for (unsigned i = 0; i < requests.size(); i++)
         {
-            Blob vec = requests[i].dumpToData(true);
-
-            unsigned offset = data.size();
-            garage.push_back(make_pair(offset, requests[i]));
-
+            Blob vec = requests[i].dump(prevNames, offset);
             data.insert(data.end(), vec.begin(), vec.end());
+            offset = data.size();
         }
-        for (int i = 0; i < answers.size(); i++)
+
+        for (unsigned i = 0; i < answers.size(); i++)
         {
-            Blob vec = answers[i].dumpToData();
+            Blob vec = answers[i].dump(prevNames, offset);
             data.insert(data.end(), vec.begin(), vec.end());
+            offset = data.size();
         }
+
+        //for (unsigned i = 0; i < answers.size(); i++)
+        //{
+        //}
+
+        for (unsigned i = 0; i < additions.size(); i++)
+        {
+            Blob vec = additions[i].dump(prevNames, offset);
+            data.insert(data.end(), vec.begin(), vec.end());
+            offset = data.size();
+        }
+
+        // Отрезаем нуль-символ завершитель строки с конца
+        if (data.back() == 0)
+        {
+            std::vector<DnsAnswer> * vecptr = NULL;
+            if ((vecptr == NULL) && (additions.size() != 0))
+                vecptr = &additions;
+            if ((vecptr == NULL) && (answers.size() != 0))
+                vecptr = &answers;
+            if (vecptr == NULL)
+                return data;
+
+            if ((vecptr->back().questionType == DnsRequest::NS) ||
+                (vecptr->back().questionType == DnsRequest::TXT) ||
+                (vecptr->back().questionType == DnsRequest::MX))
+            {
+                data.pop_back();    
+            }
+        }
+
         return data;
     }
 
@@ -394,6 +405,7 @@ struct DnsMessage
         header = dns_header();
         requests.clear();
         answers.clear();
+        additions.clear();
     }
 };
 

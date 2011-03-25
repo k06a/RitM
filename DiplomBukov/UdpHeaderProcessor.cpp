@@ -52,6 +52,8 @@ ProcessingStatus UdpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
 
     udp_header * udp = (udp_header *)&packet->data()[offset];
     *udp = header;
+    udp->length = packet->size() - offset;
+    
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(udp->src_port, udp->dst_port);
 

@@ -56,6 +56,7 @@ ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr 
 
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     std::copy(header.begin(), header.end(), &packet->data()[offset]);
+
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
 

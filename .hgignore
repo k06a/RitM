@@ -3,6 +3,7 @@ syntax: regexp
 \.user$
 \.ncb$
 \.out\.pcap$
+_ReSharper\.
 syntax: glob
 Debug/
 Release/
