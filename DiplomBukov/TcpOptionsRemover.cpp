@@ -2,19 +2,19 @@
 
 using namespace DiplomBukov;
 
-TcpOptionsRemover::TcpOptionsRemover(IProcessorPtr Connector)
+TcpOptionsRemover::TcpOptionsRemover(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr TcpOptionsRemover::CreateCopy() const
+ProcessorPtr TcpOptionsRemover::CreateCopy() const
 {
-    IProcessorPtr ptr(new TcpOptionsRemover(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new TcpOptionsRemover(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -36,7 +36,7 @@ ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, IPacketPtr pa
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpOptionsRemover::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpOptionsRemover::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (packet->processorBefore(Self) != NULL)
         packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);

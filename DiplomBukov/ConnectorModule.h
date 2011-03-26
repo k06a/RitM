@@ -8,13 +8,13 @@ namespace DiplomBukov
 {
     class ConnectorModule : public IConnectorModule
     {
-        IConnectorPtr baseConnector;
+        ConnectorPtr baseConnector;
 
     public:
-        ConnectorModule(IConnectorPtr Connector = IConnectorPtr());
+        ConnectorModule(ConnectorPtr Connector = ConnectorPtr());
 
-        virtual IConnectorPtr getBaseConnector();
-        virtual void setBaseConnector(IConnectorPtr Connector);
+        virtual ConnectorPtr getBaseConnector();
+        virtual void setBaseConnector(ConnectorPtr Connector);
     };
     // class ConnectorModule
 }

@@ -20,7 +20,7 @@ namespace DiplomBukov
                      const std::string & name = "");
         SwitchOption(const std::deque<std::string> & text,
                      const std::string & name = "");
-        virtual IOptionPtr CreateCopy() const;
+        virtual OptionPtr CreateCopy() const;
 
         virtual const std::string & getName() const;
         virtual void setName(const std::string & text);

@@ -15,48 +15,44 @@ namespace DiplomBukov
     };
 
     class IPacket;
-    class IConnector;
-    class IDuplexConnector;
     class IAdapter;
+    class IConnector;
     class IProcessor;
-    class IDuplexProcessor;
 
-    class IConnectorCreator;
     class IAdapterCreator;
+    class IConnectorCreator;
     class IProcessorCreator;
 
-    class IConnectorModule;
     class IAdapterModule;
+    class IConnectorModule;
     class IProcessorModule;
 
-    class IConnectorPlugin;
     class IAdapterPlugin;
+    class IConnectorPlugin;
     class IProcessorPlugin;
-
-    class ILibrary;
 
     class IOption;
 
-    typedef SmartPointer<IPacket>::Type IPacketPtr;
-    typedef SmartPointer<IConnector>::Type IConnectorPtr;
-    typedef SmartPointer<IDuplexConnector>::Type IDuplexConnectorPtr;
-    typedef SmartPointer<IAdapter>::Type IAdapterPtr;
-    typedef SmartPointer<IProcessor>::Type IProcessorPtr;
-    typedef SmartPointer<IDuplexProcessor>::Type IDuplexProcessorPtr;
+    class ILibrary;
+
+    typedef SmartPointer<IPacket>::Type             PacketPtr;
+    typedef SmartPointer<IAdapter>::Type            AdapterPtr;
+    typedef SmartPointer<IConnector>::Type          ConnectorPtr;
+    typedef SmartPointer<IProcessor>::Type          ProcessorPtr;
     
-    typedef SmartPointer<IConnectorCreator>::Type IConnectorCreatorPtr;
-    typedef SmartPointer<IAdapterCreator>::Type IAdapterCreatorPtr;
-    typedef SmartPointer<IProcessorCreator>::Type IProcessorCreatorPtr;
+    typedef SmartPointer<IAdapterCreator>::Type     AdapterCreatorPtr;
+    typedef SmartPointer<IConnectorCreator>::Type   ConnectorCreatorPtr;
+    typedef SmartPointer<IProcessorCreator>::Type   ProcessorCreatorPtr;
 
-    typedef SmartPointer<IConnectorModule>::Type IConnectorModulePtr;
-    typedef SmartPointer<IAdapterModule>::Type IAdapterModulePtr;
-    typedef SmartPointer<IProcessorModule>::Type IProcessorModulePtr;
+    typedef SmartPointer<IAdapterModule>::Type      AdapterModulePtr;
+    typedef SmartPointer<IConnectorModule>::Type    ConnectorModulePtr;
+    typedef SmartPointer<IProcessorModule>::Type    ProcessorModulePtr;
 
-    typedef SmartPointer<IConnectorPlugin>::Type IConnectorPluginPtr;
-    typedef SmartPointer<IAdapterPlugin>::Type IAdapterPluginPtr;
-    typedef SmartPointer<IProcessorPlugin>::Type IProcessorPluginPtr;
+    typedef SmartPointer<IAdapterPlugin>::Type      AdapterPluginPtr;
+    typedef SmartPointer<IConnectorPlugin>::Type    ConnectorPluginPtr;
+    typedef SmartPointer<IProcessorPlugin>::Type    ProcessorPluginPtr;
 
-    typedef SmartPointer<ILibrary>::Type ILibraryPtr;
+    typedef SmartPointer<IOption>::Type             OptionPtr;
 
-    typedef SmartPointer<IOption>::Type IOptionPtr;
+    typedef SmartPointer<ILibrary>::Type            LibraryPtr;
 }

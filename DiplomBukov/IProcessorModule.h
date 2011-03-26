@@ -10,8 +10,8 @@ namespace DiplomBukov
     public:
         virtual ~IProcessorModule() {}
         
-        virtual IProcessorPtr getBaseProcessor() = 0;
-        virtual void setBaseProcessor(IProcessorPtr processor) = 0;
+        virtual ProcessorPtr getBaseProcessor() = 0;
+        virtual void setBaseProcessor(ProcessorPtr processor) = 0;
     };
     // class IProcessorModule
 }

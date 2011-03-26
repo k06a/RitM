@@ -7,7 +7,7 @@ using namespace DiplomBukov;
 
 FileAdapter::FileAdapter(const std::string & filename1,
                          const std::string & filename2,
-                         IProcessorPtr Connector)
+                         ProcessorPtr Connector)
 	: file1(NULL), file2(NULL), id(0), linkType(0), buffer(NULL)
 {
     setNextProcessor(Connector);
@@ -26,9 +26,9 @@ FileAdapter::FileAdapter(const std::string & filename1,
     }
 }
 
-IProcessorPtr FileAdapter::CreateCopy() const
+ProcessorPtr FileAdapter::CreateCopy() const
 {
-    return IProcessorPtr();
+    return ProcessorPtr();
 }
 
 FileAdapter::~FileAdapter()
@@ -46,7 +46,7 @@ const char * FileAdapter::getProcessorName()
 }
 
 
-ProcessingStatus FileAdapter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus FileAdapter::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (file2 == NULL) return ProcessingStatus::Accepted;
 
@@ -92,7 +92,7 @@ bool FileAdapter::tick()
     ret = fread_s(buffer, 65536, 1, pph.orig_len, file1);
     if (ret == 0) return false;
 
-    IPacketPtr packet(new RawPacket(buffer, ret));
+    PacketPtr packet(new RawPacket(buffer, ret));
     packet->setId(id++);
     packet->setTime(pph.ts_sec, pph.ts_usec);
     packet->setAdapter(this);

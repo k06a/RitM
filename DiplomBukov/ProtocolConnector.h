@@ -11,7 +11,7 @@ namespace DiplomBukov
 {
     class ProtocolConnector : public AbstractConnector
     {
-        typedef std::multimap<Protocol,IProcessorPtr> MyMap;
+        typedef std::multimap<Protocol,ProcessorPtr> MyMap;
 
         MyMap procMap;
 
@@ -19,15 +19,15 @@ namespace DiplomBukov
         ProtocolConnector();
         ProtocolConnector(const ProtocolConnector & Connector);
         void Init(const MyDeque & d);
-        virtual IProcessorPtr CreateCopy() const;
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual void ping(IProcessorPtr prevProcessor);
+        virtual void ping(ProcessorPtr prevProcessor);
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
-        virtual void addNextProcessor(IProcessorPtr processor);
-        virtual void removeNextProcessor(IProcessorPtr processor);
-        virtual const std::deque<IProcessorPtr> & nextProcessors();
+        virtual void addNextProcessor(ProcessorPtr processor);
+        virtual void removeNextProcessor(ProcessorPtr processor);
+        virtual const std::deque<ProcessorPtr> & nextProcessors();
     };
     // class ProtocolConnector
 }

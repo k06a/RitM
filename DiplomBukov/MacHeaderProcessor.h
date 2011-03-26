@@ -12,11 +12,11 @@ namespace DiplomBukov
         mac_header header;
 
 	public:
-		MacHeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+		MacHeaderProcessor(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

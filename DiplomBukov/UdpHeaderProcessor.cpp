@@ -2,20 +2,20 @@
 
 using namespace DiplomBukov;
 
-UdpHeaderProcessor::UdpHeaderProcessor(IProcessorPtr Connector)
+UdpHeaderProcessor::UdpHeaderProcessor(ProcessorPtr Connector)
 : inproto(Protocol::None)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr UdpHeaderProcessor::CreateCopy() const
+ProcessorPtr UdpHeaderProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new UdpHeaderProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new UdpHeaderProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus UdpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus UdpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -40,7 +40,7 @@ ProcessingStatus UdpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr p
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus UdpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus UdpHeaderProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (sizeof(udp_header) > offset)
     {

@@ -7,11 +7,11 @@ TextLineOption::TextLineOption(const std::string & text)
 {
 }
 
-IOptionPtr TextLineOption::CreateCopy() const
+OptionPtr TextLineOption::CreateCopy() const
 {
     TextLineOption * ptr = new TextLineOption(textline);
     ptr->setName(getName());
-    return IOptionPtr(ptr);
+    return OptionPtr(ptr);
 }
 
 const std::string & TextLineOption::getName() const

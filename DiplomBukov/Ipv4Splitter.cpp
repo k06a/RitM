@@ -3,14 +3,14 @@
 
 using namespace DiplomBukov;
 
-Ipv4Splitter::Ipv4Splitter(IProcessorPtr Connector)
+Ipv4Splitter::Ipv4Splitter(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr Ipv4Splitter::CreateCopy() const
+ProcessorPtr Ipv4Splitter::CreateCopy() const
 {
-    IProcessorPtr ptr(new Ipv4Splitter(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new Ipv4Splitter(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
@@ -26,7 +26,7 @@ void Ipv4Splitter::DestroyHierarchy()
     AbstractProcessor::DestroyHierarchy();
 }
 
-ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -65,7 +65,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, IPacketPtr packet,
 	return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[offset]);
 

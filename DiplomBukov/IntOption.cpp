@@ -12,11 +12,11 @@ IntOption::IntOption(i64 value, i64 min, i64 max,const std::string & name)
 {
 }
 
-IOptionPtr IntOption::CreateCopy() const
+OptionPtr IntOption::CreateCopy() const
 {
     IntOption * ptr = new IntOption(value, min, max);
     ptr->setName(getName());
-    return IOptionPtr(ptr);
+    return OptionPtr(ptr);
 }
 
 const std::string & IntOption::getName() const

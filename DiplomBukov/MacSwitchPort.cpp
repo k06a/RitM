@@ -3,27 +3,27 @@
 
 using namespace DiplomBukov;
 
-MacSwitchPort::MacSwitchPort(IProcessorPtr const nextProcessor)
+MacSwitchPort::MacSwitchPort(ProcessorPtr const nextProcessor)
 {
     this->nextProcessor = nextProcessor;
-    this->prevProcessor = IProcessorPtr();
+    this->prevProcessor = ProcessorPtr();
     macList.push_back(mac_addr::broadcast());
 }
 
 MacSwitchPort::MacSwitchPort(const MacSwitchPort & macSwitchPort)
 {
     nextProcessor = macSwitchPort.nextProcessor;
-    prevProcessor = IProcessorPtr();
+    prevProcessor = ProcessorPtr();
 }
 
-IProcessorPtr MacSwitchPort::CreateCopy() const
+ProcessorPtr MacSwitchPort::CreateCopy() const
 {
-    IProcessorPtr ptr(new MacSwitchPort(*this));
+    ProcessorPtr ptr(new MacSwitchPort(*this));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (packet->srcMac().isConcrete() && !checkMac(packet->srcMac()))
         macList.push_back(packet->srcMac());
@@ -35,7 +35,7 @@ ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, IPacketPtr packet
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus MacSwitchPort::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (prevProcessor != NULL)
         prevProcessor->backwardProcess(proto, packet, offset);

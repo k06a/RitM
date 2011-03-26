@@ -9,38 +9,38 @@ namespace DiplomBukov
     class AbstractProcessor : public virtual IProcessor
     {
     protected:
-        IProcessorPtr Self;
-        IProcessorPtr prevProcessor;
-        IProcessorPtr nextProcessor;
+        ProcessorPtr Self;
+        ProcessorPtr prevProcessor;
+        ProcessorPtr nextProcessor;
         IProcessorModule * module;
 
     public:
         AbstractProcessor();
-        virtual IProcessorPtr CreateCopy() const;
+        virtual ProcessorPtr CreateCopy() const;
         virtual void DestroyHierarchy();
 
-        virtual IProcessorPtr getPointer();
-        virtual void ping(IProcessorPtr prevProcessor);
+        virtual ProcessorPtr getPointer();
+        virtual void ping(ProcessorPtr prevProcessor);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
-        virtual void setSelf(IProcessorPtr proc);
-        virtual IProcessorPtr self();
+        virtual void setSelf(ProcessorPtr proc);
+        virtual ProcessorPtr self();
 
-        virtual void setNextProcessor(IProcessorPtr processor);
-        virtual IProcessorPtr getNextProcessor();
+        virtual void setNextProcessor(ProcessorPtr processor);
+        virtual ProcessorPtr getNextProcessor();
 
-        virtual void setPrevProcessor(IProcessorPtr processor);
-        virtual IProcessorPtr getPrevProcessor();
+        virtual void setPrevProcessor(ProcessorPtr processor);
+        virtual ProcessorPtr getPrevProcessor();
 
         virtual void setModule(IProcessorModule * mod);
         virtual IProcessorModule * getModule();
 
-        virtual IOptionPtr getOptions();
+        virtual OptionPtr getOptions();
     };
     // class AbstractProcessor
 }

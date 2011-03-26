@@ -17,7 +17,7 @@ namespace DiplomBukov
         unsigned real_size;
         std::vector<u8> data_;
         IAdapter * adapter_;
-        std::deque<IProcessorPtr> processors_;
+        std::deque<ProcessorPtr> processors_;
         std::deque<Protocol> protocols_;
         Direction direction_;
         Protocol::NetworkLayer format_;
@@ -29,7 +29,7 @@ namespace DiplomBukov
         RawPacket(const u8 * ptr, int size);
         RawPacket(const RawPacket & packet);
 
-        virtual IPacketPtr CreateCopy() const;
+        virtual PacketPtr CreateCopy() const;
 
         virtual unsigned id() const;
         virtual void setId(unsigned id);
@@ -54,8 +54,8 @@ namespace DiplomBukov
         virtual IAdapter * adapter() const;
         virtual void setAdapter(IAdapter * ad);
 
-        virtual const std::deque<IProcessorPtr> & processors() const;
-        virtual void addProcessor(IProcessorPtr pro);
+        virtual const std::deque<ProcessorPtr> & processors() const;
+        virtual void addProcessor(ProcessorPtr pro);
 
         virtual const std::deque<Protocol> & protocols() const;
         virtual void addProtocol(Protocol pro);
@@ -73,8 +73,8 @@ namespace DiplomBukov
         virtual const Protocol::NetworkLayer & format() const;
         virtual void setFormat(const Protocol::NetworkLayer & layer);
 
-        virtual IProcessorPtr processorBefore(IProcessorPtr current) const;
-        virtual bool haveProcessor(IProcessorPtr proc) const;
+        virtual ProcessorPtr processorBefore(ProcessorPtr current) const;
+        virtual bool haveProcessor(ProcessorPtr proc) const;
     };
     // class RawPacket
 }

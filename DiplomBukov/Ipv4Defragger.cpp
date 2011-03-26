@@ -3,20 +3,20 @@
 
 using namespace DiplomBukov;
 
-Ipv4Defragger::Ipv4Defragger(IProcessorPtr Connector)
+Ipv4Defragger::Ipv4Defragger(ProcessorPtr Connector)
 	: fullPacket(NULL)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr Ipv4Defragger::CreateCopy() const
+ProcessorPtr Ipv4Defragger::CreateCopy() const
 {
-    IProcessorPtr ptr(new Ipv4Defragger(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new Ipv4Defragger(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;

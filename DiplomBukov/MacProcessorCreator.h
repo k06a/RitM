@@ -11,7 +11,7 @@ namespace DiplomBukov
     class MacProcessorCreator : public IProcessorCreator
     {
     public:
-        virtual IProcessorPtr createProcessor(IConnectorPtr Connector = IConnectorPtr()) const;
+        virtual ProcessorPtr createProcessor(ConnectorPtr Connector = ConnectorPtr()) const;
     };
     // class MacProcessorCreator
 }

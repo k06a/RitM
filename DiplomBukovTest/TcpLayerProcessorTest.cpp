@@ -23,22 +23,22 @@ using namespace DiplomBukov;
 TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 {
     {
-        IAdapterPtr adapter1(
+        AdapterPtr adapter1(
             new FileAdapter("TcpLayerProcessorTest.clientSide.in.pcap",
                             "TcpLayerProcessorTest.clientSide.out.pcap"));
-        IAdapterPtr adapter2(
+        AdapterPtr adapter2(
             new FileAdapter("TcpLayerProcessorTest.serverSide.in.pcap",
                             "TcpLayerProcessorTest.serverSide.out.pcap"));
 
-        IProcessorPtr mac1(new MacHeaderProcessor());
-        IProcessorPtr mac2(new MacHeaderProcessor());
-        IProcessorPtr macSwitch(new MacSwitch());
-        IProcessorPtr ipv4Splitter(new Ipv4Splitter());
-        IProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
-        IProcessorPtr tcpSplitter(new TcpSplitter());
-        IProcessorPtr tcpProcessor(new TcpLayerProcessor());
-        IProcessorPtr tcpHeader(new TcpHeaderProcessor());
-        IProcessorPtr acceptProcessor(new AcceptProcessor());
+        ProcessorPtr mac1(new MacHeaderProcessor());
+        ProcessorPtr mac2(new MacHeaderProcessor());
+        ProcessorPtr macSwitch(new MacSwitch());
+        ProcessorPtr ipv4Splitter(new Ipv4Splitter());
+        ProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
+        ProcessorPtr tcpSplitter(new TcpSplitter());
+        ProcessorPtr tcpProcessor(new TcpLayerProcessor());
+        ProcessorPtr tcpHeader(new TcpHeaderProcessor());
+        ProcessorPtr acceptProcessor(new AcceptProcessor());
         
         adapter1->setSelf(adapter1);
         adapter2->setSelf(adapter2);
@@ -63,8 +63,8 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
         tcpProcessor->setNextProcessor(tcpHeader->getPointer());
         tcpHeader->setNextProcessor(acceptProcessor->getPointer());
 
-        adapter1->ping(IProcessorPtr());
-        adapter2->ping(IProcessorPtr());
+        adapter1->ping(ProcessorPtr());
+        adapter2->ping(ProcessorPtr());
 
         // --------------------------------
 

@@ -10,10 +10,10 @@ namespace DiplomBukov
     class RejectProcessor : public AbstractProcessor
     {
     public:
-        RejectProcessor(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        RejectProcessor(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

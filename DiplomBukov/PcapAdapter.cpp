@@ -7,7 +7,7 @@
 
 using namespace DiplomBukov;
 
-PcapAdapter::PcapAdapter(IProcessorPtr Connector)
+PcapAdapter::PcapAdapter(ProcessorPtr Connector)
     : devicesSwitch(new SwitchOption())
     , deviceList(NULL)
     , device(NULL)
@@ -31,9 +31,9 @@ PcapAdapter::PcapAdapter(IProcessorPtr Connector)
     devicesSwitch->setTextItems(arr);
 }
 
-IProcessorPtr PcapAdapter::CreateCopy() const
+ProcessorPtr PcapAdapter::CreateCopy() const
 {
-    return IProcessorPtr();
+    return ProcessorPtr();
 }
 
 PcapAdapter::~PcapAdapter()
@@ -48,7 +48,7 @@ const char * PcapAdapter::getProcessorName()
 
 //static bool znak;
 
-ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (packet->status() == IPacket::Rejected)
         return ProcessingStatus::Accepted;
@@ -66,7 +66,7 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr packet,
 }
 
 
-IOptionPtr PcapAdapter::getOptions()
+OptionPtr PcapAdapter::getOptions()
 {
     return devicesSwitch;
 }
@@ -114,7 +114,7 @@ bool PcapAdapter::tick()
         return true;
     }
 
-    IPacketPtr packet(new RawPacket(pkt_data, header.caplen));
+    PacketPtr packet(new RawPacket(pkt_data, header.caplen));
     packet->setStatus(IPacket::Accepted);
     packet->setId(id++);
     packet->setTime(header.ts.tv_sec);

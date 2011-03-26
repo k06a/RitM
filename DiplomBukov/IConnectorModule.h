@@ -10,8 +10,8 @@ namespace DiplomBukov
     public:
         virtual ~IConnectorModule() {}
         
-        virtual IConnectorPtr getBaseConnector() = 0;
-        virtual void setBaseConnector(IConnectorPtr Connector) = 0;
+        virtual ConnectorPtr getBaseConnector() = 0;
+        virtual void setBaseConnector(ConnectorPtr Connector) = 0;
     };
     // class IConnectorModule
 }

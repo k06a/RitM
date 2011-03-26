@@ -18,13 +18,13 @@ namespace DiplomBukov
         MyList macList;
 
     public:
-        MacSwitchPort(IProcessorPtr const nextProcessor);
+        MacSwitchPort(ProcessorPtr const nextProcessor);
         MacSwitchPort(const MacSwitchPort & macSwitchPort);
 
-        virtual IProcessorPtr CreateCopy() const;
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
         virtual const char * getProcessorName();
 
         bool checkMac(const mac_addr & mac);

@@ -16,11 +16,11 @@ namespace DiplomBukov
         std::vector<u8> header;
         
     public:
-        Ipv4HeaderProcessor(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        Ipv4HeaderProcessor(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

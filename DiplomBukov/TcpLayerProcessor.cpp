@@ -4,15 +4,15 @@
 
 using namespace DiplomBukov;
 
-TcpLayerProcessor::TcpLayerProcessor(IProcessorPtr Connector)
+TcpLayerProcessor::TcpLayerProcessor(ProcessorPtr Connector)
     : maxDataInTcp(0)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr TcpLayerProcessor::CreateCopy() const
+ProcessorPtr TcpLayerProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new TcpLayerProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new TcpLayerProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
@@ -22,15 +22,15 @@ void TcpLayerProcessor::DestroyHierarchy()
     client.commitWaitQueue.clear();
     client.recvWaitQueue.clear();
     client.toSendBuffer.clear();
-    client.lastAck.packet = IPacketPtr();
+    client.lastAck.packet = PacketPtr();
     server.commitWaitQueue.clear();
     server.recvWaitQueue.clear();
     server.toSendBuffer.clear();
-    server.lastAck.packet = IPacketPtr();
+    server.lastAck.packet = PacketPtr();
     AbstractProcessor::DestroyHierarchy();
 }
 
-ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -171,7 +171,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                             {
                                 abonent.status = PRELAST_FIN;
                                 tcp->flags = FLAGS::FIN + FLAGS::ACK;
-                                IPacketPtr newPacket = packet->CreateCopy();
+                                PacketPtr newPacket = packet->CreateCopy();
                                 newPacket->swapDirection();
                                 privateBackwardProcess(proto, newPacket, offset);
                             }
@@ -207,15 +207,15 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
                             abonent.recvWaitQueue.push_back(qpacket);
 
                             // Send ACK
-                            IPacketPtr ackpack = createAck(qpacket);
+                            PacketPtr ackpack = createAck(qpacket);
                             privateBackwardProcess(proto, ackpack, offset);
                             abonent.lastAck = QuededPacket(tcp->seq, proto, ackpack, offset, 0);
 
                             if (tcp->flags.haveFlags(tcp_header::flags_struct::PSH))
                             {
                                 // End of message
-                                std::pair<IPacketPtr,unsigned> para = mergePackets(abonent.recvWaitQueue);
-                                IPacketPtr pack = para.first;
+                                std::pair<PacketPtr,unsigned> para = mergePackets(abonent.recvWaitQueue);
+                                PacketPtr pack = para.first;
                                 unsigned offset = para.second;
                                 abonent.recvWaitQueue.clear();
                                 if (nextProcessor != NULL)
@@ -262,7 +262,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, IPacketPtr pa
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     int dataInTcp = packet->data().size() - offset - tcp->header_size();
@@ -275,7 +275,7 @@ ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, IPacketPtr p
     {
         for (int i = 0; true; i++)
         {
-            IPacketPtr packetCopy = packet->CreateCopy();
+            PacketPtr packetCopy = packet->CreateCopy();
 
             int a_delete_from = offset + tcp->header_size();
             int a_delete_to = a_delete_from + i*maxDataInTcp;
@@ -308,7 +308,7 @@ ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, IPacketPtr p
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     int dataInTcp = packet->data().size() - offset - tcp->header_size();
@@ -347,9 +347,9 @@ Protocol TcpLayerProcessor::getProtocol()
     return Protocol::TCP;
 }
 
-IPacketPtr TcpLayerProcessor::createAck(const QuededPacket & qpacket)
+PacketPtr TcpLayerProcessor::createAck(const QuededPacket & qpacket)
 {
-    IPacketPtr pack = qpacket.packet->CreateCopy();
+    PacketPtr pack = qpacket.packet->CreateCopy();
     int dataInTcp = qpacket.dataInTcp;
 
     pack->swapDirection();
@@ -372,9 +372,9 @@ IPacketPtr TcpLayerProcessor::createAck(const QuededPacket & qpacket)
     return pack;
 }
 
-std::pair<IPacketPtr,unsigned> TcpLayerProcessor::mergePackets(const std::deque<QuededPacket> & arr)
+std::pair<PacketPtr,unsigned> TcpLayerProcessor::mergePackets(const std::deque<QuededPacket> & arr)
 {
-    IPacketPtr pack = arr[0].packet->CreateCopy();
+    PacketPtr pack = arr[0].packet->CreateCopy();
     pack->data().resize(arr[0].offset);
     
     for (std::deque<QuededPacket>::const_iterator it = arr.begin();

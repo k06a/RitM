@@ -2,20 +2,20 @@
 
 using namespace DiplomBukov;
 
-TcpHeaderProcessor::TcpHeaderProcessor(IProcessorPtr Connector)
+TcpHeaderProcessor::TcpHeaderProcessor(ProcessorPtr Connector)
     : inproto(Protocol::None)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr TcpHeaderProcessor::CreateCopy() const
+ProcessorPtr TcpHeaderProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new TcpHeaderProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new TcpHeaderProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -44,7 +44,7 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr p
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (header.size() > offset)
     {

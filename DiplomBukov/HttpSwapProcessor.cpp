@@ -4,20 +4,20 @@
 
 using namespace DiplomBukov;
 
-HttpSwapProcessor::HttpSwapProcessor(IProcessorPtr processor)
+HttpSwapProcessor::HttpSwapProcessor(ProcessorPtr processor)
 : markCount(0), positionOfData(0)
 {
     setNextProcessor(processor);
 }
 
-IProcessorPtr HttpSwapProcessor::CreateCopy() const
+ProcessorPtr HttpSwapProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new HttpSwapProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new HttpSwapProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     //if ((proto != Protocol::None) && (proto != getProtocol()))
     //    return ProcessingStatus::Rejected;
@@ -104,7 +104,7 @@ ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, IPacketPtr pa
     //    nextProcessor->forwardProcess("HTTP", packet, 0);
 }
 
-ProcessingStatus HttpSwapProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus HttpSwapProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     return ProcessingStatus::Accepted;
 }

@@ -31,9 +31,9 @@ RawPacket::RawPacket(const RawPacket & packet)
 }
 
 
-IPacketPtr RawPacket::CreateCopy() const
+PacketPtr RawPacket::CreateCopy() const
 {
-    return IPacketPtr(new RawPacket(*this));
+    return PacketPtr(new RawPacket(*this));
 }
 
 void RawPacket::setId(unsigned id)
@@ -119,12 +119,12 @@ IAdapter * RawPacket::adapter() const
     return adapter_;
 }
 
-void RawPacket::addProcessor(IProcessorPtr pro)
+void RawPacket::addProcessor(ProcessorPtr pro)
 {
     processors_.push_back(pro);
 }
 
-const std::deque<IProcessorPtr> & RawPacket::processors() const
+const std::deque<ProcessorPtr> & RawPacket::processors() const
 {
     return processors_;
 }
@@ -194,18 +194,18 @@ void RawPacket::setFormat(const Protocol::NetworkLayer & layer)
     format_ = layer;
 }
 
-IProcessorPtr RawPacket::processorBefore(IProcessorPtr current) const
+ProcessorPtr RawPacket::processorBefore(ProcessorPtr current) const
 {
-    std::deque<IProcessorPtr>::const_iterator it =
+    std::deque<ProcessorPtr>::const_iterator it =
         std::find(processors_.begin(), processors_.end(), current);
     if ((it != processors_.end()) && (it != processors_.begin()))
         return *(--it);
-    return IProcessorPtr();
+    return ProcessorPtr();
 }
 
-bool RawPacket::haveProcessor(IProcessorPtr proc) const
+bool RawPacket::haveProcessor(ProcessorPtr proc) const
 {
-    std::deque<IProcessorPtr>::const_iterator it =
+    std::deque<ProcessorPtr>::const_iterator it =
         std::find(processors_.begin(), processors_.end(), proc);
     return (it != processors_.end());
 }

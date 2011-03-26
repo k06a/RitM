@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-IProcessorPtr Ipv4SplitterCreator::createProcessor(IConnectorPtr Connector) const
+ProcessorPtr Ipv4SplitterCreator::createProcessor(ConnectorPtr Connector) const
 {
-    return IProcessorPtr(new Ipv4Splitter(Connector));
+    return ProcessorPtr(new Ipv4Splitter(Connector));
 }

@@ -2,19 +2,19 @@
 
 using namespace DiplomBukov;
 
-RejectProcessor::RejectProcessor(IProcessorPtr Connector)
+RejectProcessor::RejectProcessor(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr RejectProcessor::CreateCopy() const
+ProcessorPtr RejectProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new RejectProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new RejectProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus RejectProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus RejectProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     packet->setStatus(IPacket::Rejected);
 

@@ -23,25 +23,25 @@ void ProtocolConnector::Init(const MyDeque & d)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
-        IProcessorPtr proc = (*it)->CreateCopy();
+        ProcessorPtr proc = (*it)->CreateCopy();
         procMap.insert(std::make_pair(proc->getProtocol(), proc));
         AbstractConnector::addNextProcessor(proc);
     }
 }
 
-IProcessorPtr ProtocolConnector::CreateCopy() const
+ProcessorPtr ProtocolConnector::CreateCopy() const
 {
-    return IProcessorPtr(new ProtocolConnector(*this));
+    return ProcessorPtr(new ProtocolConnector(*this));
 }
 
-void ProtocolConnector::ping(IProcessorPtr prevProcessor)
+void ProtocolConnector::ping(ProcessorPtr prevProcessor)
 {
     setPrevProcessor(prevProcessor);
     for (MyMap::iterator it = procMap.begin(); it != procMap.end(); ++it)
         it->second->ping(prevProcessor);
 }
 
-ProcessingStatus ProtocolConnector::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus ProtocolConnector::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
     
@@ -69,14 +69,14 @@ ProcessingStatus ProtocolConnector::forwardProcess(Protocol proto, IPacketPtr pa
     return ans;
 }
 
-void ProtocolConnector::addNextProcessor(IProcessorPtr processor)
+void ProtocolConnector::addNextProcessor(ProcessorPtr processor)
 {
     Protocol proto = processor->getProtocol();
     procMap.insert(std::make_pair(proto, processor));
     AbstractConnector::addNextProcessor(processor);
 }
 
-void ProtocolConnector::removeNextProcessor(IProcessorPtr processor)
+void ProtocolConnector::removeNextProcessor(ProcessorPtr processor)
 {
     for(MyMap::iterator it = procMap.begin(); it != procMap.end(); ++it)
     {
@@ -89,7 +89,7 @@ void ProtocolConnector::removeNextProcessor(IProcessorPtr processor)
     AbstractConnector::removeNextProcessor(processor);
 }
 
-const std::deque<IProcessorPtr> & ProtocolConnector::nextProcessors()
+const std::deque<ProcessorPtr> & ProtocolConnector::nextProcessors()
 {
     return AbstractConnector::nextProcessors();
 }

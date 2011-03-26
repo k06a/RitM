@@ -21,11 +21,11 @@ ListOption<T1,T2>::ListOption(const T1 & item1,
 }
 */
 template<typename T1, typename T2>
-IOptionPtr ListOption<T1,T2>::CreateCopy() const
+OptionPtr ListOption<T1,T2>::CreateCopy() const
 {
     ListOption * ptr = new ListOption(labels);
     ptr->setName(getName());
-    return IOptionPtr(ptr);
+    return OptionPtr(ptr);
 }
 
 template<typename T1, typename T2>

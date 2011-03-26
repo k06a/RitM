@@ -6,7 +6,7 @@
 
 using namespace DiplomBukov;
 
-DnsMessageProcessor::DnsMessageProcessor(IProcessorPtr processor)
+DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
     : options(new GroupOption(false))
 {
     setNextProcessor(processor);
@@ -21,24 +21,24 @@ DnsMessageProcessor::DnsMessageProcessor(IProcessorPtr processor)
     destType = new SwitchOption(types);
     destination = new TextLineOption("192.168.1.1");
 
-    options->addOption(IOptionPtr(check));
-    options->addOption(IOptionPtr(source));
-    options->addOption(IOptionPtr(destType));
-    options->addOption(IOptionPtr(destination));
+    options->addOption(OptionPtr(check));
+    options->addOption(OptionPtr(source));
+    options->addOption(OptionPtr(destType));
+    options->addOption(OptionPtr(destination));
 }
 
-IProcessorPtr DnsMessageProcessor::CreateCopy() const
+ProcessorPtr DnsMessageProcessor::CreateCopy() const
 {
-    IProcessorPtr np = IProcessorPtr();
+    ProcessorPtr np = ProcessorPtr();
     if (nextProcessor != NULL)
         nextProcessor->CreateCopy();
 
-    IProcessorPtr ptr(new DnsMessageProcessor(np));
+    ProcessorPtr ptr(new DnsMessageProcessor(np));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -103,7 +103,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, IPacketPtr 
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus DnsMessageProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus DnsMessageProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (packet->processorBefore(Self) != NULL)
         packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
@@ -120,7 +120,7 @@ const char * DnsMessageProcessor::getProcessorName()
     return "DnsMessageProcessor";
 }
 
-IOptionPtr DnsMessageProcessor::getOptions()
+OptionPtr DnsMessageProcessor::getOptions()
 {
     return options;
 }

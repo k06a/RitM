@@ -16,9 +16,9 @@ class TestingReadingProcessor
     : public DiplomBukov::AbstractProcessor
 {
 public:
-    MOCK_CONST_METHOD0(CreateCopy, IProcessorPtr());
+    MOCK_CONST_METHOD0(CreateCopy, ProcessorPtr());
     MOCK_METHOD3(forwardProcess,ProcessingStatus(Protocol proto,
-                                                 IPacketPtr packet,
+                                                 PacketPtr packet,
                                                  unsigned offset));
 };
 
@@ -26,14 +26,14 @@ public:
 
 TEST(FileAdapterTest, ReadingWholePcapFile)
 {
-    IAdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
+    AdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
-    IProcessorPtr processor(testProc);
+    ProcessorPtr processor(testProc);
 
     adapter->setSelf(adapter);
     processor->setSelf(processor);
     adapter->setNextProcessor(processor);
-    adapter->ping(IProcessorPtr());
+    adapter->ping(ProcessorPtr());
 
     EXPECT_CALL(*testProc, forwardProcess(_,_,_))
         .Times(60)
@@ -41,23 +41,23 @@ TEST(FileAdapterTest, ReadingWholePcapFile)
     
     adapter->run(true);
 
-    adapter->setSelf(IAdapterPtr());
-    processor->setSelf(IProcessorPtr());
-    adapter->setNextProcessor(IProcessorPtr());
+    adapter->setSelf(AdapterPtr());
+    processor->setSelf(ProcessorPtr());
+    adapter->setNextProcessor(ProcessorPtr());
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 TEST(FileAdapterTest, ReadingSequentialyPcapFile)
 {
-    IAdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
+    AdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
-    IProcessorPtr processor(testProc);
+    ProcessorPtr processor(testProc);
 
     adapter->setSelf(adapter);
     processor->setSelf(processor);
     adapter->setNextProcessor(processor);
-    adapter->ping(IProcessorPtr());
+    adapter->ping(ProcessorPtr());
 
     adapter->run(false);
 
@@ -67,9 +67,9 @@ TEST(FileAdapterTest, ReadingSequentialyPcapFile)
 
     while (adapter->tick());
 
-    adapter->setSelf(IAdapterPtr());
-    processor->setSelf(IProcessorPtr());
-    adapter->setNextProcessor(IProcessorPtr());
+    adapter->setSelf(AdapterPtr());
+    processor->setSelf(ProcessorPtr());
+    adapter->setNextProcessor(ProcessorPtr());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,21 +78,21 @@ TEST(FileAdapterTest, WritingPcapFile)
 {
     // For smart pointer destruction
     {
-        IAdapterPtr adapter(
+        AdapterPtr adapter(
             new FileAdapter("FileAdapterTest.pcap",
                             "FileAdapterTest.WritingPcapFile.out.pcap"));
-        IProcessorPtr processor(new AcceptProcessor());
+        ProcessorPtr processor(new AcceptProcessor());
 
         adapter->setSelf(adapter);
         processor->setSelf(processor);
         adapter->setNextProcessor(processor);
-        adapter->ping(IProcessorPtr());
+        adapter->ping(ProcessorPtr());
 
         adapter->run(true);
 
-        adapter->setSelf(IAdapterPtr());
-        processor->setSelf(IProcessorPtr());
-        adapter->setNextProcessor(IProcessorPtr());
+        adapter->setSelf(AdapterPtr());
+        processor->setSelf(ProcessorPtr());
+        adapter->setNextProcessor(ProcessorPtr());
     }
 
     EXPECT_FILE_EQ("FileAdapterTest.pcap",

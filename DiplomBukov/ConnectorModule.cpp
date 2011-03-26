@@ -2,17 +2,17 @@
 
 using namespace DiplomBukov;
 
-ConnectorModule::ConnectorModule(IConnectorPtr Connector)
+ConnectorModule::ConnectorModule(ConnectorPtr Connector)
     : baseConnector(Connector)
 {
 }
 
-IConnectorPtr ConnectorModule::getBaseConnector()
+ConnectorPtr ConnectorModule::getBaseConnector()
 {
     return baseConnector;
 }
 
-void ConnectorModule::setBaseConnector(IConnectorPtr Connector)
+void ConnectorModule::setBaseConnector(ConnectorPtr Connector)
 {
     baseConnector = Connector;
 }

@@ -3,19 +3,19 @@
 
 using namespace DiplomBukov;
 
-MacHeaderProcessor::MacHeaderProcessor(IProcessorPtr Connector)
+MacHeaderProcessor::MacHeaderProcessor(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr MacHeaderProcessor::CreateCopy() const
+ProcessorPtr MacHeaderProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new MacHeaderProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new MacHeaderProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::Ethernet_II) && (proto != Protocol::None))
         return ProcessingStatus::Rejected;
@@ -32,7 +32,7 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, IPacketPtr p
 	return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus MacHeaderProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus MacHeaderProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     int dataLength = packet->size() - offset;
 

@@ -11,11 +11,11 @@ namespace DiplomBukov
     class TelnetSwapper : public AbstractProcessor
     {
     public:
-        TelnetSwapper(IProcessorPtr processor = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        TelnetSwapper(ProcessorPtr processor = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

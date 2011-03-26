@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-MacSwitch::MacSwitch(IProcessorPtr Connector)
+MacSwitch::MacSwitch(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
@@ -17,9 +17,9 @@ MacSwitch::MacSwitch(const MacSwitch & macSwitch)
     }
 }
 
-IProcessorPtr MacSwitch::CreateCopy() const
+ProcessorPtr MacSwitch::CreateCopy() const
 {
-    IProcessorPtr ptr(new MacSwitch(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new MacSwitch(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
@@ -30,15 +30,15 @@ void MacSwitch::DestroyHierarchy()
     AbstractProcessor::DestroyHierarchy();
 }
 
-IProcessorPtr MacSwitch::getPointer()
+ProcessorPtr MacSwitch::getPointer()
 {
-    IProcessorPtr port(new MacSwitchPort(Self));
+    ProcessorPtr port(new MacSwitchPort(Self));
     port->setSelf(port);
     ports.push_back(port);
     return port;
 }
 
-ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus MacSwitch::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     packet->addProcessor(Self);
     if (nextProcessor != NULL)
@@ -50,7 +50,7 @@ ProcessingStatus MacSwitch::forwardProcess(Protocol proto, IPacketPtr packet, un
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus MacSwitch::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus MacSwitch::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     int count = 0;
     for(MyDeque::iterator it = ports.begin(); it != ports.end(); ++it)

@@ -2,7 +2,7 @@
 
 using namespace DiplomBukov;
 
-UdpSplitter::UdpSplitter(IProcessorPtr Connector)
+UdpSplitter::UdpSplitter(ProcessorPtr Connector)
     : TcpSplitter(Connector)
 {
 }

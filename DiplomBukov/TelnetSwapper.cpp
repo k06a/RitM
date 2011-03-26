@@ -4,19 +4,19 @@
 
 using namespace DiplomBukov;
 
-TelnetSwapper::TelnetSwapper(IProcessorPtr processor)
+TelnetSwapper::TelnetSwapper(ProcessorPtr processor)
 {
     setNextProcessor(processor);
 }
 
-IProcessorPtr TelnetSwapper::CreateCopy() const
+ProcessorPtr TelnetSwapper::CreateCopy() const
 {
-    IProcessorPtr ptr(new TelnetSwapper(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new TelnetSwapper(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     //if ((proto != Protocol::None) && (proto != getProtocol()))
     //    return ProcessingStatus::Rejected;
@@ -54,7 +54,7 @@ ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, IPacketPtr packet
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TelnetSwapper::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TelnetSwapper::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (packet->processorBefore(Self) != NULL)
         packet->processorBefore(Self)->backwardProcess(proto, packet, offset);

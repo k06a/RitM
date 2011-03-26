@@ -11,7 +11,7 @@ namespace DiplomBukov
 {
     struct DefragPacket
     {
-        IPacketPtr pack;
+        PacketPtr pack;
         std::vector<bool> mask;
         bool lastFragmentReceived;
 
@@ -47,10 +47,10 @@ namespace DiplomBukov
         int ipDataOffset;
 
 	public:
-		Ipv4Defragger(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+		Ipv4Defragger(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

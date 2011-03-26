@@ -37,7 +37,7 @@
 
 using namespace DiplomBukov;
 
-void print_arch(IProcessorPtr proc, std::string prefix = "", int deep = 0)
+void print_arch(ProcessorPtr proc, std::string prefix = "", int deep = 0)
 {
     if (proc == NULL) return;
 
@@ -60,7 +60,7 @@ void print_arch(IProcessorPtr proc, std::string prefix = "", int deep = 0)
             << ',' << (IProcessor *)ic
             << ',' << (IProcessor *)ic->getNextProcessor().get() << '}'
             << " ]:";
-        const std::deque<IProcessorPtr> & procList = ic->nextProcessors();
+        const std::deque<ProcessorPtr> & procList = ic->nextProcessors();
         for (size_t i = 0; i < procList.size(); i++)
             print_arch(procList[i], prefix, deep+1);
         return;
@@ -88,35 +88,35 @@ void print_arch(IProcessorPtr proc, std::string prefix = "", int deep = 0)
     }
 }
 
-void connect(IProcessorPtr a, IProcessorPtr b)
+void connect(ProcessorPtr a, ProcessorPtr b)
 {
     a->getNextProcessor()->setNextProcessor(b->getPointer());
 }
 
 int main(int argc, char * argv[])
 {
-    #define NEW_Connector IProcessorPtr(new ProtocolConnector())
+    #define NEW_Connector ProcessorPtr(new ProtocolConnector())
 
-    IAdapterPtr pcap1Adapter(new PcapAdapter(NEW_Connector));
-    IAdapterPtr pcap2Adapter(new PcapAdapter(NEW_Connector));
+    AdapterPtr pcap1Adapter(new PcapAdapter(NEW_Connector));
+    AdapterPtr pcap2Adapter(new PcapAdapter(NEW_Connector));
 
-    IProcessorPtr mac1HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
-    IProcessorPtr mac2HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
+    ProcessorPtr mac1HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
+    ProcessorPtr mac2HeaderProcessor(new MacHeaderProcessor(NEW_Connector));
 
-    IProcessorPtr macSwitch(new MacSwitch(NEW_Connector));
+    ProcessorPtr macSwitch(new MacSwitch(NEW_Connector));
 
-    IProcessorPtr acceptProcessor(new AcceptProcessor(NEW_Connector));
-    IProcessorPtr ipSplitter(new Ipv4Splitter(NEW_Connector));
-    IProcessorPtr ipHeaderProcessor(new Ipv4HeaderProcessor(NEW_Connector));
+    ProcessorPtr acceptProcessor(new AcceptProcessor(NEW_Connector));
+    ProcessorPtr ipSplitter(new Ipv4Splitter(NEW_Connector));
+    ProcessorPtr ipHeaderProcessor(new Ipv4HeaderProcessor(NEW_Connector));
     
-    IProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
-    IProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
-    IProcessorPtr tcpOptionsRemover(new TcpOptionsRemover(NEW_Connector));
-    IProcessorPtr tcpLayerProcessor(new TcpLayerProcessor(NEW_Connector));
-    IProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
+    ProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
+    ProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
+    ProcessorPtr tcpOptionsRemover(new TcpOptionsRemover(NEW_Connector));
+    ProcessorPtr tcpLayerProcessor(new TcpLayerProcessor(NEW_Connector));
+    ProcessorPtr tcpHeaderProcessor(new TcpHeaderProcessor(NEW_Connector));
 
-    IProcessorPtr telnetProcessor(new TelnetSwapper(NEW_Connector));
-    IProcessorPtr httpDefragProcessor(new HttpDefragProcessor(NEW_Connector));
+    ProcessorPtr telnetProcessor(new TelnetSwapper(NEW_Connector));
+    ProcessorPtr httpDefragProcessor(new HttpDefragProcessor(NEW_Connector));
     
     /*
     ProcessorModule * macModule  = new ProcessorModule(macHeaderProcessor);
@@ -163,8 +163,8 @@ int main(int argc, char * argv[])
             connect(tcpLayerProcessor, tcpHeaderProcessor);
             connect(tcpHeaderProcessor, telnetProcessor);//httpDefragProcessor);
   
-    pcap1Adapter->ping(IProcessorPtr());
-    pcap2Adapter->ping(IProcessorPtr());
+    pcap1Adapter->ping(ProcessorPtr());
+    pcap2Adapter->ping(ProcessorPtr());
 
     //////////////////////////////////////////////////////////////////////////
 

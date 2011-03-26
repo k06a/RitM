@@ -2,4 +2,4 @@
 
 using namespace DiplomBukov;
 
-void fileAdapterPairReader(IAdapterPtr ad1, IAdapterPtr ad2);
+void fileAdapterPairReader(AdapterPtr ad1, AdapterPtr ad2);

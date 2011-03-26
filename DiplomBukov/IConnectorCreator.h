@@ -10,7 +10,7 @@ namespace DiplomBukov
     public:
         virtual ~IConnectorCreator() {}
 
-        virtual IConnectorPtr createConnector() const = 0;
+        virtual ConnectorPtr createConnector() const = 0;
     };
     // class IConnectorCreator
 }

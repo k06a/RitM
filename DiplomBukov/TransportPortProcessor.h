@@ -16,11 +16,11 @@ namespace DiplomBukov
         u16be client_port;
         
     public:
-        TransportPortProcessor(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        TransportPortProcessor(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

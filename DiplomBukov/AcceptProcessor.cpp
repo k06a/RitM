@@ -2,23 +2,23 @@
 
 using namespace DiplomBukov;
 
-AcceptProcessor::AcceptProcessor(IProcessorPtr Connector)
+AcceptProcessor::AcceptProcessor(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr AcceptProcessor::CreateCopy() const
+ProcessorPtr AcceptProcessor::CreateCopy() const
 {
-    IProcessorPtr np = IProcessorPtr();
+    ProcessorPtr np = ProcessorPtr();
     if (nextProcessor != NULL)
         nextProcessor->CreateCopy();
 
-    IProcessorPtr ptr(new AcceptProcessor(np));
+    ProcessorPtr ptr(new AcceptProcessor(np));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     packet->setStatus(IPacket::Accepted);
 

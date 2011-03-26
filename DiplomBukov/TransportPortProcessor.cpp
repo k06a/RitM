@@ -3,21 +3,21 @@
 
 using namespace DiplomBukov;
 
-TransportPortProcessor::TransportPortProcessor(IProcessorPtr Connector)
+TransportPortProcessor::TransportPortProcessor(ProcessorPtr Connector)
     : server_port(0)
     , client_port(0)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr TransportPortProcessor::CreateCopy() const
+ProcessorPtr TransportPortProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new TransportPortProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new TransportPortProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -49,7 +49,7 @@ ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, IPacketP
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TransportPortProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TransportPortProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
     

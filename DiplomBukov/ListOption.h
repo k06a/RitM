@@ -25,7 +25,7 @@ namespace DiplomBukov
             : label(name), left(item1), right(item2), vertical(vertical)
         {
         }
-        virtual IOptionPtr CreateCopy() const;
+        virtual OptionPtr CreateCopy() const;
 
         virtual const std::string & getName() const;
         virtual void setName(const std::string & name);

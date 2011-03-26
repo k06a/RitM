@@ -27,7 +27,7 @@ namespace DiplomBukov
 
         virtual ~IPacket() {}
 
-        virtual IPacketPtr CreateCopy() const = 0;
+        virtual PacketPtr CreateCopy() const = 0;
 
         virtual unsigned id() const = 0;
         virtual void setId(unsigned id) = 0;
@@ -51,8 +51,8 @@ namespace DiplomBukov
         virtual IAdapter * adapter() const = 0;
         virtual void setAdapter(IAdapter * ad) = 0;
         
-        virtual const std::deque<IProcessorPtr> & processors() const = 0;
-        virtual void addProcessor(IProcessorPtr pro) = 0;
+        virtual const std::deque<ProcessorPtr> & processors() const = 0;
+        virtual void addProcessor(ProcessorPtr pro) = 0;
         
         virtual const std::deque<Protocol> & protocols() const = 0;
         virtual void addProtocol(Protocol pro) = 0;
@@ -70,12 +70,12 @@ namespace DiplomBukov
         virtual const Protocol::NetworkLayer & format() const = 0;
         virtual void setFormat(const Protocol::NetworkLayer & layer) = 0;
 
-        virtual IProcessorPtr processorBefore(IProcessorPtr current) const = 0;
-        virtual bool haveProcessor(IProcessorPtr proc) const = 0;
+        virtual ProcessorPtr processorBefore(ProcessorPtr current) const = 0;
+        virtual bool haveProcessor(ProcessorPtr proc) const = 0;
     };
     // class IPacket
 
-    typedef std::tr1::shared_ptr<IPacket> IPacketPtr;
+    typedef std::tr1::shared_ptr<IPacket> PacketPtr;
 }
 // namespace DiplomBukov
 

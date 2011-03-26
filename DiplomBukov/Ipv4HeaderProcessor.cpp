@@ -4,20 +4,20 @@
 
 using namespace DiplomBukov;
 
-Ipv4HeaderProcessor::Ipv4HeaderProcessor(IProcessorPtr Connector)
+Ipv4HeaderProcessor::Ipv4HeaderProcessor(ProcessorPtr Connector)
     : header()
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr Ipv4HeaderProcessor::CreateCopy() const
+ProcessorPtr Ipv4HeaderProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new Ipv4HeaderProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new Ipv4HeaderProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -41,7 +41,7 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, IPacketPtr 
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (sizeof(ipv4_header) > offset)
     {

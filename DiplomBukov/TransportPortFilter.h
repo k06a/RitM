@@ -10,18 +10,18 @@ namespace DiplomBukov
 {
     class TransportPortFilter : public AbstractProcessor
     {
-        IOptionPtr portOption;
+        OptionPtr portOption;
 
     public:
-        TransportPortFilter(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        TransportPortFilter(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 
-        virtual IOptionPtr getOptions();
+        virtual OptionPtr getOptions();
     };
     // class TransportPortFilter
 }

@@ -13,9 +13,9 @@ namespace DiplomBukov
 	public:
 		virtual ~IConnector() {}
 
-        virtual void addNextProcessor(IProcessorPtr processor) = 0;
-        virtual void removeNextProcessor(IProcessorPtr processor) = 0;
-        virtual const std::deque<IProcessorPtr> & nextProcessors() const = 0;
+        virtual void addNextProcessor(ProcessorPtr processor) = 0;
+        virtual void removeNextProcessor(ProcessorPtr processor) = 0;
+        virtual const std::deque<ProcessorPtr> & nextProcessors() const = 0;
 	};
 	// class IConnector
 }

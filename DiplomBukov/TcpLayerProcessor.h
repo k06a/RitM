@@ -28,12 +28,12 @@ namespace DiplomBukov
         {
             u32be sequnceNumber;
             Protocol proto;
-            IPacketPtr packet;
+            PacketPtr packet;
             unsigned offset;
             unsigned dataInTcp;
 
             QuededPacket(u32be sequnceNumber = 0, Protocol proto = Protocol(),
-                IPacketPtr packet = IPacketPtr(), unsigned offset = 0,
+                PacketPtr packet = PacketPtr(), unsigned offset = 0,
                 unsigned dataInTcp = 0)
                 : sequnceNumber(sequnceNumber), proto(proto)
                 , packet(packet), offset(offset), dataInTcp(dataInTcp)
@@ -89,21 +89,21 @@ namespace DiplomBukov
         unsigned maxDataInTcp;
 
     public:
-        TcpLayerProcessor(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        TcpLayerProcessor(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
         virtual void DestroyHierarchy();
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 
     private:
-        virtual ProcessingStatus privateBackwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus privateBackwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
-        IPacketPtr createAck(const QuededPacket & qpacket);
-        std::pair<IPacketPtr,unsigned> mergePackets(const std::deque<QuededPacket> & arr);
+        PacketPtr createAck(const QuededPacket & qpacket);
+        std::pair<PacketPtr,unsigned> mergePackets(const std::deque<QuededPacket> & arr);
     };
     // class TcpLayerProcessor
 }

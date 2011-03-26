@@ -20,15 +20,15 @@ using namespace DiplomBukov;
 TEST(DnsMessageProcessorTest, ReparseDnsHeader)
 {
     {
-        IAdapterPtr adapter(
+        AdapterPtr adapter(
             new FileAdapter("DnsMessageProcessorTest.in.pcap",
                             "DnsMessageProcessorTest.out.pcap"));
         
-        IProcessorPtr mac(new MacHeaderProcessor());
-        IProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
-        IProcessorPtr udpHeader(new UdpHeaderProcessor());
-        IProcessorPtr dnsProcessor(new DnsMessageProcessor());
-        IProcessorPtr acceptProcessor(new AcceptProcessor());
+        ProcessorPtr mac(new MacHeaderProcessor());
+        ProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
+        ProcessorPtr udpHeader(new UdpHeaderProcessor());
+        ProcessorPtr dnsProcessor(new DnsMessageProcessor());
+        ProcessorPtr acceptProcessor(new AcceptProcessor());
         
         adapter->setSelf(adapter);
         mac->setSelf(mac);
@@ -43,7 +43,7 @@ TEST(DnsMessageProcessorTest, ReparseDnsHeader)
         udpHeader->setNextProcessor(dnsProcessor->getPointer());
         dnsProcessor->setNextProcessor(acceptProcessor->getPointer());
 
-        adapter->ping(IProcessorPtr());
+        adapter->ping(ProcessorPtr());
 
         adapter->run(true);
 

@@ -10,14 +10,14 @@ namespace DiplomBukov
     public:
         virtual ~IDuplexProcessor() = 0;
 
-        virtual IProcessorPtr getLeftPointer() = 0;
-        virtual IProcessorPtr getRightPointer() = 0;
+        virtual ProcessorPtr getLeftPointer() = 0;
+        virtual ProcessorPtr getRightPointer() = 0;
 
-        virtual void setRightProcessor(IProcessorPtr processor) = 0;
-        virtual IProcessorPtr getRightProcessor() = 0;
+        virtual void setRightProcessor(ProcessorPtr processor) = 0;
+        virtual ProcessorPtr getRightProcessor() = 0;
 
-        virtual void setLeftProcessor(IProcessorPtr processor) = 0;
-        virtual IProcessorPtr getLeftProcessor() = 0;
+        virtual void setLeftProcessor(ProcessorPtr processor) = 0;
+        virtual ProcessorPtr getLeftProcessor() = 0;
     };
     // class IDuplexProcessor
 }

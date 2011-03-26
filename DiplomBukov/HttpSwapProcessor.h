@@ -22,11 +22,11 @@ namespace DiplomBukov
         int markCount;
 
     public:
-        HttpSwapProcessor(IProcessorPtr processor = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        HttpSwapProcessor(ProcessorPtr processor = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

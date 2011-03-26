@@ -42,11 +42,11 @@ namespace DiplomBukov
 	public:
         FileAdapter(const std::string & filename1,
                     const std::string & filename2 = "",
-                    IProcessorPtr Connector = IProcessorPtr());
-		virtual IProcessorPtr CreateCopy() const;
+                    ProcessorPtr Connector = ProcessorPtr());
+		virtual ProcessorPtr CreateCopy() const;
         ~FileAdapter();
         
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual const char * getProcessorName();
 

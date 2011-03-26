@@ -3,19 +3,19 @@
 
 using namespace DiplomBukov;
 
-IcmpProcessor::IcmpProcessor(IProcessorPtr Connector)
+IcmpProcessor::IcmpProcessor(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr IcmpProcessor::CreateCopy() const
+ProcessorPtr IcmpProcessor::CreateCopy() const
 {
-    IProcessorPtr ptr(new IcmpProcessor(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new IcmpProcessor(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;

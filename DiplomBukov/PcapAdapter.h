@@ -28,14 +28,14 @@ namespace DiplomBukov
         std::deque<u32> hashes;
 
     public:
-        PcapAdapter(IProcessorPtr Connector = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        PcapAdapter(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
         ~PcapAdapter();
 
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual const char * getProcessorName();
-        virtual IOptionPtr getOptions();
+        virtual OptionPtr getOptions();
 
         virtual void run(bool always);
         virtual bool tick();

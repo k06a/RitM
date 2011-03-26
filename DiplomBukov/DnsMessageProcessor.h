@@ -27,16 +27,16 @@ namespace DiplomBukov
         GroupOptionPtr options;
 
     public:
-        DnsMessageProcessor(IProcessorPtr processor = IProcessorPtr());
-        virtual IProcessorPtr CreateCopy() const;
+        DnsMessageProcessor(ProcessorPtr processor = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 
-        virtual IOptionPtr getOptions();
+        virtual OptionPtr getOptions();
     };
     // class DnsMessageProcessor
 }

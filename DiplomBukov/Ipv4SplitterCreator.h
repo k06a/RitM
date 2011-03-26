@@ -11,7 +11,7 @@ namespace DiplomBukov
     class Ipv4SplitterCreator : public IProcessorCreator
     {
     public:
-        virtual IProcessorPtr createProcessor(IConnectorPtr Connector = IConnectorPtr()) const;
+        virtual ProcessorPtr createProcessor(ConnectorPtr Connector = ConnectorPtr()) const;
     };
     // class MacProcessorCreator
 }

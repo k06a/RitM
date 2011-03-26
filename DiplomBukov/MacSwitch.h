@@ -15,20 +15,20 @@ namespace DiplomBukov
 
     class MacSwitch : public AbstractProcessor
     {
-        typedef std::deque<IProcessorPtr> MyDeque;
+        typedef std::deque<ProcessorPtr> MyDeque;
 
         MyDeque ports;
 
     public:
-        MacSwitch(IProcessorPtr Connector = IProcessorPtr());
+        MacSwitch(ProcessorPtr Connector = ProcessorPtr());
         MacSwitch(const MacSwitch & macSwitch);
         void DestroyHierarchy();
 
-        virtual IProcessorPtr CreateCopy() const;
+        virtual ProcessorPtr CreateCopy() const;
 
-        virtual IProcessorPtr getPointer();
-        virtual ProcessingStatus forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
-        virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
+        virtual ProcessorPtr getPointer();
+        virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
+        virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual const char * MacSwitch::getProcessorName();
     };

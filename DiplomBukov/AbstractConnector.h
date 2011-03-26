@@ -16,7 +16,7 @@ namespace DiplomBukov
         , public IConnector
     {
     protected:
-        typedef std::deque<IProcessorPtr> MyDeque;
+        typedef std::deque<ProcessorPtr> MyDeque;
 
         IConnectorModule * module;
         MyDeque procList;
@@ -25,13 +25,13 @@ namespace DiplomBukov
         AbstractConnector();
         virtual void DestroyHierarchy();
 
-        virtual void setNextProcessor(IProcessorPtr processor);
-        virtual IProcessorPtr getNextProcessor();
+        virtual void setNextProcessor(ProcessorPtr processor);
+        virtual ProcessorPtr getNextProcessor();
 
-        virtual void ping(IProcessorPtr prevProcessor);
+        virtual void ping(ProcessorPtr prevProcessor);
 
-        virtual void addNextProcessor(IProcessorPtr processor);
-        virtual void removeNextProcessor(IProcessorPtr processor);
+        virtual void addNextProcessor(ProcessorPtr processor);
+        virtual void removeNextProcessor(ProcessorPtr processor);
         virtual const MyDeque & nextProcessors() const;
     };
     // class AbstractConnector

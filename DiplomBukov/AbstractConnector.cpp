@@ -12,35 +12,35 @@ void AbstractConnector::DestroyHierarchy()
     for(MyDeque::iterator it = procList.begin(); it != procList.end(); ++it)
         (*it)->DestroyHierarchy();
     procList.clear();
-    setPrevProcessor(IProcessorPtr());
-    setNextProcessor(IProcessorPtr());
-    setSelf(IProcessorPtr());
+    setPrevProcessor(ProcessorPtr());
+    setNextProcessor(ProcessorPtr());
+    setSelf(ProcessorPtr());
 }
 
-void AbstractConnector::setNextProcessor(IProcessorPtr processor)
+void AbstractConnector::setNextProcessor(ProcessorPtr processor)
 {
     addNextProcessor(processor);
     AbstractProcessor::setNextProcessor(processor);
 }
 
-IProcessorPtr AbstractConnector::getNextProcessor()
+ProcessorPtr AbstractConnector::getNextProcessor()
 {
     return AbstractProcessor::getNextProcessor();
 }
 
-void AbstractConnector::ping(IProcessorPtr prevProcessor)
+void AbstractConnector::ping(ProcessorPtr prevProcessor)
 {
     for(MyDeque::iterator it = procList.begin(); it != procList.end(); ++it)
         (*it)->ping(prevProcessor);
     AbstractProcessor::setPrevProcessor(prevProcessor);
 }
 
-void AbstractConnector::addNextProcessor(IProcessorPtr processor)
+void AbstractConnector::addNextProcessor(ProcessorPtr processor)
 {
     procList.push_back(processor);
 }
 
-void AbstractConnector::removeNextProcessor(IProcessorPtr processor)
+void AbstractConnector::removeNextProcessor(ProcessorPtr processor)
 {
     std::remove(procList.begin(), procList.end(), processor);
 }

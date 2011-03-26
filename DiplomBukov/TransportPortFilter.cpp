@@ -4,7 +4,7 @@
 
 using namespace DiplomBukov;
 
-TransportPortFilter::TransportPortFilter(IProcessorPtr Connector)
+TransportPortFilter::TransportPortFilter(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
     
@@ -12,17 +12,17 @@ TransportPortFilter::TransportPortFilter(IProcessorPtr Connector)
     opt->setMinValue(1);
     opt->setMaxValue(65535);
     opt->setIntValue(2000);
-    portOption = IOptionPtr(opt);
+    portOption = OptionPtr(opt);
 }
 
-IProcessorPtr TransportPortFilter::CreateCopy() const
+ProcessorPtr TransportPortFilter::CreateCopy() const
 {
-    IProcessorPtr ptr(new TransportPortFilter(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new TransportPortFilter(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
 
-ProcessingStatus TransportPortFilter::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TransportPortFilter::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -50,7 +50,7 @@ Protocol TransportPortFilter::getProtocol()
     return Protocol::None;
 }
 
-IOptionPtr TransportPortFilter::getOptions()
+OptionPtr TransportPortFilter::getOptions()
 {
     return portOption;
 }

@@ -14,17 +14,17 @@ BruteConnector::BruteConnector(const MyDeque & d)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
-        IProcessorPtr proc = (*it)->CreateCopy();
+        ProcessorPtr proc = (*it)->CreateCopy();
         procList.push_back(proc);
     }
 }
 
-IProcessorPtr BruteConnector::CreateCopy() const
+ProcessorPtr BruteConnector::CreateCopy() const
 {
-    return IProcessorPtr(new BruteConnector(procList));
+    return ProcessorPtr(new BruteConnector(procList));
 }
 
-ProcessingStatus BruteConnector::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus BruteConnector::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
 	for(MyDeque::iterator it = procList.begin(); it != procList.end(); it++)

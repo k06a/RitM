@@ -3,19 +3,19 @@
 
 using namespace DiplomBukov;
 
-ProcessorModule::ProcessorModule(IProcessorPtr baseProcessor)
+ProcessorModule::ProcessorModule(ProcessorPtr baseProcessor)
     : baseProcessor(baseProcessor)
 {
     if (baseProcessor != NULL)
         baseProcessor->setModule(this);
 }
 
-IProcessorPtr ProcessorModule::getBaseProcessor()
+ProcessorPtr ProcessorModule::getBaseProcessor()
 {
     return baseProcessor;
 }
 
-void ProcessorModule::setBaseProcessor(IProcessorPtr baseProcessor)
+void ProcessorModule::setBaseProcessor(ProcessorPtr baseProcessor)
 {
     this->baseProcessor = baseProcessor;
     if (baseProcessor != NULL)

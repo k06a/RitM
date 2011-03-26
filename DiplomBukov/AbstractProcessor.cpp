@@ -9,10 +9,10 @@ AbstractProcessor::AbstractProcessor()
 {
 }
 
-IProcessorPtr AbstractProcessor::CreateCopy() const
+ProcessorPtr AbstractProcessor::CreateCopy() const
 {
     if (this == NULL)
-        return IProcessorPtr();
+        return ProcessorPtr();
     else
         throw "Not Implemented";
 }
@@ -21,17 +21,17 @@ void AbstractProcessor::DestroyHierarchy()
 {
     if (nextProcessor != NULL)
         nextProcessor->DestroyHierarchy();
-    setPrevProcessor(IProcessorPtr());
-    setNextProcessor(IProcessorPtr());
-    setSelf(IProcessorPtr());
+    setPrevProcessor(ProcessorPtr());
+    setNextProcessor(ProcessorPtr());
+    setSelf(ProcessorPtr());
 }
 
-IProcessorPtr AbstractProcessor::getPointer()
+ProcessorPtr AbstractProcessor::getPointer()
 {
     return Self;
 }
 
-void AbstractProcessor::ping(IProcessorPtr prevProcessor)
+void AbstractProcessor::ping(ProcessorPtr prevProcessor)
 {
     setPrevProcessor(prevProcessor);
     if (nextProcessor != NULL)
@@ -48,46 +48,46 @@ const char * AbstractProcessor::getProcessorName()
     return "EMPTY";
 }
 
-ProcessingStatus AbstractProcessor::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus AbstractProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (nextProcessor != NULL)
         return nextProcessor->forwardProcess(proto, packet, offset);
     return ProcessingStatus::Rejected;
 }
 
-ProcessingStatus AbstractProcessor::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus AbstractProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if (packet->processorBefore(Self) != NULL)
         return packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Rejected;
 }
 
-void AbstractProcessor::setSelf(IProcessorPtr proc)
+void AbstractProcessor::setSelf(ProcessorPtr proc)
 {
     Self = proc;
 }
 
-IProcessorPtr AbstractProcessor::self()
+ProcessorPtr AbstractProcessor::self()
 {
     return Self;
 }
 
-void AbstractProcessor::setNextProcessor(IProcessorPtr processor)
+void AbstractProcessor::setNextProcessor(ProcessorPtr processor)
 {
     nextProcessor = processor;
 }
 
-IProcessorPtr AbstractProcessor::getNextProcessor()
+ProcessorPtr AbstractProcessor::getNextProcessor()
 {
     return nextProcessor;
 }
 
-void AbstractProcessor::setPrevProcessor(IProcessorPtr processor)
+void AbstractProcessor::setPrevProcessor(ProcessorPtr processor)
 {
     prevProcessor = processor;
 }
 
-IProcessorPtr AbstractProcessor::getPrevProcessor()
+ProcessorPtr AbstractProcessor::getPrevProcessor()
 {
     return prevProcessor;
 }
@@ -102,7 +102,7 @@ IProcessorModule * AbstractProcessor::getModule()
     return module;
 }
 
-IOptionPtr AbstractProcessor::getOptions()
+OptionPtr AbstractProcessor::getOptions()
 {
-    return IOptionPtr();
+    return OptionPtr();
 }

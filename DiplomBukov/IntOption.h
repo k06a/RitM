@@ -18,7 +18,7 @@ namespace DiplomBukov
     public:
         IntOption(const std::string & name = "");
         IntOption(i64 value, i64 min, i64 max, const std::string & name = "");
-        virtual IOptionPtr CreateCopy() const;
+        virtual OptionPtr CreateCopy() const;
 
         virtual const std::string & getName() const;
         virtual void setName(const std::string & text);

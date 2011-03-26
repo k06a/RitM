@@ -3,14 +3,14 @@
 
 using namespace DiplomBukov;
 
-TcpSplitter::TcpSplitter(IProcessorPtr Connector)
+TcpSplitter::TcpSplitter(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-IProcessorPtr TcpSplitter::CreateCopy() const
+ProcessorPtr TcpSplitter::CreateCopy() const
 {
-    IProcessorPtr ptr(new TcpSplitter(nextProcessor->CreateCopy()));
+    ProcessorPtr ptr(new TcpSplitter(nextProcessor->CreateCopy()));
     ptr->setSelf(ptr);
     return ptr;
 }
@@ -26,7 +26,7 @@ void TcpSplitter::DestroyHierarchy()
     AbstractProcessor::DestroyHierarchy();
 }
 
-ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -61,7 +61,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, IPacketPtr packet, 
     return ProcessingStatus::Accepted;
 }
 
-ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset)
+ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
 

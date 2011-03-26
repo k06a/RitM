@@ -12,12 +12,12 @@ namespace DiplomBukov
     class GroupOption : public IOption
     {
         std::string label;
-        std::deque<IOptionPtr> optionList;
+        std::deque<OptionPtr> optionList;
         bool vertical;
 
     public:
         GroupOption(bool vertical = true, const std::string & name = "");
-        virtual IOptionPtr CreateCopy() const;
+        virtual OptionPtr CreateCopy() const;
 
         virtual const std::string & getName() const;
         virtual void setName(const std::string & name);
@@ -27,9 +27,9 @@ namespace DiplomBukov
         bool isHoizontal();
         bool isVertical();
 
-        const std::deque<IOptionPtr> & options();
-        void addOption(const IOptionPtr & option);
-        void removeOptions(const IOptionPtr & option);
+        const std::deque<OptionPtr> & options();
+        void addOption(const OptionPtr & option);
+        void removeOptions(const OptionPtr & option);
     };
     // class GroupOption
 

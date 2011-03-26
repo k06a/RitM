@@ -8,7 +8,7 @@ GroupOption::GroupOption(bool vertical, const std::string & name)
 {
 }
 
-IOptionPtr GroupOption::CreateCopy() const
+OptionPtr GroupOption::CreateCopy() const
 {
     GroupOptionPtr ptr(new GroupOption(vertical));
     ptr->setName(getName());
@@ -47,17 +47,17 @@ bool GroupOption::isVertical()
     return vertical;
 }
 
-const std::deque<IOptionPtr> & GroupOption::options()
+const std::deque<OptionPtr> & GroupOption::options()
 {
     return optionList;
 }
 
-void GroupOption::addOption(const IOptionPtr & option)
+void GroupOption::addOption(const OptionPtr & option)
 {
     optionList.push_back(option);
 }
 
-void GroupOption::removeOptions(const IOptionPtr & option)
+void GroupOption::removeOptions(const OptionPtr & option)
 {
     std::remove(optionList.begin(), optionList.end(), option);
 }

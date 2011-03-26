@@ -14,7 +14,7 @@ namespace DiplomBukov
 
     public:
         CheckOption(bool checked = false, const std::string & name = "");
-        virtual IOptionPtr CreateCopy() const;
+        virtual OptionPtr CreateCopy() const;
 
         virtual const std::string & getName() const;
         virtual void setName(const std::string & text);
