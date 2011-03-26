@@ -16,7 +16,7 @@ namespace DiplomBukov
         : public AbstractProcessor
         , public IAdapter
     {
-        IOptionPtr devicesSwitch;
+        SwitchOptionPtr devicesSwitch;
 
         pcap_if_t * deviceList;
         unsigned deviceCount;

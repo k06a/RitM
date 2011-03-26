@@ -33,6 +33,8 @@ namespace DiplomBukov
         bool setIntValue(i64 val);
     };
     // class IntOption
+
+    typedef SmartPointer<IntOption>::Type IntOptionPtr;
 }
 // namespace DiplomBukov
 

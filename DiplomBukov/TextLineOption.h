@@ -18,12 +18,14 @@ namespace DiplomBukov
         virtual IOptionPtr CreateCopy() const;
 
         virtual const std::string & getName() const;
-        virtual void setName(const std::string & text);
+        virtual void setName(const std::string & name);
 
         const std::string & getText() const;
-        void setText(const std::string & text);
+        void setText(const std::string & name);
     };
     // class TextLineOption
+
+    typedef SmartPointer<TextLineOption>::Type TextLineOptionPtr;
 }
 // namespace DiplomBukov
 

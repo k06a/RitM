@@ -59,6 +59,19 @@ struct DnsName
         return str;
     }
 
+    static SymbolicName fromString(const std::string & name)
+    {
+        SymbolicName vec;
+        unsigned offset = 0;
+        while (offset < name.size())
+        {
+            vec.push_back(
+                std::string(name, offset, name.find('.', offset)));
+            offset += vec.back().size() + 1;
+        }
+        return vec;
+    }
+
     static SymbolicNameSizePair parse(u8 * data, int size, int pos)
     {
         SymbolicName vec;

@@ -13,12 +13,18 @@ namespace DiplomBukov
     class ListOption : public IOption
     {
         std::string label;
-        T1 * first;
-        T2 * second;
+
+    protected:
         bool vertical;
 
     public:
-        ListOption(bool vertical = true, const std::string & name = "");
+        ListOption(const T1 & item1 = T1(),
+                   const T2 & item2 = T2(),
+                   bool vertical = true,
+                   const std::string & name = "")
+            : label(name), left(item1), right(item2), vertical(vertical)
+        {
+        }
         virtual IOptionPtr CreateCopy() const;
 
         virtual const std::string & getName() const;
@@ -29,16 +35,17 @@ namespace DiplomBukov
         bool isHoizontal();
         bool isVertical();
 
-        T1 * left() const;
-        void setLeft(IOption * option);
-        
-        T2 * right() const;
-        void setRight(IOption * option);
-
-        template<typename T>
-        IOption * at(int index);
+    public:
+        T1 left;
+        T2 right;
     };
     // class ListOption
+
+    template<typename T1, typename T2>
+    struct ListOptionPtr
+    {
+        typedef typename SmartPointer<ListOption<T1,T2> >::Type Type;
+    };
 }
 // namespace DiplomBukov
 

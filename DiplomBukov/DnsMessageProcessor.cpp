@@ -7,20 +7,24 @@
 using namespace DiplomBukov;
 
 DnsMessageProcessor::DnsMessageProcessor(IProcessorPtr processor)
+    : options(new GroupOption(false))
 {
     setNextProcessor(processor);
 
     std::deque<std::string> types;
     types.push_back("IPv4");
-    types.push_back("Text String");
+    types.push_back("Domain Name");
     types.push_back("Mail Exchange");
 
-    GroupOption * group = new GroupOption();
+    check = new CheckOption(false, "Вкл/Выкл");
     source = new TextLineOption("www.example.com");
     destType = new SwitchOption(types);
     destination = new TextLineOption("192.168.1.1");
 
-    options = IOptionPtr(group);
+    options->addOption(IOptionPtr(check));
+    options->addOption(IOptionPtr(source));
+    options->addOption(IOptionPtr(destType));
+    options->addOption(IOptionPtr(destination));
 }
 
 IProcessorPtr DnsMessageProcessor::CreateCopy() const
@@ -41,48 +45,52 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, IPacketPtr 
 
     packet->addProcessor(Self);
 
+    u16 answerType = 0;
+    if (destType->getSelectedText() == "IPv4")
+        answerType = DnsRequest::A;
+    if (destType->getSelectedText() == "Domain Name")
+        answerType = DnsRequest::TXT;
+    if (destType->getSelectedText() == "Mail Exchange")
+        answerType = DnsRequest::MX;
+
     dnsMessage.parse(&packet->data()[offset], packet->size()-offset);
 
     bool podmena = false;
-    /*
+
     // Подмена ответа
     for (unsigned i = 0; i < dnsMessage.answers.size(); i++)
     {
-        if (dnsMessage.answers[i].questionType == DnsRequest::A)
+        std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
+        if ((host == source->getText()) &&
+            (dnsMessage.answers[i].questionType == answerType))
         {
-            std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
-            if (host == "www.netbsd.org")
+            switch (answerType)
             {
-                ipv4_addr addr = "17.251.200.70"; // Apple.com IP address :-)
-                dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
-
-                std::vector<u8> vec = dnsMessage.dump();
-                packet->data().resize(offset + vec.size());
-                packet->setRealSize(offset + vec.size());
-                std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
+                case DnsRequest::A:
+                {
+                    ipv4_addr addr = destination->getText();
+                    dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
+                    break;
+                }
+                case DnsRequest::TXT:
+                {
+                    //dnsMessage.answers[i].resText = 
+                    dnsMessage.answers[i].resText =
+                        std::make_pair(DnsName::fromString(destination->getText()),0);
+                    break;
+                }
+                case DnsRequest::MX:
+                {
+                    ipv4_addr addr = destination->getText();
+                    dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
+                    break;
+                }
             }
-        }
-
-        if ((dnsMessage.answers[i].questionType == DnsRequest::A) ||
-            (dnsMessage.answers[i].questionType == DnsRequest::AAAA))
-        {
-            std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
-            if (host == "www.isc.org")
-            {
-                ipv4_addr addr = "77.88.21.11"; // Yandex.ru IP address :-)
-                dnsMessage.answers[i].questionType = DnsRequest::A;
-                dnsMessage.answers[i].resourceLength = sizeof(ipv4_addr);
-                dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
-
-                std::vector<u8> vec = dnsMessage.dump();
-                packet->data().resize(offset + vec.size());
-                packet->setRealSize(offset + vec.size());
-                std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
-            }
+            podmena = true;           
         }
     }
     
-    if (podmena)*/
+    if (podmena)
     {
         std::vector<u8> vec = dnsMessage.dump();
         packet->data().resize(offset + vec.size());

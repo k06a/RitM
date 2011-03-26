@@ -15,9 +15,9 @@ namespace DiplomBukov
         int selected;
 
     public:
-        SwitchOption(const std::string & name = "");
+        SwitchOption();
         SwitchOption(const std::string & item,
-                     const std::string & name= "");
+                     const std::string & name = "");
         SwitchOption(const std::deque<std::string> & text,
                      const std::string & name = "");
         virtual IOptionPtr CreateCopy() const;
@@ -35,6 +35,8 @@ namespace DiplomBukov
         std::string getSelectedText() const;
     };
     // class SwitchOption
+
+    typedef SmartPointer<SwitchOption>::Type SwitchOptionPtr;
 }
 // namespace DiplomBukov
 

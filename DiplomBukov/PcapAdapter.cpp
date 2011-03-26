@@ -8,7 +8,7 @@
 using namespace DiplomBukov;
 
 PcapAdapter::PcapAdapter(IProcessorPtr Connector)
-    : devicesSwitch(IOptionPtr())
+    : devicesSwitch(new SwitchOption())
     , deviceList(NULL)
     , device(NULL)
 {
@@ -28,10 +28,7 @@ PcapAdapter::PcapAdapter(IProcessorPtr Connector)
         arr.push_back(about);
     }
     
-    SwitchOption * so = new SwitchOption();
-    so->setTextItems(arr);
-
-    devicesSwitch = IOptionPtr(so);
+    devicesSwitch->setTextItems(arr);
 }
 
 IProcessorPtr PcapAdapter::CreateCopy() const

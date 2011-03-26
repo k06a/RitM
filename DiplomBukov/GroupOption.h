@@ -28,10 +28,12 @@ namespace DiplomBukov
         bool isVertical();
 
         const std::deque<IOptionPtr> & options();
-        void addOptions(IOptionPtr option);
-        void removeOptions(IOptionPtr option);
+        void addOption(const IOptionPtr & option);
+        void removeOptions(const IOptionPtr & option);
     };
     // class GroupOption
+
+    typedef SmartPointer<GroupOption>::Type GroupOptionPtr;
 }
 // namespace DiplomBukov
 

@@ -1,6 +1,7 @@
 #ifndef IPV4_HEADER_H
 #define IPV4_HEADER_H
 
+#include <string>
 #include "LittleBigEndian.h"
 #include "i64u64.h"
 
@@ -21,10 +22,10 @@ namespace DiplomBukov
             dword = value;
         }
 
-        ipv4_addr(const char * text)
+        ipv4_addr(const std::string & text)
         {
             unsigned arr[4];
-            sscanf_s(text, "%d.%d.%d.%d",
+            sscanf_s(text.c_str(), "%d.%d.%d.%d",
                      arr + 0, arr + 1,
                      arr + 2, arr + 3);
             std::copy(arr, arr+4, bytes);

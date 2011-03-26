@@ -3,8 +3,8 @@
 
 using namespace DiplomBukov;
 
-SwitchOption::SwitchOption(const std::string & name)
-    : label(name), labels(), selected(0)
+SwitchOption::SwitchOption()
+    : label(), labels(), selected(0)
 {
 }
 

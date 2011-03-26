@@ -3,8 +3,8 @@
 using namespace DiplomBukov;
 
 TextLineOption::TextLineOption(const std::string & text)
+    : label(""), textline(text)
 {
-    setText(text);
 }
 
 IOptionPtr TextLineOption::CreateCopy() const

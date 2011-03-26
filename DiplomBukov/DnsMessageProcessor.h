@@ -11,16 +11,20 @@
 #include "network\dns_header.h"
 #include "SwitchOption.h"
 #include "TextLineOption.h"
+#include "ListOption.h"
+#include "GroupOption.h"
+#include "CheckOption.h"
 
 namespace DiplomBukov
 {
     class DnsMessageProcessor : public AbstractProcessor
     {
         DnsMessage dnsMessage;
+        CheckOption * check;
         TextLineOption * source;
         SwitchOption * destType;
         TextLineOption * destination;
-        IOptionPtr options;
+        GroupOptionPtr options;
 
     public:
         DnsMessageProcessor(IProcessorPtr processor = IProcessorPtr());

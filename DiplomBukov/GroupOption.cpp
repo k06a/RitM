@@ -10,11 +10,11 @@ GroupOption::GroupOption(bool vertical, const std::string & name)
 
 IOptionPtr GroupOption::CreateCopy() const
 {
-    GroupOption * ptr = new GroupOption(vertical);
+    GroupOptionPtr ptr(new GroupOption(vertical));
     ptr->setName(getName());
     for (unsigned i = 0; i < optionList.size(); i++)
-        ptr->addOptions(optionList[i]->CreateCopy());
-    return IOptionPtr(ptr);
+        ptr->addOption(optionList[i]->CreateCopy());
+    return ptr;
 }
 
 const std::string & GroupOption::getName() const
@@ -52,12 +52,12 @@ const std::deque<IOptionPtr> & GroupOption::options()
     return optionList;
 }
 
-void GroupOption::addOptions(IOptionPtr option)
+void GroupOption::addOption(const IOptionPtr & option)
 {
     optionList.push_back(option);
 }
 
-void GroupOption::removeOptions(IOptionPtr option)
+void GroupOption::removeOptions(const IOptionPtr & option)
 {
     std::remove(optionList.begin(), optionList.end(), option);
 }

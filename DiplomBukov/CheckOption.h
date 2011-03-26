@@ -23,6 +23,8 @@ namespace DiplomBukov
         void setChecked(bool checked);
     };
     // class CheckOption
+
+    typedef SmartPointer<CheckOption>::Type CheckOptionPtr;
 }
 // namespace DiplomBukov
 
