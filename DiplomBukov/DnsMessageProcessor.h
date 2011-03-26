@@ -9,12 +9,18 @@
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 #include "network\dns_header.h"
+#include "SwitchOption.h"
+#include "TextLineOption.h"
 
 namespace DiplomBukov
 {
     class DnsMessageProcessor : public AbstractProcessor
     {
         DnsMessage dnsMessage;
+        TextLineOption * source;
+        SwitchOption * destType;
+        TextLineOption * destination;
+        IOptionPtr options;
 
     public:
         DnsMessageProcessor(IProcessorPtr processor = IProcessorPtr());
@@ -25,6 +31,8 @@ namespace DiplomBukov
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
+
+        virtual IOptionPtr getOptions();
     };
     // class DnsMessageProcessor
 }

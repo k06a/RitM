@@ -102,7 +102,7 @@ IProcessorModule * AbstractProcessor::getModule()
     return module;
 }
 
-std::deque<IOptionPtr> AbstractProcessor::getOptions()
+IOptionPtr AbstractProcessor::getOptions()
 {
-    return std::deque<IOptionPtr>();
+    return IOptionPtr();
 }

@@ -9,7 +9,6 @@ using namespace DiplomBukov;
 
 PcapAdapter::PcapAdapter(IProcessorPtr Connector)
     : devicesSwitch(IOptionPtr())
-    , options()
     , deviceList(NULL)
     , device(NULL)
 {
@@ -29,11 +28,10 @@ PcapAdapter::PcapAdapter(IProcessorPtr Connector)
         arr.push_back(about);
     }
     
-    SwitchOption * opt = new SwitchOption();
-    opt->setTextItems(arr);
-    devicesSwitch = IOptionPtr(opt);
+    SwitchOption * so = new SwitchOption();
+    so->setTextItems(arr);
 
-    options.push_back(devicesSwitch);
+    devicesSwitch = IOptionPtr(so);
 }
 
 IProcessorPtr PcapAdapter::CreateCopy() const
@@ -70,9 +68,10 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, IPacketPtr packet,
     return ProcessingStatus::Accepted;
 }
 
-std::deque<IOptionPtr> PcapAdapter::getOptions()
+
+IOptionPtr PcapAdapter::getOptions()
 {
-    return options;
+    return devicesSwitch;
 }
 
 void PcapAdapter::run(bool always)

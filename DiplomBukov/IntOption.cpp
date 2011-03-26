@@ -2,17 +2,29 @@
 
 using namespace DiplomBukov;
 
-IntOption::IntOption()
-: label(""), value(false)
+IntOption::IntOption(const std::string & name)
+    : label(name), value(0), min(0), max(0)
 {
 }
 
-std::string IntOption::getName()
+IntOption::IntOption(i64 value, i64 min, i64 max,const std::string & name)
+    : label(name), value(value), min(min), max(max)
+{
+}
+
+IOptionPtr IntOption::CreateCopy() const
+{
+    IntOption * ptr = new IntOption(value, min, max);
+    ptr->setName(getName());
+    return IOptionPtr(ptr);
+}
+
+const std::string & IntOption::getName() const
 {
     return label;
 }
 
-void IntOption::setName(std::string text)
+void IntOption::setName(const std::string & text)
 {
     label = text;
 }

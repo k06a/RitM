@@ -40,7 +40,7 @@ namespace DiplomBukov
         virtual void setModule(IProcessorModule * mod);
         virtual IProcessorModule * getModule();
 
-        virtual std::deque<IOptionPtr> getOptions();
+        virtual IOptionPtr getOptions();
     };
     // class AbstractProcessor
 }

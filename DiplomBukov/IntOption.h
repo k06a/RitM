@@ -11,15 +11,17 @@ namespace DiplomBukov
     class IntOption : public IOption
     {
         std::string label;
+        i64 value;
         i64 min;
         i64 max;
-        i64 value;
-
+        
     public:
-        IntOption();
+        IntOption(const std::string & name = "");
+        IntOption(i64 value, i64 min, i64 max, const std::string & name = "");
+        virtual IOptionPtr CreateCopy() const;
 
-        virtual std::string getName();
-        virtual void setName(std::string text);
+        virtual const std::string & getName() const;
+        virtual void setName(const std::string & text);
 
         i64 minValue();
         void setMinValue(i64 val);

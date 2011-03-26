@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
 
     //////////////////////////////////////////////////////////////////////////
 
-    SwitchOption * opt1 = (SwitchOption *)pcap1Adapter->getOptions().front().get();
+    SwitchOption * opt1 = (SwitchOption *)pcap1Adapter->getOptions().get();
     for (unsigned i = 0; i < opt1->getTextItems().size(); i++)
         std::cout << i << ". " << opt1->getTextItems()[i] << std::endl;
 
@@ -176,7 +176,7 @@ int main(int argc, char * argv[])
     std::cin >> index1;
     opt1->setSelectedIndex(index1);
 
-    SwitchOption * opt2 = (SwitchOption *)pcap2Adapter->getOptions().front().get();
+    SwitchOption * opt2 = (SwitchOption *)pcap2Adapter->getOptions().get();
     for (unsigned i = 0; i < opt2->getTextItems().size(); i++)
         std::cout << i << ". " << opt2->getTextItems()[i] << std::endl;
 

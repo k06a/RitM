@@ -737,6 +737,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\GroupOption.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\GroupOption.h"
+						>
+					</File>
+					<File
 						RelativePath=".\IntOption.cpp"
 						>
 					</File>
@@ -745,11 +753,27 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ListOption.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ListOption.h"
+						>
+					</File>
+					<File
 						RelativePath=".\SwitchOption.cpp"
 						>
 					</File>
 					<File
 						RelativePath=".\SwitchOption.h"
+						>
+					</File>
+					<File
+						RelativePath=".\TextLineOption.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TextLineOption.h"
 						>
 					</File>
 				</Filter>

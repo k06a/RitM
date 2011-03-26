@@ -2,12 +2,25 @@
 #include <algorithm>
 #include "IPacket.h"
 #include "network\ipv4_header.h"
+#include "GroupOption.h"
 
 using namespace DiplomBukov;
 
 DnsMessageProcessor::DnsMessageProcessor(IProcessorPtr processor)
 {
     setNextProcessor(processor);
+
+    std::deque<std::string> types;
+    types.push_back("IPv4");
+    types.push_back("Text String");
+    types.push_back("Mail Exchange");
+
+    GroupOption * group = new GroupOption();
+    source = new TextLineOption("www.example.com");
+    destType = new SwitchOption(types);
+    destination = new TextLineOption("192.168.1.1");
+
+    options = IOptionPtr(group);
 }
 
 IProcessorPtr DnsMessageProcessor::CreateCopy() const
@@ -97,4 +110,9 @@ Protocol DnsMessageProcessor::getProtocol()
 const char * DnsMessageProcessor::getProcessorName()
 {
     return "DnsMessageProcessor";
+}
+
+IOptionPtr DnsMessageProcessor::getOptions()
+{
+    return options;
 }

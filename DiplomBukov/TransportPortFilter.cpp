@@ -13,8 +13,6 @@ TransportPortFilter::TransportPortFilter(IProcessorPtr Connector)
     opt->setMaxValue(65535);
     opt->setIntValue(2000);
     portOption = IOptionPtr(opt);
-
-    options.push_back(portOption);
 }
 
 IProcessorPtr TransportPortFilter::CreateCopy() const
@@ -52,7 +50,7 @@ Protocol TransportPortFilter::getProtocol()
     return Protocol::None;
 }
 
-std::deque<IOptionPtr> TransportPortFilter::getOptions()
+IOptionPtr TransportPortFilter::getOptions()
 {
-    return options;
+    return portOption;
 }

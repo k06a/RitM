@@ -13,10 +13,11 @@ namespace DiplomBukov
         bool value;
 
     public:
-        CheckOption();
+        CheckOption(bool checked = false, const std::string & name = "");
+        virtual IOptionPtr CreateCopy() const;
 
-        virtual std::string getName();
-        virtual void setName(std::string text);
+        virtual const std::string & getName() const;
+        virtual void setName(const std::string & text);
 
         bool isChecked();
         void setChecked(bool checked);

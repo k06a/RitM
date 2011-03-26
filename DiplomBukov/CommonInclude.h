@@ -1,3 +1,5 @@
+#pragma once
+
 #include <memory>
 #include "Protocol.h"
 #include "ProcessingStatus.h"
@@ -6,6 +8,12 @@
 
 namespace DiplomBukov
 {
+    template<typename T>
+    struct SmartPointer
+    {
+        typedef std::tr1::shared_ptr<T> Type;
+    };
+
     class IPacket;
     class IConnector;
     class IDuplexConnector;
@@ -29,26 +37,26 @@ namespace DiplomBukov
 
     class IOption;
 
-    typedef std::tr1::shared_ptr<IPacket> IPacketPtr;
-    typedef std::tr1::shared_ptr<IConnector> IConnectorPtr;
-    typedef std::tr1::shared_ptr<IDuplexConnector> IDuplexConnectorPtr;
-    typedef std::tr1::shared_ptr<IAdapter> IAdapterPtr;
-    typedef std::tr1::shared_ptr<IProcessor> IProcessorPtr;
-    typedef std::tr1::shared_ptr<IDuplexProcessor> IDuplexProcessorPtr;
+    typedef SmartPointer<IPacket>::Type IPacketPtr;
+    typedef SmartPointer<IConnector>::Type IConnectorPtr;
+    typedef SmartPointer<IDuplexConnector>::Type IDuplexConnectorPtr;
+    typedef SmartPointer<IAdapter>::Type IAdapterPtr;
+    typedef SmartPointer<IProcessor>::Type IProcessorPtr;
+    typedef SmartPointer<IDuplexProcessor>::Type IDuplexProcessorPtr;
     
-    typedef std::tr1::shared_ptr<IConnectorCreator> IConnectorCreatorPtr;
-    typedef std::tr1::shared_ptr<IAdapterCreator> IAdapterCreatorPtr;
-    typedef std::tr1::shared_ptr<IProcessorCreator> IProcessorCreatorPtr;
+    typedef SmartPointer<IConnectorCreator>::Type IConnectorCreatorPtr;
+    typedef SmartPointer<IAdapterCreator>::Type IAdapterCreatorPtr;
+    typedef SmartPointer<IProcessorCreator>::Type IProcessorCreatorPtr;
 
-    typedef std::tr1::shared_ptr<IConnectorModule> IConnectorModulePtr;
-    typedef std::tr1::shared_ptr<IAdapterModule> IAdapterModulePtr;
-    typedef std::tr1::shared_ptr<IProcessorModule> IProcessorModulePtr;
+    typedef SmartPointer<IConnectorModule>::Type IConnectorModulePtr;
+    typedef SmartPointer<IAdapterModule>::Type IAdapterModulePtr;
+    typedef SmartPointer<IProcessorModule>::Type IProcessorModulePtr;
 
-    typedef std::tr1::shared_ptr<IConnectorPlugin> IConnectorPluginPtr;
-    typedef std::tr1::shared_ptr<IAdapterPlugin> IAdapterPluginPtr;
-    typedef std::tr1::shared_ptr<IProcessorPlugin> IProcessorPluginPtr;
+    typedef SmartPointer<IConnectorPlugin>::Type IConnectorPluginPtr;
+    typedef SmartPointer<IAdapterPlugin>::Type IAdapterPluginPtr;
+    typedef SmartPointer<IProcessorPlugin>::Type IProcessorPluginPtr;
 
-    typedef std::tr1::shared_ptr<ILibrary> ILibraryPtr;
+    typedef SmartPointer<ILibrary>::Type ILibraryPtr;
 
-    typedef std::tr1::shared_ptr<IOption> IOptionPtr;
+    typedef SmartPointer<IOption>::Type IOptionPtr;
 }

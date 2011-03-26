@@ -15,13 +15,20 @@ namespace DiplomBukov
         int selected;
 
     public:
-        SwitchOption();
+        SwitchOption(const std::string & name = "");
+        SwitchOption(const std::string & item,
+                     const std::string & name= "");
+        SwitchOption(const std::deque<std::string> & text,
+                     const std::string & name = "");
+        virtual IOptionPtr CreateCopy() const;
 
-        virtual std::string getName();
-        virtual void setName(std::string text);
+        virtual const std::string & getName() const;
+        virtual void setName(const std::string & text);
 
         const std::deque<std::string> & getTextItems() const;
-        void setTextItems(std::deque<std::string> text);
+        void setTextItems(const std::deque<std::string> & text);
+        void addTextItem(const std::string & text);
+        void removeTextItem(const std::string & text);
 
         int getSelectedIndex() const;
         void setSelectedIndex(int index);

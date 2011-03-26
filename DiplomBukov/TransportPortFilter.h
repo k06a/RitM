@@ -11,7 +11,6 @@ namespace DiplomBukov
     class TransportPortFilter : public AbstractProcessor
     {
         IOptionPtr portOption;
-        std::deque<IOptionPtr> options;
 
     public:
         TransportPortFilter(IProcessorPtr Connector = IProcessorPtr());
@@ -22,7 +21,7 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
 
-        virtual std::deque<IOptionPtr> getOptions();
+        virtual IOptionPtr getOptions();
     };
     // class TransportPortFilter
 }

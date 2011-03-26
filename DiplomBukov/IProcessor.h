@@ -1,7 +1,6 @@
 #ifndef IProcessor_H
 #define IProcessor_H
 
-#include <deque>
 #include <memory>
 #include "CommonInclude.h"
 
@@ -36,7 +35,7 @@ namespace DiplomBukov
         virtual IProcessorModule * getModule() = 0;
 
         //virtual void setOptions(std::deque<IOptionPtr>) = 0;
-        virtual std::deque<IOptionPtr> getOptions() = 0;
+        virtual IOptionPtr getOptions() = 0;
     };
     // class IProcessor
 }

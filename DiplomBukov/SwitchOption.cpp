@@ -1,19 +1,38 @@
 #include "SwitchOption.h"
+#include <algorithm>
 
 using namespace DiplomBukov;
 
-SwitchOption::SwitchOption()
-    : labels(), selected(0)
+SwitchOption::SwitchOption(const std::string & name)
+    : label(name), labels(), selected(0)
 {
-
 }
 
-std::string SwitchOption::getName()
+SwitchOption::SwitchOption(const std::string & item,
+                           const std::string & name)
+    : label(name), labels(1, item), selected(0)
+{
+}
+
+SwitchOption::SwitchOption(const std::deque<std::string> & items,
+                           const std::string & name)
+    : label(name), labels(items), selected(0)
+{
+}
+
+IOptionPtr SwitchOption::CreateCopy() const
+{
+    SwitchOption * ptr = new SwitchOption(labels);
+    ptr->setName(getName());
+    return IOptionPtr(ptr);
+}
+
+const std::string & SwitchOption::getName() const
 {
     return label;
 }
 
-void SwitchOption::setName(std::string text)
+void SwitchOption::setName(const std::string & text)
 {
     label = text;
 }
@@ -23,9 +42,19 @@ const std::deque<std::string> & SwitchOption::getTextItems() const
     return labels;
 }
 
-void SwitchOption::setTextItems(std::deque<std::string> text)
+void SwitchOption::setTextItems(const std::deque<std::string> & items)
 {
-    labels = text;
+    labels = items;
+}
+
+void SwitchOption::addTextItem(const std::string & item)
+{
+    labels.push_back(item);
+}
+
+void SwitchOption::removeTextItem(const std::string & item)
+{
+    std::remove(labels.begin(), labels.end(), item);
 }
 
 int SwitchOption::getSelectedIndex() const

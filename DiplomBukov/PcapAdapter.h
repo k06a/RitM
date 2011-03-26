@@ -17,7 +17,6 @@ namespace DiplomBukov
         , public IAdapter
     {
         IOptionPtr devicesSwitch;
-        std::deque<IOptionPtr> options;
 
         pcap_if_t * deviceList;
         unsigned deviceCount;
@@ -36,7 +35,7 @@ namespace DiplomBukov
         virtual ProcessingStatus backwardProcess(Protocol proto, IPacketPtr packet, unsigned offset);
 
         virtual const char * getProcessorName();
-        virtual std::deque<IOptionPtr> getOptions();
+        virtual IOptionPtr getOptions();
 
         virtual void run(bool always);
         virtual bool tick();
