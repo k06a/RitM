@@ -12,7 +12,6 @@ Ipv4Defragger::Ipv4Defragger(ProcessorPtr Connector)
 ProcessorPtr Ipv4Defragger::CreateCopy() const
 {
     ProcessorPtr ptr(new Ipv4Defragger(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
     return ptr;
 }
 
@@ -21,7 +20,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet,
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
     
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
 
     ipv4_header_data * ipv4 = (ipv4_header_data *)(&packet->data()[offset]);
 

@@ -13,13 +13,8 @@ ProtocolConnector::ProtocolConnector()
 {
 }
 
-ProtocolConnector::ProtocolConnector(const ProtocolConnector & Connector)
+ProtocolConnector::ProtocolConnector(const MyDeque & d)
     : procMap()
-{
-    Init(Connector.procList);
-}
-
-void ProtocolConnector::Init(const MyDeque & d)
 {
     for(MyDeque::const_iterator it = d.begin(); it != d.end(); ++it)
     {
@@ -31,7 +26,7 @@ void ProtocolConnector::Init(const MyDeque & d)
 
 ProcessorPtr ProtocolConnector::CreateCopy() const
 {
-    return ProcessorPtr(new ProtocolConnector(*this));
+    return ProcessorPtr(new ProtocolConnector(procList));
 }
 
 void ProtocolConnector::ping(ProcessorPtr prevProcessor)

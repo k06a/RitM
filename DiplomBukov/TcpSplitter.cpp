@@ -11,7 +11,6 @@ TcpSplitter::TcpSplitter(ProcessorPtr Connector)
 ProcessorPtr TcpSplitter::CreateCopy() const
 {
     ProcessorPtr ptr(new TcpSplitter(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
     return ptr;
 }
 
@@ -54,7 +53,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, PacketPtr packet, u
         packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
         Connectors[para]->forwardProcess(proto, packet, offset);
 
@@ -71,8 +70,8 @@ ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, PacketPtr packet, 
     //if (packet->direction() == IPacket::ServerToClient)
     //    std::swap(tcp->src_port, tcp->dst_port);
 
-    if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

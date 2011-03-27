@@ -9,9 +9,9 @@ CheckOption::CheckOption(bool checked, const std::string & name)
 
 OptionPtr CheckOption::CreateCopy() const
 {
-    CheckOption * ptr = new CheckOption(value);
+    CheckOptionPtr ptr(new CheckOption(value));
     ptr->setName(getName());
-    return OptionPtr(ptr);
+    return ptr;
 }
 
 const std::string & CheckOption::getName() const

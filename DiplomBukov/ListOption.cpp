@@ -23,9 +23,9 @@ ListOption<T1,T2>::ListOption(const T1 & item1,
 template<typename T1, typename T2>
 OptionPtr ListOption<T1,T2>::CreateCopy() const
 {
-    ListOption * ptr = new ListOption(labels);
+    ListOptionPtr<T1,T2>::Type ptr(new ListOption(labels));
     ptr->setName(getName());
-    return OptionPtr(ptr);
+    return ptr;
 }
 
 template<typename T1, typename T2>

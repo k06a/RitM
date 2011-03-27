@@ -17,8 +17,7 @@ namespace DiplomBukov
 
     public:
         ProtocolConnector();
-        ProtocolConnector(const ProtocolConnector & Connector);
-        void Init(const MyDeque & d);
+        ProtocolConnector(const MyDeque & d);
         virtual ProcessorPtr CreateCopy() const;
 
         virtual void ping(ProcessorPtr prevProcessor);

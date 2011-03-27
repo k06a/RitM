@@ -17,9 +17,11 @@ TransportPortFilter::TransportPortFilter(ProcessorPtr Connector)
 
 ProcessorPtr TransportPortFilter::CreateCopy() const
 {
-    ProcessorPtr ptr(new TransportPortFilter(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new TransportPortFilter(np));
 }
 
 ProcessingStatus TransportPortFilter::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -27,7 +29,7 @@ ProcessingStatus TransportPortFilter::forwardProcess(Protocol proto, PacketPtr p
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
 
     tcpudp_header * header = (tcpudp_header*)&packet->data()[offset];
     IntOption * opt = (IntOption*)portOption.get();

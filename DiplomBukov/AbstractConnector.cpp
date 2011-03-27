@@ -14,7 +14,6 @@ void AbstractConnector::DestroyHierarchy()
     procList.clear();
     setPrevProcessor(ProcessorPtr());
     setNextProcessor(ProcessorPtr());
-    setSelf(ProcessorPtr());
 }
 
 void AbstractConnector::setNextProcessor(ProcessorPtr processor)

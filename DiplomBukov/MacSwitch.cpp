@@ -20,7 +20,6 @@ MacSwitch::MacSwitch(const MacSwitch & macSwitch)
 ProcessorPtr MacSwitch::CreateCopy() const
 {
     ProcessorPtr ptr(new MacSwitch(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
     return ptr;
 }
 
@@ -32,15 +31,14 @@ void MacSwitch::DestroyHierarchy()
 
 ProcessorPtr MacSwitch::getPointer()
 {
-    ProcessorPtr port(new MacSwitchPort(Self));
-    port->setSelf(port);
+    ProcessorPtr port(this->shared_from_this());
     ports.push_back(port);
     return port;
 }
 
 ProcessingStatus MacSwitch::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, offset);
 

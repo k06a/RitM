@@ -34,7 +34,11 @@ PcapAdapter::PcapAdapter(ProcessorPtr Connector)
 
 ProcessorPtr PcapAdapter::CreateCopy() const
 {
-    return ProcessorPtr();
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new PcapAdapter(np));
 }
 
 PcapAdapter::~PcapAdapter()
@@ -118,7 +122,7 @@ bool PcapAdapter::tick()
     packet->setId(id++);
     packet->setTime(header.ts.tv_sec);
     packet->setAdapter(this);
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
 
     std::cout << '+' << devicesSwitch->getSelectedIndex();
 

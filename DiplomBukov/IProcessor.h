@@ -22,9 +22,6 @@ namespace DiplomBukov
         virtual Protocol getProtocol() = 0;
         virtual const char * getProcessorName() = 0;
 
-        virtual void setSelf(ProcessorPtr proc) = 0;
-        virtual ProcessorPtr self() = 0;
-
         virtual void setNextProcessor(ProcessorPtr processor) = 0;
         virtual ProcessorPtr getNextProcessor() = 0;
 
@@ -34,7 +31,6 @@ namespace DiplomBukov
         virtual void setModule(IProcessorModule * module) = 0;
         virtual IProcessorModule * getModule() = 0;
 
-        //virtual void setOptions(std::deque<OptionPtr>) = 0;
         virtual OptionPtr getOptions() = 0;
     };
     // class IProcessor

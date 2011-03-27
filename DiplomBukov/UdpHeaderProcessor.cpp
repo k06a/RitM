@@ -10,9 +10,11 @@ UdpHeaderProcessor::UdpHeaderProcessor(ProcessorPtr Connector)
 
 ProcessorPtr UdpHeaderProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new UdpHeaderProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new UdpHeaderProcessor(np));
 }
 
 ProcessingStatus UdpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -33,7 +35,7 @@ ProcessingStatus UdpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr pa
         inproto = Protocol(text, udp->dst_port);
     }
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(inproto, packet, offset);
 
@@ -57,8 +59,8 @@ ProcessingStatus UdpHeaderProcessor::backwardProcess(Protocol proto, PacketPtr p
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(udp->src_port, udp->dst_port);
 
-    if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(Protocol::UDP, packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::UDP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

@@ -40,18 +40,6 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
         TcpHeaderProcessorPtr tcpHeader(new TcpHeaderProcessor());
         AcceptProcessorPtr acceptProcessor(new AcceptProcessor());
         
-        adapter1->setSelf(adapter1);
-        adapter2->setSelf(adapter2);
-        mac1->setSelf(mac1);
-        mac2->setSelf(mac2);
-        macSwitch->setSelf(macSwitch);
-        ipv4Splitter->setSelf(ipv4Splitter);
-        ipv4Header->setSelf(ipv4Header);
-        tcpSplitter->setSelf(tcpSplitter);
-        tcpProcessor->setSelf(tcpProcessor);
-        tcpHeader->setSelf(tcpHeader);
-        acceptProcessor->setSelf(acceptProcessor);
-
         adapter1->setNextProcessor(mac1->getPointer());
         adapter2->setNextProcessor(mac2->getPointer());
         mac1->setNextProcessor(macSwitch->getPointer());

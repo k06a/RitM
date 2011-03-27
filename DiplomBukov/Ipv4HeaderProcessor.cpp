@@ -12,9 +12,11 @@ Ipv4HeaderProcessor::Ipv4HeaderProcessor(ProcessorPtr Connector)
 
 ProcessorPtr Ipv4HeaderProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new Ipv4HeaderProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new Ipv4HeaderProcessor(np));
 }
 
 ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -31,7 +33,7 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, PacketPtr p
 
     offset += ip->size();
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
     {
         Protocol::TransportLayer inprot = (Protocol::TransportLayer)ip->proto;
@@ -74,8 +76,8 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, PacketPtr 
             */
     }
 
-    if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(getProtocol(), packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        packet->processorBefore(this->shared_from_this())->backwardProcess(getProtocol(), packet, offset);
     
     return ProcessingStatus::Accepted;
 }

@@ -10,9 +10,11 @@ IcmpProcessor::IcmpProcessor(ProcessorPtr Connector)
 
 ProcessorPtr IcmpProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new IcmpProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new IcmpProcessor(np));
 }
 
 ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -20,7 +22,7 @@ ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, PacketPtr packet,
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
 
     icmp_header * icmp = (icmp_header *)(&packet->data()[offset]);
 

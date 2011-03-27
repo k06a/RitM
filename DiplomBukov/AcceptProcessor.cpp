@@ -13,16 +13,14 @@ ProcessorPtr AcceptProcessor::CreateCopy() const
     if (nextProcessor != NULL)
         nextProcessor->CreateCopy();
 
-    ProcessorPtr ptr(new AcceptProcessor(np));
-    ptr->setSelf(ptr);
-    return ptr;
+    return ProcessorPtr(new AcceptProcessor(np));
 }
 
 ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     packet->setStatus(IPacket::Accepted);
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     backwardProcess(proto, packet, offset);
     
     return ProcessingStatus::Accepted;

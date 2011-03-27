@@ -12,9 +12,11 @@ TcpLayerProcessor::TcpLayerProcessor(ProcessorPtr Connector)
 
 ProcessorPtr TcpLayerProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new TcpLayerProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new TcpLayerProcessor(np));
 }
 
 void TcpLayerProcessor::DestroyHierarchy()
@@ -35,7 +37,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, PacketPtr pac
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     tcp_header * tcp = (tcp_header *)&packet->data()[offset];
     unsigned dataInTcp = packet->size() - offset - tcp->header_size();
     maxDataInTcp = std::max(maxDataInTcp, dataInTcp);
@@ -320,8 +322,8 @@ ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, Packe
     tcp->seq = toAbonent.currentSendSN;
     tcp->ack = toAbonent.currentRecvSN;
     
-    if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        packet->processorBefore(this->shared_from_this())->backwardProcess(proto, packet, offset);
 
     if (tcp->flags.haveFlags(tcp_header::flags_struct::SYN))
         toAbonent.currentSendSN++;

@@ -12,9 +12,11 @@ HttpSwapProcessor::HttpSwapProcessor(ProcessorPtr processor)
 
 ProcessorPtr HttpSwapProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new HttpSwapProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new HttpSwapProcessor(np));
 }
 
 ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)

@@ -9,9 +9,9 @@ TextLineOption::TextLineOption(const std::string & text)
 
 OptionPtr TextLineOption::CreateCopy() const
 {
-    TextLineOption * ptr = new TextLineOption(textline);
+    TextLineOptionPtr ptr(new TextLineOption(textline));
     ptr->setName(getName());
-    return OptionPtr(ptr);
+    return ptr;
 }
 
 const std::string & TextLineOption::getName() const

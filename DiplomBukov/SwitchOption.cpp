@@ -22,9 +22,9 @@ SwitchOption::SwitchOption(const std::deque<std::string> & items,
 
 OptionPtr SwitchOption::CreateCopy() const
 {
-    SwitchOption * ptr = new SwitchOption(labels);
+    SwitchOptionPtr ptr(new SwitchOption(labels));
     ptr->setName(getName());
-    return OptionPtr(ptr);
+    return ptr;
 }
 
 const std::string & SwitchOption::getName() const

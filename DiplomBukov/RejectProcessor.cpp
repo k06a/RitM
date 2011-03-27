@@ -9,9 +9,11 @@ RejectProcessor::RejectProcessor(ProcessorPtr Connector)
 
 ProcessorPtr RejectProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new RejectProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new RejectProcessor(np));
 }
 
 ProcessingStatus RejectProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)

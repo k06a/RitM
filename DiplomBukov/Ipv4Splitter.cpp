@@ -11,7 +11,6 @@ Ipv4Splitter::Ipv4Splitter(ProcessorPtr Connector)
 ProcessorPtr Ipv4Splitter::CreateCopy() const
 {
     ProcessorPtr ptr(new Ipv4Splitter(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
     return ptr;
 }
 
@@ -58,7 +57,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, PacketPtr packet, 
         packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
         Connectors[para]->forwardProcess(proto, packet, offset);
 
@@ -75,8 +74,8 @@ ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, PacketPtr packet,
     //if (packet->direction() == IPacket::ServerToClient)
     //    std::swap(ipv4->src_data, ipv4->dst_data);
 
-    if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(Protocol::IPv4, packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::IPv4, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

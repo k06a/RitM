@@ -127,26 +127,6 @@ int main(int argc, char * argv[])
     ProcessorModule * icmpModule = new ProcessorModule(icmpProcessor);
     */
 
-    pcap1Adapter->setSelf(pcap1Adapter);
-    pcap2Adapter->setSelf(pcap2Adapter);
-    mac1HeaderProcessor->setSelf(mac1HeaderProcessor);
-    mac2HeaderProcessor->setSelf(mac2HeaderProcessor);
-
-    macSwitch->setSelf(macSwitch);
-
-    acceptProcessor->setSelf(acceptProcessor);
-    ipSplitter->setSelf(ipSplitter);
-    ipHeaderProcessor->setSelf(ipHeaderProcessor);
-
-    icmpProcessor->setSelf(icmpProcessor);
-    tcpSplitter->setSelf(tcpSplitter);
-    tcpOptionsRemover->setSelf(tcpOptionsRemover);
-    tcpLayerProcessor->setSelf(tcpLayerProcessor);
-    tcpHeaderProcessor->setSelf(tcpHeaderProcessor);
-
-    telnetProcessor->setSelf(telnetProcessor);
-    httpDefragProcessor->setSelf(httpDefragProcessor);
-
     //////////////////////////////////////////////////////////////////////////
 
     connect(pcap1Adapter, mac1HeaderProcessor);
@@ -196,4 +176,7 @@ int main(int argc, char * argv[])
             pcap1Adapter->tick();
             pcap2Adapter->tick();
         }
+
+    pcap1Adapter->DestroyHierarchy();
+    pcap2Adapter->DestroyHierarchy();
 }

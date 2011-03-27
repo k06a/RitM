@@ -19,7 +19,6 @@ MacSwitchPort::MacSwitchPort(const MacSwitchPort & macSwitchPort)
 ProcessorPtr MacSwitchPort::CreateCopy() const
 {
     ProcessorPtr ptr(new MacSwitchPort(*this));
-    ptr->setSelf(ptr);
     return ptr;
 }
 
@@ -28,7 +27,7 @@ ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, PacketPtr packet,
     if (packet->srcMac().isConcrete() && !checkMac(packet->srcMac()))
         macList.push_back(packet->srcMac());
     
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, offset);
 

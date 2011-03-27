@@ -10,9 +10,11 @@ MacHeaderProcessor::MacHeaderProcessor(ProcessorPtr Connector)
 
 ProcessorPtr MacHeaderProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new MacHeaderProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new MacHeaderProcessor(np));
 }
 
 ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -25,7 +27,7 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, PacketPtr pa
     packet->setDstMac(mac->dst);
     packet->setFormat((Protocol::NetworkLayer)(int)mac->proto);
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
     	nextProcessor->forwardProcess(packet->format(), packet, offset + sizeof(mac_header));
 

@@ -35,13 +35,6 @@ TEST(DnsMessageProcessorTest, ReparseDnsHeader)
         DnsMessageProcessorPtr dnsProcessor(new DnsMessageProcessor());
         AcceptProcessorPtr acceptProcessor(new AcceptProcessor());
         
-        adapter->setSelf(adapter);
-        mac->setSelf(mac);
-        ipv4Header->setSelf(ipv4Header);
-        udpHeader->setSelf(udpHeader);
-        dnsProcessor->setSelf(dnsProcessor);
-        acceptProcessor->setSelf(acceptProcessor);
-
         adapter->setNextProcessor(mac->getPointer());
         mac->setNextProcessor(ipv4Header->getPointer());
         ipv4Header->setNextProcessor(udpHeader->getPointer());
@@ -76,13 +69,6 @@ TEST(DnsMessageProcessorTest, SwapNetbsdToYandex)
         UdpHeaderProcessorPtr udpHeader(new UdpHeaderProcessor());
         DnsMessageProcessorPtr dnsProcessor(new DnsMessageProcessor());
         AcceptProcessorPtr acceptProcessor(new AcceptProcessor());
-
-        adapter->setSelf(adapter);
-        mac->setSelf(mac);
-        ipv4Header->setSelf(ipv4Header);
-        udpHeader->setSelf(udpHeader);
-        dnsProcessor->setSelf(dnsProcessor);
-        acceptProcessor->setSelf(acceptProcessor);
 
         adapter->setNextProcessor(mac->getPointer());
         mac->setNextProcessor(ipv4Header->getPointer());

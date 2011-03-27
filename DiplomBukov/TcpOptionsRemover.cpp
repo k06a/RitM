@@ -9,9 +9,11 @@ TcpOptionsRemover::TcpOptionsRemover(ProcessorPtr Connector)
 
 ProcessorPtr TcpOptionsRemover::CreateCopy() const
 {
-    ProcessorPtr ptr(new TcpOptionsRemover(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new TcpOptionsRemover(np));
 }
 
 ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -29,7 +31,7 @@ ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, PacketPtr pac
         tcp->set_header_size(sizeof(tcp_header));
     }
     
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, offset);
 
@@ -38,8 +40,8 @@ ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, PacketPtr pac
 
 ProcessingStatus TcpOptionsRemover::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

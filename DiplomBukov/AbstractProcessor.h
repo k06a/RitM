@@ -6,10 +6,11 @@
 
 namespace DiplomBukov
 {
-    class AbstractProcessor : public virtual IProcessor
+    class AbstractProcessor
+        : public virtual IProcessor
+        , public EnableSmartFromThis<AbstractProcessor>::Type
     {
     protected:
-        ProcessorPtr Self;
         ProcessorPtr prevProcessor;
         ProcessorPtr nextProcessor;
         IProcessorModule * module;
@@ -27,9 +28,6 @@ namespace DiplomBukov
 
         virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
         virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
-
-        virtual void setSelf(ProcessorPtr proc);
-        virtual ProcessorPtr self();
 
         virtual void setNextProcessor(ProcessorPtr processor);
         virtual ProcessorPtr getNextProcessor();

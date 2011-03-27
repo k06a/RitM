@@ -28,6 +28,7 @@ FileAdapter::FileAdapter(const std::string & filename1,
 
 ProcessorPtr FileAdapter::CreateCopy() const
 {
+    throw "Not Implemented";
     return ProcessorPtr();
 }
 
@@ -96,7 +97,7 @@ bool FileAdapter::tick()
     packet->setId(id++);
     packet->setTime(pph.ts_sec, pph.ts_usec);
     packet->setAdapter(this);
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
 
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
     if (nextProcessor != NULL)

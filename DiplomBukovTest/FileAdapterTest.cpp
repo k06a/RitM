@@ -30,8 +30,6 @@ TEST(FileAdapterTest, ReadingWholePcapFile)
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
     ProcessorPtr processor(testProc);
 
-    adapter->setSelf(adapter);
-    processor->setSelf(processor);
     adapter->setNextProcessor(processor);
     adapter->ping(ProcessorPtr());
 
@@ -41,9 +39,7 @@ TEST(FileAdapterTest, ReadingWholePcapFile)
     
     adapter->run(true);
 
-    adapter->setSelf(AdapterPtr());
-    processor->setSelf(ProcessorPtr());
-    adapter->setNextProcessor(ProcessorPtr());
+    adapter->DestroyHierarchy();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,8 +50,6 @@ TEST(FileAdapterTest, ReadingSequentialyPcapFile)
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
     ProcessorPtr processor(testProc);
 
-    adapter->setSelf(adapter);
-    processor->setSelf(processor);
     adapter->setNextProcessor(processor);
     adapter->ping(ProcessorPtr());
 
@@ -84,9 +78,6 @@ TEST(FileAdapterTest, WritingPcapFile)
             new FileAdapter("FileAdapterTest.pcap",
                             "FileAdapterTest.WritingPcapFile.out.pcap"));
         AcceptProcessorPtr processor(new AcceptProcessor());
-
-        adapter->setSelf(adapter);
-        processor->setSelf(processor);
 
         adapter->setNextProcessor(processor);
         adapter->ping(ProcessorPtr());

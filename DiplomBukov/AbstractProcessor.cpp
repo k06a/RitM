@@ -4,8 +4,7 @@
 using namespace DiplomBukov;
 
 AbstractProcessor::AbstractProcessor()
-    : Self(), prevProcessor()
-    , nextProcessor(), module()
+    : prevProcessor(), nextProcessor(), module()
 {
 }
 
@@ -23,19 +22,18 @@ void AbstractProcessor::DestroyHierarchy()
         nextProcessor->DestroyHierarchy();
     setPrevProcessor(ProcessorPtr());
     setNextProcessor(ProcessorPtr());
-    setSelf(ProcessorPtr());
 }
 
 ProcessorPtr AbstractProcessor::getPointer()
 {
-    return Self;
+    return this->shared_from_this();
 }
 
 void AbstractProcessor::ping(ProcessorPtr prevProcessor)
 {
     setPrevProcessor(prevProcessor);
     if (nextProcessor != NULL)
-        nextProcessor->ping(Self);
+        nextProcessor->ping(this->shared_from_this());
 }
 
 Protocol AbstractProcessor::getProtocol()
@@ -57,19 +55,9 @@ ProcessingStatus AbstractProcessor::forwardProcess(Protocol proto, PacketPtr pac
 
 ProcessingStatus AbstractProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    if (packet->processorBefore(Self) != NULL)
-        return packet->processorBefore(Self)->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        return packet->processorBefore(this->shared_from_this())->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Rejected;
-}
-
-void AbstractProcessor::setSelf(ProcessorPtr proc)
-{
-    Self = proc;
-}
-
-ProcessorPtr AbstractProcessor::self()
-{
-    return Self;
 }
 
 void AbstractProcessor::setNextProcessor(ProcessorPtr processor)

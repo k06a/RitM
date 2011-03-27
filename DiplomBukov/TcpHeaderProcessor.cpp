@@ -10,9 +10,11 @@ TcpHeaderProcessor::TcpHeaderProcessor(ProcessorPtr Connector)
 
 ProcessorPtr TcpHeaderProcessor::CreateCopy() const
 {
-    ProcessorPtr ptr(new TcpHeaderProcessor(nextProcessor->CreateCopy()));
-    ptr->setSelf(ptr);
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new TcpHeaderProcessor(np));
 }
 
 ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -37,7 +39,7 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr pa
         inproto = Protocol(text, tcp->dst_port);
     }
 
-    packet->addProcessor(Self);
+    packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(inproto, packet, offset);
 
@@ -60,8 +62,8 @@ ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, PacketPtr p
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
 
-    if (packet->processorBefore(Self) != NULL)
-        packet->processorBefore(Self)->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(this->shared_from_this()) != NULL)
+        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }
