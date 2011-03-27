@@ -30,6 +30,8 @@ namespace DiplomBukov
         virtual const std::deque<ProcessorPtr> & nextProcessors();
     };
     // class ProtocolConnector
+
+    typedef SmartPointer<ProtocolConnector>::Type ProtocolConnectorPtr;
 }
 // namespace DiplomBukov
 

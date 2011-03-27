@@ -26,6 +26,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class TransportPortProcessor
+
+    typedef SmartPointer<TransportPortProcessor>::Type TransportPortProcessorPtr;
 }
 // namespace DiplomBukov
 

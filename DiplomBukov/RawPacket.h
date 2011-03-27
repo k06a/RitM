@@ -77,6 +77,8 @@ namespace DiplomBukov
         virtual bool haveProcessor(ProcessorPtr proc) const;
     };
     // class RawPacket
+
+    typedef SmartPointer<RawPacket>::Type RawPacketPtr;
 }
 // namespace DiplomBukov
 

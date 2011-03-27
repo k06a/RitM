@@ -56,6 +56,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
 	};
 	// class Ipv4Defragger
+
+    typedef SmartPointer<Ipv4Defragger>::Type Ipv4DefraggerPtr;
 }
 // namespace DiplomBukov
 

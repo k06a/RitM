@@ -106,6 +106,8 @@ namespace DiplomBukov
         std::pair<PacketPtr,unsigned> mergePackets(const std::deque<QuededPacket> & arr);
     };
     // class TcpLayerProcessor
+
+    typedef SmartPointer<TcpLayerProcessor>::Type TcpLayerProcessorPtr;
 }
 // namespace DiplomBukov
 

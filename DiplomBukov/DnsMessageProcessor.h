@@ -20,6 +20,7 @@ namespace DiplomBukov
     class DnsMessageProcessor : public AbstractProcessor
     {
         DnsMessage dnsMessage;
+        CheckOption * alwaysResave;
         CheckOption * check;
         TextLineOption * source;
         SwitchOption * destType;
@@ -39,6 +40,8 @@ namespace DiplomBukov
         virtual OptionPtr getOptions();
     };
     // class DnsMessageProcessor
+
+    typedef SmartPointer<DnsMessageProcessor>::Type DnsMessageProcessorPtr;
 }
 // namespace DiplomBukov
 

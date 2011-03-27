@@ -28,6 +28,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class TcpSplitter
+
+    typedef SmartPointer<TcpSplitter>::Type TcpSplitterPtr;
 }
 // namespace DiplomBukov
 

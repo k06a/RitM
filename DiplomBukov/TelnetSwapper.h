@@ -21,6 +21,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class TelnetSwapper
+
+    typedef SmartPointer<TelnetSwapper>::Type TelnetSwapperPtr;
 }
 // namespace DiplomBukov
 

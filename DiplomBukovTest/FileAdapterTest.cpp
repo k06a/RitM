@@ -50,7 +50,7 @@ TEST(FileAdapterTest, ReadingWholePcapFile)
 
 TEST(FileAdapterTest, ReadingSequentialyPcapFile)
 {
-    AdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
+    FileAdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
     ProcessorPtr processor(testProc);
 
@@ -58,6 +58,8 @@ TEST(FileAdapterTest, ReadingSequentialyPcapFile)
     processor->setSelf(processor);
     adapter->setNextProcessor(processor);
     adapter->ping(ProcessorPtr());
+
+    // --------------------------------
 
     adapter->run(false);
 
@@ -67,9 +69,9 @@ TEST(FileAdapterTest, ReadingSequentialyPcapFile)
 
     while (adapter->tick());
 
-    adapter->setSelf(AdapterPtr());
-    processor->setSelf(ProcessorPtr());
-    adapter->setNextProcessor(ProcessorPtr());
+    // --------------------------------
+
+    adapter->DestroyHierarchy();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,21 +80,24 @@ TEST(FileAdapterTest, WritingPcapFile)
 {
     // For smart pointer destruction
     {
-        AdapterPtr adapter(
+        FileAdapterPtr adapter(
             new FileAdapter("FileAdapterTest.pcap",
                             "FileAdapterTest.WritingPcapFile.out.pcap"));
-        ProcessorPtr processor(new AcceptProcessor());
+        AcceptProcessorPtr processor(new AcceptProcessor());
 
         adapter->setSelf(adapter);
         processor->setSelf(processor);
+
         adapter->setNextProcessor(processor);
         adapter->ping(ProcessorPtr());
 
+        // --------------------------------
+
         adapter->run(true);
 
-        adapter->setSelf(AdapterPtr());
-        processor->setSelf(ProcessorPtr());
-        adapter->setNextProcessor(ProcessorPtr());
+        // --------------------------------
+
+        adapter->DestroyHierarchy();
     }
 
     EXPECT_FILE_EQ("FileAdapterTest.pcap",

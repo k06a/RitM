@@ -33,6 +33,8 @@ namespace DiplomBukov
         virtual const char * MacSwitch::getProcessorName();
     };
     // class MacSwitch
+
+    typedef SmartPointer<MacSwitch>::Type MacSwitchPtr;
 }
 // namespace DiplomBukov
 

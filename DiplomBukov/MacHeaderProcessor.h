@@ -22,6 +22,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
 	};
 	// class MacHeaderProcessor
+
+    typedef SmartPointer<MacHeaderProcessor>::Type MacHeaderProcessorPtr;
 }
 // namespace DiplomBukov
 

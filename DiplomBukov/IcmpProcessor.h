@@ -19,6 +19,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class IcmpProcessor
+
+    typedef SmartPointer<IcmpProcessor>::Type IcmpProcessorPtr;
 }
 // namespace DiplomBukov
 

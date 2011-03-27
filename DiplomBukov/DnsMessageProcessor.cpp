@@ -21,10 +21,15 @@ DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
     destType = new SwitchOption(types);
     destination = new TextLineOption("192.168.1.1");
 
-    options->addOption(OptionPtr(check));
-    options->addOption(OptionPtr(source));
-    options->addOption(OptionPtr(destType));
-    options->addOption(OptionPtr(destination));
+    GroupOptionPtr group(new GroupOption(false));
+    group->addOption(OptionPtr(check));
+    group->addOption(OptionPtr(source));
+    group->addOption(OptionPtr(destType));
+    group->addOption(OptionPtr(destination));
+
+    alwaysResave = new CheckOption(false, "Перепаковывать все");
+    options->addOption(OptionPtr(alwaysResave));
+    options->addOption(group);
 }
 
 ProcessorPtr DnsMessageProcessor::CreateCopy() const
@@ -57,7 +62,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
 
     bool podmena = false;
 
-    // Подмена ответа
+    if (check->isChecked())
     for (unsigned i = 0; i < dnsMessage.answers.size(); i++)
     {
         std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
@@ -74,15 +79,16 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
                 }
                 case DnsRequest::TXT:
                 {
-                    //dnsMessage.answers[i].resText = 
                     dnsMessage.answers[i].resText =
                         std::make_pair(DnsName::fromString(destination->getText()),0);
                     break;
                 }
                 case DnsRequest::MX:
                 {
-                    ipv4_addr addr = destination->getText();
-                    dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
+                    u16be priority = 0x0028;
+                    dnsMessage.answers[i].resources.assign((u8*)&priority, ((u8*)&priority)+2);
+                    dnsMessage.answers[i].resText =
+                        std::make_pair(DnsName::fromString(destination->getText()),0);
                     break;
                 }
             }
@@ -90,7 +96,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
         }
     }
     
-    if (podmena)
+    if ((podmena) || alwaysResave->isChecked())
     {
         std::vector<u8> vec = dnsMessage.dump();
         packet->data().resize(offset + vec.size());

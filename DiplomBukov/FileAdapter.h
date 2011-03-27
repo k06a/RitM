@@ -54,6 +54,8 @@ namespace DiplomBukov
         virtual bool tick();
 	};
 	// class FileAdapter
+
+    typedef SmartPointer<FileAdapter>::Type FileAdapterPtr;
 }
 // namespace DiplomBukov
 

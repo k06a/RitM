@@ -26,6 +26,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class TcpHeaderProcessor
+
+    typedef SmartPointer<TcpHeaderProcessor>::Type TcpHeaderProcessorPtr;
 }
 // namespace DiplomBukov
 

@@ -32,6 +32,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class HttpSwapProcessor
+
+    typedef SmartPointer<HttpSwapProcessor>::Type HttpSwapProcessorPtr;
 }
 // namespace DiplomBukov
 

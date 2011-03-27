@@ -23,22 +23,22 @@ using namespace DiplomBukov;
 TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 {
     {
-        AdapterPtr adapter1(
+        FileAdapterPtr adapter1(
             new FileAdapter("TcpLayerProcessorTest.clientSide.in.pcap",
                             "TcpLayerProcessorTest.clientSide.out.pcap"));
-        AdapterPtr adapter2(
+        FileAdapterPtr adapter2(
             new FileAdapter("TcpLayerProcessorTest.serverSide.in.pcap",
                             "TcpLayerProcessorTest.serverSide.out.pcap"));
 
-        ProcessorPtr mac1(new MacHeaderProcessor());
-        ProcessorPtr mac2(new MacHeaderProcessor());
-        ProcessorPtr macSwitch(new MacSwitch());
-        ProcessorPtr ipv4Splitter(new Ipv4Splitter());
-        ProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
-        ProcessorPtr tcpSplitter(new TcpSplitter());
-        ProcessorPtr tcpProcessor(new TcpLayerProcessor());
-        ProcessorPtr tcpHeader(new TcpHeaderProcessor());
-        ProcessorPtr acceptProcessor(new AcceptProcessor());
+        MacHeaderProcessorPtr mac1(new MacHeaderProcessor());
+        MacHeaderProcessorPtr mac2(new MacHeaderProcessor());
+        MacSwitchPtr macSwitch(new MacSwitch());
+        Ipv4SplitterPtr ipv4Splitter(new Ipv4Splitter());
+        Ipv4HeaderProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
+        TcpSplitterPtr tcpSplitter(new TcpSplitter());
+        TcpLayerProcessorPtr tcpProcessor(new TcpLayerProcessor());
+        TcpHeaderProcessorPtr tcpHeader(new TcpHeaderProcessor());
+        AcceptProcessorPtr acceptProcessor(new AcceptProcessor());
         
         adapter1->setSelf(adapter1);
         adapter2->setSelf(adapter2);
@@ -62,7 +62,6 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
         tcpSplitter->setNextProcessor(tcpProcessor->getPointer());
         tcpProcessor->setNextProcessor(tcpHeader->getPointer());
         tcpHeader->setNextProcessor(acceptProcessor->getPointer());
-
         adapter1->ping(ProcessorPtr());
         adapter2->ping(ProcessorPtr());
 
@@ -72,15 +71,6 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
         adapter2->run(false);
         fileAdapterPairReader(adapter1, adapter2);
 
-/*
-        bool b1 = true;
-        bool b2 = true;
-        while (b1 && b2)
-        {
-            b1 = adapter1->tick();
-            b2 = adapter2->tick();
-        }
-*/
         // --------------------------------
 
         adapter1->DestroyHierarchy();

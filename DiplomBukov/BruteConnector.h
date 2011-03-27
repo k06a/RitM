@@ -17,6 +17,8 @@ namespace DiplomBukov
         virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
     };
 	// class BruteConnector
+
+    typedef SmartPointer<BruteConnector>::Type BruteConnectorPtr;
 }
 // namespace DiplomBukov
 

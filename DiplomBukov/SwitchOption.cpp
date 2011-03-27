@@ -57,6 +57,15 @@ void SwitchOption::removeTextItem(const std::string & item)
     std::remove(labels.begin(), labels.end(), item);
 }
 
+int SwitchOption::getIndexOf(const std::string & item)
+{
+    std::deque<std::string>::iterator it =
+        std::find(labels.begin(), labels.end(), item);
+    if (it == labels.end())
+        return -1;
+    return it - labels.begin();
+}
+
 int SwitchOption::getSelectedIndex() const
 {
     return selected;

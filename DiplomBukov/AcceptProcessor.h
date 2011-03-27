@@ -19,6 +19,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class AcceptProcessor
+
+    typedef SmartPointer<AcceptProcessor>::Type AcceptProcessorPtr;
 }
 // namespace DiplomBukov
 

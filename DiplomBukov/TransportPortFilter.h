@@ -24,6 +24,8 @@ namespace DiplomBukov
         virtual OptionPtr getOptions();
     };
     // class TransportPortFilter
+
+    typedef SmartPointer<TransportPortFilter>::Type TransportPortFilterPtr;
 }
 // namespace DiplomBukov
 

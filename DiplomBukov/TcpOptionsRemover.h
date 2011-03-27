@@ -24,6 +24,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
     };
     // class TcpOptionsRemover
+
+    typedef SmartPointer<TcpOptionsRemover>::Type TcpOptionsRemoverPtr;
 }
 // namespace DiplomBukov
 

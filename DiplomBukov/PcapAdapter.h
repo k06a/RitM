@@ -41,6 +41,8 @@ namespace DiplomBukov
         virtual bool tick();
     };
     // class PcapAdapter
+
+    typedef SmartPointer<PcapAdapter>::Type PcapAdapterPtr;
 }
 // namespace DiplomBukov
 

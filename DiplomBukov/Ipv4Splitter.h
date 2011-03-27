@@ -31,6 +31,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
 	};
 	// class Ipv4Splitter
+
+    typedef SmartPointer<Ipv4Splitter>::Type Ipv4SplitterPtr;
 }
 // namespace DiplomBukov
 

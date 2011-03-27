@@ -29,6 +29,7 @@ namespace DiplomBukov
         void setTextItems(const std::deque<std::string> & text);
         void addTextItem(const std::string & text);
         void removeTextItem(const std::string & text);
+        int getIndexOf(const std::string & item);
 
         int getSelectedIndex() const;
         void setSelectedIndex(int index);

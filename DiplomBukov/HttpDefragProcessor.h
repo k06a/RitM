@@ -54,6 +54,8 @@ namespace DiplomBukov
         bool checkEofChunkedData(const Blob & blob, int positionOfData);
     };
     // class HttpDefragProcessor
+
+    typedef SmartPointer<HttpDefragProcessor>::Type HttpDefragProcessorPtr;
 }
 // namespace DiplomBukov
 
