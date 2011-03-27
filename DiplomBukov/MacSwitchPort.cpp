@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-MacSwitchPort::MacSwitchPort(ProcessorPtr const nextProcessor)
+MacSwitchPort::MacSwitchPort(ProcessorPtr nextProcessor)
 {
     this->nextProcessor = nextProcessor;
     this->prevProcessor = ProcessorPtr();

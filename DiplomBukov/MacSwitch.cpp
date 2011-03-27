@@ -13,14 +13,18 @@ MacSwitch::MacSwitch(const MacSwitch & macSwitch)
     for(MyDeque::const_iterator it = macSwitch.ports.begin();
         it != macSwitch.ports.end(); ++it)
     {
-        ports.push_back((*it)->CreateCopy());
+        MacSwitchPortPtr ptr(new MacSwitchPort(*it));
+        ports.push_back(ptr);
     }
 }
 
 ProcessorPtr MacSwitch::CreateCopy() const
 {
-    ProcessorPtr ptr(new MacSwitch(nextProcessor->CreateCopy()));
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        np = nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new MacSwitch(np));
 }
 
 void MacSwitch::DestroyHierarchy()
@@ -31,7 +35,7 @@ void MacSwitch::DestroyHierarchy()
 
 ProcessorPtr MacSwitch::getPointer()
 {
-    ProcessorPtr port(this->shared_from_this());
+    MacSwitchPortPtr port(new MacSwitchPort(this->shared_from_this()));
     ports.push_back(port);
     return port;
 }
@@ -53,7 +57,7 @@ ProcessingStatus MacSwitch::backwardProcess(Protocol proto, PacketPtr packet, un
     int count = 0;
     for(MyDeque::iterator it = ports.begin(); it != ports.end(); ++it)
     {
-        MacSwitchPort * port = dynamic_cast<MacSwitchPort *>(it->get());
+        MacSwitchPortPtr port = (*it);
         if (port->checkMac(packet->dstMac()))
         {
             // Не отправлять обратно широковещательные пакеты

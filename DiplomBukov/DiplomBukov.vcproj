@@ -358,6 +358,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\SrcTools\network\http_header.h"
+					>
+				</File>
+				<File
 					RelativePath="..\SrcTools\network\icmp_header.h"
 					>
 				</File>

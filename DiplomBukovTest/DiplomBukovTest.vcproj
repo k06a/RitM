@@ -253,6 +253,18 @@
 				Name="Plugins"
 				>
 			</Filter>
+			<Filter
+				Name="SrcTools"
+				>
+				<Filter
+					Name="network"
+					>
+					<File
+						RelativePath=".\http_header_test.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

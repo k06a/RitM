@@ -10,8 +10,11 @@ Ipv4Splitter::Ipv4Splitter(ProcessorPtr Connector)
 
 ProcessorPtr Ipv4Splitter::CreateCopy() const
 {
-    ProcessorPtr ptr(new Ipv4Splitter(nextProcessor->CreateCopy()));
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        np = nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new Ipv4Splitter(np));
 }
 
 void Ipv4Splitter::DestroyHierarchy()

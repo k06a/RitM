@@ -14,7 +14,7 @@ ProcessorPtr Ipv4HeaderProcessor::CreateCopy() const
 {
     ProcessorPtr np = ProcessorPtr();
     if (nextProcessor != NULL)
-        nextProcessor->CreateCopy();
+        np = nextProcessor->CreateCopy();
 
     return ProcessorPtr(new Ipv4HeaderProcessor(np));
 }

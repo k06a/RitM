@@ -14,7 +14,7 @@ ProcessorPtr TcpLayerProcessor::CreateCopy() const
 {
     ProcessorPtr np = ProcessorPtr();
     if (nextProcessor != NULL)
-        nextProcessor->CreateCopy();
+        np = nextProcessor->CreateCopy();
 
     return ProcessorPtr(new TcpLayerProcessor(np));
 }

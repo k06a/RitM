@@ -10,8 +10,11 @@ TcpSplitter::TcpSplitter(ProcessorPtr Connector)
 
 ProcessorPtr TcpSplitter::CreateCopy() const
 {
-    ProcessorPtr ptr(new TcpSplitter(nextProcessor->CreateCopy()));
-    return ptr;
+    ProcessorPtr np = ProcessorPtr();
+    if (nextProcessor != NULL)
+        np = nextProcessor->CreateCopy();
+
+    return ProcessorPtr(new TcpSplitter(np));
 }
 
 void TcpSplitter::DestroyHierarchy()

@@ -11,11 +11,12 @@
 
 namespace DiplomBukov
 {
-    class MacSwitchPort;
+    class MacSwitch;
+    typedef SmartPointer<MacSwitch>::Type MacSwitchPtr;
 
     class MacSwitch : public AbstractProcessor
     {
-        typedef std::deque<ProcessorPtr> MyDeque;
+        typedef std::deque<MacSwitchPortPtr> MyDeque;
 
         MyDeque ports;
 
@@ -33,8 +34,6 @@ namespace DiplomBukov
         virtual const char * MacSwitch::getProcessorName();
     };
     // class MacSwitch
-
-    typedef SmartPointer<MacSwitch>::Type MacSwitchPtr;
 }
 // namespace DiplomBukov
 

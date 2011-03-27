@@ -12,7 +12,7 @@ ProcessorPtr IcmpProcessor::CreateCopy() const
 {
     ProcessorPtr np = ProcessorPtr();
     if (nextProcessor != NULL)
-        nextProcessor->CreateCopy();
+        np = nextProcessor->CreateCopy();
 
     return ProcessorPtr(new IcmpProcessor(np));
 }

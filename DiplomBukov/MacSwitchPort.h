@@ -11,6 +11,9 @@
 
 namespace DiplomBukov
 {
+    class MacSwitchPort;
+    typedef std::tr1::shared_ptr<MacSwitchPort> MacSwitchPortPtr;
+
     class MacSwitchPort : public AbstractProcessor
     {
         typedef std::deque<mac_addr> MyList;
@@ -18,7 +21,7 @@ namespace DiplomBukov
         MyList macList;
 
     public:
-        MacSwitchPort(ProcessorPtr const nextProcessor);
+        MacSwitchPort(ProcessorPtr nextProcessor);
         MacSwitchPort(const MacSwitchPort & macSwitchPort);
 
         virtual ProcessorPtr CreateCopy() const;
@@ -31,8 +34,6 @@ namespace DiplomBukov
         //bool operator == (const mac_addr & mac);
     };
     // class MacSwitchPort
-
-    typedef std::tr1::shared_ptr<MacSwitchPort> MacSwitchPortPtr;
 }
 // namespace DiplomBukov
 

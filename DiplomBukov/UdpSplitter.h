@@ -9,6 +9,7 @@ namespace DiplomBukov
     {
     public:
         UdpSplitter(ProcessorPtr Connector = ProcessorPtr());
+        virtual ProcessorPtr CreateCopy() const;
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();

@@ -14,7 +14,7 @@ ProcessorPtr HttpDefragProcessor::CreateCopy() const
 {
     ProcessorPtr np = ProcessorPtr();
     if (nextProcessor != NULL)
-        nextProcessor->CreateCopy();
+        np = nextProcessor->CreateCopy();
 
     return ProcessorPtr(new HttpDefragProcessor(np));
 }
@@ -87,6 +87,14 @@ ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, PacketPtr p
 
     if (oldSize == 0)   // Read options only first time
     {
+        std::string strBlob((char*)&blob[0], blob.size());
+        http_header::HeaderNameValueList lines =
+            http_header::parseHeader(strBlob);
+
+        // ------------------------------------------------
+
+
+
         httpHeader.options.clear();
 
         std::string str((char*)&blob[0], blob.size());
