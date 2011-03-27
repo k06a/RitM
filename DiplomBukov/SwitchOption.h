@@ -4,7 +4,9 @@
 #include <deque>
 #include <string>
 
+#include "CommonInclude.h"
 #include "IOption.h"
+#include "IOptionWalker.h"
 
 namespace DiplomBukov
 {
@@ -24,6 +26,8 @@ namespace DiplomBukov
 
         virtual const std::string & getName() const;
         virtual void setName(const std::string & text);
+
+        virtual void visitMe(OptionWalkerPtr walker);
 
         const std::deque<std::string> & getTextItems() const;
         void setTextItems(const std::deque<std::string> & text);

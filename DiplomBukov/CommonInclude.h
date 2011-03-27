@@ -32,6 +32,7 @@ namespace DiplomBukov
     class IProcessorPlugin;
 
     class IOption;
+    class IOptionWalker;
 
     class ILibrary;
 
@@ -53,6 +54,7 @@ namespace DiplomBukov
     typedef SmartPointer<IProcessorPlugin>::Type    ProcessorPluginPtr;
 
     typedef SmartPointer<IOption>::Type             OptionPtr;
+    typedef SmartPointer<IOptionWalker>::Type       OptionWalkerPtr;
 
     typedef SmartPointer<ILibrary>::Type            LibraryPtr;
 }

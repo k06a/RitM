@@ -27,6 +27,12 @@ void GroupOption::setName(const std::string & name)
     label = name;
 }
 
+void GroupOption::visitMe(OptionWalkerPtr walker)
+{
+    walker->visit(GroupOptionPtr(this));
+}
+
+
 void GroupOption::makeHoizontal()
 {
     vertical = false;

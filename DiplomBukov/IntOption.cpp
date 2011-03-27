@@ -29,6 +29,11 @@ void IntOption::setName(const std::string & text)
     label = text;
 }
 
+void IntOption::visitMe(OptionWalkerPtr walker)
+{
+    walker->visit(IntOptionPtr(this));
+}
+
 i64 IntOption::minValue()
 {
     return min;

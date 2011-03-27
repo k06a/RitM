@@ -24,6 +24,11 @@ void CheckOption::setName(const std::string & name)
     label = name;
 }
 
+void CheckOption::visitMe(OptionWalkerPtr walker)
+{
+    walker->visit(CheckOptionPtr(this));
+}
+
 bool CheckOption::isChecked()
 {
     return value;

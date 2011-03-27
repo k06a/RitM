@@ -24,6 +24,11 @@ void TextLineOption::setName(const std::string & text)
     label = text;
 }
 
+void TextLineOption::visitMe(OptionWalkerPtr walker)
+{
+    walker->visit(TextLineOptionPtr(this));
+}
+
 const std::string & TextLineOption::getText() const
 {
     return textline;

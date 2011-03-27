@@ -4,10 +4,8 @@ syntax: regexp
 \.ncb$
 \.out\.pcap$
 _ReSharper\.
+/docs/
 syntax: glob
 Debug/
 Release/
-gtest-1.6.0/
-gmock-1.6.0/
 DiplomBukov/*.pcap
-winpcap/

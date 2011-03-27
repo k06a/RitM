@@ -37,6 +37,11 @@ void SwitchOption::setName(const std::string & text)
     label = text;
 }
 
+void SwitchOption::visitMe(OptionWalkerPtr walker)
+{
+    walker->visit(SwitchOptionPtr(this));
+}
+
 const std::deque<std::string> & SwitchOption::getTextItems() const
 {
     return labels;

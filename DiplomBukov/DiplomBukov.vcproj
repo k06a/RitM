@@ -321,6 +321,10 @@
 					RelativePath=".\IOption.h"
 					>
 				</File>
+				<File
+					RelativePath=".\IOptionWalker.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -734,6 +738,14 @@
 					</File>
 					<File
 						RelativePath=".\CheckOption.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ConsoleOptionWalker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ConsoleOptionWalket.h"
 						>
 					</File>
 					<File

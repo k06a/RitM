@@ -3,8 +3,9 @@
 
 #include <string>
 
-#include "i64u64.h"
+#include "CommonInclude.h"
 #include "IOption.h"
+#include "IOptionWalker.h"
 
 namespace DiplomBukov
 {
@@ -22,6 +23,8 @@ namespace DiplomBukov
 
         virtual const std::string & getName() const;
         virtual void setName(const std::string & text);
+
+        virtual void visitMe(OptionWalkerPtr walker);
 
         i64 minValue();
         void setMinValue(i64 val);
