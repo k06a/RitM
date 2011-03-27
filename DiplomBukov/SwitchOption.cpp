@@ -39,7 +39,7 @@ void SwitchOption::setName(const std::string & text)
 
 void SwitchOption::visitMe(OptionWalkerPtr walker)
 {
-    walker->visit(SwitchOptionPtr(this));
+    walker->visit(this->shared_from_this());
 }
 
 const std::deque<std::string> & SwitchOption::getTextItems() const

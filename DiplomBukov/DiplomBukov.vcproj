@@ -773,6 +773,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\OptionsForwardDecls.h"
+						>
+					</File>
+					<File
 						RelativePath=".\SwitchOption.cpp"
 						>
 					</File>

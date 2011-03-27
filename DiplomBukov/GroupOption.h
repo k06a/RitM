@@ -10,7 +10,9 @@
 
 namespace DiplomBukov
 {
-    class GroupOption : public IOption
+    class GroupOption
+        : public IOption
+        , public EnableSmartFromThis<GroupOption>::Type
     {
         std::string label;
         std::deque<OptionPtr> optionList;
@@ -35,8 +37,6 @@ namespace DiplomBukov
         void removeOptions(const OptionPtr & option);
     };
     // class GroupOption
-
-    typedef SmartPointer<GroupOption>::Type GroupOptionPtr;
 }
 // namespace DiplomBukov
 

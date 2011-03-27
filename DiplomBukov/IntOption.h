@@ -9,7 +9,9 @@
 
 namespace DiplomBukov
 {
-    class IntOption : public IOption
+    class IntOption
+        : public IOption
+        , public EnableSmartFromThis<IntOption>::Type
     {
         std::string label;
         i64 value;
@@ -36,8 +38,6 @@ namespace DiplomBukov
         bool setIntValue(i64 val);
     };
     // class IntOption
-
-    typedef SmartPointer<IntOption>::Type IntOptionPtr;
 }
 // namespace DiplomBukov
 

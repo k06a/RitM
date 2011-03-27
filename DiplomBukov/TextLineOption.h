@@ -10,7 +10,9 @@
 
 namespace DiplomBukov
 {
-    class TextLineOption : public IOption
+    class TextLineOption
+        : public IOption
+        , public EnableSmartFromThis<TextLineOption>::Type
     {
         std::string label;
         std::string textline;
@@ -28,8 +30,6 @@ namespace DiplomBukov
         void setText(const std::string & name);
     };
     // class TextLineOption
-
-    typedef SmartPointer<TextLineOption>::Type TextLineOptionPtr;
 }
 // namespace DiplomBukov
 

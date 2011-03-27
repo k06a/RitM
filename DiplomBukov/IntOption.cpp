@@ -31,7 +31,7 @@ void IntOption::setName(const std::string & text)
 
 void IntOption::visitMe(OptionWalkerPtr walker)
 {
-    walker->visit(IntOptionPtr(this));
+    walker->visit(this->shared_from_this());
 }
 
 i64 IntOption::minValue()

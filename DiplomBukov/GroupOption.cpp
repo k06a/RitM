@@ -29,7 +29,7 @@ void GroupOption::setName(const std::string & name)
 
 void GroupOption::visitMe(OptionWalkerPtr walker)
 {
-    walker->visit(GroupOptionPtr(this));
+    walker->visit(this->shared_from_this());
 }
 
 

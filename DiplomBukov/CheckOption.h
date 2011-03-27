@@ -9,7 +9,9 @@
 
 namespace DiplomBukov
 {
-    class CheckOption : public IOption
+    class CheckOption
+        : public IOption
+        , public EnableSmartFromThis<CheckOption>::Type
     {
         std::string label;
         bool value;
@@ -27,8 +29,6 @@ namespace DiplomBukov
         void setChecked(bool checked);
     };
     // class CheckOption
-
-    typedef SmartPointer<CheckOption>::Type CheckOptionPtr;
 }
 // namespace DiplomBukov
 

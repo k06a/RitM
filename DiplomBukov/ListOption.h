@@ -11,7 +11,9 @@
 namespace DiplomBukov
 {
     template<typename T1, typename T2>
-    class ListOption : public IOption
+    class ListOption
+        : public IOption
+        , public EnableSmartFromThis<ListOption<T1,T2> >::Type
     {
         std::string label;
 
@@ -43,12 +45,6 @@ namespace DiplomBukov
         T2 right;
     };
     // class ListOption
-
-    template<typename T1, typename T2>
-    struct ListOptionPtr
-    {
-        typedef typename SmartPointer<ListOption<T1,T2> >::Type Type;
-    };
 }
 // namespace DiplomBukov
 

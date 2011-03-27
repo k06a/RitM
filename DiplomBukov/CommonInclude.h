@@ -14,6 +14,12 @@ namespace DiplomBukov
         typedef std::tr1::shared_ptr<T> Type;
     };
 
+    template<typename T>
+    struct EnableSmartFromThis
+    {
+        typedef std::tr1::enable_shared_from_this<T> Type;
+    };
+
     class IPacket;
     class IAdapter;
     class IConnector;

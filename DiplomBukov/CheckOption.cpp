@@ -26,7 +26,7 @@ void CheckOption::setName(const std::string & name)
 
 void CheckOption::visitMe(OptionWalkerPtr walker)
 {
-    walker->visit(CheckOptionPtr(this));
+    walker->visit(this->shared_from_this());
 }
 
 bool CheckOption::isChecked()

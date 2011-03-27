@@ -10,7 +10,9 @@
 
 namespace DiplomBukov
 {
-    class SwitchOption : public IOption
+    class SwitchOption
+        : public IOption
+        , public EnableSmartFromThis<SwitchOption>::Type
     {
         std::string label;
         std::deque<std::string> labels;
@@ -40,8 +42,6 @@ namespace DiplomBukov
         std::string getSelectedText() const;
     };
     // class SwitchOption
-
-    typedef SmartPointer<SwitchOption>::Type SwitchOptionPtr;
 }
 // namespace DiplomBukov
 

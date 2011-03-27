@@ -35,6 +35,8 @@
 
 #include "FileAdapterPairReader.h"
 
+#include "ConsoleOptionWalket.h"
+
 using namespace DiplomBukov;
 
 void print_arch(ProcessorPtr proc, std::string prefix = "", int deep = 0)
@@ -167,22 +169,10 @@ int main(int argc, char * argv[])
     pcap2Adapter->ping(ProcessorPtr());
 
     //////////////////////////////////////////////////////////////////////////
-
-    SwitchOption * opt1 = (SwitchOption *)pcap1Adapter->getOptions().get();
-    for (unsigned i = 0; i < opt1->getTextItems().size(); i++)
-        std::cout << i << ". " << opt1->getTextItems()[i] << std::endl;
-
-    int index1;
-    std::cin >> index1;
-    opt1->setSelectedIndex(index1);
-
-    SwitchOption * opt2 = (SwitchOption *)pcap2Adapter->getOptions().get();
-    for (unsigned i = 0; i < opt2->getTextItems().size(); i++)
-        std::cout << i << ". " << opt2->getTextItems()[i] << std::endl;
-
-    int index2;
-    std::cin >> index2;
-    opt2->setSelectedIndex(index2);
+    
+    ConsoleOptionWalkerPtr walker(new ConsoleOptionWalker());
+    walker->visit(pcap1Adapter);
+    walker->visit(pcap2Adapter);
 
     //////////////////////////////////////////////////////////////////////////
 

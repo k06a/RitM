@@ -2,12 +2,7 @@
 #define IOPTIONWALKER_H
 
 #include "CommonInclude.h"
-#include "CheckOption.h"
-#include "SwitchOption.h"
-#include "IntOption.h"
-#include "GroupOption.h"
-#include "ListOption.h"
-#include "TextLineOption.h"
+#include "OptionsForwardDecls.h"
 
 namespace DiplomBukov
 {
@@ -16,15 +11,16 @@ namespace DiplomBukov
     public:
         virtual ~IOptionWalker() {}
         
+        virtual void visit(AdapterPtr adap) = 0;
         virtual void visit(ProcessorPtr proc) = 0;
-
+        
         virtual void visit(CheckOptionPtr opt) = 0;
         virtual void visit(SwitchOptionPtr opt) = 0;
         virtual void visit(IntOptionPtr opt) = 0;
         virtual void visit(GroupOptionPtr opt) = 0;
         virtual void visit(TextLineOptionPtr opt) = 0;
 
-        virtual void visit(ListOptionPtr<OptionPtr,OptionPtr> opt) = 0;
+        virtual void visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt) = 0;
 
         virtual void visit(OptionPtr opt) = 0;
     };

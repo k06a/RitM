@@ -28,6 +28,7 @@ PcapAdapter::PcapAdapter(ProcessorPtr Connector)
         arr.push_back(about);
     }
     
+    devicesSwitch->setName("Network interfaces");
     devicesSwitch->setTextItems(arr);
 }
 
@@ -57,8 +58,7 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, PacketPtr packet, 
     u32 hash = Crc32(&packet->data()[offset], packet->size() - offset);
     hashes.push_back(hash);
 
-    SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
-    std::cout << '-' << opt->getSelectedIndex();
+    std::cout << '-' << devicesSwitch->getSelectedIndex();
 
     int ret = pcap_sendpacket(device, &packet->data()[offset], packet->size() - offset);
 
@@ -73,9 +73,8 @@ OptionPtr PcapAdapter::getOptions()
 
 void PcapAdapter::run(bool always)
 {
-    SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
     pcap_if_t * dev = deviceList;
-    for (int i = 0; i < opt->getSelectedIndex(); i++)
+    for (int i = 0; i < devicesSwitch->getSelectedIndex(); i++)
         dev = dev->next;
     
     char errbuf[PCAP_ERRBUF_SIZE];
@@ -121,8 +120,7 @@ bool PcapAdapter::tick()
     packet->setAdapter(this);
     packet->addProcessor(Self);
 
-    SwitchOption * opt = (SwitchOption *)devicesSwitch.get();
-    std::cout << '+' << opt->getSelectedIndex();
+    std::cout << '+' << devicesSwitch->getSelectedIndex();
 
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
     nextProcessor->forwardProcess(proto, packet, 0);
