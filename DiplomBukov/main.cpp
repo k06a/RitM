@@ -18,7 +18,7 @@
 
 #include "MacHeaderProcessor.h"
 #include "Ipv4HeaderProcessor.h"
-#include "IcmpProcessor.h"
+#include "IcmpHeaderProcessor.h"
 #include "TcpOptionsRemover.h"
 #include "TcpLayerProcessor.h"
 #include "TcpHeaderProcessor.h"
@@ -111,7 +111,7 @@ int main(int argc, char * argv[])
     ProcessorPtr ipSplitter(new Ipv4Splitter(NEW_Connector));
     ProcessorPtr ipHeaderProcessor(new Ipv4HeaderProcessor(NEW_Connector));
     
-    ProcessorPtr icmpProcessor(new IcmpProcessor(NEW_Connector));
+    ProcessorPtr icmpProcessor(new IcmpHeaderProcessor(NEW_Connector));
     ProcessorPtr tcpSplitter(new TcpSplitter(NEW_Connector));
     ProcessorPtr tcpOptionsRemover(new TcpOptionsRemover(NEW_Connector));
     ProcessorPtr tcpLayerProcessor(new TcpLayerProcessor(NEW_Connector));

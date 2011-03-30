@@ -53,12 +53,14 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, PacketPtr packet, 
     } else
         para = (it1 != Connectors.end()) ? para1 : para2;
     
+    /*
     // Determine direction
     if ((packet->direction() == IPacket::Unknown) && (adr1 != adr2))
     {
         bool cts = (adr1 == para.first);
         packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
+    */
 
     packet->addProcessor(this->shared_from_this());
     if (nextProcessor != NULL)

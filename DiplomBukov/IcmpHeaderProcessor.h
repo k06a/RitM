@@ -7,10 +7,10 @@
 
 namespace DiplomBukov
 {
-    class IcmpProcessor : public AbstractProcessor
+    class IcmpHeaderProcessor : public AbstractProcessor
     {
     public:
-        IcmpProcessor(ProcessorPtr Connector = ProcessorPtr());
+        IcmpHeaderProcessor(ProcessorPtr Connector = ProcessorPtr());
         virtual ProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
@@ -18,9 +18,9 @@ namespace DiplomBukov
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
     };
-    // class IcmpProcessor
+    // class IcmpHeaderProcessor
 
-    typedef SmartPointer<IcmpProcessor>::Type IcmpProcessorPtr;
+    typedef SmartPointer<IcmpHeaderProcessor>::Type IcmpProcessorPtr;
 }
 // namespace DiplomBukov
 

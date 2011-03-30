@@ -528,27 +528,27 @@
 						Name="Protocols"
 						>
 						<File
-							RelativePath=".\IcmpProcessor.cpp"
+							RelativePath=".\IcmpHeaderProcessor.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\IcmpProcessor.h"
+							RelativePath=".\IcmpHeaderProcessor.h"
 							>
 						</File>
 						<File
-							RelativePath=".\Ipv4HeaderProcessor.cpp"
+							RelativePath=".\TcpLayerProcessor.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\Ipv4HeaderProcessor.h"
+							RelativePath=".\TcpLayerProcessor.h"
 							>
 						</File>
 						<File
-							RelativePath=".\MacHeaderProcessor.cpp"
+							RelativePath=".\TcpOptionsRemover.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\MacHeaderProcessor.h"
+							RelativePath=".\TcpOptionsRemover.h"
 							>
 						</File>
 						<File
@@ -559,42 +559,14 @@
 							RelativePath=".\TransportPortProcessor.h"
 							>
 						</File>
-						<Filter
-							Name="Transport"
+						<File
+							RelativePath=".\UdpHeaderProcessor.cpp"
 							>
-							<File
-								RelativePath=".\TcpHeaderProcessor.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TcpHeaderProcessor.h"
-								>
-							</File>
-							<File
-								RelativePath=".\TcpLayerProcessor.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TcpLayerProcessor.h"
-								>
-							</File>
-							<File
-								RelativePath=".\TcpOptionsRemover.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\TcpOptionsRemover.h"
-								>
-							</File>
-							<File
-								RelativePath=".\UdpHeaderProcessor.cpp"
-								>
-							</File>
-							<File
-								RelativePath=".\UdpHeaderProcessor.h"
-								>
-							</File>
-						</Filter>
+						</File>
+						<File
+							RelativePath=".\UdpHeaderProcessor.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="Splitters"
@@ -689,6 +661,34 @@
 						</File>
 						<File
 							RelativePath=".\TransportPortFilter.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Headers"
+						>
+						<File
+							RelativePath=".\Ipv4HeaderProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Ipv4HeaderProcessor.h"
+							>
+						</File>
+						<File
+							RelativePath=".\MacHeaderProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\MacHeaderProcessor.h"
+							>
+						</File>
+						<File
+							RelativePath=".\TcpHeaderProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\TcpHeaderProcessor.h"
 							>
 						</File>
 					</Filter>

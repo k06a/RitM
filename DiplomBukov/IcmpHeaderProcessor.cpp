@@ -1,23 +1,23 @@
-#include "IcmpProcessor.h"
+#include "IcmpHeaderProcessor.h"
 #include "network/icmp_header.h"
 
 using namespace DiplomBukov;
 
-IcmpProcessor::IcmpProcessor(ProcessorPtr Connector)
+IcmpHeaderProcessor::IcmpHeaderProcessor(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 }
 
-ProcessorPtr IcmpProcessor::CreateCopy() const
+ProcessorPtr IcmpHeaderProcessor::CreateCopy() const
 {
     ProcessorPtr np = ProcessorPtr();
     if (nextProcessor != NULL)
         np = nextProcessor->CreateCopy();
 
-    return ProcessorPtr(new IcmpProcessor(np));
+    return ProcessorPtr(new IcmpHeaderProcessor(np));
 }
 
-ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
+ProcessingStatus IcmpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
@@ -32,12 +32,12 @@ ProcessingStatus IcmpProcessor::forwardProcess(Protocol proto, PacketPtr packet,
     return ProcessingStatus::Accepted;
 }
 
-const char * IcmpProcessor::getProcessorName()
+const char * IcmpHeaderProcessor::getProcessorName()
 {
-    return "IcmpProcessor";
+    return "IcmpHeaderProcessor";
 }
 
-Protocol IcmpProcessor::getProtocol()
+Protocol IcmpHeaderProcessor::getProtocol()
 {
     return Protocol::ICMP;
 }
