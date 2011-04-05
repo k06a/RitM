@@ -4,10 +4,22 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , valueDragged(false)
+    , tableZoom(1.0)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //ui->action_zoomin->setShortcut(QKeySequence::ZoomIn);
+    //ui->action_zoomout->setShortcut(QKeySequence::ZoomOut);
+    ui->tableWidget_field->setBaseZoomWidth(64);
+    ui->tableWidget_field->setBaseZoomHeight(64);
+    ui->tableWidget_field->setMinimumZoom(0.5);
+    ui->tableWidget_field->setMaximumZoom(5.0);
+    ui->tableWidget_field->setZoomStep(0.2);
+    ui->tableWidget_field->setCurrentZoom(1.0);
+
+    connect(ui->action_zoomin, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomIn()));
+    connect(ui->action_zoomout, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomOut()));
 
     // Add ToolBars and DockWidgets Actions to Windows Menu
     foreach(QToolBar * toolBar, findChildren<QToolBar*>())
@@ -22,33 +34,29 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_tableWidget_field_cellChanged(int row, int column)
+/*
+void MainWindow::updateItemSize(int size)
 {
-    /*
-    if ((row >= 0) && (column >= 0))
-    {
-        QList<QTableWidgetItem*> indexes = ui->tableWidget_field->selectedItems();
-
-        if (indexes.size() == 0)
-        {
-            ui->tableWidget_field->setCurrentCell(
-                row, column, QItemSelectionModel::ClearAndSelect);
-            return;
-        }
-
-        int dragRow = ui->tableWidget_field->currentIndex().row();
-        int dragColumn = ui->tableWidget_field->currentIndex().column();
-        foreach (QTableWidgetItem * index, indexes)
-        {
-            int r = index->row() + row - dragRow;
-            int c = index->column() + column - dragColumn;
-
-            ui->tableWidget_field->setCurrentCell(
-                index->row(), index->column(),
-                QItemSelectionModel::Deselect);
-            ui->tableWidget_field->setCurrentCell(
-                r,c,QItemSelectionModel::Select);
-        }
-    }
-    */
+    ui->tableWidget_field->setIconSize(QSize(size-4,size-4));
+    ui->tableWidget_field->horizontalHeader()->setDefaultSectionSize(size);
+    ui->tableWidget_field->verticalHeader()->setDefaultSectionSize(size);
 }
+
+void MainWindow::on_action_zoomin_triggered()
+{
+    if (tableZoom < 5.00)
+    {
+        tableZoom *= 1.20;
+        updateItemSize(64 * tableZoom);
+    }
+}
+
+void MainWindow::on_action_zoomout_triggered()
+{
+    if (tableZoom > 0.50)
+    {
+        tableZoom *= 0.80;
+        updateItemSize(64 * tableZoom);
+    }
+}
+*/

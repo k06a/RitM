@@ -49,8 +49,8 @@
       </property>
       <property name="iconSize">
        <size>
-        <width>64</width>
-        <height>64</height>
+        <width>60</width>
+        <height>60</height>
        </size>
       </property>
       <property name="showGrid">
@@ -403,8 +403,8 @@
        </property>
        <property name="gridSize">
         <size>
-         <width>64</width>
-         <height>64</height>
+         <width>80</width>
+         <height>80</height>
         </size>
        </property>
        <property name="viewMode">
@@ -418,20 +418,29 @@
        </property>
        <item>
         <property name="text">
-         <string/>
+         <string>Адаптер</string>
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/images/intel.png</normaloff>:/images/intel.png</iconset>
+          <normaloff>:/images/adapter.svgz</normaloff>:/images/adapter.svgz</iconset>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>123</string>
+         <string>Коннектор</string>
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/images/intel.png</normaloff>:/images/intel.png</iconset>
+          <normaloff>:/images/connector.svgz</normaloff>:/images/connector.svgz</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Процессор</string>
+        </property>
+        <property name="icon">
+         <iconset resource="res.qrc">
+          <normaloff>:/images/processor.svgz</normaloff>:/images/processor.svgz</iconset>
         </property>
        </item>
       </widget>
@@ -440,6 +449,9 @@
    </widget>
   </widget>
   <action name="action_open">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/fileopen.png</normaloff>:/images/fileopen.png</iconset>
@@ -455,6 +467,9 @@
    </property>
   </action>
   <action name="action_save">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/filesave.png</normaloff>:/images/filesave.png</iconset>
@@ -467,6 +482,9 @@
    </property>
   </action>
   <action name="action_saveas">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/filesave.png</normaloff>:/images/filesave.png</iconset>
@@ -503,6 +521,9 @@
    </property>
   </action>
   <action name="action_cut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/editcut.png</normaloff>:/images/editcut.png</iconset>
@@ -515,6 +536,9 @@
    </property>
   </action>
   <action name="action_paste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/editpaste.png</normaloff>:/images/editpaste.png</iconset>
@@ -527,6 +551,9 @@
    </property>
   </action>
   <action name="action_copy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/editcopy.png</normaloff>:/images/editcopy.png</iconset>
@@ -563,6 +590,9 @@
    </property>
   </action>
   <action name="action_new">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/filenew.png</normaloff>:/images/filenew.png</iconset>

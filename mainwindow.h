@@ -11,14 +11,18 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    bool valueDragged;
+    double tableZoom;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private:
+    //void updateItemSize(int size);
+
 private slots:
-    void on_tableWidget_field_cellChanged(int row, int column);
+    //void on_action_zoomin_triggered();
+    //void on_action_zoomout_triggered();
 
 private:
     Ui::MainWindow *ui;

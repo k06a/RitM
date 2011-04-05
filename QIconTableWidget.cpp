@@ -1,27 +1,125 @@
 #include "QIconTableWidget.h"
 #include <QMimeData>
+#include <QHeaderView>
 
 QIconTableWidget::QIconTableWidget(QWidget *parent) :
     QTableWidget(parent)
 {
 }
 
-bool QIconTableWidget::dropMimeData(
-    int row, int column,
-    const QMimeData * data,
-    Qt::DropAction action)
+int QIconTableWidget::baseZoomWidth() const
 {
-    return QTableWidget::dropMimeData(row,column,data,action);
+    return m_baseZoomWidth;
+}
 
-    //if (data->hasImage())
+void QIconTableWidget::setBaseZoomWidth(int value)
+{
+    m_baseZoomWidth = value;
+}
+
+int QIconTableWidget::baseZoomHeight() const
+{
+    return m_baseZoomHeight;
+}
+
+void QIconTableWidget::setBaseZoomHeight(int value)
+{
+    m_baseZoomHeight = value;
+}
+
+float QIconTableWidget::minimumZoom() const
+{
+    return m_minimumZoom;
+}
+
+void QIconTableWidget::setMinimumZoom(float value)
+{
+    m_minimumZoom = value;
+}
+
+float QIconTableWidget::maximumZoom() const
+{
+    return m_maximumZoom;
+}
+
+void QIconTableWidget::setMaximumZoom(float value)
+{
+    m_maximumZoom = value;
+}
+
+float QIconTableWidget::zoomStep() const
+{
+    return m_zoomStep;
+}
+
+void QIconTableWidget::setZoomStep(float value)
+{
+    m_zoomStep = value;
+}
+
+float QIconTableWidget::currentZoom() const
+{
+    return m_currentZoom;
+}
+
+void QIconTableWidget::setCurrentZoom(float value)
+{
+    m_currentZoom = value;
+    if (m_currentZoom > m_maximumZoom)
+        m_currentZoom = m_maximumZoom;
+    if (m_currentZoom < m_minimumZoom)
+        m_currentZoom = m_minimumZoom;
+    zoomTo(m_currentZoom);
+}
+
+void QIconTableWidget::wheelEvent(QWheelEvent * event)
+{
+    if (!(event->modifiers() & Qt::ControlModifier))
     {
-        //QImage image = qvariant_cast<QImage>(data->imageData());
-        QIcon icon(":/images/intel.png");
-        QTableWidgetItem * item = new QTableWidgetItem();
-        item->setBackground(icon.pixmap(64));
-        setItem(row, column, item);
-        return true;
+        QTableWidget::wheelEvent(event);
+        return;
     }
 
-    return false;
+    int delta = event->delta()/120;
+    if (delta > 0)
+    {
+        for (int i = 0; i < delta; i++)
+            zoomIn();
+    }
+    else
+    {
+        for (int i = 0; i < -delta; i++)
+            zoomOut();
+    }
+
+    event->accept();
+}
+
+void QIconTableWidget::zoomIn()
+{
+    m_currentZoom += m_zoomStep;
+    if (m_currentZoom > m_maximumZoom)
+        m_currentZoom = m_maximumZoom;
+    if (m_currentZoom < m_minimumZoom)
+        m_currentZoom = m_minimumZoom;
+    zoomTo(m_currentZoom);
+}
+
+void QIconTableWidget::zoomOut()
+{
+    m_currentZoom -= m_zoomStep;
+    if (m_currentZoom > m_maximumZoom)
+        m_currentZoom = m_maximumZoom;
+    if (m_currentZoom < m_minimumZoom)
+        m_currentZoom = m_minimumZoom;
+    zoomTo(m_currentZoom);
+}
+
+void QIconTableWidget::zoomTo(float value)
+{
+    int w = m_baseZoomWidth * value;
+    int h = m_baseZoomHeight * value;
+    setIconSize(QSize(w-4,h-4));
+    horizontalHeader()->setDefaultSectionSize(w);
+    verticalHeader()->setDefaultSectionSize(h);
 }
