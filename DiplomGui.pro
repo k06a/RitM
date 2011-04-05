@@ -11,9 +11,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    QIconTableWidget.cpp \
+    QIconTableWidgetItem.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    QIconTableWidget.h \
+    QIconTableWidgetItem.h
 
 FORMS    += mainwindow.ui
 

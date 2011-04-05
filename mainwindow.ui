@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>1002</width>
     <height>637</height>
    </rect>
   </property>
@@ -16,9 +16,15 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTableWidget" name="tableWidget_field">
+     <widget class="QIconTableWidget" name="tableWidget_field">
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
       <property name="acceptDrops">
        <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">selection-background-color: rgba(0, 0, 0, 128);</string>
       </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
@@ -29,6 +35,9 @@
       <property name="dragEnabled">
        <bool>true</bool>
       </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::DragDrop</enum>
+      </property>
       <property name="defaultDropAction">
        <enum>Qt::MoveAction</enum>
       </property>
@@ -37,6 +46,12 @@
       </property>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectItems</enum>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>64</width>
+        <height>64</height>
+       </size>
       </property>
       <property name="showGrid">
        <bool>true</bool>
@@ -280,7 +295,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
+     <width>1002</width>
      <height>21</height>
     </rect>
    </property>
@@ -371,25 +386,52 @@
      </property>
      <item>
       <widget class="QListWidget" name="listWidget">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
+       <property name="movement">
+        <enum>QListView::Free</enum>
+       </property>
+       <property name="resizeMode">
+        <enum>QListView::Adjust</enum>
+       </property>
+       <property name="gridSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
        <property name="viewMode">
         <enum>QListView::IconMode</enum>
        </property>
+       <property name="uniformItemSizes">
+        <bool>true</bool>
+       </property>
+       <property name="selectionRectVisible">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="res.qrc">
+          <normaloff>:/images/intel.png</normaloff>:/images/intel.png</iconset>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>123</string>
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/images/zoomout.png</normaloff>:/images/zoomout.png</iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>456</string>
-        </property>
-        <property name="icon">
-         <iconset resource="res.qrc">
-          <normaloff>:/images/zoomin.png</normaloff>:/images/zoomin.png</iconset>
+          <normaloff>:/images/intel.png</normaloff>:/images/intel.png</iconset>
         </property>
        </item>
       </widget>
@@ -534,6 +576,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QIconTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>QIconTableWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="res.qrc"/>
  </resources>
