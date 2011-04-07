@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "TableItem.h"
 #include <QVariant>
+#include <QCheckBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->menu_widgets->addSeparator();
     foreach(QDockWidget * dockWidget, findChildren<QDockWidget*>())
         ui->menu_widgets->addAction(dockWidget->toggleViewAction());
+
+    TableItem * item = new TableItem(":/images/processor.svgz","123");
+    ui->tableWidget_field->setIndexWidget(ui->tableWidget_field->indexAt(QPoint(0,0)), item);
 }
 
 MainWindow::~MainWindow()

@@ -1,6 +1,8 @@
 #include "QIconTableWidget.h"
+#include <QApplication>
 #include <QMimeData>
 #include <QHeaderView>
+#include "TableItem.h"
 
 QIconTableWidget::QIconTableWidget(QWidget *parent) :
     QTableWidget(parent)
@@ -72,28 +74,7 @@ void QIconTableWidget::setCurrentZoom(float value)
     zoomTo(m_currentZoom);
 }
 
-void QIconTableWidget::wheelEvent(QWheelEvent * event)
-{
-    if (!(event->modifiers() & Qt::ControlModifier))
-    {
-        QTableWidget::wheelEvent(event);
-        return;
-    }
-
-    int delta = event->delta()/120;
-    if (delta > 0)
-    {
-        for (int i = 0; i < delta; i++)
-            zoomIn();
-    }
-    else
-    {
-        for (int i = 0; i < -delta; i++)
-            zoomOut();
-    }
-
-    event->accept();
-}
+// slost
 
 void QIconTableWidget::zoomIn()
 {
@@ -122,4 +103,73 @@ void QIconTableWidget::zoomTo(float value)
     setIconSize(QSize(w-4,h-4));
     horizontalHeader()->setDefaultSectionSize(w);
     verticalHeader()->setDefaultSectionSize(h);
+}
+
+// virtual protected
+
+void QIconTableWidget::wheelEvent(QWheelEvent * event)
+{
+    if (!(event->modifiers() & Qt::ControlModifier))
+    {
+        QTableWidget::wheelEvent(event);
+        return;
+    }
+
+    int delta = event->delta()/120;
+    if (delta > 0)
+    {
+        for (int i = 0; i < delta; i++)
+            zoomIn();
+    }
+    else
+    {
+        for (int i = 0; i < -delta; i++)
+            zoomOut();
+    }
+
+    event->accept();
+}
+
+void QIconTableWidget::mousePressEvent(QMouseEvent * event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        m_dragStartPosition = event->pos();
+        itemAt(event->pos())->setSelected(true);
+    }
+    //QTableWidget::mousePressEvent(event);
+}
+
+void QIconTableWidget::mouseMoveEvent(QMouseEvent * event)
+{
+    /*
+    if (!(event->buttons() & Qt::LeftButton))
+        return;
+    if ((event->pos() - m_dragStartPosition).manhattanLength()
+            < QApplication::startDragDistance())
+        return;
+
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
+
+    mimeData->setData(mimeType, data);
+    drag->setMimeData(mimeData);
+
+    Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+    // ...
+    */
+}
+
+void QIconTableWidget::dropEvent(QDropEvent * event)
+{
+    /*
+    if (event->source() != this)
+        return;
+
+    TableItem * old = reinterpret_cast<TableItem*>(event->mimeData()->data("").data());
+    QModelIndex index = indexAt(event->pos());
+    setIndexWidget(index, new TableItem(old));
+
+    event->acceptProposedAction();
+    */
 }

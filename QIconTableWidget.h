@@ -39,6 +39,8 @@ class QIconTableWidget : public QTableWidget
     float m_zoomStep;
     float m_currentZoom;
 
+    QPoint m_dragStartPosition;
+
 public:
     explicit QIconTableWidget(QWidget *parent = 0);
 
@@ -62,6 +64,9 @@ public:
 
 protected:
     void wheelEvent(QWheelEvent * event);
+    void mousePressEvent(QMouseEvent * event);
+    void mouseMoveEvent(QMouseEvent * event);
+    void dropEvent(QDropEvent * event);
 
 signals:
 

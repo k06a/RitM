@@ -53,6 +53,12 @@
         <height>60</height>
        </size>
       </property>
+      <property name="verticalScrollMode">
+       <enum>QAbstractItemView::ScrollPerPixel</enum>
+      </property>
+      <property name="horizontalScrollMode">
+       <enum>QAbstractItemView::ScrollPerItem</enum>
+      </property>
       <property name="showGrid">
        <bool>true</bool>
       </property>
