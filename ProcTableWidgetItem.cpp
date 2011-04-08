@@ -1,15 +1,15 @@
-#include "TableItem.h"
+#include "ProcTableWidgetItem.h"
 #include <QPalette>
 #include <QLayout>
 #include <QLabel>
 #include <QPainter>
 
-TableItem::TableItem(QWidget *parent)
+ProcTableWidgetItem::ProcTableWidgetItem(QWidget *parent)
     : QWidget(parent)
 {
 }
 
-TableItem::TableItem(QString iconPath, QString centerText, QWidget * parent)
+ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)
     : QWidget(parent), m_text(centerText), m_pixmap(iconPath)
 {
     setAutoFillBackground(true);
@@ -22,7 +22,7 @@ TableItem::TableItem(QString iconPath, QString centerText, QWidget * parent)
     hlay->addWidget(label);
 }
 
-TableItem::TableItem(TableItem * item)
+ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
     : m_text(item->m_text), m_pixmap(item->m_pixmap)
 {
     setAutoFillBackground(true);
@@ -35,11 +35,31 @@ TableItem::TableItem(TableItem * item)
     hlay->addWidget(label);
 }
 
-void TableItem::paintEvent(QPaintEvent * event)
+QString ProcTableWidgetItem::text() const
 {
-    {
-        QPainter p(this);
-        p.drawPixmap(rect(), m_pixmap);
-    }
+    return m_text;
+}
+
+void ProcTableWidgetItem::setText(QString text)
+{
+    m_text = text;
+}
+
+QPixmap ProcTableWidgetItem::pixmap() const
+{
+    return m_pixmap;
+}
+
+void ProcTableWidgetItem::setPixmap(QPixmap pixmap)
+{
+    m_pixmap = pixmap;
+}
+
+void ProcTableWidgetItem::paintEvent(QPaintEvent * event)
+{
+    QPainter p(this);
+    p.drawPixmap(rect(), m_pixmap);
+    p.end();
+
     QWidget::paintEvent(event);
 }

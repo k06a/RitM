@@ -12,16 +12,20 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    QIconTableWidget.cpp \
-    QIconTableWidgetItem.cpp \
-    TableItem.cpp \
-    MimeData.cpp
+    ProcListWidget.cpp \
+    ProcTableWidget.cpp \
+    ProcMimeData.cpp \
+    ProcRubberBand.cpp \
+    ProcTableWidgetItem.cpp \
+    ModuleHolder.cpp
 
 HEADERS  += mainwindow.h \
-    QIconTableWidget.h \
-    QIconTableWidgetItem.h \
-    TableItem.h \
-    MimeData.h
+    ProcListWidget.h \
+    ProcMimeData.h \
+    ProcRubberBand.h \
+    ProcTableWidget.h \
+    ProcTableWidgetItem.h \
+    ModuleHolder.h
 
 FORMS    += mainwindow.ui
 

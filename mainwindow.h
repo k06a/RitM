@@ -24,6 +24,8 @@ private slots:
     //void on_action_zoomin_triggered();
     //void on_action_zoomout_triggered();
 
+    void on_horizontalSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
 };

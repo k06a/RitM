@@ -16,15 +16,12 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QIconTableWidget" name="tableWidget_field">
+     <widget class="ProcTableWidget" name="tableWidget_field">
       <property name="mouseTracking">
        <bool>true</bool>
       </property>
       <property name="acceptDrops">
        <bool>true</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">selection-background-color: rgba(0, 0, 0, 128);</string>
       </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
@@ -42,7 +39,7 @@
        <enum>Qt::MoveAction</enum>
       </property>
       <property name="selectionMode">
-       <enum>QAbstractItemView::ExtendedSelection</enum>
+       <enum>QAbstractItemView::MultiSelection</enum>
       </property>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectItems</enum>
@@ -383,7 +380,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0">
+    <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -391,15 +388,21 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QListWidget" name="listWidget">
+      <widget class="ProcListWidget" name="listWidget">
        <property name="editTriggers">
         <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
        </property>
        <property name="iconSize">
         <size>
          <width>64</width>
          <height>64</height>
         </size>
+       </property>
+       <property name="textElideMode">
+        <enum>Qt::ElideRight</enum>
        </property>
        <property name="movement">
         <enum>QListView::Free</enum>
@@ -419,12 +422,15 @@
        <property name="uniformItemSizes">
         <bool>true</bool>
        </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
        <property name="selectionRectVisible">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <item>
         <property name="text">
-         <string>Адаптер</string>
+         <string>Base.Adapter</string>
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
@@ -433,7 +439,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Коннектор</string>
+         <string>Base.Connector</string>
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
@@ -442,13 +448,35 @@
        </item>
        <item>
         <property name="text">
-         <string>Процессор</string>
+         <string>Base.Processor</string>
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
           <normaloff>:/images/processor.svgz</normaloff>:/images/processor.svgz</iconset>
         </property>
        </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSlider" name="horizontalSlider">
+       <property name="minimum">
+        <number>32</number>
+       </property>
+       <property name="maximum">
+        <number>80</number>
+       </property>
+       <property name="value">
+        <number>64</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickPosition">
+        <enum>QSlider::TicksBothSides</enum>
+       </property>
+       <property name="tickInterval">
+        <number>8</number>
+       </property>
       </widget>
      </item>
     </layout>
@@ -614,9 +642,14 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QIconTableWidget</class>
+   <class>ProcTableWidget</class>
    <extends>QTableWidget</extends>
-   <header>QIconTableWidget.h</header>
+   <header>ProcTableWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ProcListWidget</class>
+   <extends>QListWidget</extends>
+   <header>ProcListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

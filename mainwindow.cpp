@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "TableItem.h"
+#include "ProcTableWidgetItem.h"
+#include "ModuleHolder.h"
 #include <QVariant>
 #include <QCheckBox>
 
@@ -30,8 +31,18 @@ MainWindow::MainWindow(QWidget *parent)
     foreach(QDockWidget * dockWidget, findChildren<QDockWidget*>())
         ui->menu_widgets->addAction(dockWidget->toggleViewAction());
 
-    TableItem * item = new TableItem(":/images/processor.svgz","123");
-    ui->tableWidget_field->setIndexWidget(ui->tableWidget_field->indexAt(QPoint(0,0)), item);
+    //ProcTableWidgetItem * item = new ProcTableWidgetItem(":/images/processor.svgz","123");
+    //ui->tableWidget_field->setItem(0,0,new QTableWidgetItem);
+    //ui->tableWidget_field->setIndexWidget(ui->tableWidget_field->indexAt(QPoint(1,1)), item);
+
+    ModuleHolder * holder = ModuleHolder::instance();
+    holder->addModule(NULL,QPixmap(":/images/processor.svgz"),"Processor","Base");
+    holder->addModule(NULL,QPixmap(":/images/adapter.svgz"),"Adapter","Base");
+    holder->addModule(NULL,QPixmap(":/images/connector.svgz"),"Connector","Base");
+
+    ui->listWidget->setSlider(ui->horizontalSlider);
+    //for(unsigned i = 0; i < holder->moduleList().size(); i++)
+    //    ui->listWidget->addProcModule(&holder->moduleList()[i]);
 }
 
 MainWindow::~MainWindow()
@@ -65,3 +76,9 @@ void MainWindow::on_action_zoomout_triggered()
     }
 }
 */
+
+void MainWindow::on_horizontalSlider_valueChanged(int value)
+{
+    ui->listWidget->setIconSize(QSize(value,value));
+    ui->listWidget->setGridSize(QSize(value*1.4,value*1.4));
+}
