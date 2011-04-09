@@ -198,8 +198,8 @@ void ProcTableWidget::mousePressEvent(QMouseEvent * event)
                 return;
             }
 
-            setCurrentItem(it);//
             clearSelection();
+            setCurrentItem(it);
             it->setSelected(true);
             m_selectedIndexes.clear();
             m_selectedIndexes.append(indexFromItem(it));
@@ -316,6 +316,7 @@ void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
     if (m_waitForMove)
     {
         clearSelection();
+        setCurrentItem(it);
         it->setSelected(true);
         m_selectedIndexes.clear();
         m_selectedIndexes.append(indexFromItem(it));
@@ -337,9 +338,8 @@ void ProcTableWidget::dragEnterEvent(QDragEnterEvent * event)
             qobject_cast<const ProcMimeData*>(event->mimeData());
         if (mimeData == NULL)
             return;
-
-        event->acceptProposedAction();
     }
+    event->acceptProposedAction();
 }
 
 void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
@@ -381,8 +381,17 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
         clearSelection();
         for (int i = 0; i < m_selectedIndexes.size(); i++)
         {
-            item(m_selectedIndexes[i].row() + dr,
-                 m_selectedIndexes[i].column() + dc)->setSelected(true);
+            int r = m_selectedIndexes[i].row() + dr;
+            int c = m_selectedIndexes[i].column() + dc;
+
+            QTableWidgetItem * it = item(r,c);
+            if (it == NULL)
+            {
+                it = new QTableWidgetItem;
+                setItem(r, c, it);
+            }
+
+            it->setSelected(true);
         }
     }
 }
@@ -390,7 +399,7 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
 void ProcTableWidget::dragLeaveEvent(QDragLeaveEvent * event)
 {
     clearSelection();
-    m_selectedIndexes.clear();
+    //m_selectedIndexes.clear();
 }
 
 void ProcTableWidget::dropEvent(QDropEvent * event)
@@ -419,7 +428,36 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
     }
     else
     {
-        //clearSelection();
+        m_nowTouchIndex = indexAt(event->pos());
+        int dr = m_nowTouchIndex.row() - m_touchIndex.row();
+        int dc = m_nowTouchIndex.column() - m_touchIndex.column();
+
+        for (int i = 0; i < m_selectedIndexes.size(); i++)
+        {
+            QTableWidgetItem * it = itemFromIndex(m_selectedIndexes[i]);
+
+            int r = m_selectedIndexes[i].row() + dr;
+            int c = m_selectedIndexes[i].column() + dc;
+
+            QWidget * w = indexWidget(m_selectedIndexes[i]);
+            ProcTableWidgetItem * wi = qobject_cast<ProcTableWidgetItem*>(w);
+
+            if (event->dropAction() == Qt::CopyAction)
+            {
+                setItem(r, c, new QTableWidgetItem());
+                setIndexWidget(indexFromItem(item(r,c)), new ProcTableWidgetItem(wi));
+                setCurrentItem(item(r,c));
+            } else if (event->dropAction() == Qt::MoveAction)
+            {
+                it = takeItem(m_selectedIndexes[i].row(),
+                              m_selectedIndexes[i].column());
+                setItem(r, c, it);
+                setIndexWidget(indexFromItem(item(r,c)), new ProcTableWidgetItem(wi));
+                setIndexWidget(indexFromItem(it), NULL);
+                setCurrentItem(item(r,c));
+            }
+
+        }
     }
 
     /*

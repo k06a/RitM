@@ -17,9 +17,9 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, Q
     setAttribute(Qt::WA_NoSystemBackground, false);
 
     QHBoxLayout * hlay = new QHBoxLayout(this);
-    QLabel * label = new QLabel(centerText);
-    label->setAlignment(Qt::AlignCenter);
-    hlay->addWidget(label);
+    //QLabel * label = new QLabel(centerText);
+    //label->setAlignment(Qt::AlignCenter);
+    //hlay->addWidget(label);
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
@@ -30,9 +30,9 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
     setAttribute(Qt::WA_NoSystemBackground, false);
 
     QHBoxLayout * hlay = new QHBoxLayout(this);
-    QLabel * label = new QLabel(m_text);
-    label->setAlignment(Qt::AlignCenter);
-    hlay->addWidget(label);
+    //QLabel * label = new QLabel(m_text);
+    //label->setAlignment(Qt::AlignCenter);
+    //hlay->addWidget(label);
 }
 
 QString ProcTableWidgetItem::text() const
