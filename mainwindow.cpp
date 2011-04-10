@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->action_zoomin, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomIn()));
     connect(ui->action_zoomout, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomOut()));
+    connect(ui->action_delete, SIGNAL(triggered()), ui->tableWidget_field, SLOT(deleteSelectedItems()));
+    connect(ui->action_about, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    connect(ui->action_quit, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     // Add ToolBars and DockWidgets Actions to Windows Menu
     foreach(QToolBar * toolBar, findChildren<QToolBar*>())
@@ -46,8 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
     holder->addModule(NULL,QPixmap(":/images/pipes/Top2Right.svg"),"Top2Right","Pipe");
     holder->addModule(NULL,QPixmap(":/images/pipes/Bottom2Right.svg"),"Bottom2Right","Pipe");
 
-    ui->listWidget_elements->setSlider(ui->horizontalSlider);
-    ui->listWidget_connections->setSlider(ui->horizontalSlider);
+    ui->listWidget_elements->setSlider(ui->horizontalSlider_elements);
+    ui->listWidget_pipes->setSlider(ui->horizontalSlider_elements);
 }
 
 MainWindow::~MainWindow()
@@ -55,37 +58,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*
-void MainWindow::updateItemSize(int size)
-{
-    ui->tableWidget_field->setIconSize(QSize(size-4,size-4));
-    ui->tableWidget_field->horizontalHeader()->setDefaultSectionSize(size);
-    ui->tableWidget_field->verticalHeader()->setDefaultSectionSize(size);
-}
-
-void MainWindow::on_action_zoomin_triggered()
-{
-    if (tableZoom < 5.00)
-    {
-        tableZoom *= 1.20;
-        updateItemSize(64 * tableZoom);
-    }
-}
-
-void MainWindow::on_action_zoomout_triggered()
-{
-    if (tableZoom > 0.50)
-    {
-        tableZoom *= 0.80;
-        updateItemSize(64 * tableZoom);
-    }
-}
-*/
-
-void MainWindow::on_horizontalSlider_valueChanged(int value)
+void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
 {
     ui->listWidget_elements->setIconSize(QSize(value,value));
     ui->listWidget_elements->setGridSize(QSize(value*1.4,value*1.4));
-    ui->listWidget_connections->setIconSize(QSize(value,value));
-    ui->listWidget_connections->setGridSize(QSize(value*1.4,value*1.4));
+    ui->listWidget_pipes->setIconSize(QSize(value,value));
+    ui->listWidget_pipes->setGridSize(QSize(value*1.4,value*1.4));
+    ui->horizontalSlider_pipes->setValue(value);
 }

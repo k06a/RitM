@@ -17,14 +17,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private:
-    //void updateItemSize(int size);
-
 private slots:
-    //void on_action_zoomin_triggered();
-    //void on_action_zoomout_triggered();
-
-    void on_horizontalSlider_valueChanged(int value);
+    void on_horizontalSlider_elements_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;

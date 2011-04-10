@@ -19,5 +19,9 @@
         <file>images/pipes/Top2Bottom.svg</file>
         <file>images/pipes/Top2Right.svg</file>
         <file>images/pipes/TopBottom2Right.svg</file>
+        <file>images/editdelete.png</file>
+        <file>images/quit.png</file>
+        <file>images/help.png</file>
+        <file>images/about.png</file>
     </qresource>
 </RCC>

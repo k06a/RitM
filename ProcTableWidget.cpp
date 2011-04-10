@@ -80,33 +80,6 @@ void ProcTableWidget::setCurrentZoom(float value)
     zoomTo(m_currentZoom);
 }
 
-// slost
-
-void ProcTableWidget::zoomIn()
-{
-    setCurrentZoom(m_currentZoom + m_zoomStep);
-}
-
-void ProcTableWidget::zoomOut()
-{
-    setCurrentZoom(m_currentZoom - m_zoomStep);
-}
-
-void ProcTableWidget::zoomTo(float value)
-{
-    //int centerX = size().width() / 2;
-    //int centerY = size().height() / 2;
-    //QTableWidgetItem * centerItem = itemAt(centerX, centerY);
-
-    int w = m_baseZoomWidth * value;
-    int h = m_baseZoomHeight * value;
-    setIconSize(QSize(w-4,h-4));
-    horizontalHeader()->setDefaultSectionSize(w);
-    verticalHeader()->setDefaultSectionSize(h);
-
-    //scrollToItem(centerItem, QAbstractItemView::PositionAtCenter);
-}
-
 // virtual protected
 
 void ProcTableWidget::wheelEvent(QWheelEvent * event)
@@ -441,5 +414,41 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
         }
 
         m_selectedItems = newListOfSelected;
+    }
+}
+
+// slots
+
+void ProcTableWidget::zoomIn()
+{
+    setCurrentZoom(m_currentZoom + m_zoomStep);
+}
+
+void ProcTableWidget::zoomOut()
+{
+    setCurrentZoom(m_currentZoom - m_zoomStep);
+}
+
+void ProcTableWidget::zoomTo(float value)
+{
+    //int centerX = size().width() / 2;
+    //int centerY = size().height() / 2;
+    //QTableWidgetItem * centerItem = itemAt(centerX, centerY);
+
+    int w = m_baseZoomWidth * value;
+    int h = m_baseZoomHeight * value;
+    setIconSize(QSize(w-4,h-4));
+    horizontalHeader()->setDefaultSectionSize(w);
+    verticalHeader()->setDefaultSectionSize(h);
+
+    //scrollToItem(centerItem, QAbstractItemView::PositionAtCenter);
+}
+
+void ProcTableWidget::deleteSelectedItems()
+{
+    for(int i = 0; i < m_selectedItems.size(); i++)
+    {
+        removeCellWidget(m_selectedItems[i]->row(),
+                         m_selectedItems[i]->column());
     }
 }

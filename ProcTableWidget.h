@@ -84,6 +84,7 @@ public slots:
     void zoomIn();
     void zoomOut();
     void zoomTo(float value);
+    void deleteSelectedItems();
 };
 
 #endif // QICONTABLEWIDGET_H
