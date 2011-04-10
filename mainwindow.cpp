@@ -36,7 +36,18 @@ MainWindow::MainWindow(QWidget *parent)
     holder->addModule(NULL,QPixmap(":/images/adapter.svgz"),"Adapter","Base");
     holder->addModule(NULL,QPixmap(":/images/connector.svgz"),"Connector","Base");
 
-    ui->listWidget->setSlider(ui->horizontalSlider);
+    // Add all pipes
+    holder->addModule(NULL,QPixmap(":/images/pipes/Left2Right.svg"),"Left2Right","Pipe");
+    holder->addModule(NULL,QPixmap(":/images/pipes/Top2Bottom.svg"),"Top2Bottom","Pipe");
+    holder->addModule(NULL,QPixmap(":/images/pipes/Left2TopBottom.svg"),"Left2TopBottom","Pipe");
+    holder->addModule(NULL,QPixmap(":/images/pipes/TopBottom2Right.svg"),"TopBottom2Right","Pipe");
+    holder->addModule(NULL,QPixmap(":/images/pipes/Left2Top.svg"),"Left2Top","Pipe");
+    holder->addModule(NULL,QPixmap(":/images/pipes/Left2Bottom.svg"),"Left2Bottom","Pipe");
+    holder->addModule(NULL,QPixmap(":/images/pipes/Top2Right.svg"),"Top2Right","Pipe");
+    holder->addModule(NULL,QPixmap(":/images/pipes/Bottom2Right.svg"),"Bottom2Right","Pipe");
+
+    ui->listWidget_elements->setSlider(ui->horizontalSlider);
+    ui->listWidget_connections->setSlider(ui->horizontalSlider);
 }
 
 MainWindow::~MainWindow()
@@ -73,6 +84,8 @@ void MainWindow::on_action_zoomout_triggered()
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
-    ui->listWidget->setIconSize(QSize(value,value));
-    ui->listWidget->setGridSize(QSize(value*1.4,value*1.4));
+    ui->listWidget_elements->setIconSize(QSize(value,value));
+    ui->listWidget_elements->setGridSize(QSize(value*1.4,value*1.4));
+    ui->listWidget_connections->setIconSize(QSize(value,value));
+    ui->listWidget_connections->setGridSize(QSize(value*1.4,value*1.4));
 }

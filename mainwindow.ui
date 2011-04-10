@@ -380,81 +380,214 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <widget class="ProcListWidget" name="listWidget">
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>64</width>
-         <height>64</height>
-        </size>
-       </property>
-       <property name="textElideMode">
-        <enum>Qt::ElideRight</enum>
-       </property>
-       <property name="movement">
-        <enum>QListView::Free</enum>
-       </property>
-       <property name="resizeMode">
-        <enum>QListView::Adjust</enum>
-       </property>
-       <property name="gridSize">
-        <size>
-         <width>80</width>
-         <height>80</height>
-        </size>
-       </property>
-       <property name="viewMode">
-        <enum>QListView::IconMode</enum>
-       </property>
-       <property name="uniformItemSizes">
+       <property name="movable">
         <bool>true</bool>
        </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-       <property name="selectionRectVisible">
-        <bool>true</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>Base.Adapter</string>
-        </property>
-        <property name="icon">
-         <iconset resource="res.qrc">
-          <normaloff>:/images/adapter.svgz</normaloff>:/images/adapter.svgz</iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base.Connector</string>
-        </property>
-        <property name="icon">
-         <iconset resource="res.qrc">
-          <normaloff>:/images/connector.svgz</normaloff>:/images/connector.svgz</iconset>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base.Processor</string>
-        </property>
-        <property name="icon">
-         <iconset resource="res.qrc">
-          <normaloff>:/images/processor.svgz</normaloff>:/images/processor.svgz</iconset>
-        </property>
-       </item>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Соединители</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="ProcListWidget" name="listWidget_connections">
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="textElideMode">
+            <enum>Qt::ElideRight</enum>
+           </property>
+           <property name="movement">
+            <enum>QListView::Free</enum>
+           </property>
+           <property name="resizeMode">
+            <enum>QListView::Adjust</enum>
+           </property>
+           <property name="gridSize">
+            <size>
+             <width>80</width>
+             <height>80</height>
+            </size>
+           </property>
+           <property name="viewMode">
+            <enum>QListView::IconMode</enum>
+           </property>
+           <property name="uniformItemSizes">
+            <bool>true</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="selectionRectVisible">
+            <bool>true</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>Pipe.Left2Right</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/Left2Right.svg</normaloff>:/images/pipes/Left2Right.svg</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pipe.Left2Top</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/Left2Top.svg</normaloff>:/images/pipes/Left2Top.svg</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pipe.Left2Bottom</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/Left2Bottom.svg</normaloff>:/images/pipes/Left2Bottom.svg</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pipe.Left2TopBottom</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/Left2TopBottom.svg</normaloff>:/images/pipes/Left2TopBottom.svg</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pipe.Top2Right</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/Top2Right.svg</normaloff>:/images/pipes/Top2Right.svg</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pipe.Bottom2Right</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/Bottom2Right.svg</normaloff>:/images/pipes/Bottom2Right.svg</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pipe.TopBottom2Right</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/TopBottom2Right.svg</normaloff>:/images/pipes/TopBottom2Right.svg</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pipe.Top2Bottom</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/pipes/Top2Bottom.svg</normaloff>:/images/pipes/Top2Bottom.svg</iconset>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Обработчики</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="ProcListWidget" name="listWidget_elements">
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="textElideMode">
+            <enum>Qt::ElideRight</enum>
+           </property>
+           <property name="movement">
+            <enum>QListView::Free</enum>
+           </property>
+           <property name="resizeMode">
+            <enum>QListView::Adjust</enum>
+           </property>
+           <property name="gridSize">
+            <size>
+             <width>80</width>
+             <height>80</height>
+            </size>
+           </property>
+           <property name="viewMode">
+            <enum>QListView::IconMode</enum>
+           </property>
+           <property name="uniformItemSizes">
+            <bool>true</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="selectionRectVisible">
+            <bool>true</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>Base.Adapter</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/adapter.svgz</normaloff>:/images/adapter.svgz</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Base.Connector</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/connector.svgz</normaloff>:/images/connector.svgz</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Base.Processor</string>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/images/processor.svgz</normaloff>:/images/processor.svgz</iconset>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
      <item>
