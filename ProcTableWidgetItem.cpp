@@ -3,6 +3,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QPainter>
+#include <QPicture>
 
 ProcTableWidgetItem::ProcTableWidgetItem(QWidget *parent)
     : QWidget(parent)
@@ -10,7 +11,10 @@ ProcTableWidgetItem::ProcTableWidgetItem(QWidget *parent)
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)
-    : QWidget(parent), m_text(centerText), m_pixmap(iconPath)
+    : QWidget(parent)
+    , m_text(centerText)
+    , m_pixmap(iconPath)
+    , m_pixmapPath(iconPath)
 {
     //setAutoFillBackground(true);
     //setAttribute(Qt::WA_NoBackground, false);
@@ -23,7 +27,10 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, Q
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
-    : QWidget(0), m_text(item->m_text), m_pixmap(item->m_pixmap)
+    : QWidget(0)
+    , m_text(item->m_text)
+    , m_pixmap(item->m_pixmap)
+    , m_pixmapPath(item->m_pixmapPath)
 {
     //setAutoFillBackground(true);
     //setAttribute(Qt::WA_NoBackground, false);

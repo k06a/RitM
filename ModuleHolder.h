@@ -2,7 +2,6 @@
 #define MODULEHOLDER_H
 
 #include <vector>
-#include <string>
 #include <algorithm>
 #include <QPixmap>
 
@@ -10,17 +9,17 @@ class IModule;
 
 struct ModuleRecord
 {
-    std::string lib;
-    std::string name;
+    QString lib;
+    QString name;
     IModule * module;
-    QPixmap pixmap;
+    QString pixmapPath;
 
-    std::string fullName() const
+    QString fullName() const
     {
         return (lib + '.' + name);
     }
 
-    bool operator == (const std::string & fullName) const
+    bool operator == (QString fullName) const
     {
         return fullName == (lib + '.' + name);
     }
@@ -39,15 +38,15 @@ public:
     static ModuleHolder * instance();
 
     void addModule(IModule * module,
-                   QPixmap pixmap,
-                   std::string moduleName,
-                   std::string libName);
+                   QString pixmapPath,
+                   QString moduleName,
+                   QString libName);
 
     void clear();
     const ModuleVector & moduleList() const;
-    ModuleRecord * moduleForName(std::string libName,
-                                 std::string moduleName);
-    ModuleRecord * moduleForName(std::string fullName);
+    ModuleRecord * moduleForName(QString libName,
+                                 QString moduleName);
+    ModuleRecord * moduleForName(QString fullName);
 
 private:
     ModuleHolder();

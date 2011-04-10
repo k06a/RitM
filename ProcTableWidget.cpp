@@ -80,6 +80,25 @@ void ProcTableWidget::setCurrentZoom(float value)
     zoomTo(m_currentZoom);
 }
 
+// Cut Copy Paste
+
+QString ProcTableWidget::cut()
+{
+    QString str = copy();
+    deleteSelectedItems();
+    return "";
+}
+
+QString ProcTableWidget::copy() const
+{
+    return "";
+}
+
+void ProcTableWidget::paste(QString str)
+{
+
+}
+
 // virtual protected
 
 void ProcTableWidget::wheelEvent(QWheelEvent * event)
@@ -113,17 +132,25 @@ void ProcTableWidget::mousePressEvent(QMouseEvent * event)
         QTableWidgetItem * it = itemAt(event->pos());
         if (it == NULL)
         {
-            clearSelection();
-            m_selectedItems.clear();
-            return;
+            it = new QTableWidgetItem;
+            setItem(rowAt(event->pos().y()),
+                    columnAt(event->pos().x()),
+                    it);
         }
 
         QWidget * w = cellWidget(it->row(), it->column());
         ProcTableWidgetItem * wit = qobject_cast<ProcTableWidgetItem*>(w);
         if (wit == NULL)
         {
+            if (event->modifiers() & Qt::ControlModifier)
+            {
+                it->setSelected(!it->isSelected());
+                return;
+            }
+
             clearSelection();
             m_selectedItems.clear();
+            it->setSelected(true);
             return;
         }
 
@@ -366,10 +393,10 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
 
         //clearSelection();
         ModuleHolder * holder = ModuleHolder::instance();
-        ModuleRecord * rec = holder->moduleForName(mimeData->moduleName().toStdString());
+        ModuleRecord * rec = holder->moduleForName(mimeData->moduleName());
         ProcTableWidgetItem * w = new ProcTableWidgetItem();
-        w->setPixmap(rec->pixmap);
-        w->setText(rec->fullName().c_str());
+        w->setPixmap(rec->pixmapPath);
+        w->setText(rec->fullName());
         setCellWidget(it->row(), it->column(), w);
         setFocus();
 
@@ -450,5 +477,7 @@ void ProcTableWidget::deleteSelectedItems()
     {
         removeCellWidget(m_selectedItems[i]->row(),
                          m_selectedItems[i]->column());
+        clearSelection();
+        m_selectedItems.clear();
     }
 }

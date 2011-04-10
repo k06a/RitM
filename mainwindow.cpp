@@ -35,19 +35,19 @@ MainWindow::MainWindow(QWidget *parent)
         ui->menu_widgets->addAction(dockWidget->toggleViewAction());
 
     ModuleHolder * holder = ModuleHolder::instance();
-    holder->addModule(NULL,QPixmap(":/images/processor.svgz"),"Processor","Base");
-    holder->addModule(NULL,QPixmap(":/images/adapter.svgz"),"Adapter","Base");
-    holder->addModule(NULL,QPixmap(":/images/connector.svgz"),"Connector","Base");
+    holder->addModule(NULL,tr(":/images/processor.svg"),"Processor","Base");
+    holder->addModule(NULL,tr(":/images/adapter.svg"),"Adapter","Base");
+    holder->addModule(NULL,tr(":/images/connector.svg"),"Connector","Base");
 
     // Add all pipes
-    holder->addModule(NULL,QPixmap(":/images/pipes/Left2Right.svg"),"Left2Right","Pipe");
-    holder->addModule(NULL,QPixmap(":/images/pipes/Top2Bottom.svg"),"Top2Bottom","Pipe");
-    holder->addModule(NULL,QPixmap(":/images/pipes/Left2TopBottom.svg"),"Left2TopBottom","Pipe");
-    holder->addModule(NULL,QPixmap(":/images/pipes/TopBottom2Right.svg"),"TopBottom2Right","Pipe");
-    holder->addModule(NULL,QPixmap(":/images/pipes/Left2Top.svg"),"Left2Top","Pipe");
-    holder->addModule(NULL,QPixmap(":/images/pipes/Left2Bottom.svg"),"Left2Bottom","Pipe");
-    holder->addModule(NULL,QPixmap(":/images/pipes/Top2Right.svg"),"Top2Right","Pipe");
-    holder->addModule(NULL,QPixmap(":/images/pipes/Bottom2Right.svg"),"Bottom2Right","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/Left2Right.svg"),"Left2Right","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/Top2Bottom.svg"),"Top2Bottom","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/Left2TopBottom.svg"),"Left2TopBottom","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/TopBottom2Right.svg"),"TopBottom2Right","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/Left2Top.svg"),"Left2Top","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/Left2Bottom.svg"),"Left2Bottom","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/Top2Right.svg"),"Top2Right","Pipe");
+    holder->addModule(NULL,tr(":/images/pipes/Bottom2Right.svg"),"Bottom2Right","Pipe");
 
     ui->listWidget_elements->setSlider(ui->horizontalSlider_elements);
     ui->listWidget_pipes->setSlider(ui->horizontalSlider_elements);

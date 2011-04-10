@@ -66,6 +66,10 @@ public:
     float currentZoom() const;
     void setCurrentZoom(float value);
 
+    QString cut();
+    QString copy() const;
+    void paste(QString str);
+
 protected:
     void wheelEvent(QWheelEvent * event);
     void mousePressEvent(QMouseEvent * event);

@@ -433,7 +433,7 @@
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/images/adapter.svgz</normaloff>:/images/adapter.svgz</iconset>
+          <normaloff>:/images/adapter.svg</normaloff>:/images/adapter.svg</iconset>
         </property>
        </item>
        <item>
@@ -442,7 +442,7 @@
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/images/connector.svgz</normaloff>:/images/connector.svgz</iconset>
+          <normaloff>:/images/connector.svg</normaloff>:/images/connector.svg</iconset>
         </property>
        </item>
        <item>
@@ -451,7 +451,7 @@
         </property>
         <property name="icon">
          <iconset resource="res.qrc">
-          <normaloff>:/images/processor.svgz</normaloff>:/images/processor.svgz</iconset>
+          <normaloff>:/images/processor.svg</normaloff>:/images/processor.svg</iconset>
         </property>
        </item>
       </widget>

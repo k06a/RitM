@@ -14,9 +14,9 @@ void ProcListWidget::addProcModule(const ModuleRecord * module)
 {
     QListWidgetItem * item =
         new QListWidgetItem(
-                QIcon(module->pixmap),
-                QString(module->fullName().c_str()));
-    item->setToolTip(module->fullName().c_str());
+                QIcon(module->pixmapPath),
+                QString(module->fullName()));
+    item->setToolTip(module->fullName());
     addItem(item);
 }
 

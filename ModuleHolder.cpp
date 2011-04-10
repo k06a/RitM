@@ -14,11 +14,11 @@ ModuleHolder * ModuleHolder::instance()
 }
 
 void ModuleHolder::addModule(IModule * module,
-                             QPixmap pixmap,
-                             std::string moduleName,
-                             std::string libName)
+                             QString pixmapPath,
+                             QString moduleName,
+                             QString libName)
 {
-    ModuleRecord rec = { libName, moduleName, module, pixmap };
+    ModuleRecord rec = { libName, moduleName, module, pixmapPath };
     modules.push_back(rec);
 }
 
@@ -32,14 +32,14 @@ const ModuleHolder::ModuleVector & ModuleHolder::moduleList() const
     return modules;
 }
 
-ModuleRecord * ModuleHolder::moduleForName(std::string libName,
-                                           std::string moduleName)
+ModuleRecord * ModuleHolder::moduleForName(QString libName,
+                                           QString moduleName)
 {
-    std::string fullName = libName + '.' + moduleName;
+    QString fullName = libName + '.' + moduleName;
     return moduleForName(fullName);
 }
 
-ModuleRecord * ModuleHolder::moduleForName(std::string fullName)
+ModuleRecord * ModuleHolder::moduleForName(QString fullName)
 {
     ModuleVector::iterator it = std::find(modules.begin(), modules.end(), fullName);
     if (it == modules.end())
