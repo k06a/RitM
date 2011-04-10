@@ -40,9 +40,9 @@ class ProcTableWidget : public QTableWidget
     float m_currentZoom;
 
     bool m_waitForMove;
-    QModelIndex m_touchIndex;
-    QModelIndex m_nowTouchIndex;
-    QList<QModelIndex> m_selectedIndexes;
+    QTableWidgetItem * m_touchItem;
+    QPoint m_lastTouchCoord;
+    QList<QTableWidgetItem*> m_selectedItems;
     QPoint m_dragStartPosition;
 
 public:

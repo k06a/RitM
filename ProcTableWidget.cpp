@@ -12,7 +12,6 @@
 
 ProcTableWidget::ProcTableWidget(QWidget *parent)
     : QTableWidget(parent)
-    , m_selectedIndexes()
 {
 }
 
@@ -142,70 +141,48 @@ void ProcTableWidget::mousePressEvent(QMouseEvent * event)
         if (it == NULL)
         {
             clearSelection();
-            m_selectedIndexes.clear();
+            m_selectedItems.clear();
             return;
         }
 
-        QWidget * w = indexWidget(indexFromItem(it));
+        QWidget * w = cellWidget(it->row(), it->column());
         ProcTableWidgetItem * wit = qobject_cast<ProcTableWidgetItem*>(w);
         if (wit == NULL)
         {
             clearSelection();
-            m_selectedIndexes.clear();
+            m_selectedItems.clear();
             return;
         }
 
-        if (event->modifiers() & Qt::ShiftModifier)
-        {
-            /*
-            int r1 = currentItem()->row();
-            int c1 = currentItem()->column();
-            int r2 = it->row();
-            int c2 = it->column();
-
-            int dr = (r1 < r2) ? 1 : -1;
-            int dc = (c1 < c2) ? 1 : -1;
-
-            for (int r = r1; r != r2+dr; r+=dr)
-            for (int c = c1; c != c2+dc; c+=dc)
-            {
-                QTableWidgetItem * i = item(r,c);
-                if (i != NULL)
-                    i->setSelected(!i->isSelected());
-            }
-            */
-        } else
         if (event->modifiers() & Qt::ControlModifier)
         {
             if (it->isSelected())
             {
-                setCurrentItem(it);
                 it->setSelected(false);
-                m_selectedIndexes.removeOne(indexFromItem(it));
+                m_selectedItems.removeOne(it);
             }
             else
             {
-                setCurrentItem(it);
                 it->setSelected(true);
-                m_selectedIndexes.append(indexFromItem(it));
+                m_selectedItems.append(it);
             }
         }
         else
         {
             if (it->isSelected())
             {
+                m_lastTouchCoord.setY(rowAt(event->pos().y()));
+                m_lastTouchCoord.setX(columnAt(event->pos().x()));
                 m_waitForMove = true;
                 return;
             }
 
             clearSelection();
-            setCurrentItem(it);
             it->setSelected(true);
-            m_selectedIndexes.clear();
-            m_selectedIndexes.append(indexFromItem(it));
+            m_selectedItems.clear();
+            m_selectedItems.append(it);
         }
     }
-    //QTableWidget::mousePressEvent(event);
 }
 
 void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
@@ -219,24 +196,21 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
     QTableWidgetItem * it = itemAt(event->pos());
     if (it == NULL)
         return;
-    if (m_selectedIndexes.indexOf(indexFromItem(it)) == -1)
+    if (m_selectedItems.indexOf(it) == -1)
     {
         clearSelection();
-        m_selectedIndexes.clear();
         return;
     }
 
-    if (m_selectedIndexes.size() > 0)
+    if (m_selectedItems.size() > 0)
     {
-        QModelIndexList indexes = m_selectedIndexes;
-
         QRect allRect;
-        for (int i = 0; i < indexes.size(); i++)
+        for (int i = 0; i < m_selectedItems.size(); i++)
         {
-            int top  = rowViewportPosition(indexes[i].row());
-            int left = columnViewportPosition(indexes[i].column());
+            int top  = rowViewportPosition(m_selectedItems[i]->row());
+            int left = columnViewportPosition(m_selectedItems[i]->column());
 
-            QWidget * w = indexWidget(indexes[i]);
+            QWidget * w = cellWidget(m_selectedItems[i]->row(), m_selectedItems[i]->column());
             QPoint tl = QPoint(left, top);
             QPoint br = QPoint(tl.x() + w->size().width(),
                                tl.y() + w->size().height());
@@ -262,12 +236,12 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
         QPixmap pixmap(allRect.size());
         pixmap.fill(QColor(0,0,0,0));
         QPainter p(&pixmap);
-        for (int i = 0; i < indexes.size(); i++)
+        for (int i = 0; i < m_selectedItems.size(); i++)
         {
-            QWidget * w = indexWidget(indexes[i]);
+            QWidget * w = cellWidget(m_selectedItems[i]->row(), m_selectedItems[i]->column());
             ProcTableWidgetItem * twi = qobject_cast<ProcTableWidgetItem*>(w);
-            int top  = rowViewportPosition(indexes[i].row());
-            int left = columnViewportPosition(indexes[i].column());
+            int top  = rowViewportPosition(m_selectedItems[i]->row());
+            int left = columnViewportPosition(m_selectedItems[i]->column());
 
             QPoint tl = QPoint(left, top) - allRect.topLeft();
 
@@ -282,9 +256,9 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
 
         // Make name list
         QString itemNames;
-        for (int i = 0; i < indexes.count(); i++)
+        for (int i = 0; i < m_selectedItems.count(); i++)
         {
-            QWidget * w = indexWidget(indexes[0]);
+            QWidget * w = cellWidget(m_selectedItems[i]->row(), m_selectedItems[i]->column());
             ProcTableWidgetItem * twi = qobject_cast<ProcTableWidgetItem*>(w);
             if (i != 0)
                 itemNames += "$";
@@ -300,7 +274,7 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
 
         // drag data
 
-        m_touchIndex = indexAt(event->pos());
+        m_touchItem = itemAt(event->pos());
         Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
     }
 
@@ -316,10 +290,9 @@ void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
     if (m_waitForMove)
     {
         clearSelection();
-        setCurrentItem(it);
         it->setSelected(true);
-        m_selectedIndexes.clear();
-        m_selectedIndexes.append(indexFromItem(it));
+        m_selectedItems.clear();
+        m_selectedItems.append(it);
         m_waitForMove = false;
     }
     //m_selectedIndexes.clear();
@@ -332,29 +305,33 @@ Qt::DropActions ProcTableWidget::supportedDropActions() const
 
 void ProcTableWidget::dragEnterEvent(QDragEnterEvent * event)
 {
-    if (event->source() != this)
-    {
+    //if (event->source() != this)
+    //{
         const ProcMimeData * mimeData =
             qobject_cast<const ProcMimeData*>(event->mimeData());
         if (mimeData == NULL)
             return;
-    }
+    //}
     event->acceptProposedAction();
 }
 
 void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
 {
+    const ProcMimeData * mimeData =
+        qobject_cast<const ProcMimeData*>(event->mimeData());
+    if (mimeData == NULL)
+        return;
+    if ((rowAt(event->pos().y()) == m_lastTouchCoord.y()) &&
+        (columnAt(event->pos().x()) == m_lastTouchCoord.x()) &&
+        (selectedIndexes().size() != 0))
+    {
+        return;
+    }
+
     if (event->source() != this)
     {
-        const ProcMimeData * mimeData =
-            qobject_cast<const ProcMimeData*>(event->mimeData());
-        if (mimeData == NULL)
-            return;
-
-        //setDropIndicatorShown(true);
-        //QTableWidget::dragMoveEvent(event);
-
         clearSelection();
+
         QTableWidgetItem * it = itemAt(event->pos());
         if (it == NULL)
         {
@@ -366,23 +343,22 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
     }
     else
     {
-        const ProcMimeData * mimeData =
-            qobject_cast<const ProcMimeData*>(event->mimeData());
-        if (mimeData == NULL)
-            return;
-
-        if (indexAt(event->pos()) == m_nowTouchIndex)
-            return;
-
-        m_nowTouchIndex = indexAt(event->pos());
-        int dr = m_nowTouchIndex.row() - m_touchIndex.row();
-        int dc = m_nowTouchIndex.column() - m_touchIndex.column();
-
         clearSelection();
-        for (int i = 0; i < m_selectedIndexes.size(); i++)
+
+        int dr = rowAt(event->pos().y()) - m_touchItem->row();
+        int dc = columnAt(event->pos().x()) - m_touchItem->column();
+
+        for (int i = 0; i < m_selectedItems.size(); i++)
         {
-            int r = m_selectedIndexes[i].row() + dr;
-            int c = m_selectedIndexes[i].column() + dc;
+            int r = m_selectedItems[i]->row() + dr;
+            int c = m_selectedItems[i]->column() + dc;
+
+            if ((r < 0) || (c < 0))
+            {
+                clearSelection();
+                event->ignore();
+                return;
+            }
 
             QTableWidgetItem * it = item(r,c);
             if (it == NULL)
@@ -394,80 +370,76 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
             it->setSelected(true);
         }
     }
+
+    m_lastTouchCoord.setY(rowAt(event->pos().y()));
+    m_lastTouchCoord.setX(columnAt(event->pos().x()));
 }
 
 void ProcTableWidget::dragLeaveEvent(QDragLeaveEvent * event)
 {
     clearSelection();
-    //m_selectedIndexes.clear();
 }
 
 void ProcTableWidget::dropEvent(QDropEvent * event)
 {
+    const ProcMimeData * mimeData =
+        qobject_cast<const ProcMimeData*>(event->mimeData());
+    if (mimeData == NULL)
+        return;
+
     if (event->source() != this)
     {
-        const ProcMimeData * mimeData =
-            qobject_cast<const ProcMimeData*>(event->mimeData());
-        if (mimeData == NULL)
-            return;
+        QTableWidgetItem * it = itemAt(event->pos());
 
         //clearSelection();
-        ProcTableWidgetItem * w = new ProcTableWidgetItem();
         ModuleHolder * holder = ModuleHolder::instance();
         ModuleRecord * rec = holder->moduleForName(mimeData->moduleName().toStdString());
+        ProcTableWidgetItem * w = new ProcTableWidgetItem();
         w->setPixmap(rec->pixmap);
         w->setText(rec->fullName().c_str());
-        setIndexWidget(indexFromItem(itemAt(event->pos())), w);
+        setCellWidget(it->row(), it->column(), w);
         setFocus();
 
-        m_selectedIndexes.clear();
-        m_selectedIndexes.append(indexFromItem(itemAt(event->pos())));
-
-        itemAt(event->pos())->setSelected(false);
-        setCurrentItem(itemAt(event->pos()));
+        clearSelection();
+        it->setSelected(true);
+        m_selectedItems.clear();
+        m_selectedItems.append(it);
+        m_waitForMove = false;
     }
     else
     {
-        m_nowTouchIndex = indexAt(event->pos());
-        int dr = m_nowTouchIndex.row() - m_touchIndex.row();
-        int dc = m_nowTouchIndex.column() - m_touchIndex.column();
+        clearSelection();
 
-        for (int i = 0; i < m_selectedIndexes.size(); i++)
+        int dr = rowAt(event->pos().y()) - m_touchItem->row();
+        int dc = columnAt(event->pos().x()) - m_touchItem->column();
+
+        QList<ProcTableWidgetItem *> widgetList;
+        for (int i = 0; i < m_selectedItems.count(); ++i)
         {
-            QTableWidgetItem * it = itemFromIndex(m_selectedIndexes[i]);
-
-            int r = m_selectedIndexes[i].row() + dr;
-            int c = m_selectedIndexes[i].column() + dc;
-
-            QWidget * w = indexWidget(m_selectedIndexes[i]);
+            QWidget * w = cellWidget(m_selectedItems[i]->row(),
+                                     m_selectedItems[i]->column());
             ProcTableWidgetItem * wi = qobject_cast<ProcTableWidgetItem*>(w);
+            widgetList.append(new ProcTableWidgetItem(wi));
 
-            if (event->dropAction() == Qt::CopyAction)
+            if (event->dropAction() == Qt::MoveAction)
             {
-                setItem(r, c, new QTableWidgetItem());
-                setIndexWidget(indexFromItem(item(r,c)), new ProcTableWidgetItem(wi));
-                setCurrentItem(item(r,c));
-            } else if (event->dropAction() == Qt::MoveAction)
-            {
-                it = takeItem(m_selectedIndexes[i].row(),
-                              m_selectedIndexes[i].column());
-                setItem(r, c, it);
-                setIndexWidget(indexFromItem(item(r,c)), new ProcTableWidgetItem(wi));
-                setIndexWidget(indexFromItem(it), NULL);
-                setCurrentItem(item(r,c));
+                removeCellWidget(m_selectedItems[i]->row(),
+                                 m_selectedItems[i]->column());
             }
-
         }
+
+        QList<QTableWidgetItem*> newListOfSelected;
+        for (int i = 0; i < m_selectedItems.size(); i++)
+        {
+            int r = m_selectedItems[i]->row() + dr;
+            int c = m_selectedItems[i]->column() + dc;
+
+            QTableWidgetItem * it = item(r,c);
+            setCellWidget(r, c, widgetList[i]);
+            it->setSelected(true);
+            newListOfSelected.append(it);
+        }
+
+        m_selectedItems = newListOfSelected;
     }
-
-    /*
-    if (event->source() != this)
-        return;
-
-    TableItem * old = reinterpret_cast<TableItem*>(event->mimeData()->data("").data());
-    QModelIndex index = indexAt(event->pos());
-    setIndexWidget(index, new TableItem(old));
-
-    event->acceptProposedAction();
-    */
 }
