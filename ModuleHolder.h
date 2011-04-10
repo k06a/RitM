@@ -1,9 +1,8 @@
 #ifndef MODULEHOLDER_H
 #define MODULEHOLDER_H
 
-#include <vector>
-#include <algorithm>
-#include <QPixmap>
+#include <QString>
+#include <QList>
 
 class IModule;
 
@@ -19,7 +18,7 @@ struct ModuleRecord
         return (lib + '.' + name);
     }
 
-    bool operator == (QString fullName) const
+    bool operator == (const QString & fullName) const
     {
         return fullName == (lib + '.' + name);
     }
@@ -27,7 +26,7 @@ struct ModuleRecord
 
 class ModuleHolder
 {
-    typedef std::vector<ModuleRecord> ModuleVector;
+    typedef QList<ModuleRecord> ModuleVector;
 
     ModuleVector modules;
 

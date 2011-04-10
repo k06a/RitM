@@ -41,7 +41,8 @@ ModuleRecord * ModuleHolder::moduleForName(QString libName,
 
 ModuleRecord * ModuleHolder::moduleForName(QString fullName)
 {
-    ModuleVector::iterator it = std::find(modules.begin(), modules.end(), fullName);
+    QList<ModuleRecord>::iterator it =
+            qFind(modules.begin(), modules.end() ,fullName);
     if (it == modules.end())
         return NULL;
     return &(*it);
