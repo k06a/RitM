@@ -5,9 +5,10 @@
 #include <QPainter>
 #include <QPicture>
 
-ProcTableWidgetItem::ProcTableWidgetItem(QWidget *parent)
-    : QWidget(parent)
+ProcTableWidgetItem::ProcTableWidgetItem()
+    : QWidget()
 {
+
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)

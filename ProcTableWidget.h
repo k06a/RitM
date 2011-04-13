@@ -3,6 +3,9 @@
 
 #include <QTableWidget>
 #include <QDragMoveEvent>
+#include <QUndoStack>
+
+class ProcTableWidgetItem;
 
 class ProcTableWidget : public QTableWidget
 {
@@ -32,12 +35,17 @@ class ProcTableWidget : public QTableWidget
                READ currentZoom
                WRITE setCurrentZoom);
 
+    Q_PROPERTY(QUndoStack * stack
+               READ stack
+               WRITE setStack);
+
     int m_baseZoomWidth;
     int m_baseZoomHeight;
     float m_minimumZoom;
     float m_maximumZoom;
     float m_zoomStep;
     float m_currentZoom;
+    QUndoStack * m_stack;
 
     bool m_waitForMove;
     QTableWidgetItem * m_touchItem;
@@ -65,6 +73,9 @@ public:
 
     float currentZoom() const;
     void setCurrentZoom(float value);
+
+    QUndoStack * stack() const;
+    void setStack(QUndoStack * stack);
 
     QString cut();
     QString copy() const;

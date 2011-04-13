@@ -22,7 +22,7 @@ class ProcTableWidgetItem : public QWidget
     QString m_pixmapPath;
 
 public:
-    explicit ProcTableWidgetItem(QWidget * parent = 0);
+    explicit ProcTableWidgetItem();
     explicit ProcTableWidgetItem(QString iconPath, QString centerText = "", QWidget * parent = 0);
     explicit ProcTableWidgetItem(ProcTableWidgetItem * item);
 

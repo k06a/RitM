@@ -9,6 +9,7 @@
 #include "ProcTableWidgetItem.h"
 #include "ProcMimeData.h"
 #include "ModuleHolder.h"
+#include "ProcCommands.h"
 
 ProcTableWidget::ProcTableWidget(QWidget *parent)
     : QTableWidget(parent)
@@ -78,6 +79,16 @@ void ProcTableWidget::setCurrentZoom(float value)
     if (m_currentZoom < m_minimumZoom)
         m_currentZoom = m_minimumZoom;
     zoomTo(m_currentZoom);
+}
+
+QUndoStack * ProcTableWidget::stack() const
+{
+    return m_stack;
+}
+
+void ProcTableWidget::setStack(QUndoStack * stack)
+{
+    m_stack = stack;
 }
 
 // Cut Copy Paste
@@ -473,11 +484,15 @@ void ProcTableWidget::zoomTo(float value)
 
 void ProcTableWidget::deleteSelectedItems()
 {
+    QList<ProcItem> list;
     for(int i = 0; i < m_selectedItems.size(); i++)
     {
-        removeCellWidget(m_selectedItems[i]->row(),
-                         m_selectedItems[i]->column());
-        clearSelection();
-        m_selectedItems.clear();
+        int r = m_selectedItems[i]->row();
+        int c = m_selectedItems[i]->column();
+        ProcTableWidgetItem * w =
+                qobject_cast<ProcTableWidgetItem *>(cellWidget(r,c));
+        list.append(ProcItem(r,c,w));
     }
+
+    m_stack->push(new RemoveProcCommand(this,list));
 }

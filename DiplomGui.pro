@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     ProcMimeData.cpp \
     ProcRubberBand.cpp \
     ProcTableWidgetItem.cpp \
-    ModuleHolder.cpp
+    ModuleHolder.cpp \
+    ProcCommands.cpp
 
 HEADERS  += mainwindow.h \
     ProcListWidget.h \
@@ -25,7 +26,8 @@ HEADERS  += mainwindow.h \
     ProcRubberBand.h \
     ProcTableWidget.h \
     ProcTableWidgetItem.h \
-    ModuleHolder.h
+    ModuleHolder.h \
+    ProcCommands.h
 
 FORMS    += mainwindow.ui
 

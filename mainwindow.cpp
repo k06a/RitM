@@ -4,6 +4,7 @@
 #include "ModuleHolder.h"
 #include <QVariant>
 #include <QCheckBox>
+#include <QUndoStack>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,8 +13,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //ui->action_zoomin->setShortcut(QKeySequence::ZoomIn);
-    //ui->action_zoomout->setShortcut(QKeySequence::ZoomOut);
+    // Configure Undo/Redo actions
+
+    m_stack = new QUndoStack(this);
+    m_action_undo = m_stack->createUndoAction(this);
+    m_action_redo = m_stack->createRedoAction(this);
+    m_action_undo->setText(tr("Отменить"));
+    m_action_redo->setText(tr("Повторить"));
+    m_action_undo->setShortcut(QKeySequence::Undo);
+    m_action_redo->setShortcut(QKeySequence::Redo);
+    m_action_undo->setIcon(QIcon(":/images/undo.png"));
+    m_action_redo->setIcon(QIcon(":/images/redo.png"));
+
+    ui->menu_edit->insertAction(ui->action_cut, m_action_undo);
+    ui->menu_edit->insertAction(ui->action_cut, m_action_redo);
+    ui->mainToolBar->insertAction(ui->action_cut, m_action_undo);
+    ui->mainToolBar->insertAction(ui->action_cut, m_action_redo);
+
+    ui->tableWidget_field->setStack(m_stack);
+
+    // Configure table zoom
+
     ui->tableWidget_field->setBaseZoomWidth(64);
     ui->tableWidget_field->setBaseZoomHeight(64);
     ui->tableWidget_field->setMinimumZoom(0.5);
@@ -23,6 +43,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->action_zoomin, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomIn()));
     connect(ui->action_zoomout, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomOut()));
+
+    //
+
     connect(ui->action_delete, SIGNAL(triggered()), ui->tableWidget_field, SLOT(deleteSelectedItems()));
     connect(ui->action_about, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(ui->action_quit, SIGNAL(triggered()), qApp, SLOT(quit()));

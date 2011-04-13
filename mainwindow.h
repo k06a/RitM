@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class QUndoStack;
+
 namespace Ui {
     class MainWindow;
 }
@@ -12,6 +14,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     double tableZoom;
+    QUndoStack * m_stack;
+    QAction * m_action_undo;
+    QAction * m_action_redo;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
