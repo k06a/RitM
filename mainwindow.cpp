@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget_field->setStack(m_stack);
 
     QUndoView * undo_view = new QUndoView(m_stack);
-    undo_view->setEmptyLabel(tr("Исходное состояние"));
+    undo_view->setEmptyLabel(tr("<Исходное состояние>"));
     ui->dockWidget_undo->setWidget(undo_view);
     ui->dockWidget_undo->hide();
 

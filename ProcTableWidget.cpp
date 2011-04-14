@@ -340,19 +340,20 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
 
     if (event->source() != this)
     {
-        QTableWidgetItem * it = itemAt(event->pos());
-
         //clearSelection();
         ModuleHolder * holder = ModuleHolder::instance();
         ModuleRecord * rec = holder->moduleForName(mimeData->moduleName());
         ProcTableWidgetItem * w = new ProcTableWidgetItem();
         w->setPixmap(rec->pixmapPath);
         w->setText(rec->fullName());
-        setCellWidget(it->row(), it->column(), w);
+
+        ProcItem proc(rowAt(event->pos().y()),
+                      columnAt(event->pos().x()), w);
+        m_stack->push(new PutProcCommand(this, proc));
         setFocus();
 
-        clearSelection();
-        it->setSelected(true);
+        //clearSelection();
+        //it->setSelected(true);
         m_waitForMove = false;
     }
     else

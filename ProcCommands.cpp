@@ -5,14 +5,23 @@ ProcItem::ProcItem(int row, int column, ProcTableWidgetItem * widget)
 {
 }
 
+QString getCommandName(QString str, int size)
+{
+    QString post = ((size%10==1) && (size%100!=11))
+                   ? QObject::tr("а")
+                   : QObject::tr("ов");
+    return str.arg(size).arg(post);
+}
+
 // ----------------------------------------------------------------
 
-PutProcCommand::PutProcCommand(ProcTableWidget * table,
-                               QList<ProcItem> items,
-                               int touchIndex,
-                               int putRow,
-                               int putColumn)
-    : table(table)
+CopyProcCommand::CopyProcCommand(ProcTableWidget * table,
+                                 QList<ProcItem> items,
+                                 int touchIndex,
+                                 int putRow,
+                                 int putColumn)
+    : QUndoCommand(getCommandName(QObject::tr("Копирование %1 элемент%2"),items.size()))
+    , table(table)
     , items(items)
     , touchIndex(touchIndex)
     , putRow(putRow)
@@ -20,70 +29,104 @@ PutProcCommand::PutProcCommand(ProcTableWidget * table,
 {
 }
 
+void CopyProcCommand::undo()
+{
+    foreach(ProcItem item, backup)
+    {
+        int r = putRow + item.row - items[touchIndex].row;
+        int c = putColumn + item.column - items[touchIndex].column;
+
+        ProcTableWidgetItem * old_w = item.widget;
+        if (old_w != NULL)
+            old_w = new ProcTableWidgetItem(old_w);
+        table->setCellWidget(r, c, old_w);
+    }
+}
+
+void CopyProcCommand::redo()
+{
+    backup.clear();
+    foreach(ProcItem item, items)
+    {
+        int r = putRow + item.row - items[touchIndex].row;
+        int c = putColumn + item.column - items[touchIndex].column;
+
+        ProcTableWidgetItem * old_w = (ProcTableWidgetItem*)table->cellWidget(r, c);
+        if (old_w != NULL)
+            old_w = new ProcTableWidgetItem(old_w);
+        backup.append(ProcItem(r,c,old_w));
+    }
+
+    foreach(ProcItem item, items)
+    {
+        int r = putRow + item.row - items[touchIndex].row;
+        int c = putColumn + item.column - items[touchIndex].column;
+
+        ProcTableWidgetItem * new_w = item.widget;
+        if (new_w != NULL)
+            new_w = new ProcTableWidgetItem(new_w);
+        table->setCellWidget(r, c, new_w);
+    }
+}
+
+// ----------------------------------------------------------------
+
+PutProcCommand::PutProcCommand(ProcTableWidget * table,
+                               ProcItem item)
+    : QUndoCommand(QObject::tr("Добавлен новый элемент"))
+    , table(table)
+    , item(item)
+    , backup(item.row, item.column, NULL)
+{
+}
+
 void PutProcCommand::undo()
 {
-    foreach(ProcItem it, backup)
-    {
-        int r = putRow + it.row - items[touchIndex].row;
-        int c = putColumn + it.column - items[touchIndex].column;
-        table->setCellWidget(r, c, it.widget);
-    }
+    // Reverse to backup
+    ProcTableWidgetItem * old_w = backup.widget;
+    if (old_w != NULL)
+        old_w = new ProcTableWidgetItem(old_w);
+    table->setCellWidget(backup.row, backup.column, old_w);
 }
 
 void PutProcCommand::redo()
 {
-    backup.clear();
-    foreach(ProcItem it, items)
-    {
-        int r = putRow + it.row - items[touchIndex].row;
-        int c = putColumn + it.column - items[touchIndex].column;
-        backup.append(ProcItem(r,c,it.widget));
-        table->setCellWidget(r, c, it.widget);
-    }
+    // Backup widget
+    ProcTableWidgetItem * old_w = (ProcTableWidgetItem*)table->cellWidget(item.row, item.column);
+    if (old_w != NULL)
+        old_w = new ProcTableWidgetItem(old_w);
+    backup.widget = old_w;
+
+    // Put widget
+    ProcTableWidgetItem * new_w = item.widget;
+    if (new_w != NULL)
+        new_w = new ProcTableWidgetItem(new_w);
+    table->setCellWidget(item.row, item.column, new_w);
 }
 
 // ----------------------------------------------------------------
 
 RemoveProcCommand::RemoveProcCommand(ProcTableWidget * table,
                                      QList<ProcItem> items)
-    : QUndoCommand(getCommandName(items.size()))
+    : QUndoCommand(getCommandName(QObject::tr("Удаление %1 элемент%2"),items.size()))
     , table(table)
     , items(items)
 {
-    //for(int i = 0; i < items.size(); i++)
-    //{
-    //    ProcItem & it = items[i];
-    //    it.widget = new ProcTableWidgetItem(it.widget);
-    //}
 }
 
 void RemoveProcCommand::undo()
 {
-    for(int i = 0; i < items.size(); i++)
+    foreach(ProcItem item, items)
     {
-        ProcItem & it = items[i];
-        ProcTableWidgetItem * w = new ProcTableWidgetItem(it.widget);
-        table->setCellWidget(it.row, it.column, w);
+        ProcTableWidgetItem * w = new ProcTableWidgetItem(item.widget);
+        table->setCellWidget(item.row, item.column, w);
     }
 }
 
 void RemoveProcCommand::redo()
 {
-    for(int i = 0; i < items.size(); i++)
-    {
-        ProcItem & it = items[i];
-        table->removeCellWidget(it.row, it.column);
-    }
-}
-
-QString RemoveProcCommand::getCommandName(int size)
-{
-    QString post = ((size%10==1) && (size%100!=11))
-                   ? QObject::tr("а")
-                   : QObject::tr("ов");
-    return QObject::tr("Удаление %1 элемент%2")
-           .arg(size)
-           .arg(post);
+    foreach(ProcItem item, items)
+        table->removeCellWidget(item.row, item.column);
 }
 
 // ----------------------------------------------------------------
