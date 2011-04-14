@@ -43,6 +43,30 @@ private:
 
 // ----------------------------------------------------------------
 
+class MoveProcCommand : public QUndoCommand
+{
+public:
+    MoveProcCommand(ProcTableWidget * table,
+                    QList<ProcItem> items,
+                    int touchIndex,
+                    int putRow,
+                    int putColumn);
+
+    virtual void undo();
+    virtual void redo();
+
+private:
+    ProcTableWidget * table;
+    QList<ProcItem> items;
+    int touchIndex;
+    int putRow;
+    int putColumn;
+
+    CopyProcCommand * copy;
+};
+
+// ----------------------------------------------------------------
+
 class PutProcCommand : public QUndoCommand
 {
 public:

@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QUndoView * undo_view = new QUndoView(m_stack);
     undo_view->setEmptyLabel(tr("<Исходное состояние>"));
+    undo_view->setCleanIcon(ui->action_save->icon());
     ui->dockWidget_undo->setWidget(undo_view);
     ui->dockWidget_undo->hide();
 

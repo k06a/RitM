@@ -376,39 +376,7 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
             m_stack->push(new CopyProcCommand(this,list,touchIndex, putRow, putColumn));
         else
         if (event->dropAction() == Qt::MoveAction)
-            ;//m_stack->push(new MoveProcCommand);
-
-        /*
-        clearSelection();
-
-        int dr = rowAt(event->pos().y()) - m_touchItem->row();
-        int dc = columnAt(event->pos().x()) - m_touchItem->column();
-
-        QList<ProcTableWidgetItem *> widgetList;
-        for (int i = 0; i < m_dragItems.count(); ++i)
-        {
-            QWidget * w = cellWidget(m_dragItems[i]->row(),
-                                     m_dragItems[i]->column());
-            ProcTableWidgetItem * wi = qobject_cast<ProcTableWidgetItem*>(w);
-            widgetList.append(new ProcTableWidgetItem(wi));
-
-            if (event->dropAction() == Qt::MoveAction)
-            {
-                removeCellWidget(m_dragItems[i]->row(),
-                                 m_dragItems[i]->column());
-            }
-        }
-
-        for (int i = 0; i < m_dragItems.size(); i++)
-        {
-            int r = m_dragItems[i]->row() + dr;
-            int c = m_dragItems[i]->column() + dc;
-
-            QTableWidgetItem * it = item(r,c);
-            setCellWidget(r, c, widgetList[i]);
-            it->setSelected(true);
-        }
-        */
+            m_stack->push(new MoveProcCommand(this,list,touchIndex, putRow, putColumn));
     }
 }
 

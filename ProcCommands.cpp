@@ -68,6 +68,42 @@ void CopyProcCommand::redo()
 
 // ----------------------------------------------------------------
 
+MoveProcCommand::MoveProcCommand(ProcTableWidget * table,
+                                 QList<ProcItem> items,
+                                 int touchIndex,
+                                 int putRow,
+                                 int putColumn)
+    : QUndoCommand(getCommandName(QObject::tr("Перемещение %1 элемент%2"),items.size()))
+    , table(table)
+    , items(items)
+    , touchIndex(touchIndex)
+    , putRow(putRow)
+    , putColumn(putColumn)
+    , copy(new CopyProcCommand(table,items,touchIndex,putRow,putColumn))
+{
+}
+
+void MoveProcCommand::undo()
+{
+    copy->undo();
+    foreach(ProcItem item, items)
+    {
+        ProcTableWidgetItem * new_w = item.widget;
+        if (new_w != NULL)
+            new_w = new ProcTableWidgetItem(new_w);
+        table->setCellWidget(item.row, item.column, new_w);
+    }
+}
+
+void MoveProcCommand::redo()
+{
+    foreach(ProcItem item, items)
+        table->removeCellWidget(item.row, item.column);
+    copy->redo();
+}
+
+// ----------------------------------------------------------------
+
 PutProcCommand::PutProcCommand(ProcTableWidget * table,
                                ProcItem item)
     : QUndoCommand(QObject::tr("Добавлен новый элемент"))
