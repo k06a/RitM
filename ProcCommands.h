@@ -17,6 +17,41 @@ struct ProcItem
 
 QString getCommandName(QString str, int size);
 
+
+// ----------------------------------------------------------------
+
+class RemoveProcCommand : public QUndoCommand
+{
+public:
+    RemoveProcCommand(ProcTableWidget * table,
+                      QList<ProcItem> items);
+
+    virtual void undo();
+    virtual void redo();
+
+private:
+    ProcTableWidget * table;
+    QList<ProcItem> items;
+};
+
+// ----------------------------------------------------------------
+
+class PutProcCommand : public QUndoCommand
+{
+public:
+    PutProcCommand(ProcTableWidget * table,
+                   ProcItem item);
+
+    virtual void undo();
+    virtual void redo();
+
+private:
+    ProcTableWidget * table;
+    ProcItem item;
+
+    ProcItem backup;
+};
+
 // ----------------------------------------------------------------
 
 class CopyProcCommand : public QUndoCommand
@@ -56,47 +91,8 @@ public:
     virtual void redo();
 
 private:
-    ProcTableWidget * table;
-    QList<ProcItem> items;
-    int touchIndex;
-    int putRow;
-    int putColumn;
-
     CopyProcCommand * copy;
-};
-
-// ----------------------------------------------------------------
-
-class PutProcCommand : public QUndoCommand
-{
-public:
-    PutProcCommand(ProcTableWidget * table,
-                   ProcItem item);
-
-    virtual void undo();
-    virtual void redo();
-
-private:
-    ProcTableWidget * table;
-    ProcItem item;
-
-    ProcItem backup;
-};
-
-// ----------------------------------------------------------------
-
-class RemoveProcCommand : public QUndoCommand
-{
-public:
-    RemoveProcCommand(ProcTableWidget * table,
-                      QList<ProcItem> items);
-
-    virtual void undo();
-    virtual void redo();
-
-private:
-    ProcTableWidget * table;
-    QList<ProcItem> items;
+    RemoveProcCommand * remove;
 };
 
 // ----------------------------------------------------------------

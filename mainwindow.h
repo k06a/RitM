@@ -22,6 +22,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    virtual void showEvent(QShowEvent * event);
+    virtual void closeEvent(QCloseEvent * event);
+
 private slots:
     void on_horizontalSlider_elements_valueChanged(int value);
 

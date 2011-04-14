@@ -6,6 +6,7 @@
 #include <QCheckBox>
 #include <QUndoStack>
 #include <QUndoView>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,10 +18,10 @@ MainWindow::MainWindow(QWidget *parent)
     // Configure Undo/Redo actions
 
     m_stack = new QUndoStack(this);
-    m_action_undo = m_stack->createUndoAction(this);
-    m_action_redo = m_stack->createRedoAction(this);
-    m_action_undo->setText(tr("Отменить"));
-    m_action_redo->setText(tr("Повторить"));
+    m_action_undo = m_stack->createUndoAction(this,tr("Отменить"));
+    m_action_redo = m_stack->createRedoAction(this,tr("Повторить"));
+    //m_action_undo->setText(tr("Отменить"));
+    //m_action_redo->setText(tr("Повторить"));
     m_action_undo->setShortcut(QKeySequence::Undo);
     m_action_redo->setShortcut(QKeySequence::Redo);
     m_action_undo->setIcon(QIcon(":/images/undo.png"));
@@ -86,6 +87,26 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::showEvent(QShowEvent * event)
+{
+    QSettings settings("RitM.ini", QSettings::IniFormat);
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
+    ui->horizontalSlider_elements->setValue(settings.value("elementsZoom").toInt());
+    ui->tableWidget_field->setCurrentZoom(settings.value("fieldZoom").toFloat());
+    QMainWindow::showEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QSettings settings("RitM.ini", QSettings::IniFormat);
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+    settings.setValue("elementsZoom", ui->horizontalSlider_elements->value());
+    settings.setValue("fieldZoom", ui->tableWidget_field->currentZoom());
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
