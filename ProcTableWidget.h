@@ -50,7 +50,7 @@ class ProcTableWidget : public QTableWidget
     bool m_waitForMove;
     QTableWidgetItem * m_touchItem;
     QPoint m_lastTouchCoord;
-    QList<QTableWidgetItem*> m_selectedItems;
+    QList<QTableWidgetItem*> m_dragItems;
     QPoint m_dragStartPosition;
 
 public:
