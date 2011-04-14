@@ -5,6 +5,7 @@
 #include <QVariant>
 #include <QCheckBox>
 #include <QUndoStack>
+#include <QUndoView>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,6 +32,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->mainToolBar->insertAction(ui->action_cut, m_action_redo);
 
     ui->tableWidget_field->setStack(m_stack);
+
+    QUndoView * undo_view = new QUndoView(m_stack);
+    undo_view->setEmptyLabel(tr("Исходное состояние"));
+    ui->dockWidget_undo->setWidget(undo_view);
+    ui->dockWidget_undo->hide();
 
     // Configure table zoom
 

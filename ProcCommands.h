@@ -50,6 +50,8 @@ public:
     virtual void undo();
     virtual void redo();
 
+    static QString getCommandName(int size);
+
 private:
     ProcTableWidget * table;
     QList<ProcItem> items;

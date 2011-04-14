@@ -46,26 +46,44 @@ void PutProcCommand::redo()
 
 RemoveProcCommand::RemoveProcCommand(ProcTableWidget * table,
                                      QList<ProcItem> items)
-    : table(table)
+    : QUndoCommand(getCommandName(items.size()))
+    , table(table)
     , items(items)
 {
-    foreach(ProcItem it, items)
-        it.widget = new ProcTableWidgetItem(it.widget);
+    //for(int i = 0; i < items.size(); i++)
+    //{
+    //    ProcItem & it = items[i];
+    //    it.widget = new ProcTableWidgetItem(it.widget);
+    //}
 }
 
 void RemoveProcCommand::undo()
 {
-    foreach(ProcItem it, items)
+    for(int i = 0; i < items.size(); i++)
     {
-        table->setCellWidget(it.row, it.column, it.widget);
-        it.widget = new ProcTableWidgetItem(it.widget);
+        ProcItem & it = items[i];
+        ProcTableWidgetItem * w = new ProcTableWidgetItem(it.widget);
+        table->setCellWidget(it.row, it.column, w);
     }
 }
 
 void RemoveProcCommand::redo()
 {
-    foreach(ProcItem it, items)
-        table->setCellWidget(it.row, it.column, NULL);
+    for(int i = 0; i < items.size(); i++)
+    {
+        ProcItem & it = items[i];
+        table->removeCellWidget(it.row, it.column);
+    }
+}
+
+QString RemoveProcCommand::getCommandName(int size)
+{
+    QString post = ((size%10==1) && (size%100!=11))
+                   ? QObject::tr("а")
+                   : QObject::tr("ов");
+    return QObject::tr("Удаление %1 элемент%2")
+           .arg(size)
+           .arg(post);
 }
 
 // ----------------------------------------------------------------

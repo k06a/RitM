@@ -491,7 +491,7 @@ void ProcTableWidget::deleteSelectedItems()
         int c = m_selectedItems[i]->column();
         ProcTableWidgetItem * w =
                 qobject_cast<ProcTableWidgetItem *>(cellWidget(r,c));
-        list.append(ProcItem(r,c,w));
+        list.append(ProcItem(r,c,new ProcTableWidgetItem(w)));
     }
 
     m_stack->push(new RemoveProcCommand(this,list));

@@ -28,7 +28,7 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, Q
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
-    : QWidget(0)
+    : QWidget()
     , m_text(item->m_text)
     , m_pixmap(item->m_pixmap)
     , m_pixmapPath(item->m_pixmapPath)
