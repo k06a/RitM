@@ -110,6 +110,36 @@ void ProcTableWidget::paste(QString str)
 
 }
 
+// private
+
+QRect ProcTableWidget::itemsBoundingRect(QList<QTableWidgetItem*> list) const
+{
+    QRect answer;
+    foreach(QTableWidgetItem * item, list)
+    {
+        int top  = rowViewportPosition(item->row());
+        int left = columnViewportPosition(item->column());
+
+        QWidget * w = cellWidget(item->row(), item->column());
+        QRect rect(QPoint(left, top),
+                   QPoint(left + w->size().width(),
+                          top + w->size().height()));
+
+        if (answer.isEmpty())
+        {
+            answer = rect;
+            continue;
+        }
+
+
+        answer.setLeft  ( qMin( answer.left()  , rect.left()   ) );
+        answer.setTop   ( qMin( answer.top()   , rect.top()    ) );
+        answer.setRight ( qMax( answer.right() , rect.right()  ) );
+        answer.setBottom( qMax( answer.bottom(), rect.bottom() ) );
+    }
+    return answer;
+}
+
 // virtual protected
 
 void ProcTableWidget::wheelEvent(QWheelEvent * event)
@@ -137,138 +167,72 @@ void ProcTableWidget::wheelEvent(QWheelEvent * event)
 
 void ProcTableWidget::mousePressEvent(QMouseEvent * event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        m_dragStartPosition = event->pos();
-        QTableWidgetItem * it = itemAt(event->pos());
-        if (it == NULL)
-        {
-            it = new QTableWidgetItem;
-            setItem(rowAt(event->pos().y()),
-                    columnAt(event->pos().x()),
-                    it);
-        }
-
-        if (event->modifiers() & Qt::ControlModifier)
-        {
-            it->setSelected(!it->isSelected());
-        }
-        else
-        {
-            if (it->isSelected())
-            {
-                m_lastTouchCoord.setY(rowAt(event->pos().y()));
-                m_lastTouchCoord.setX(columnAt(event->pos().x()));
-                m_waitForMove = true;
-            }
-            else
-            {
-                clearSelection();
-                it->setSelected(true);
-            }
-        }
-    }
+    m_firstTouch = event->pos();
+    m_lastTouch.setY(event->pos().y());
+    m_lastTouch.setX(event->pos().x());
+    QTableWidget::mousePressEvent(event);
 }
 
 void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
 {
     if (!(event->buttons() & Qt::LeftButton))
         return;
-    if ((event->pos() - m_dragStartPosition).manhattanLength()
+    if ((event->pos() - m_firstTouch).manhattanLength()
         < QApplication::startDragDistance())
         return;
 
     QTableWidgetItem * it = itemAt(event->pos());
-    if (it == NULL)
-        return;
+    if (it == NULL) return;
     if (!itemAt(event->pos())->isSelected())
     {
         clearSelection();
         return;
     }
 
+    // Get non-empty draggable items
     m_dragItems.clear();
     foreach(QModelIndex index, selectedIndexes())
         if (cellWidget(index.row(),index.column()) != 0)
             m_dragItems.append(itemFromIndex(index));
+    if (m_dragItems.size() == 0)
+        return;
 
-    if (m_dragItems.size() > 0)
+    QRect bigrect = itemsBoundingRect(m_dragItems);
+
+    // Draw drag icons
+    QPixmap pixmap(bigrect.size());
+    pixmap.fill(QColor(0,0,0,0));
+    QPainter p(&pixmap);
+    foreach(QTableWidgetItem * item, m_dragItems)
     {
-        QRect allRect;
-        for (int i = 0; i < m_dragItems.size(); i++)
-        {
-            int top  = rowViewportPosition(m_dragItems[i]->row());
-            int left = columnViewportPosition(m_dragItems[i]->column());
+        QWidget * w = cellWidget(item->row(), item->column());
+        ProcTableWidgetItem * twi = qobject_cast<ProcTableWidgetItem*>(w);
 
-            QWidget * w = cellWidget(m_dragItems[i]->row(), m_dragItems[i]->column());
-            QPoint tl = QPoint(left, top);
-            QPoint br = QPoint(tl.x() + w->size().width(),
-                               tl.y() + w->size().height());
+        int top  = rowViewportPosition(item->row());
+        int left = columnViewportPosition(item->column());
+        QPoint tl = QPoint(left, top) - bigrect.topLeft();
+        QRect rect = QRect(tl, w->size());
 
-            if (allRect.size().isEmpty())
-            {
-                allRect.setTopLeft(tl);
-                allRect.setBottomRight(br);
-                continue;
-            }
+        //QPoint tl = w->rect().topLeft() - bigrect.topLeft();
+        //QRect rect = QRect(tl, w->size());
 
-            if (allRect.left() > tl.x())
-                allRect.setLeft(tl.x());
-            if (allRect.right() < br.x())
-                allRect.setRight(br.x());
-            if (allRect.top() > tl.y())
-                allRect.setTop(tl.y());
-            if (allRect.bottom() < br.y())
-                allRect.setBottom(br.y());
-        }
-
-        // Draw drag icons
-        QPixmap pixmap(allRect.size());
-        pixmap.fill(QColor(0,0,0,0));
-        QPainter p(&pixmap);
-        for (int i = 0; i < m_dragItems.size(); i++)
-        {
-            QWidget * w = cellWidget(m_dragItems[i]->row(), m_dragItems[i]->column());
-            ProcTableWidgetItem * twi = qobject_cast<ProcTableWidgetItem*>(w);
-            int top  = rowViewportPosition(m_dragItems[i]->row());
-            int left = columnViewportPosition(m_dragItems[i]->column());
-
-            QPoint tl = QPoint(left, top) - allRect.topLeft();
-
-            QRect r = QRect(tl, w->size());
-            p.drawPixmap(r, twi->pixmap());
-
-            p.setPen(QColor(0,0,192));
-            p.drawRect(r);
-            p.fillRect(r, QBrush(QColor(0,0,192,128), Qt::Dense4Pattern));
-        }
-        p.end();
-
-        // Make name list
-        QString itemNames;
-        for (int i = 0; i < m_dragItems.count(); i++)
-        {
-            QWidget * w = cellWidget(m_dragItems[i]->row(), m_dragItems[i]->column());
-            ProcTableWidgetItem * twi = qobject_cast<ProcTableWidgetItem*>(w);
-            if (i != 0)
-                itemNames += "$";
-            itemNames += twi->text();
-        }
-
-        ProcMimeData * mimeData = new ProcMimeData;
-        mimeData->setModuleName(itemNames);
-        QDrag * drag = new QDrag(this);
-        drag->setHotSpot(m_dragStartPosition - allRect.topLeft());
-        drag->setPixmap(pixmap);
-        drag->setMimeData(mimeData);
-
-        // drag data
-
-        m_touchItem = itemAt(event->pos());
-        Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+        p.drawPixmap(rect, twi->pixmap());
+        p.setPen(QColor(0,0,192));
+        p.drawRect(rect);
+        p.fillRect(rect, QBrush(QColor(0,0,192,128), Qt::Dense4Pattern));
     }
+    p.end();
 
-    // ...
+    ProcMimeData * mimeData = new ProcMimeData;
+    QDrag * drag = new QDrag(this);
+    drag->setHotSpot(m_firstTouch - bigrect.topLeft());
+    drag->setPixmap(pixmap);
+    drag->setMimeData(mimeData);
+
+    // drag data
+
+    m_touchItem = itemAt(event->pos());
+    Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
 }
 
 void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
@@ -283,7 +247,6 @@ void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
         it->setSelected(true);
         m_waitForMove = false;
     }
-    //m_selectedIndexes.clear();
 }
 
 Qt::DropActions ProcTableWidget::supportedDropActions() const
@@ -309,8 +272,8 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
         qobject_cast<const ProcMimeData*>(event->mimeData());
     if (mimeData == NULL)
         return;
-    if ((rowAt(event->pos().y()) == m_lastTouchCoord.y()) &&
-        (columnAt(event->pos().x()) == m_lastTouchCoord.x()) &&
+    if ((rowAt(event->pos().y()) == rowAt(m_lastTouch.y())) &&
+        (columnAt(event->pos().x()) == columnAt(m_lastTouch.x())) &&
         (m_dragItems.size() != 0))
     {
         return;
@@ -359,8 +322,8 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
         }
     }
 
-    m_lastTouchCoord.setY(rowAt(event->pos().y()));
-    m_lastTouchCoord.setX(columnAt(event->pos().x()));
+    m_lastTouch.setY(rowAt(event->pos().y()));
+    m_lastTouch.setX(columnAt(event->pos().x()));
 }
 
 void ProcTableWidget::dragLeaveEvent(QDragLeaveEvent * event)

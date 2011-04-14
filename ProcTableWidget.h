@@ -49,9 +49,9 @@ class ProcTableWidget : public QTableWidget
 
     bool m_waitForMove;
     QTableWidgetItem * m_touchItem;
-    QPoint m_lastTouchCoord;
+    QPoint m_lastTouch;
     QList<QTableWidgetItem*> m_dragItems;
-    QPoint m_dragStartPosition;
+    QPoint m_firstTouch;
 
 public:
     explicit ProcTableWidget(QWidget *parent = 0);
@@ -80,6 +80,9 @@ public:
     QString cut();
     QString copy() const;
     void paste(QString str);
+
+private:
+    QRect itemsBoundingRect(QList<QTableWidgetItem*> list) const;
 
 protected:
     void wheelEvent(QWheelEvent * event);
