@@ -33,13 +33,10 @@ void CopyProcCommand::undo()
 {
     foreach(ProcItem item, backup)
     {
-        int r = putRow + item.row - items[touchIndex].row;
-        int c = putColumn + item.column - items[touchIndex].column;
-
         ProcTableWidgetItem * old_w = item.widget;
         if (old_w != NULL)
             old_w = new ProcTableWidgetItem(old_w);
-        table->setCellWidget(r, c, old_w);
+        table->setCellWidget(item.row, item.column, old_w);
     }
 }
 

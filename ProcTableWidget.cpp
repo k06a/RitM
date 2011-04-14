@@ -358,6 +358,27 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
     }
     else
     {
+        QList<ProcItem> list;
+        foreach (QTableWidgetItem * item, m_dragItems)
+        {
+            int r = item->row();
+            int c = item->column();
+            ProcTableWidgetItem * w =
+                    qobject_cast<ProcTableWidgetItem*>(cellWidget(r,c));
+            list.append(ProcItem(r, c, new ProcTableWidgetItem(w)));
+        }
+
+        int touchIndex = m_dragItems.indexOf(itemAt(m_firstTouch));
+        int putRow = m_lastTouch.y();
+        int putColumn = m_lastTouch.x();
+
+        if (event->dropAction() == Qt::CopyAction)
+            m_stack->push(new CopyProcCommand(this,list,touchIndex, putRow, putColumn));
+        else
+        if (event->dropAction() == Qt::MoveAction)
+            ;//m_stack->push(new MoveProcCommand);
+
+        /*
         clearSelection();
 
         int dr = rowAt(event->pos().y()) - m_touchItem->row();
@@ -387,6 +408,7 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
             setCellWidget(r, c, widgetList[i]);
             it->setSelected(true);
         }
+        */
     }
 }
 
