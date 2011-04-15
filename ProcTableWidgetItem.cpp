@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QPicture>
+#include "ModuleHolder.h"
 
 ProcTableWidgetItem::ProcTableWidgetItem()
     : QWidget()
@@ -22,9 +23,10 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
 ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm)
     : QWidget()
 {
-    QStringList list = stringForm.split("|*|");
-    m_text = list[0];
-    m_pixmapPath = list[1];
+    m_text = stringForm;
+    ModuleHolder * holder = ModuleHolder::instance();
+    ModuleRecord * rec = holder->moduleForName(m_text);
+    m_pixmapPath = rec->pixmapPath;
     m_pixmap = QPixmap(m_pixmapPath);
 }
 
@@ -66,7 +68,12 @@ void ProcTableWidgetItem::setPixmap(QPixmap pixmap)
 
 QString ProcTableWidgetItem::toStringForm()
 {
-    return m_text + "|*|" + m_pixmapPath;
+    return m_text;
+}
+
+bool ProcTableWidgetItem::isEqualProc(ProcTableWidgetItem * w)
+{
+    return (m_text == w->m_text);
 }
 
 void ProcTableWidgetItem::paintEvent(QPaintEvent * event)

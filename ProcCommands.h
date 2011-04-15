@@ -13,6 +13,8 @@ struct ProcItem
     ProcTableWidgetItem * widget;
 
     ProcItem(int row, int column, ProcTableWidgetItem * widget);
+
+    bool operator < (const ProcItem & pi) const;
 };
 
 QString getCommandName(QString str, int size);
@@ -26,8 +28,10 @@ public:
     RemoveProcCommand(ProcTableWidget * table,
                       QList<ProcItem> items);
 
+    virtual int	id () const;
     virtual void undo();
     virtual void redo();
+    //virtual bool mergeWith(const QUndoCommand * command);
 
 private:
     ProcTableWidget * table;
@@ -42,8 +46,10 @@ public:
     PutProcCommand(ProcTableWidget * table,
                    ProcItem item);
 
+    virtual int	id () const;
     virtual void undo();
     virtual void redo();
+    virtual bool mergeWith(const QUndoCommand * command);
 
 private:
     ProcTableWidget * table;
@@ -63,8 +69,16 @@ public:
                     int putRow,
                     int putColumn);
 
+    CopyProcCommand(ProcTableWidget * table,
+                    QString itemList,
+                    int touchIndex,
+                    int putRow,
+                    int putColumn);
+
+    virtual int	id () const;
     virtual void undo();
     virtual void redo();
+    bool mergeWith(const QUndoCommand * command);
 
     QString toStringForm();
 
@@ -74,6 +88,7 @@ private:
     int touchIndex;
     int putRow;
     int putColumn;
+    bool insertFromTopLeft;
 
     QList<ProcItem> backup;
 };
@@ -89,6 +104,7 @@ public:
                     int putRow,
                     int putColumn);
 
+    virtual int	id () const;
     virtual void undo();
     virtual void redo();
 

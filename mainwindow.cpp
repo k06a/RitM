@@ -52,6 +52,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->action_zoomin, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomIn()));
     connect(ui->action_zoomout, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomOut()));
 
+    // Cut Copy Paste
+
+    connect(ui->action_cut,   SIGNAL(triggered()), ui->tableWidget_field, SLOT(cutSlot()));
+    connect(ui->action_copy,  SIGNAL(triggered()), ui->tableWidget_field, SLOT(copySlot()));
+    connect(ui->action_paste, SIGNAL(triggered()), ui->tableWidget_field, SLOT(pasteSlot()));
+
     //
 
     connect(ui->action_delete, SIGNAL(triggered()), ui->tableWidget_field, SLOT(deleteSelectedItems()));

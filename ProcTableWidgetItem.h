@@ -25,7 +25,7 @@ public:
     explicit ProcTableWidgetItem();
     explicit ProcTableWidgetItem(ProcTableWidgetItem * item);
     ProcTableWidgetItem(QString stringForm);
-    ProcTableWidgetItem(QString iconPath, QString centerText = "", QWidget * parent = 0);
+    ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent = 0);
 
     QString text() const;
     void setText(QString text);
@@ -34,6 +34,7 @@ public:
     void setPixmap(QPixmap pixmap);
 
     QString toStringForm();
+    bool isEqualProc(ProcTableWidgetItem * w);
 
 protected:
     void paintEvent(QPaintEvent * event);

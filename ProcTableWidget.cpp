@@ -6,6 +6,8 @@
 #include <QModelIndexList>
 #include <QPainter>
 #include <QDebug>
+#include <QClipboard>
+
 #include "ProcTableWidgetItem.h"
 #include "ProcMimeData.h"
 #include "ModuleHolder.h"
@@ -119,13 +121,16 @@ QString ProcTableWidget::copy() const
         procList.push_back(it);
     }
 
-    return CopyProcCommand(0, procList, 0, 0, 0).toStringForm();
+    QString str = CopyProcCommand(0, procList, 0, 0, 0).toStringForm();
+
+    return str;
 }
 
 void ProcTableWidget::paste(QString str)
 {
-    QStringList parts = str.split("|%|");
-
+    int r = currentRow();
+    int c = currentColumn();
+    m_stack->push(new CopyProcCommand(this, str, 0, r, c));
 }
 
 // private
@@ -251,6 +256,8 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
 
     m_touchItem = itemAt(event->pos());
     Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+
+    Q_UNUSED(dropAction);
 }
 
 void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
@@ -400,6 +407,43 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
 
 // slots
 
+void ProcTableWidget::cutSlot()
+{
+    QString str = cut();
+    if (str.isEmpty())
+        return;
+
+    QMimeData * mime = new QMimeData;
+    mime->setData("RitM/processors", str.toUtf8());
+
+    QClipboard * clipboard = QApplication::clipboard();
+    clipboard->setMimeData(mime);
+}
+
+void ProcTableWidget::copySlot()
+{
+    QString str = copy();
+    if (str.isEmpty())
+        return;
+
+    QMimeData * mime = new QMimeData;
+    mime->setData("RitM/processors", str.toUtf8());
+
+    QClipboard * clipboard = QApplication::clipboard();
+    clipboard->setMimeData(mime);
+}
+
+void ProcTableWidget::pasteSlot()
+{
+    QClipboard * clipboard = QApplication::clipboard();
+    const QMimeData * mime = clipboard->mimeData();
+    if (mime->formats().first() != "RitM/processors")
+        return;
+
+    QString str = QString::fromUtf8(mime->data("RitM/processors"));
+    paste(str);
+}
+
 void ProcTableWidget::zoomIn()
 {
     setCurrentZoom(m_currentZoom + m_zoomStep);
@@ -438,5 +482,6 @@ void ProcTableWidget::deleteSelectedItems()
             list.append(ProcItem(r,c,new ProcTableWidgetItem(w)));
     }
 
-    m_stack->push(new RemoveProcCommand(this,list));
+    if (list.size() != 0)
+        m_stack->push(new RemoveProcCommand(this,list));
 }

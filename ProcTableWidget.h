@@ -99,6 +99,10 @@ protected:
 signals:
 
 public slots:
+    void cutSlot();
+    void copySlot();
+    void pasteSlot();
+
     void zoomIn();
     void zoomOut();
     void zoomTo(float value);

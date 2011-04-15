@@ -117,6 +117,8 @@ void ProcListWidget::mouseMoveEvent(QMouseEvent * event)
     // drag data
 
     Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+
+    Q_UNUSED(dropAction)
 }
 
 void ProcListWidget::mouseReleaseEvent(QMouseEvent * event)
