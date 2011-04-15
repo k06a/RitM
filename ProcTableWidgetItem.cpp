@@ -11,6 +11,23 @@ ProcTableWidgetItem::ProcTableWidgetItem()
 
 }
 
+ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
+    : QWidget()
+    , m_text(item->m_text)
+    , m_pixmap(item->m_pixmap)
+    , m_pixmapPath(item->m_pixmapPath)
+{
+}
+
+ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm)
+    : QWidget()
+{
+    QStringList list = stringForm.split("|*|");
+    m_text = list[0];
+    m_pixmapPath = list[1];
+    m_pixmap = QPixmap(m_pixmapPath);
+}
+
 ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)
     : QWidget(parent)
     , m_text(centerText)
@@ -23,22 +40,6 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, Q
 
     //QHBoxLayout * hlay = new QHBoxLayout(this);
     //QLabel * label = new QLabel(centerText);
-    //label->setAlignment(Qt::AlignCenter);
-    //hlay->addWidget(label);
-}
-
-ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
-    : QWidget()
-    , m_text(item->m_text)
-    , m_pixmap(item->m_pixmap)
-    , m_pixmapPath(item->m_pixmapPath)
-{
-    //setAutoFillBackground(true);
-    //setAttribute(Qt::WA_NoBackground, false);
-    //setAttribute(Qt::WA_NoSystemBackground, false);
-
-    //QHBoxLayout * hlay = new QHBoxLayout(this);
-    //QLabel * label = new QLabel(m_text);
     //label->setAlignment(Qt::AlignCenter);
     //hlay->addWidget(label);
 }
@@ -61,6 +62,11 @@ QPixmap ProcTableWidgetItem::pixmap() const
 void ProcTableWidgetItem::setPixmap(QPixmap pixmap)
 {
     m_pixmap = pixmap;
+}
+
+QString ProcTableWidgetItem::toStringForm()
+{
+    return m_text + "|*|" + m_pixmapPath;
 }
 
 void ProcTableWidgetItem::paintEvent(QPaintEvent * event)

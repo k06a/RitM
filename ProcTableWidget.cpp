@@ -97,16 +97,34 @@ QString ProcTableWidget::cut()
 {
     QString str = copy();
     deleteSelectedItems();
-    return "";
+    return str;
 }
 
 QString ProcTableWidget::copy() const
 {
-    return "";
+    QList<QTableWidgetItem*> itemList;
+    foreach(QModelIndex index, selectedIndexes())
+        if (cellWidget(index.row(),index.column()) != 0)
+            itemList.append(itemFromIndex(index));
+    if (itemList.size() == 0)
+        return "";
+
+    QList<ProcItem> procList;
+    foreach(QTableWidgetItem * item, itemList)
+    {
+        QWidget * w = cellWidget(item->row(), item->column());
+        ProcTableWidgetItem * wi = (ProcTableWidgetItem*)w;
+        ProcItem it(item->row(), item->column(),
+                    new ProcTableWidgetItem(wi));
+        procList.push_back(it);
+    }
+
+    return CopyProcCommand(0, procList, 0, 0, 0).toStringForm();
 }
 
 void ProcTableWidget::paste(QString str)
 {
+    QStringList parts = str.split("|%|");
 
 }
 

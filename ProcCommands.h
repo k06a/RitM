@@ -66,6 +66,8 @@ public:
     virtual void undo();
     virtual void redo();
 
+    QString toStringForm();
+
 private:
     ProcTableWidget * table;
     QList<ProcItem> items;

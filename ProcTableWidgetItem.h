@@ -23,14 +23,17 @@ class ProcTableWidgetItem : public QWidget
 
 public:
     explicit ProcTableWidgetItem();
-    explicit ProcTableWidgetItem(QString iconPath, QString centerText = "", QWidget * parent = 0);
     explicit ProcTableWidgetItem(ProcTableWidgetItem * item);
+    ProcTableWidgetItem(QString stringForm);
+    ProcTableWidgetItem(QString iconPath, QString centerText = "", QWidget * parent = 0);
 
     QString text() const;
     void setText(QString text);
 
     QPixmap pixmap() const;
     void setPixmap(QPixmap pixmap);
+
+    QString toStringForm();
 
 protected:
     void paintEvent(QPaintEvent * event);
