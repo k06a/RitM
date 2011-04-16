@@ -138,10 +138,12 @@ void ProcTableWidget::load(QByteArray arr)
     setRowCount(itemList.takeFirst().toInt());
     setColumnCount(itemList.takeFirst().toInt());
 
-    foreach(QString item, itemList)
+    foreach(QString it, itemList)
     {
-        ProcItem pi(item);
+        ProcItem pi(it);
         setCellWidget(pi.row, pi.column, pi.widget);
+        if (item(pi.row, pi.column) == NULL)
+            setItem(pi.row, pi.column, new QTableWidgetItem);
     }
 }
 
@@ -193,7 +195,6 @@ QRect ProcTableWidget::itemsBoundingRect(QList<QTableWidgetItem*> list) const
             answer = rect;
             continue;
         }
-
 
         answer.setLeft  ( qMin( answer.left()  , rect.left()   ) );
         answer.setTop   ( qMin( answer.top()   , rect.top()    ) );
