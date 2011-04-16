@@ -321,7 +321,9 @@
     <addaction name="action_cut"/>
     <addaction name="action_copy"/>
     <addaction name="action_paste"/>
+    <addaction name="separator"/>
     <addaction name="action_delete"/>
+    <addaction name="action_selectall"/>
    </widget>
    <widget class="QMenu" name="menu_widgets">
     <property name="title">
@@ -371,10 +373,6 @@
    <addaction name="action_cut"/>
    <addaction name="action_copy"/>
    <addaction name="action_paste"/>
-   <addaction name="action_delete"/>
-   <addaction name="separator"/>
-   <addaction name="action_help"/>
-   <addaction name="action_about"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget_elements">
@@ -832,15 +830,19 @@
    </property>
   </action>
   <action name="action_delete">
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/images/quit.png</normaloff>:/images/quit.png</iconset>
-   </property>
    <property name="text">
-    <string>Удалить</string>
+    <string>Удалить выделенные</string>
    </property>
    <property name="shortcut">
     <string>Del</string>
+   </property>
+  </action>
+  <action name="action_selectall">
+   <property name="text">
+    <string>Выделить все</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
    </property>
   </action>
  </widget>

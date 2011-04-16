@@ -27,7 +27,9 @@ protected:
     virtual void closeEvent(QCloseEvent * event);
 
 private slots:
+    void clipboardChanged();
     void on_horizontalSlider_elements_valueChanged(int value);
+    void on_tableWidget_field_itemSelectionChanged();
 
 private:
     Ui::MainWindow *ui;

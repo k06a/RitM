@@ -81,6 +81,8 @@ public:
     QString copy() const;
     void paste(QString str);
 
+    QList<QTableWidgetItem*> nonEmptySelectedItems() const;
+
 private:
     QRect itemsBoundingRect(QList<QTableWidgetItem*> list) const;
 

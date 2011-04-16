@@ -7,6 +7,7 @@
 #include <QUndoStack>
 #include <QUndoView>
 #include <QSettings>
+#include <QClipboard>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_stack = new QUndoStack(this);
     m_action_undo = m_stack->createUndoAction(this,tr("Отменить"));
     m_action_redo = m_stack->createRedoAction(this,tr("Повторить"));
-    //m_action_undo->setText(tr("Отменить"));
-    //m_action_redo->setText(tr("Повторить"));
     m_action_undo->setShortcut(QKeySequence::Undo);
     m_action_redo->setShortcut(QKeySequence::Redo);
     m_action_undo->setIcon(QIcon(":/images/undo.png"));
@@ -29,8 +28,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->menu_edit->insertAction(ui->action_cut, m_action_undo);
     ui->menu_edit->insertAction(ui->action_cut, m_action_redo);
+    ui->menu_edit->insertSeparator(ui->action_cut);
     ui->mainToolBar->insertAction(ui->action_cut, m_action_undo);
     ui->mainToolBar->insertAction(ui->action_cut, m_action_redo);
+    ui->mainToolBar->insertSeparator(ui->action_cut);
 
     ui->tableWidget_field->setStack(m_stack);
 
@@ -60,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //
 
+    connect(ui->action_selectall, SIGNAL(triggered()), ui->tableWidget_field, SLOT(selectAll()));
     connect(ui->action_delete, SIGNAL(triggered()), ui->tableWidget_field, SLOT(deleteSelectedItems()));
     connect(ui->action_about, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(ui->action_quit, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -88,6 +90,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->listWidget_elements->setSlider(ui->horizontalSlider_elements);
     ui->listWidget_pipes->setSlider(ui->horizontalSlider_elements);
+
+    connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()));
+
+    clipboardChanged();
+    on_tableWidget_field_itemSelectionChanged();
 }
 
 MainWindow::~MainWindow()
@@ -115,6 +122,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QMainWindow::closeEvent(event);
 }
 
+void MainWindow::clipboardChanged()
+{
+    const QMimeData * mime = QApplication::clipboard()->mimeData();
+    bool b = (mime->formats().first() == "RitM/processors");
+    ui->action_paste->setEnabled(b);
+}
+
 void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
 {
     ui->listWidget_elements->setIconSize(QSize(value,value));
@@ -122,4 +136,12 @@ void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
     ui->listWidget_pipes->setIconSize(QSize(value,value));
     ui->listWidget_pipes->setGridSize(QSize(value*1.4,value*1.4));
     ui->horizontalSlider_pipes->setValue(value);
+}
+
+void MainWindow::on_tableWidget_field_itemSelectionChanged()
+{
+    int count = ui->tableWidget_field->nonEmptySelectedItems().size();
+    ui->action_cut->setEnabled(count > 0);
+    ui->action_copy->setEnabled(count > 0);
+    ui->action_delete->setEnabled(count > 0);
 }

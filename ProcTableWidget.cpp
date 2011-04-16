@@ -104,10 +104,7 @@ QString ProcTableWidget::cut()
 
 QString ProcTableWidget::copy() const
 {
-    QList<QTableWidgetItem*> itemList;
-    foreach(QModelIndex index, selectedIndexes())
-        if (cellWidget(index.row(),index.column()) != 0)
-            itemList.append(itemFromIndex(index));
+    QList<QTableWidgetItem*> itemList = nonEmptySelectedItems();
     if (itemList.size() == 0)
         return "";
 
@@ -131,6 +128,15 @@ void ProcTableWidget::paste(QString str)
     int r = currentRow();
     int c = currentColumn();
     m_stack->push(new CopyProcCommand(this, str, 0, r, c));
+}
+
+QList<QTableWidgetItem*> ProcTableWidget::nonEmptySelectedItems() const
+{
+    QList<QTableWidgetItem*> list;
+    foreach(QModelIndex index, selectedIndexes())
+        if (cellWidget(index.row(),index.column()) != 0)
+            list.append(itemFromIndex(index));
+    return list;
 }
 
 // private
@@ -213,10 +219,7 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
     }
 
     // Get non-empty draggable items
-    m_dragItems.clear();
-    foreach(QModelIndex index, selectedIndexes())
-        if (cellWidget(index.row(),index.column()) != 0)
-            m_dragItems.append(itemFromIndex(index));
+    m_dragItems = nonEmptySelectedItems();
     if (m_dragItems.size() == 0)
         return;
 
