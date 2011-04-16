@@ -234,6 +234,14 @@ void ProcTableWidget::mousePressEvent(QMouseEvent * event)
     m_firstTouch = event->pos();
     m_lastTouch.setY(event->pos().y());
     m_lastTouch.setX(event->pos().x());
+
+    if (!(event->modifiers() & Qt::ControlModifier))
+    {
+        int pos = selectedIndexes().indexOf(indexAt(event->pos()));
+        if (pos != -1)
+            m_waitForMove = true;
+    }
+
     QTableWidget::mousePressEvent(event);
 }
 
@@ -245,13 +253,19 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
         < QApplication::startDragDistance())
         return;
 
-    QTableWidgetItem * it = itemAt(event->pos());
+    QTableWidgetItem * it = itemAt(m_firstTouch);
     if (it == NULL) return;
-    if (!itemAt(event->pos())->isSelected())
+    if (!itemAt(m_firstTouch)->isSelected())
     {
         clearSelection();
         return;
     }
+    if (NULL == cellWidget(rowAt(m_firstTouch.y()),
+                           columnAt(m_firstTouch.x())))
+    {
+        return;
+    }
+
 
     // Get non-empty draggable items
     m_dragItems = nonEmptySelectedItems();
@@ -300,12 +314,16 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
 
 void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
 {
-    QTableWidgetItem * it = itemAt(event->pos());
-    if (it == NULL)
-        return;
-
     if (m_waitForMove)
     {
+        QTableWidgetItem * it = itemAt(event->pos());
+        if (it == NULL)
+        {
+            it = new QTableWidgetItem;
+            setItem(rowAt(event->pos().y()),
+                    columnAt(event->pos().x()),it);
+        }
+
         clearSelection();
         it->setSelected(true);
         m_waitForMove = false;
@@ -341,6 +359,8 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
     {
         return;
     }
+
+    m_waitForMove = false;
 
     if (event->source() != this)
     {
@@ -414,10 +434,6 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
                       columnAt(event->pos().x()), w);
         m_stack->push(new PutProcCommand(this, proc));
         setFocus();
-
-        //clearSelection();
-        //it->setSelected(true);
-        m_waitForMove = false;
     }
     else
     {
