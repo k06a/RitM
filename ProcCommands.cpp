@@ -5,6 +5,22 @@ ProcItem::ProcItem(int row, int column, ProcTableWidgetItem * widget)
 {
 }
 
+ProcItem::ProcItem(QString rcw)
+{
+    QStringList rcwList = rcw.split("|rcw|");
+    row = rcwList[0].toInt();
+    column = rcwList[1].toInt();
+    widget = new ProcTableWidgetItem(rcwList[2]);
+}
+
+QString ProcItem::toString()
+{
+    return QString("%1|rcw|%2|rcw|%3")
+           .arg(row)
+           .arg(column)
+           .arg(widget->toStringForm());
+}
+
 bool ProcItem::operator < (const ProcItem & pi) const
 {
     if (row != pi.row)
@@ -167,13 +183,9 @@ CopyProcCommand::CopyProcCommand(ProcTableWidget * table,
     , insertFromTopLeft(true)
 {
     QStringList procs = itemList.split("|proc|");
-    foreach(QString rcw_s, procs)
+    foreach(QString rcw, procs)
     {
-        QStringList rcw = rcw_s.split("|rcw|");
-        ProcItem pi(
-            rcw[0].toInt(),
-            rcw[1].toInt(),
-            new ProcTableWidgetItem(rcw[2]));
+        ProcItem pi(rcw);
         items.append(pi);
     }
 }

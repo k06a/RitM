@@ -81,6 +81,9 @@ public:
     QString copy() const;
     void paste(QString str);
 
+    void load(QByteArray arr);
+    QByteArray save();
+
     QList<QTableWidgetItem*> nonEmptySelectedItems() const;
 
 private:

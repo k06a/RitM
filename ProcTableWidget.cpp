@@ -130,6 +130,40 @@ void ProcTableWidget::paste(QString str)
     m_stack->push(new CopyProcCommand(this, str, 0, r, c));
 }
 
+void ProcTableWidget::load(QByteArray arr)
+{
+    QStringList itemList = QString::fromUtf8(arr).split("|RxC|");
+    if (itemList.size() < 2)
+        throw "";
+    setRowCount(itemList.takeFirst().toInt());
+    setColumnCount(itemList.takeFirst().toInt());
+
+    foreach(QString item, itemList)
+    {
+        ProcItem pi(item);
+        setCellWidget(pi.row, pi.column, pi.widget);
+    }
+}
+
+QByteArray ProcTableWidget::save()
+{
+    QStringList itemList;
+    itemList.append(tr("%1").arg(rowCount()));
+    itemList.append(tr("%1").arg(columnCount()));
+    for (int i = 0; i < rowCount(); i++)
+    for (int j = 0; j < columnCount(); j++)
+    {
+        ProcTableWidgetItem * w = (ProcTableWidgetItem*)cellWidget(i,j);
+        if (w != NULL)
+        {
+            ProcItem pi(i,j,w);
+            itemList.append(pi.toString());
+        }
+    }
+
+    return itemList.join("|RxC|").toUtf8();
+}
+
 QList<QTableWidgetItem*> ProcTableWidget::nonEmptySelectedItems() const
 {
     QList<QTableWidgetItem*> list;

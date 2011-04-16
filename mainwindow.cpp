@@ -8,6 +8,9 @@
 #include <QUndoView>
 #include <QSettings>
 #include <QClipboard>
+#include <QMessageBox>
+#include <QFile>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -60,6 +63,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->action_paste, SIGNAL(triggered()), ui->tableWidget_field, SLOT(pasteSlot()));
 
     //
+
+    connect(ui->action_new, SIGNAL(triggered()), this, SLOT(clearTable()));
+    connect(ui->action_open, SIGNAL(triggered()), this, SLOT(open()));
+    connect(ui->action_save, SIGNAL(triggered()), this, SLOT(save()));
+    connect(ui->action_saveas, SIGNAL(triggered()), this, SLOT(saveAs()));
 
     connect(ui->action_selectall, SIGNAL(triggered()), ui->tableWidget_field, SLOT(selectAll()));
     connect(ui->action_delete, SIGNAL(triggered()), ui->tableWidget_field, SLOT(deleteSelectedItems()));
@@ -127,6 +135,112 @@ void MainWindow::clipboardChanged()
     const QMimeData * mime = QApplication::clipboard()->mimeData();
     bool b = (mime->formats().first() == "RitM/processors");
     ui->action_paste->setEnabled(b);
+}
+
+bool MainWindow::checkForSave()
+{
+    if (!m_action_undo->isEnabled())
+        return true;
+
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(tr("Уведомление"));
+    msgBox.setText(tr("Документ был изменён"));
+    msgBox.setInformativeText(tr("Сохранить изменения?"));
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+
+    switch (ret)
+    {
+        case QMessageBox::Save:
+            if (!save())
+                return false;
+            break;
+        case QMessageBox::Discard:
+            break;
+        case QMessageBox::Cancel:
+            return false;
+    }
+
+    return true;
+}
+
+void MainWindow::clearTableWithoutCheck()
+{
+    ui->tableWidget_field->clear();
+}
+
+bool MainWindow::clearTable()
+{
+    if (!checkForSave())
+        return false;
+
+    ui->tableWidget_field->clear();
+    return true;
+}
+
+bool MainWindow::save()
+{
+    if (m_filename == "")
+        return saveAs();
+
+    QFile file(m_filename);
+    file.open(QIODevice::WriteOnly);
+    file.write(ui->tableWidget_field->save());
+    file.close();
+
+    m_stack->clear();
+    return true;
+}
+
+bool MainWindow::saveAs()
+{
+    QString filename = QFileDialog::getSaveFileName(
+        this, tr("Сохранить как ..."), QString(), tr("Структура тракта (*.ritm)"));
+    if (filename.isEmpty())
+        return false;
+
+    m_filename = filename;
+    if (save())
+    {
+        setWindowTitle(tr("%1 - RitM in the Middle").arg(m_filename));
+        return true;
+    }
+
+    return false;
+}
+
+bool MainWindow::open()
+{
+    if (!checkForSave())
+        return false;
+
+    QString filename = QFileDialog::getOpenFileName(
+        this, tr("Открыть ..."), QString(), tr("Структура тракта (*.ritm)"));
+    if (filename.isEmpty())
+        return false;
+
+    clearTableWithoutCheck();
+
+    m_filename = filename;
+    setWindowTitle(tr("%1 - RitM in the Middle").arg(m_filename));
+
+    QFile file(m_filename);
+    file.open(QIODevice::ReadOnly);
+    try
+    {
+        ui->tableWidget_field->load(file.readAll());
+    }
+    catch(...)
+    {
+        QMessageBox::warning(this, tr("Ошибка открытия файла"),
+                             tr("Выбран файл неверного формата"));
+        return false;
+    }
+    file.close();
+
+    m_stack->clear();
+    return true;
 }
 
 void MainWindow::on_horizontalSlider_elements_valueChanged(int value)

@@ -13,6 +13,9 @@ struct ProcItem
     ProcTableWidgetItem * widget;
 
     ProcItem(int row, int column, ProcTableWidgetItem * widget);
+    ProcItem(QString rcw);
+
+    QString toString();
 
     bool operator < (const ProcItem & pi) const;
 };

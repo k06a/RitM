@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>RitM in the Middle</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -662,9 +662,6 @@
    </widget>
   </widget>
   <action name="action_open">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/fileopen.png</normaloff>:/images/fileopen.png</iconset>
@@ -680,9 +677,6 @@
    </property>
   </action>
   <action name="action_save">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/filesave.png</normaloff>:/images/filesave.png</iconset>
@@ -695,9 +689,6 @@
    </property>
   </action>
   <action name="action_saveas">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/filesave.png</normaloff>:/images/filesave.png</iconset>
@@ -746,9 +737,6 @@
    </property>
   </action>
   <action name="action_cut">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/editcut.png</normaloff>:/images/editcut.png</iconset>
@@ -761,9 +749,6 @@
    </property>
   </action>
   <action name="action_paste">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/editpaste.png</normaloff>:/images/editpaste.png</iconset>
@@ -776,9 +761,6 @@
    </property>
   </action>
   <action name="action_copy">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/editcopy.png</normaloff>:/images/editcopy.png</iconset>
@@ -815,9 +797,6 @@
    </property>
   </action>
   <action name="action_new">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/images/filenew.png</normaloff>:/images/filenew.png</iconset>
