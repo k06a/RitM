@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->action_selectall, SIGNAL(triggered()), ui->tableWidget_field, SLOT(selectAll()));
     connect(ui->action_delete, SIGNAL(triggered()), ui->tableWidget_field, SLOT(deleteSelectedItems()));
     connect(ui->action_about, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-    connect(ui->action_quit, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(ui->action_quit, SIGNAL(triggered()), this, SLOT(close()));
 
     // Add ToolBars and DockWidgets Actions to Windows Menu
     foreach(QToolBar * toolBar, findChildren<QToolBar*>())
