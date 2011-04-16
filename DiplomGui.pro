@@ -35,3 +35,5 @@ OTHER_FILES +=
 
 RESOURCES += \
     res.qrc
+
+win32:RC_FILE += res.rc

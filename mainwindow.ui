@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>RitM in the Middle</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/images/logo.png</normaloff>:/images/logo.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -841,5 +845,38 @@
  <resources>
   <include location="res.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>horizontalSlider_elements</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_pipes</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>595</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_pipes</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_elements</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>589</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>195</x>
+     <y>318</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

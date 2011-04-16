@@ -25,5 +25,6 @@
         <file>images/processor.svg</file>
         <file>images/redo.png</file>
         <file>images/undo.png</file>
+        <file>images/logo.png</file>
     </qresource>
 </RCC>

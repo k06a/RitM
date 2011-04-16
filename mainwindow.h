@@ -28,6 +28,7 @@ protected:
     virtual void closeEvent(QCloseEvent * event);
 
 private slots:
+    void stackChanged();
     void clipboardChanged();
     bool checkForSave();
     void clearTableWithoutCheck();

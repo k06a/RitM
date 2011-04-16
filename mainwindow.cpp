@@ -100,7 +100,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listWidget_pipes->setSlider(ui->horizontalSlider_elements);
 
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()));
+    connect(m_stack, SIGNAL(indexChanged(int)), this, SLOT(stackChanged()));
 
+    stackChanged();
     clipboardChanged();
     on_tableWidget_field_itemSelectionChanged();
 
@@ -136,6 +138,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("elementsZoom", ui->horizontalSlider_elements->value());
     settings.setValue("fieldZoom", ui->tableWidget_field->currentZoom());
     QMainWindow::closeEvent(event);
+}
+
+void MainWindow::stackChanged()
+{
+    bool b = (m_stack->index() > 0);
+    ui->action_save->setEnabled(b);
 }
 
 void MainWindow::clipboardChanged()
@@ -234,6 +242,7 @@ bool MainWindow::open()
 
     clearTableWithoutCheck();
     openFile(filename);
+    return true;
 }
 
 bool MainWindow::openFile(QString filename)
@@ -265,7 +274,6 @@ void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
     ui->listWidget_elements->setGridSize(QSize(value*1.4,value*1.4));
     ui->listWidget_pipes->setIconSize(QSize(value,value));
     ui->listWidget_pipes->setGridSize(QSize(value*1.4,value*1.4));
-    ui->horizontalSlider_pipes->setValue(value);
 }
 
 void MainWindow::on_tableWidget_field_itemSelectionChanged()
