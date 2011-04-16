@@ -94,3 +94,8 @@ OptionPtr AbstractProcessor::getOptions()
 {
     return OptionPtr();
 }
+
+StatsProviderPtr AbstractProcessor::statsProvider()
+{
+    return StatsProviderPtr();
+}

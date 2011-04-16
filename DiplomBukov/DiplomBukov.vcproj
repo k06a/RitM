@@ -298,11 +298,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\IDuplexConnector.h"
-					>
-				</File>
-				<File
-					RelativePath=".\IDuplexProcessor.h"
+					RelativePath=".\IModule.h"
 					>
 				</File>
 				<File
@@ -311,6 +307,14 @@
 				</File>
 				<File
 					RelativePath=".\IProcessor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IStarter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IStatsProvider.h"
 					>
 				</File>
 			</Filter>
@@ -512,18 +516,18 @@
 						RelativePath=".\PcapAdapter.h"
 						>
 					</File>
+					<File
+						RelativePath=".\TimedStarter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TimedStarter.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Processors"
 					>
-					<File
-						RelativePath=".\Ipv4Defragger.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Ipv4Defragger.h"
-						>
-					</File>
 					<Filter
 						Name="Protocols"
 						>
@@ -533,6 +537,14 @@
 						</File>
 						<File
 							RelativePath=".\IcmpHeaderProcessor.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Ipv4Defragger.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Ipv4Defragger.h"
 							>
 						</File>
 						<File

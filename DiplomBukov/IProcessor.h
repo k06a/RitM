@@ -32,6 +32,8 @@ namespace DiplomBukov
         virtual IProcessorModule * getModule() = 0;
 
         virtual OptionPtr getOptions() = 0;
+
+        virtual StatsProviderPtr statsProvider() = 0;
     };
     // class IProcessor
 }

@@ -8,7 +8,9 @@ using namespace DiplomBukov;
 FileAdapter::FileAdapter(const std::string & filename1,
                          const std::string & filename2,
                          ProcessorPtr Connector)
-	: file1(NULL), file2(NULL), id(0), linkType(0), buffer(NULL)
+	: file1(NULL), file2(NULL), id(0)
+    , linkType(0), buffer(NULL)
+    , i_count_in(0), i_count_out(0)
 {
     setNextProcessor(Connector);
 
@@ -62,6 +64,7 @@ ProcessingStatus FileAdapter::backwardProcess(Protocol proto, PacketPtr packet, 
     fwrite(&pph, sizeof(pph), 1, file2);
 
     fwrite(&packet->data()[offset], 1, packet->size() - offset, file2);
+    i_count_out++;
     
     return ProcessingStatus::Accepted;
 }
@@ -103,5 +106,27 @@ bool FileAdapter::tick()
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, 0);
 
+    i_count_in++;
     return true;
+}
+
+IAdapter::Type FileAdapter::type()
+{
+    return Offline;
+}
+
+const std::vector<std::string> & FileAdapter::getStatisticNames() const
+{
+    std::vector<std::string> vec;
+    vec.push_back("Кол-во полученных пакетов");
+    vec.push_back("Кол-во переданных пакетов");
+    return vec;
+}
+
+const std::vector<i64> & FileAdapter::getStatisticValues() const
+{
+    std::vector<i64> vec;
+    vec.push_back(i_count_in);
+    vec.push_back(i_count_out);
+    return vec;
 }

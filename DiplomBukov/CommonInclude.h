@@ -24,6 +24,7 @@ namespace DiplomBukov
     class IAdapter;
     class IConnector;
     class IProcessor;
+    class IStatsProvider;
 
     class IAdapterCreator;
     class IConnectorCreator;
@@ -46,6 +47,7 @@ namespace DiplomBukov
     typedef SmartPointer<IAdapter>::Type            AdapterPtr;
     typedef SmartPointer<IConnector>::Type          ConnectorPtr;
     typedef SmartPointer<IProcessor>::Type          ProcessorPtr;
+    typedef SmartPointer<IStatsProvider>::Type      StatsProviderPtr;
     
     typedef SmartPointer<IAdapterCreator>::Type     AdapterCreatorPtr;
     typedef SmartPointer<IConnectorCreator>::Type   ConnectorCreatorPtr;

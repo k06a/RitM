@@ -3,9 +3,11 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 #include "AbstractProcessor.h"
 #include "IAdapter.h"
+#include "IStatsProvider.h"
 
 namespace DiplomBukov
 {
@@ -31,6 +33,7 @@ namespace DiplomBukov
 	class FileAdapter
         : public AbstractProcessor
         , public IAdapter
+        , public IStatsProvider
 	{
 		FILE * file1;
         FILE * file2;
@@ -38,6 +41,9 @@ namespace DiplomBukov
         unsigned id;
         int linkType;
         u8 * buffer;
+
+        i64 i_count_in;
+        i64 i_count_out;
 
 	public:
         FileAdapter(const std::string & filename1,
@@ -52,6 +58,11 @@ namespace DiplomBukov
 
 		virtual void run(bool always);
         virtual bool tick();
+
+        virtual Type type();
+
+        virtual const std::vector<std::string> & getStatisticNames() const;
+        virtual const std::vector<i64> & getStatisticValues() const;
 	};
 	// class FileAdapter
 

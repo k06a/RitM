@@ -39,6 +39,8 @@ namespace DiplomBukov
 
         virtual void run(bool always);
         virtual bool tick();
+
+        virtual Type type();
     };
     // class PcapAdapter
 

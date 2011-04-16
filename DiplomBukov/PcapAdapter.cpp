@@ -131,3 +131,8 @@ bool PcapAdapter::tick()
 
     return true;
 }
+
+IAdapter::Type PcapAdapter::type()
+{
+    return Online;
+}
