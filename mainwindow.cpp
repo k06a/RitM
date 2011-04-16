@@ -103,6 +103,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     clipboardChanged();
     on_tableWidget_field_itemSelectionChanged();
+
+    QStringList arg = QApplication::arguments();
+    if (arg.size() > 1)
+        openFile(arg[1]);
 }
 
 MainWindow::~MainWindow()
@@ -113,10 +117,14 @@ MainWindow::~MainWindow()
 void MainWindow::showEvent(QShowEvent * event)
 {
     QSettings settings("RitM.ini", QSettings::IniFormat);
-    restoreGeometry(settings.value("geometry").toByteArray());
-    restoreState(settings.value("windowState").toByteArray());
-    ui->horizontalSlider_elements->setValue(settings.value("elementsZoom").toInt());
-    ui->tableWidget_field->setCurrentZoom(settings.value("fieldZoom").toFloat());
+    if (settings.contains("geometry"))
+        restoreGeometry(settings.value("geometry").toByteArray());
+    if (settings.contains("windowState"))
+        restoreState(settings.value("windowState").toByteArray());
+    if (settings.contains("elementsZoom"))
+        ui->horizontalSlider_elements->setValue(settings.value("elementsZoom").toInt());
+    if (settings.contains("fieldZoom"))
+        ui->tableWidget_field->setCurrentZoom(settings.value("fieldZoom").toFloat());
     QMainWindow::showEvent(event);
 }
 
@@ -145,9 +153,12 @@ bool MainWindow::checkForSave()
     QMessageBox msgBox;
     msgBox.setWindowTitle(tr("Уведомление"));
     msgBox.setText(tr("Документ был изменён"));
-    msgBox.setInformativeText(tr("Сохранить изменения?"));
+    msgBox.setInformativeText(tr("Сохранить изменения в файле?"));
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Save);
+    msgBox.setButtonText(QMessageBox::Save, tr("Сохранить"));
+    msgBox.setButtonText(QMessageBox::Discard, tr("Не сохранять"));
+    msgBox.setButtonText(QMessageBox::Cancel, tr("Отмена"));
     int ret = msgBox.exec();
 
     switch (ret)
@@ -168,6 +179,7 @@ bool MainWindow::checkForSave()
 void MainWindow::clearTableWithoutCheck()
 {
     ui->tableWidget_field->clear();
+    m_stack->clear();
 }
 
 bool MainWindow::clearTable()
@@ -175,7 +187,7 @@ bool MainWindow::clearTable()
     if (!checkForSave())
         return false;
 
-    ui->tableWidget_field->clear();
+    clearTableWithoutCheck();
     return true;
 }
 
@@ -221,11 +233,12 @@ bool MainWindow::open()
         return false;
 
     clearTableWithoutCheck();
+    openFile(filename);
+}
 
-    m_filename = filename;
-    setWindowTitle(tr("%1 - RitM in the Middle").arg(m_filename));
-
-    QFile file(m_filename);
+bool MainWindow::openFile(QString filename)
+{
+    QFile file(filename);
     file.open(QIODevice::ReadOnly);
     try
     {
@@ -238,6 +251,9 @@ bool MainWindow::open()
         return false;
     }
     file.close();
+
+    m_filename = filename;
+    setWindowTitle(tr("%1 - RitM in the Middle").arg(m_filename));
 
     m_stack->clear();
     return true;

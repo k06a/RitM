@@ -35,6 +35,7 @@ private slots:
     bool save();
     bool saveAs();
     bool open();
+    bool openFile(QString filename);
     void on_horizontalSlider_elements_valueChanged(int value);
     void on_tableWidget_field_itemSelectionChanged();
 
