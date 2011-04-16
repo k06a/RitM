@@ -30,7 +30,7 @@ protected:
 private slots:
     void stackChanged();
     void clipboardChanged();
-    bool checkForSave();
+    bool saveOrCancel();
     void clearTableWithoutCheck();
     bool clearTable();
     bool save();

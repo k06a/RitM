@@ -132,6 +132,11 @@ void MainWindow::showEvent(QShowEvent * event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    if (!saveOrCancel())
+    {
+        event->ignore();
+        return;
+    }
     QSettings settings("RitM.ini", QSettings::IniFormat);
     settings.setValue("geometry", saveGeometry());
     settings.setValue("windowState", saveState());
@@ -153,7 +158,7 @@ void MainWindow::clipboardChanged()
     ui->action_paste->setEnabled(b);
 }
 
-bool MainWindow::checkForSave()
+bool MainWindow::saveOrCancel()
 {
     if (!m_action_undo->isEnabled())
         return true;
@@ -192,7 +197,7 @@ void MainWindow::clearTableWithoutCheck()
 
 bool MainWindow::clearTable()
 {
-    if (!checkForSave())
+    if (!saveOrCancel())
         return false;
 
     clearTableWithoutCheck();
@@ -232,7 +237,7 @@ bool MainWindow::saveAs()
 
 bool MainWindow::open()
 {
-    if (!checkForSave())
+    if (!saveOrCancel())
         return false;
 
     QString filename = QFileDialog::getOpenFileName(
