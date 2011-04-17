@@ -192,6 +192,7 @@ bool MainWindow::saveOrCancel()
 void MainWindow::clearTableWithoutCheck()
 {
     ui->tableWidget_field->clear();
+    setWindowTitle(tr("RitM in the Middle"));
     m_stack->clear();
 }
 
