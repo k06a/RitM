@@ -7,7 +7,7 @@ ProcessorModule::ProcessorModule(ProcessorPtr baseProcessor)
     : baseProcessor(baseProcessor)
 {
     if (baseProcessor != NULL)
-        baseProcessor->setModule(this);
+        baseProcessor->setExemplar(this);
 }
 
 ProcessorPtr ProcessorModule::getBaseProcessor()
@@ -19,5 +19,5 @@ void ProcessorModule::setBaseProcessor(ProcessorPtr baseProcessor)
 {
     this->baseProcessor = baseProcessor;
     if (baseProcessor != NULL)
-        baseProcessor->setModule(this);
+        baseProcessor->setExemplar(this);
 }

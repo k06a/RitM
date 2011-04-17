@@ -298,6 +298,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\IExemplar.h"
+					>
+				</File>
+				<File
 					RelativePath=".\IModule.h"
 					>
 				</File>

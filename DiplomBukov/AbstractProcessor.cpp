@@ -80,12 +80,12 @@ ProcessorPtr AbstractProcessor::getPrevProcessor()
     return prevProcessor;
 }
 
-void AbstractProcessor::setModule(IProcessorModule * mod)
+void AbstractProcessor::setExemplar(IProcessorModule * mod)
 {
     module = mod;
 }
 
-IProcessorModule * AbstractProcessor::getModule()
+IProcessorModule * AbstractProcessor::getExemplar()
 {
     return module;
 }

@@ -28,8 +28,8 @@ namespace DiplomBukov
         virtual void setPrevProcessor(ProcessorPtr processor) = 0;
         virtual ProcessorPtr getPrevProcessor() = 0;
 
-        virtual void setModule(IProcessorModule * module) = 0;
-        virtual IProcessorModule * getModule() = 0;
+        virtual void setExemplar(IProcessorModule * module) = 0;
+        virtual IProcessorModule * getExemplar() = 0;
 
         virtual OptionPtr getOptions() = 0;
 
