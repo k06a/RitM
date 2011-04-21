@@ -11,7 +11,7 @@ namespace DiplomBukov
 {
     class CheckOption
         : public IOption
-        , public EnableSmartFromThis<CheckOption>::Type
+        , public EnableSharedFromThis<CheckOption>::Type
     {
         std::string label;
         bool value;

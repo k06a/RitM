@@ -41,7 +41,7 @@ namespace DiplomBukov
     };
     // class DnsMessageProcessor
 
-    typedef SmartPointer<DnsMessageProcessor>::Type DnsMessageProcessorPtr;
+    typedef SharedPointer<DnsMessageProcessor>::Type DnsMessageProcessorPtr;
 }
 // namespace DiplomBukov
 

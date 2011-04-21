@@ -78,7 +78,7 @@ namespace DiplomBukov
     };
     // class RawPacket
 
-    typedef SmartPointer<RawPacket>::Type RawPacketPtr;
+    typedef SharedPointer<RawPacket>::Type RawPacketPtr;
 }
 // namespace DiplomBukov
 

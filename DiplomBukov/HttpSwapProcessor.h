@@ -33,7 +33,7 @@ namespace DiplomBukov
     };
     // class HttpSwapProcessor
 
-    typedef SmartPointer<HttpSwapProcessor>::Type HttpSwapProcessorPtr;
+    typedef SharedPointer<HttpSwapProcessor>::Type HttpSwapProcessorPtr;
 }
 // namespace DiplomBukov
 

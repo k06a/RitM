@@ -22,7 +22,7 @@ namespace DiplomBukov
     };
     // class TelnetSwapper
 
-    typedef SmartPointer<TelnetSwapper>::Type TelnetSwapperPtr;
+    typedef SharedPointer<TelnetSwapper>::Type TelnetSwapperPtr;
 }
 // namespace DiplomBukov
 

@@ -16,7 +16,7 @@ namespace DiplomBukov
     };
     // class UdpSplitter
 
-    typedef SmartPointer<UdpSplitter>::Type UdpSplitterPtr;
+    typedef SharedPointer<UdpSplitter>::Type UdpSplitterPtr;
 }
 // namespace DiplomBukov
 

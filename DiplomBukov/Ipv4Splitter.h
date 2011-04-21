@@ -32,7 +32,7 @@ namespace DiplomBukov
 	};
 	// class Ipv4Splitter
 
-    typedef SmartPointer<Ipv4Splitter>::Type Ipv4SplitterPtr;
+    typedef SharedPointer<Ipv4Splitter>::Type Ipv4SplitterPtr;
 }
 // namespace DiplomBukov
 

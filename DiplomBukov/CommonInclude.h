@@ -9,13 +9,13 @@
 namespace DiplomBukov
 {
     template<typename T>
-    struct SmartPointer
+    struct SharedPointer
     {
         typedef std::tr1::shared_ptr<T> Type;
     };
 
     template<typename T>
-    struct EnableSmartFromThis
+    struct EnableSharedFromThis
     {
         typedef std::tr1::enable_shared_from_this<T> Type;
     };
@@ -46,29 +46,29 @@ namespace DiplomBukov
 
     class ILibrary;
 
-    typedef SmartPointer<IPacket>::Type             PacketPtr;
-    typedef SmartPointer<IAdapter>::Type            AdapterPtr;
-    typedef SmartPointer<IConnector>::Type          ConnectorPtr;
-    typedef SmartPointer<IProcessor>::Type          ProcessorPtr;
-    typedef SmartPointer<IStatsProvider>::Type      StatsProviderPtr;
+    typedef SharedPointer<IPacket>::Type             PacketPtr;
+    typedef SharedPointer<IAdapter>::Type            AdapterPtr;
+    typedef SharedPointer<IConnector>::Type          ConnectorPtr;
+    typedef SharedPointer<IProcessor>::Type          ProcessorPtr;
+    typedef SharedPointer<IStatsProvider>::Type      StatsProviderPtr;
     
-    typedef SmartPointer<IModule>::Type             ModulePtr;
-    typedef SmartPointer<IExemplar>::Type           ExemplarPtr;
+    typedef SharedPointer<IModule>::Type             ModulePtr;
+    typedef SharedPointer<IExemplar>::Type           ExemplarPtr;
     
-    typedef SmartPointer<IAdapterCreator>::Type     AdapterCreatorPtr;
-    typedef SmartPointer<IConnectorCreator>::Type   ConnectorCreatorPtr;
-    typedef SmartPointer<IProcessorCreator>::Type   ProcessorCreatorPtr;
+    typedef SharedPointer<IAdapterCreator>::Type     AdapterCreatorPtr;
+    typedef SharedPointer<IConnectorCreator>::Type   ConnectorCreatorPtr;
+    typedef SharedPointer<IProcessorCreator>::Type   ProcessorCreatorPtr;
 
-    typedef SmartPointer<IAdapterModule>::Type      AdapterModulePtr;
-    typedef SmartPointer<IConnectorModule>::Type    ConnectorModulePtr;
-    typedef SmartPointer<IProcessorModule>::Type    ProcessorModulePtr;
+    typedef SharedPointer<IAdapterModule>::Type      AdapterModulePtr;
+    typedef SharedPointer<IConnectorModule>::Type    ConnectorModulePtr;
+    typedef SharedPointer<IProcessorModule>::Type    ProcessorModulePtr;
 
-    typedef SmartPointer<IAdapterPlugin>::Type      AdapterPluginPtr;
-    typedef SmartPointer<IConnectorPlugin>::Type    ConnectorPluginPtr;
-    typedef SmartPointer<IProcessorPlugin>::Type    ProcessorPluginPtr;
+    typedef SharedPointer<IAdapterPlugin>::Type      AdapterPluginPtr;
+    typedef SharedPointer<IConnectorPlugin>::Type    ConnectorPluginPtr;
+    typedef SharedPointer<IProcessorPlugin>::Type    ProcessorPluginPtr;
 
-    typedef SmartPointer<IOption>::Type             OptionPtr;
-    typedef SmartPointer<IOptionWalker>::Type       OptionWalkerPtr;
+    typedef SharedPointer<IOption>::Type             OptionPtr;
+    typedef SharedPointer<IOptionWalker>::Type       OptionWalkerPtr;
 
-    typedef SmartPointer<ILibrary>::Type            LibraryPtr;
+    typedef SharedPointer<ILibrary>::Type            LibraryPtr;
 }

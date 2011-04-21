@@ -12,7 +12,7 @@ namespace DiplomBukov
 {
     class TextLineOption
         : public IOption
-        , public EnableSmartFromThis<TextLineOption>::Type
+        , public EnableSharedFromThis<TextLineOption>::Type
     {
         std::string label;
         std::string textline;

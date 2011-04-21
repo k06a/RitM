@@ -8,7 +8,7 @@ namespace DiplomBukov
 {
     class AbstractProcessor
         : public virtual IProcessor
-        , public EnableSmartFromThis<AbstractProcessor>::Type
+        , public EnableSharedFromThis<AbstractProcessor>::Type
     {
     protected:
         ProcessorPtr prevProcessor;

@@ -107,7 +107,7 @@ namespace DiplomBukov
     };
     // class TcpLayerProcessor
 
-    typedef SmartPointer<TcpLayerProcessor>::Type TcpLayerProcessorPtr;
+    typedef SharedPointer<TcpLayerProcessor>::Type TcpLayerProcessorPtr;
 }
 // namespace DiplomBukov
 

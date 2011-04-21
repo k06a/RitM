@@ -56,7 +56,7 @@ namespace DiplomBukov
     };
     // class HttpDefragProcessor
 
-    typedef SmartPointer<HttpDefragProcessor>::Type HttpDefragProcessorPtr;
+    typedef SharedPointer<HttpDefragProcessor>::Type HttpDefragProcessorPtr;
 }
 // namespace DiplomBukov
 

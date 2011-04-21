@@ -66,7 +66,7 @@ namespace DiplomBukov
 	};
 	// class FileAdapter
 
-    typedef SmartPointer<FileAdapter>::Type FileAdapterPtr;
+    typedef SharedPointer<FileAdapter>::Type FileAdapterPtr;
 }
 // namespace DiplomBukov
 

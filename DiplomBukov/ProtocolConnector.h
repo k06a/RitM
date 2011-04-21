@@ -30,7 +30,7 @@ namespace DiplomBukov
     };
     // class ProtocolConnector
 
-    typedef SmartPointer<ProtocolConnector>::Type ProtocolConnectorPtr;
+    typedef SharedPointer<ProtocolConnector>::Type ProtocolConnectorPtr;
 }
 // namespace DiplomBukov
 

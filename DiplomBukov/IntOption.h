@@ -11,7 +11,7 @@ namespace DiplomBukov
 {
     class IntOption
         : public IOption
-        , public EnableSmartFromThis<IntOption>::Type
+        , public EnableSharedFromThis<IntOption>::Type
     {
         std::string label;
         i64 value;

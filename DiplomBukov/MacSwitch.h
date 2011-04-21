@@ -12,7 +12,7 @@
 namespace DiplomBukov
 {
     class MacSwitch;
-    typedef SmartPointer<MacSwitch>::Type MacSwitchPtr;
+    typedef SharedPointer<MacSwitch>::Type MacSwitchPtr;
 
     class MacSwitch : public AbstractProcessor
     {

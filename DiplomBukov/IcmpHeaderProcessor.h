@@ -20,7 +20,7 @@ namespace DiplomBukov
     };
     // class IcmpHeaderProcessor
 
-    typedef SmartPointer<IcmpHeaderProcessor>::Type IcmpProcessorPtr;
+    typedef SharedPointer<IcmpHeaderProcessor>::Type IcmpProcessorPtr;
 }
 // namespace DiplomBukov
 

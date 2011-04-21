@@ -25,7 +25,7 @@ namespace DiplomBukov
     };
     // class TransportPortFilter
 
-    typedef SmartPointer<TransportPortFilter>::Type TransportPortFilterPtr;
+    typedef SharedPointer<TransportPortFilter>::Type TransportPortFilterPtr;
 }
 // namespace DiplomBukov
 

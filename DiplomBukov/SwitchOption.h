@@ -12,7 +12,7 @@ namespace DiplomBukov
 {
     class SwitchOption
         : public IOption
-        , public EnableSmartFromThis<SwitchOption>::Type
+        , public EnableSharedFromThis<SwitchOption>::Type
     {
         std::string label;
         std::deque<std::string> labels;

@@ -27,7 +27,7 @@ namespace DiplomBukov
     };
     // class TcpHeaderProcessor
 
-    typedef SmartPointer<TcpHeaderProcessor>::Type TcpHeaderProcessorPtr;
+    typedef SharedPointer<TcpHeaderProcessor>::Type TcpHeaderProcessorPtr;
 }
 // namespace DiplomBukov
 

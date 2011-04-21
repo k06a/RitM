@@ -18,7 +18,7 @@ namespace DiplomBukov
     };
 	// class BruteConnector
 
-    typedef SmartPointer<BruteConnector>::Type BruteConnectorPtr;
+    typedef SharedPointer<BruteConnector>::Type BruteConnectorPtr;
 }
 // namespace DiplomBukov
 

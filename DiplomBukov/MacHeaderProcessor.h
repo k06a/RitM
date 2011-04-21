@@ -23,7 +23,7 @@ namespace DiplomBukov
 	};
 	// class MacHeaderProcessor
 
-    typedef SmartPointer<MacHeaderProcessor>::Type MacHeaderProcessorPtr;
+    typedef SharedPointer<MacHeaderProcessor>::Type MacHeaderProcessorPtr;
 }
 // namespace DiplomBukov
 

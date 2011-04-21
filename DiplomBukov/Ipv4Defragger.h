@@ -57,7 +57,7 @@ namespace DiplomBukov
 	};
 	// class Ipv4Defragger
 
-    typedef SmartPointer<Ipv4Defragger>::Type Ipv4DefraggerPtr;
+    typedef SharedPointer<Ipv4Defragger>::Type Ipv4DefraggerPtr;
 }
 // namespace DiplomBukov
 

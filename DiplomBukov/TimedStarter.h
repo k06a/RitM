@@ -67,7 +67,7 @@ namespace DiplomBukov
         }
     };
 
-    typedef SmartPointer<DelayInjectProcessor>::Type DelayInjectProcessorPtr;
+    typedef SharedPointer<DelayInjectProcessor>::Type DelayInjectProcessorPtr;
 
     class TimedStarter : public IStarter
     {

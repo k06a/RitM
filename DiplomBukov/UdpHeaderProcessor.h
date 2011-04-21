@@ -27,7 +27,7 @@ namespace DiplomBukov
     };
     // class UdpHeaderProcessor
 
-    typedef SmartPointer<UdpHeaderProcessor>::Type UdpHeaderProcessorPtr;
+    typedef SharedPointer<UdpHeaderProcessor>::Type UdpHeaderProcessorPtr;
 }
 // namespace DiplomBukov
 

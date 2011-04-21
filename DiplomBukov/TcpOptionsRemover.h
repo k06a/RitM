@@ -25,7 +25,7 @@ namespace DiplomBukov
     };
     // class TcpOptionsRemover
 
-    typedef SmartPointer<TcpOptionsRemover>::Type TcpOptionsRemoverPtr;
+    typedef SharedPointer<TcpOptionsRemover>::Type TcpOptionsRemoverPtr;
 }
 // namespace DiplomBukov
 

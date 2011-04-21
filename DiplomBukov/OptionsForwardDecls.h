@@ -18,16 +18,16 @@ namespace DiplomBukov
 
     // ----------------------------------------------------------------
 
-    typedef SmartPointer<CheckOption>::Type CheckOptionPtr;
-    typedef SmartPointer<SwitchOption>::Type SwitchOptionPtr;
-    typedef SmartPointer<IntOption>::Type IntOptionPtr;
-    typedef SmartPointer<TextLineOption>::Type TextLineOptionPtr;
-    typedef SmartPointer<GroupOption>::Type GroupOptionPtr;
+    typedef SharedPointer<CheckOption>::Type CheckOptionPtr;
+    typedef SharedPointer<SwitchOption>::Type SwitchOptionPtr;
+    typedef SharedPointer<IntOption>::Type IntOptionPtr;
+    typedef SharedPointer<TextLineOption>::Type TextLineOptionPtr;
+    typedef SharedPointer<GroupOption>::Type GroupOptionPtr;
 
     template<typename T1, typename T2>
     struct ListOptionPtr
     {
-        typedef typename SmartPointer<ListOption<T1,T2> >::Type Type;
+        typedef typename SharedPointer<ListOption<T1,T2> >::Type Type;
     };
 
     // ----------------------------------------------------------------

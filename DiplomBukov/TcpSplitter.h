@@ -29,7 +29,7 @@ namespace DiplomBukov
     };
     // class TcpSplitter
 
-    typedef SmartPointer<TcpSplitter>::Type TcpSplitterPtr;
+    typedef SharedPointer<TcpSplitter>::Type TcpSplitterPtr;
 }
 // namespace DiplomBukov
 

@@ -12,7 +12,7 @@ namespace DiplomBukov
 {
     class GroupOption
         : public IOption
-        , public EnableSmartFromThis<GroupOption>::Type
+        , public EnableSharedFromThis<GroupOption>::Type
     {
         std::string label;
         std::deque<OptionPtr> optionList;

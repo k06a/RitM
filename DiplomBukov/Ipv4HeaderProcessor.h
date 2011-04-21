@@ -27,7 +27,7 @@ namespace DiplomBukov
     };
     // class Ipv4HeaderProcessor
 
-    typedef SmartPointer<Ipv4HeaderProcessor>::Type Ipv4HeaderProcessorPtr;
+    typedef SharedPointer<Ipv4HeaderProcessor>::Type Ipv4HeaderProcessorPtr;
 }
 // namespace DiplomBukov
 

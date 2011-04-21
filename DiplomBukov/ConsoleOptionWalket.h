@@ -16,7 +16,7 @@ namespace DiplomBukov
 {
     class ConsoleOptionWalker
         : public IOptionWalker
-        , public EnableSmartFromThis<ConsoleOptionWalker>::Type
+        , public EnableSharedFromThis<ConsoleOptionWalker>::Type
     {
     public:
         virtual ~ConsoleOptionWalker() {}
@@ -36,7 +36,7 @@ namespace DiplomBukov
     };
     // class ConsoleOptionWalker
 
-    typedef SmartPointer<ConsoleOptionWalker>::Type ConsoleOptionWalkerPtr;
+    typedef SharedPointer<ConsoleOptionWalker>::Type ConsoleOptionWalkerPtr;
 }
 
 #endif // CONSOLEOPTIONWALKER_H

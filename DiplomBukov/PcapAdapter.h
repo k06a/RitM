@@ -44,7 +44,7 @@ namespace DiplomBukov
     };
     // class PcapAdapter
 
-    typedef SmartPointer<PcapAdapter>::Type PcapAdapterPtr;
+    typedef SharedPointer<PcapAdapter>::Type PcapAdapterPtr;
 }
 // namespace DiplomBukov
 

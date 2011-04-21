@@ -20,7 +20,7 @@ namespace DiplomBukov
     };
     // class RejectProcessor
 
-    typedef SmartPointer<RejectProcessor>::Type RejectProcessorPtr;
+    typedef SharedPointer<RejectProcessor>::Type RejectProcessorPtr;
 }
 // namespace DiplomBukov
 
