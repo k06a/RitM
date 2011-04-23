@@ -26,7 +26,7 @@ void TextLineOption::setName(const std::string & text)
 
 void TextLineOption::visitMe(OptionWalkerPtr walker)
 {
-    walker->visit(this->shared_from_this());
+    walker->visit(shared_from_this());
 }
 
 const std::string & TextLineOption::getText() const

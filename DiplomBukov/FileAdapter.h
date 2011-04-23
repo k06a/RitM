@@ -8,6 +8,8 @@
 #include "AbstractProcessor.h"
 #include "IAdapter.h"
 #include "IStatsProvider.h"
+#include "GroupOption.h"
+#include "FileOpenOption.h"
 
 namespace DiplomBukov
 {
@@ -33,8 +35,22 @@ namespace DiplomBukov
 	class FileAdapter
         : public AbstractProcessor
         , public IAdapter
-        , public IStatsProvider
 	{
+        class StatCounter : public IStatsProvider
+        {
+        public:
+            i64 i_count_in;
+            i64 i_count_out;
+
+            StatCounter();
+            virtual std::vector<std::string> getStatisticNames() const;
+            virtual std::vector<i64> getStatisticValues() const;
+        };
+
+        typedef SharedPointer<StatCounter>::Type StatCounterPtr;
+
+        StatCounterPtr statCounter;
+
 		FILE * file1;
         FILE * file2;
 
@@ -42,13 +58,12 @@ namespace DiplomBukov
         int linkType;
         u8 * buffer;
 
-        i64 i_count_in;
-        i64 i_count_out;
+        GroupOptionPtr groupOption;
+        FileOpenOptionPtr inFile;
+        FileOpenOptionPtr outFile;
 
 	public:
-        FileAdapter(const std::string & filename1,
-                    const std::string & filename2 = "",
-                    ProcessorPtr Connector = ProcessorPtr());
+        FileAdapter(ProcessorPtr Connector = ProcessorPtr());
 		virtual ProcessorPtr CreateCopy() const;
         ~FileAdapter();
         
@@ -61,8 +76,9 @@ namespace DiplomBukov
 
         virtual Type type();
 
-        virtual const std::vector<std::string> & getStatisticNames() const;
-        virtual const std::vector<i64> & getStatisticValues() const;
+        virtual OptionPtr getOptions();
+
+        virtual StatsProviderPtr statsProvider();
 	};
 	// class FileAdapter
 

@@ -56,7 +56,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, PacketPtr packet, u
         packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
         Connectors[para]->forwardProcess(proto, packet, offset);
 
@@ -73,8 +73,8 @@ ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, PacketPtr packet, 
     //if (packet->direction() == IPacket::ServerToClient)
     //    std::swap(tcp->src_port, tcp->dst_port);
 
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        packet->processorBefore(shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

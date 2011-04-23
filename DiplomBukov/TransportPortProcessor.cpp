@@ -41,7 +41,7 @@ ProcessingStatus TransportPortProcessor::forwardProcess(Protocol proto, PacketPt
         packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
     }
     
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(inProt, packet, offset);
 
@@ -57,8 +57,8 @@ ProcessingStatus TransportPortProcessor::backwardProcess(Protocol proto, PacketP
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);
     
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        packet->processorBefore(this->shared_from_this())->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        packet->processorBefore(shared_from_this())->backwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

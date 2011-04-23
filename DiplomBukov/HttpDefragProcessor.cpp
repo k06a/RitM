@@ -69,7 +69,7 @@ ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, PacketPtr p
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
 
     // Empty packet
     if (offset == packet->size())
@@ -180,15 +180,15 @@ ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, PacketPtr p
     
     return ProcessingStatus::Accepted;
 
-    //packet->addProcessor(this->shared_from_this());
+    //packet->addProcessor(shared_from_this());
     //if (nextProcessor != NULL)
     //    nextProcessor->forwardProcess("HTTP", packet, 0);
 }
 
 ProcessingStatus HttpDefragProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        packet->processorBefore(this->shared_from_this())->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        packet->processorBefore(shared_from_this())->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Accepted;
 }
 

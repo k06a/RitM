@@ -22,7 +22,7 @@ ProcessingStatus IcmpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr p
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
 
     icmp_header * icmp = (icmp_header *)(&packet->data()[offset]);
 

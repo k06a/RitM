@@ -62,7 +62,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, PacketPtr packet, 
     }
     */
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
         Connectors[para]->forwardProcess(proto, packet, offset);
 
@@ -79,8 +79,8 @@ ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, PacketPtr packet,
     //if (packet->direction() == IPacket::ServerToClient)
     //    std::swap(ipv4->src_data, ipv4->dst_data);
 
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::IPv4, packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        packet->processorBefore(shared_from_this())->backwardProcess(Protocol::IPv4, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

@@ -10,8 +10,8 @@
 namespace DiplomBukov
 {
     class CheckOption
-        : public IOption
-        , public EnableSharedFromThis<CheckOption>::Type
+        : public EnableSharedFromThis<CheckOption>::Type
+        , public IOption
     {
         std::string label;
         bool value;

@@ -46,7 +46,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
 
     u16 answerType = 0;
     if (destType->getSelectedText() == "IPv4")
@@ -109,8 +109,8 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
 
 ProcessingStatus DnsMessageProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        packet->processorBefore(this->shared_from_this())->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        packet->processorBefore(shared_from_this())->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Accepted;
 }
 

@@ -27,7 +27,7 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, PacketPtr pa
     packet->setDstMac(mac->dst);
     packet->setFormat((Protocol::NetworkLayer)(int)mac->proto);
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
     	nextProcessor->forwardProcess(packet->format(), packet, offset + sizeof(mac_header));
 

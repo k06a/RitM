@@ -122,7 +122,7 @@ bool PcapAdapter::tick()
     packet->setId(id++);
     packet->setTime(header.ts.tv_sec);
     packet->setAdapter(this);
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
 
     std::cout << '+' << devicesSwitch->getSelectedIndex();
 

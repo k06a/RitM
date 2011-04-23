@@ -20,7 +20,7 @@ ProcessingStatus AcceptProcessor::forwardProcess(Protocol proto, PacketPtr packe
 {
     packet->setStatus(IPacket::Accepted);
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     backwardProcess(proto, packet, offset);
     
     return ProcessingStatus::Accepted;

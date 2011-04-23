@@ -27,7 +27,7 @@ ProcessingStatus MacSwitchPort::forwardProcess(Protocol proto, PacketPtr packet,
     if (packet->srcMac().isConcrete() && !checkMac(packet->srcMac()))
         macList.push_back(packet->srcMac());
     
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, offset);
 

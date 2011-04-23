@@ -7,8 +7,8 @@
 namespace DiplomBukov
 {
     class AbstractProcessor
-        : public virtual IProcessor
-        , public EnableSharedFromThis<AbstractProcessor>::Type
+        : public EnableSharedFromThis<IProcessor>::Type
+        , public virtual IProcessor
     {
     protected:
         ProcessorPtr prevProcessor;

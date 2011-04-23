@@ -10,8 +10,8 @@
 namespace DiplomBukov
 {
     class IntOption
-        : public IOption
-        , public EnableSharedFromThis<IntOption>::Type
+        : public EnableSharedFromThis<IntOption>::Type
+        , public IOption
     {
         std::string label;
         i64 value;

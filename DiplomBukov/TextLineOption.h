@@ -11,8 +11,8 @@
 namespace DiplomBukov
 {
     class TextLineOption
-        : public IOption
-        , public EnableSharedFromThis<TextLineOption>::Type
+        : public EnableSharedFromThis<TextLineOption>::Type
+        , public IOption
     {
         std::string label;
         std::string textline;

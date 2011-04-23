@@ -2,6 +2,7 @@
 #define IADAPTERMODULE_H
 
 #include "CommonInclude.h"
+#include "IModule.h"
 
 namespace DiplomBukov
 {
@@ -10,11 +11,7 @@ namespace DiplomBukov
     public:
         virtual ~IAdapterModule() {}
         
-        virtual IAdapter * getBaseAdapter() = 0;
-        virtual void setBaseAdapter(IAdapter * adapter) = 0;
-
-        //virtual IAdapter * getPlugin() = 0;
-        //virtual void setPlugin(I * adapter) = 0;
+        virtual AdapterPtr createAdapter() const = 0;
     };
     // class IAdapterModule
 }

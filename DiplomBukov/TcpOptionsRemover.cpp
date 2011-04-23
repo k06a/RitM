@@ -31,7 +31,7 @@ ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, PacketPtr pac
         tcp->set_header_size(sizeof(tcp_header));
     }
     
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, offset);
 
@@ -40,8 +40,8 @@ ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, PacketPtr pac
 
 ProcessingStatus TcpOptionsRemover::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        packet->processorBefore(this->shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        packet->processorBefore(shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
 
     return ProcessingStatus::Accepted;
 }

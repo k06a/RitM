@@ -8,17 +8,17 @@ BasicLibrary::BasicLibrary()
     //
 }
 
-const std::deque<IConnectorCreator*> & BasicLibrary::getConnectorCreators()
+std::deque<ConnectorModulePtr> BasicLibrary::getConnectorModules()
 {
-    return ConnectorCreatorList;
+    return std::deque<ConnectorModulePtr>();
 }
 
-const std::deque<IAdapterCreator*> & BasicLibrary::getAdapterCreators()
+std::deque<AdapterModulePtr> BasicLibrary::getAdapterModules()
 {
-    return adapterCreatorList;
+    return std::deque<AdapterModulePtr>();
 }
 
-const std::deque<IProcessorCreator*> & BasicLibrary::getProcessorCreators()
+std::deque<ProcessorModulePtr> BasicLibrary::getProcessorModules()
 {
-    return processorCreatorList;
+    return std::deque<ProcessorModulePtr>();
 }

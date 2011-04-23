@@ -12,8 +12,8 @@ namespace DiplomBukov
 {
     template<typename T1, typename T2>
     class ListOption
-        : public IOption
-        , public EnableSharedFromThis<ListOption<T1,T2> >::Type
+        : public EnableSharedFromThis<ListOption<T1,T2> >::Type
+        , public IOption
     {
         std::string label;
 

@@ -25,9 +25,12 @@ using namespace DiplomBukov;
 TEST(DnsMessageProcessorTest, ReparseDnsHeader)
 {
     {
-        AdapterPtr adapter(
-            new FileAdapter("DnsMessageProcessorTest.in.pcap",
-                            "DnsMessageProcessorTest.ReparseDnsHeader.out.pcap"));
+        AdapterPtr adapter(new FileAdapter());
+        GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
+        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options()[0]);
+        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options()[1]);
+        infile->setFilename("DnsMessageProcessorTest.in.pcap");
+        outfile->setFilename("DnsMessageProcessorTest.ReparseDnsHeader.out.pcap");
         
         MacHeaderProcessorPtr mac(new MacHeaderProcessor());
         Ipv4HeaderProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
@@ -60,10 +63,13 @@ TEST(DnsMessageProcessorTest, ReparseDnsHeader)
 TEST(DnsMessageProcessorTest, SwapNetbsdToYandex)
 {
     {
-        AdapterPtr adapter(
-            new FileAdapter("DnsMessageProcessorTest.in.pcap",
-                            "DnsMessageProcessorTest.SwapNetbsdToYandex.out.pcap"));
-
+        AdapterPtr adapter(new FileAdapter());
+        GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
+        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options()[0]);
+        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options()[1]);
+        infile->setFilename("DnsMessageProcessorTest.in.pcap");
+        outfile->setFilename("DnsMessageProcessorTest.SwapNetbsdToYandex.out.pcap");
+        
         MacHeaderProcessorPtr mac(new MacHeaderProcessor());
         Ipv4HeaderProcessorPtr ipv4Header(new Ipv4HeaderProcessor());
         UdpHeaderProcessorPtr udpHeader(new UdpHeaderProcessor());

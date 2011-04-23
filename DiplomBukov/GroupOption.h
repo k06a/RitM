@@ -11,8 +11,8 @@
 namespace DiplomBukov
 {
     class GroupOption
-        : public IOption
-        , public EnableSharedFromThis<GroupOption>::Type
+        : public EnableSharedFromThis<GroupOption>::Type
+        , public IOption
     {
         std::string label;
         std::deque<OptionPtr> optionList;
@@ -32,9 +32,9 @@ namespace DiplomBukov
         bool isHoizontal();
         bool isVertical();
 
-        const std::deque<OptionPtr> & options();
-        void addOption(const OptionPtr & option);
-        void removeOptions(const OptionPtr & option);
+        std::deque<OptionPtr> & options();
+        void addOption(OptionPtr option);
+        void removeOptions(OptionPtr option);
     };
     // class GroupOption
 }

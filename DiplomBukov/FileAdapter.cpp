@@ -5,27 +5,38 @@
 
 using namespace DiplomBukov;
 
-FileAdapter::FileAdapter(const std::string & filename1,
-                         const std::string & filename2,
-                         ProcessorPtr Connector)
-	: file1(NULL), file2(NULL), id(0)
+FileAdapter::StatCounter::StatCounter()
+    : i_count_in(0), i_count_out(0)
+{
+}
+
+std::vector<std::string> FileAdapter::StatCounter::getStatisticNames() const
+{
+    std::vector<std::string> vec;
+    vec.push_back("Кол-во полученных пакетов");
+    vec.push_back("Кол-во переданных пакетов");
+    return vec;
+}
+
+std::vector<i64> FileAdapter::StatCounter::getStatisticValues() const
+{
+    std::vector<i64> vec;
+    vec.push_back(i_count_in);
+    vec.push_back(i_count_out);
+    return vec;
+}
+
+FileAdapter::FileAdapter(ProcessorPtr Connector)
+	: statCounter(new StatCounter)
+    , file1(NULL), file2(NULL), id(0)
     , linkType(0), buffer(NULL)
-    , i_count_in(0), i_count_out(0)
+    , groupOption(new GroupOption(true))
+    , inFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Входной файл"))
+    , outFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Выходной файл"))
 {
     setNextProcessor(Connector);
-
-	if (fopen_s(&file1, filename1.c_str(), "rb") != 0)
-    {
-        std::cerr << "Error opening file \"" << filename1 << '"' << std::endl;
-		throw 1;
-    }
-
-    if (!filename2.empty())
-    if (fopen_s(&file2, filename2.c_str(), "wb") != 0)
-    {
-        std::cerr << "Error opening file \"" << filename2 << '"' << std::endl;
-        throw 1;
-    }
+    groupOption->addOption(inFile);
+    groupOption->addOption(outFile);
 }
 
 ProcessorPtr FileAdapter::CreateCopy() const
@@ -64,13 +75,33 @@ ProcessingStatus FileAdapter::backwardProcess(Protocol proto, PacketPtr packet, 
     fwrite(&pph, sizeof(pph), 1, file2);
 
     fwrite(&packet->data()[offset], 1, packet->size() - offset, file2);
-    i_count_out++;
+    statCounter->i_count_out++;
     
     return ProcessingStatus::Accepted;
 }
 
 void FileAdapter::run(bool always)
 {
+    // Opening
+
+    std::string filename1 = inFile->getFilename();
+    std::string filename2 = outFile->getFilename();
+
+    if (fopen_s(&file1, filename1.c_str(), "rb") != 0)
+    {
+        std::cerr << "Error opening file \"" << filename1 << '"' << std::endl;
+        throw 1;
+    }
+
+    if (!filename2.empty())
+    if (fopen_s(&file2, filename2.c_str(), "wb") != 0)
+    {
+        std::cerr << "Error opening file \"" << filename2 << '"' << std::endl;
+        throw 1;
+    }
+
+    // Reading
+
     pcap_file_header pfh;
     fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file1);
     if (file2 != NULL)
@@ -100,13 +131,13 @@ bool FileAdapter::tick()
     packet->setId(id++);
     packet->setTime(pph.ts_sec, pph.ts_usec);
     packet->setAdapter(this);
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
 
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, 0);
 
-    i_count_in++;
+    statCounter->i_count_in++;
     return true;
 }
 
@@ -115,18 +146,12 @@ IAdapter::Type FileAdapter::type()
     return Offline;
 }
 
-const std::vector<std::string> & FileAdapter::getStatisticNames() const
+OptionPtr FileAdapter::getOptions()
 {
-    std::vector<std::string> vec;
-    vec.push_back("Кол-во полученных пакетов");
-    vec.push_back("Кол-во переданных пакетов");
-    return vec;
+    return groupOption;
 }
 
-const std::vector<i64> & FileAdapter::getStatisticValues() const
+StatsProviderPtr FileAdapter::statsProvider()
 {
-    std::vector<i64> vec;
-    vec.push_back(i_count_in);
-    vec.push_back(i_count_out);
-    return vec;
+    return statCounter;
 }

@@ -29,7 +29,7 @@ ProcessingStatus TransportPortFilter::forwardProcess(Protocol proto, PacketPtr p
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
 
     tcpudp_header * header = (tcpudp_header*)&packet->data()[offset];
     IntOption * opt = (IntOption*)portOption.get();

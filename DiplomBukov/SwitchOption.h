@@ -11,8 +11,8 @@
 namespace DiplomBukov
 {
     class SwitchOption
-        : public IOption
-        , public EnableSharedFromThis<SwitchOption>::Type
+        : public EnableSharedFromThis<SwitchOption>::Type
+        , public IOption
     {
         std::string label;
         std::deque<std::string> labels;

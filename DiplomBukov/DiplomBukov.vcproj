@@ -223,38 +223,6 @@
 				>
 			</File>
 			<Filter
-				Name="IPlugins"
-				>
-				<File
-					RelativePath=".\IAdapterPlugin.h"
-					>
-				</File>
-				<File
-					RelativePath=".\IConnectorPlugin.h"
-					>
-				</File>
-				<File
-					RelativePath=".\IProcessorPlugin.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="ICreators"
-				>
-				<File
-					RelativePath=".\IAdapterCreator.h"
-					>
-				</File>
-				<File
-					RelativePath=".\IConnectorCreator.h"
-					>
-				</File>
-				<File
-					RelativePath=".\IProcessorCreator.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="IModules"
 				>
 				<File
@@ -266,7 +234,23 @@
 					>
 				</File>
 				<File
+					RelativePath=".\IModule.h"
+					>
+				</File>
+				<File
 					RelativePath=".\IProcessorModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TemplateAdapterModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TemplateConnectorModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TemplateProcessorModule.h"
 					>
 				</File>
 			</Filter>
@@ -290,6 +274,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CompositProcessor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CompositProcessor.h"
+					>
+				</File>
+				<File
 					RelativePath=".\IAdapter.h"
 					>
 				</File>
@@ -299,10 +291,6 @@
 				</File>
 				<File
 					RelativePath=".\IExemplar.h"
-					>
-				</File>
-				<File
-					RelativePath=".\IModule.h"
 					>
 				</File>
 				<File
@@ -398,34 +386,14 @@
 		<Filter
 			Name="Implementation"
 			>
-			<Filter
-				Name="ProcessorCreators"
+			<File
+				RelativePath=".\BasicLibrary.cpp"
 				>
-				<File
-					RelativePath=".\Ipv4SplitterCreator.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Ipv4SplitterCreator.h"
-					>
-				</File>
-				<File
-					RelativePath=".\MacProcessorCreator.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\MacProcessorCreator.h"
-					>
-				</File>
-				<File
-					RelativePath=".\TcpSplitterCreator.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\TcpSplitterCreator.h"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath=".\BasicLibrary.h"
+				>
+			</File>
 			<Filter
 				Name="Modules"
 				>
@@ -451,34 +419,6 @@
 				</File>
 				<File
 					RelativePath=".\ProcessorModule.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Plugins"
-				>
-				<File
-					RelativePath=".\AdapterPlugin.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\AdapterPlugin.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ConnectorPlugin.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ConnectorPlugin.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ProcessorPlugin.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ProcessorPlugin.h"
 					>
 				</File>
 			</Filter>
@@ -749,75 +689,79 @@
 						>
 					</File>
 				</Filter>
-				<Filter
-					Name="Options"
-					>
-					<File
-						RelativePath=".\CheckOption.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\CheckOption.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ConsoleOptionWalker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ConsoleOptionWalket.h"
-						>
-					</File>
-					<File
-						RelativePath=".\GroupOption.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\GroupOption.h"
-						>
-					</File>
-					<File
-						RelativePath=".\IntOption.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\IntOption.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ListOption.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ListOption.h"
-						>
-					</File>
-					<File
-						RelativePath=".\OptionsForwardDecls.h"
-						>
-					</File>
-					<File
-						RelativePath=".\SwitchOption.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\SwitchOption.h"
-						>
-					</File>
-					<File
-						RelativePath=".\TextLineOption.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\TextLineOption.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="tests"
-			>
+			<Filter
+				Name="Options"
+				>
+				<File
+					RelativePath=".\CheckOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CheckOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ConsoleOptionWalker.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ConsoleOptionWalket.h"
+					>
+				</File>
+				<File
+					RelativePath=".\FileOpenOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FileOpenOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GroupOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GroupOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\IntOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\IntOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ListOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ListOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\OptionsForwardDecls.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SwitchOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SwitchOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TextLineOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TextLineOption.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

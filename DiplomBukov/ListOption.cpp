@@ -43,7 +43,7 @@ void ListOption<T1,T2>::setName(const std::string & text)
 template<typename T1, typename T2>
 void ListOption<T1,T2>::visitMe(OptionWalkerPtr walker)
 {
-    walker->visit(this->shared_from_this());
+    walker->visit(shared_from_this());
 }
 
 template<typename T1, typename T2>

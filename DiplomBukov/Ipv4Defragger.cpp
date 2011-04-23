@@ -20,7 +20,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet,
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
     
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
 
     ipv4_header_data * ipv4 = (ipv4_header_data *)(&packet->data()[offset]);
 

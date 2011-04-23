@@ -35,14 +35,14 @@ void MacSwitch::DestroyHierarchy()
 
 ProcessorPtr MacSwitch::getPointer()
 {
-    MacSwitchPortPtr port(new MacSwitchPort(this->shared_from_this()));
+    MacSwitchPortPtr port(new MacSwitchPort(shared_from_this()));
     ports.push_back(port);
     return port;
 }
 
 ProcessingStatus MacSwitch::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
         nextProcessor->forwardProcess(proto, packet, offset);
 

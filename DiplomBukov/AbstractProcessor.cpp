@@ -26,14 +26,14 @@ void AbstractProcessor::DestroyHierarchy()
 
 ProcessorPtr AbstractProcessor::getPointer()
 {
-    return this->shared_from_this();
+    return shared_from_this();
 }
 
 void AbstractProcessor::ping(ProcessorPtr prevProcessor)
 {
     setPrevProcessor(prevProcessor);
     if (nextProcessor != NULL)
-        nextProcessor->ping(this->shared_from_this());
+        nextProcessor->ping(shared_from_this());
 }
 
 Protocol AbstractProcessor::getProtocol()
@@ -55,8 +55,8 @@ ProcessingStatus AbstractProcessor::forwardProcess(Protocol proto, PacketPtr pac
 
 ProcessingStatus AbstractProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        return packet->processorBefore(this->shared_from_this())->backwardProcess(proto, packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        return packet->processorBefore(shared_from_this())->backwardProcess(proto, packet, offset);
     return ProcessingStatus::Rejected;
 }
 

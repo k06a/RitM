@@ -10,13 +10,14 @@
 #include "IntOption.h"
 #include "GroupOption.h"
 #include "TextLineOption.h"
+#include "FileOpenOption.h"
 #include "ListOption.h"
 
 namespace DiplomBukov
 {
     class ConsoleOptionWalker
-        : public IOptionWalker
-        , public EnableSharedFromThis<ConsoleOptionWalker>::Type
+        : public EnableSharedFromThis<ConsoleOptionWalker>::Type
+        , public IOptionWalker
     {
     public:
         virtual ~ConsoleOptionWalker() {}
@@ -29,7 +30,8 @@ namespace DiplomBukov
         virtual void visit(IntOptionPtr opt);
         virtual void visit(GroupOptionPtr opt);
         virtual void visit(TextLineOptionPtr opt);
-        
+        virtual void visit(FileOpenOptionPtr opt);
+
         virtual void visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt);
 
         virtual void visit(OptionPtr opt);

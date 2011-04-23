@@ -23,12 +23,19 @@ using namespace DiplomBukov;
 TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 {
     {
-        FileAdapterPtr adapter1(
-            new FileAdapter("TcpLayerProcessorTest.clientSide.in.pcap",
-                            "TcpLayerProcessorTest.clientSide.out.pcap"));
-        FileAdapterPtr adapter2(
-            new FileAdapter("TcpLayerProcessorTest.serverSide.in.pcap",
-                            "TcpLayerProcessorTest.serverSide.out.pcap"));
+        AdapterPtr adapter1(new FileAdapter());
+        GroupOptionPtr gr1 = SharedPointerCast<GroupOption>(adapter1->getOptions());
+        FileOpenOptionPtr infile1  = SharedPointerCast<FileOpenOption>(gr1->options()[0]);
+        FileOpenOptionPtr outfile1 = SharedPointerCast<FileOpenOption>(gr1->options()[1]);
+        infile1->setFilename("TcpLayerProcessorTest.clientSide.in.pcap");
+        outfile1->setFilename("TcpLayerProcessorTest.clientSide.out.pcap");
+
+        AdapterPtr adapter2(new FileAdapter());
+        GroupOptionPtr gr2 = SharedPointerCast<GroupOption>(adapter2->getOptions());
+        FileOpenOptionPtr infile2  = SharedPointerCast<FileOpenOption>(gr2->options()[0]);
+        FileOpenOptionPtr outfile2 = SharedPointerCast<FileOpenOption>(gr2->options()[1]);
+        infile2->setFilename("TcpLayerProcessorTest.serverSide.in.pcap");
+        outfile2->setFilename("TcpLayerProcessorTest.serverSide.out.pcap");
 
         MacHeaderProcessorPtr mac1(new MacHeaderProcessor());
         MacHeaderProcessorPtr mac2(new MacHeaderProcessor());

@@ -29,7 +29,7 @@ void GroupOption::setName(const std::string & name)
 
 void GroupOption::visitMe(OptionWalkerPtr walker)
 {
-    walker->visit(this->shared_from_this());
+    walker->visit(shared_from_this());
 }
 
 
@@ -53,17 +53,17 @@ bool GroupOption::isVertical()
     return vertical;
 }
 
-const std::deque<OptionPtr> & GroupOption::options()
+std::deque<OptionPtr> & GroupOption::options()
 {
     return optionList;
 }
 
-void GroupOption::addOption(const OptionPtr & option)
+void GroupOption::addOption(OptionPtr option)
 {
     optionList.push_back(option);
 }
 
-void GroupOption::removeOptions(const OptionPtr & option)
+void GroupOption::removeOptions(OptionPtr option)
 {
     std::remove(optionList.begin(), optionList.end(), option);
 }

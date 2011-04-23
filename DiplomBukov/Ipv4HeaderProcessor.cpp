@@ -33,7 +33,7 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, PacketPtr p
 
     offset += ip->size();
 
-    packet->addProcessor(this->shared_from_this());
+    packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
     {
         Protocol::TransportLayer inprot = (Protocol::TransportLayer)ip->proto;
@@ -76,8 +76,8 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, PacketPtr 
             */
     }
 
-    if (packet->processorBefore(this->shared_from_this()) != NULL)
-        packet->processorBefore(this->shared_from_this())->backwardProcess(getProtocol(), packet, offset);
+    if (packet->processorBefore(shared_from_this()) != NULL)
+        packet->processorBefore(shared_from_this())->backwardProcess(getProtocol(), packet, offset);
     
     return ProcessingStatus::Accepted;
 }

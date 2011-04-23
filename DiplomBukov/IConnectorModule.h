@@ -2,6 +2,7 @@
 #define ICONNECTORMODULE_H
 
 #include "CommonInclude.h"
+#include "IModule.h"
 
 namespace DiplomBukov
 {
@@ -10,8 +11,7 @@ namespace DiplomBukov
     public:
         virtual ~IConnectorModule() {}
         
-        virtual ConnectorPtr getBaseConnector() = 0;
-        virtual void setBaseConnector(ConnectorPtr Connector) = 0;
+        virtual ConnectorPtr createConnector() const = 0;
     };
     // class IConnectorModule
 }

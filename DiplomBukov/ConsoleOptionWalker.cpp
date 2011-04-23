@@ -15,7 +15,7 @@ void ConsoleOptionWalker::visit(AdapterPtr adap)
         std::cout << "[ Options of adapter \""
                   << adap->getProcessorName()
                   << "\" ]" << std::endl;
-        opt->visitMe(this->shared_from_this());
+        opt->visitMe(shared_from_this());
         std::cout << std::endl;
     }
 }
@@ -28,7 +28,7 @@ void ConsoleOptionWalker::visit(ProcessorPtr proc)
         std::cout << "[ Options of processor \""
                   << proc->getProcessorName()
                   << "\" ]" << std::endl;
-        opt->visitMe(this->shared_from_this());
+        opt->visitMe(shared_from_this());
         std::cout << std::endl;
     }
 }
@@ -83,16 +83,25 @@ void ConsoleOptionWalker::visit(TextLineOptionPtr opt)
     opt->setText(ans);
 }
 
+void ConsoleOptionWalker::visit(FileOpenOptionPtr opt)
+{
+    std::cout << "Enter filename for \""
+        << opt->getName() << "\": ";
+    std::string ans;
+    std::getline(std::cin, ans, '\n');
+    opt->setFilename(ans);
+}
+
 void ConsoleOptionWalker::visit(GroupOptionPtr opt)
 {
     for (unsigned i = 0; i < opt->options().size(); i++)
-        opt->options()[i]->visitMe(this->shared_from_this());
+        opt->options()[i]->visitMe(shared_from_this());
 }
 
 void ConsoleOptionWalker::visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt)
 {
-    opt->left->visitMe(this->shared_from_this());
-    opt->right->visitMe(this->shared_from_this());
+    opt->left->visitMe(shared_from_this());
+    opt->right->visitMe(shared_from_this());
 }
 
 void ConsoleOptionWalker::visit(OptionPtr opt)

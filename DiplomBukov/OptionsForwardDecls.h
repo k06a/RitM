@@ -11,6 +11,7 @@ namespace DiplomBukov
     class SwitchOption;
     class IntOption;
     class TextLineOption;
+    class FileOpenOption;
     class GroupOption;
 
     template<typename T1, typename T2>
@@ -22,6 +23,7 @@ namespace DiplomBukov
     typedef SharedPointer<SwitchOption>::Type SwitchOptionPtr;
     typedef SharedPointer<IntOption>::Type IntOptionPtr;
     typedef SharedPointer<TextLineOption>::Type TextLineOptionPtr;
+    typedef SharedPointer<FileOpenOption>::Type FileOpenOptionPtr;
     typedef SharedPointer<GroupOption>::Type GroupOptionPtr;
 
     template<typename T1, typename T2>

@@ -26,7 +26,11 @@ public:
 
 TEST(FileAdapterTest, ReadingWholePcapFile)
 {
-    AdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
+    AdapterPtr adapter(new FileAdapter());
+    GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
+    FileOpenOptionPtr infile = SharedPointerCast<FileOpenOption>(gr->options()[0]);
+    infile->setFilename("FileAdapterTest.pcap");
+
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
     ProcessorPtr processor(testProc);
 
@@ -46,7 +50,11 @@ TEST(FileAdapterTest, ReadingWholePcapFile)
 
 TEST(FileAdapterTest, ReadingSequentialyPcapFile)
 {
-    FileAdapterPtr adapter(new FileAdapter("FileAdapterTest.pcap"));
+    AdapterPtr adapter(new FileAdapter());
+    GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
+    FileOpenOptionPtr infile = SharedPointerCast<FileOpenOption>(gr->options()[0]);
+    infile->setFilename("FileAdapterTest.pcap");
+
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
     ProcessorPtr processor(testProc);
 
@@ -74,9 +82,13 @@ TEST(FileAdapterTest, WritingPcapFile)
 {
     // For smart pointer destruction
     {
-        FileAdapterPtr adapter(
-            new FileAdapter("FileAdapterTest.pcap",
-                            "FileAdapterTest.WritingPcapFile.out.pcap"));
+        AdapterPtr adapter(new FileAdapter());
+        GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
+        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options()[0]);
+        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options()[1]);
+        infile->setFilename("FileAdapterTest.pcap");
+        outfile->setFilename("FileAdapterTest.WritingPcapFile.out.pcap");
+
         AcceptProcessorPtr processor(new AcceptProcessor());
 
         adapter->setNextProcessor(processor);

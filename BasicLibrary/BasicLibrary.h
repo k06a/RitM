@@ -3,21 +3,20 @@
 
 #include <deque>
 #include "../DiplomBukov/ILibrary.h"
+#include "../DiplomBukov/IConnectorModule.h"
+#include "../DiplomBukov/IAdapterModule.h"
+#include "../DiplomBukov/IProcessorModule.h"
 
 namespace DiplomBukov
 {
     class BasicLibrary : public ILibrary
     {
-        std::deque<IConnectorCreator*> ConnectorCreatorList;
-        std::deque<IAdapterCreator*> adapterCreatorList;
-        std::deque<IProcessorCreator*> processorCreatorList;
-        
     public:
         BasicLibrary();
 
-        virtual const std::deque<IConnectorCreator*> & getConnectorCreators();
-        virtual const std::deque<IAdapterCreator*> & getAdapterCreators();
-        virtual const std::deque<IProcessorCreator*> & getProcessorCreators();
+        virtual std::deque<ConnectorModulePtr> getConnectorModules();
+        virtual std::deque<AdapterModulePtr> getAdapterModules();
+        virtual std::deque<ProcessorModulePtr> getProcessorModules();
     };
     // class BasicLibrary
 }
@@ -26,7 +25,7 @@ namespace DiplomBukov
 extern "C" __declspec(dllexport)
 DiplomBukov::ILibrary * getLibrary()
 {
-    return new DiplomBukov::BasicLibrary();
+    return NULL;//new DiplomBukov::BasicLibrary();
 }
 
 #endif // BASICLIBRARY_H

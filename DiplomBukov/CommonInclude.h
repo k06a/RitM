@@ -20,6 +20,12 @@ namespace DiplomBukov
         typedef std::tr1::enable_shared_from_this<T> Type;
     };
 
+    template <class Ty, class Other>
+    std::tr1::shared_ptr<Ty> SharedPointerCast(const std::tr1::shared_ptr<Other> & sp)
+    {
+        return std::tr1::dynamic_pointer_cast<Ty>(sp);
+    }
+
     class IPacket;
     class IAdapter;
     class IConnector;
@@ -27,19 +33,9 @@ namespace DiplomBukov
     class IStatsProvider;
 
     class IModule;
-    class IExemplar;
-    
-    class IAdapterCreator;
-    class IConnectorCreator;
-    class IProcessorCreator;
-
     class IAdapterModule;
     class IConnectorModule;
     class IProcessorModule;
-
-    class IAdapterPlugin;
-    class IConnectorPlugin;
-    class IProcessorPlugin;
 
     class IOption;
     class IOptionWalker;
@@ -53,19 +49,9 @@ namespace DiplomBukov
     typedef SharedPointer<IStatsProvider>::Type      StatsProviderPtr;
     
     typedef SharedPointer<IModule>::Type             ModulePtr;
-    typedef SharedPointer<IExemplar>::Type           ExemplarPtr;
-    
-    typedef SharedPointer<IAdapterCreator>::Type     AdapterCreatorPtr;
-    typedef SharedPointer<IConnectorCreator>::Type   ConnectorCreatorPtr;
-    typedef SharedPointer<IProcessorCreator>::Type   ProcessorCreatorPtr;
-
     typedef SharedPointer<IAdapterModule>::Type      AdapterModulePtr;
     typedef SharedPointer<IConnectorModule>::Type    ConnectorModulePtr;
     typedef SharedPointer<IProcessorModule>::Type    ProcessorModulePtr;
-
-    typedef SharedPointer<IAdapterPlugin>::Type      AdapterPluginPtr;
-    typedef SharedPointer<IConnectorPlugin>::Type    ConnectorPluginPtr;
-    typedef SharedPointer<IProcessorPlugin>::Type    ProcessorPluginPtr;
 
     typedef SharedPointer<IOption>::Type             OptionPtr;
     typedef SharedPointer<IOptionWalker>::Type       OptionWalkerPtr;
