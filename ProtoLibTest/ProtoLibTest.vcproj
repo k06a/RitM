@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\SrcTools;..\BasicLibrary;..\DiplomBukov\include;..\DiplomBukov\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
+				AdditionalIncludeDirectories="..\ProtoLibTest;..\BasicLibrary;..\DiplomBukov\include;..\DiplomBukov\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -115,7 +115,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\SrcTools;..\BasicLibrary;..\DiplomBukov\include;..\DiplomBukov\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
+				AdditionalIncludeDirectories="..\ProtoLibTest;..\BasicLibrary;..\DiplomBukov\include;..\DiplomBukov\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -190,6 +190,62 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\crc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\i64u64.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LittleBigEndian.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stdbuk.h"
+				>
+			</File>
+			<File
+				RelativePath=".\triplet.h"
+				>
+			</File>
+			<Filter
+				Name="network"
+				>
+				<File
+					RelativePath=".\network\dns_header.h"
+					>
+				</File>
+				<File
+					RelativePath=".\network\http_header.h"
+					>
+				</File>
+				<File
+					RelativePath=".\network\icmp_header.h"
+					>
+				</File>
+				<File
+					RelativePath=".\network\ipv4_header.h"
+					>
+				</File>
+				<File
+					RelativePath=".\network\mac_header.h"
+					>
+				</File>
+				<File
+					RelativePath=".\network\tcp_header.h"
+					>
+				</File>
+				<File
+					RelativePath=".\network\tcpudp_header.h"
+					>
+				</File>
+				<File
+					RelativePath=".\network\udp_header.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -204,7 +260,7 @@
 				Name="network"
 				>
 				<File
-					RelativePath="..\BasicLibraryTest\http_header_test.cpp"
+					RelativePath=".\http_header_test.cpp"
 					>
 				</File>
 			</Filter>

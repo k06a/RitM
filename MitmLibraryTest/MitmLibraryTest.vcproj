@@ -40,8 +40,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS /wd4250"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\RitmBaseTestLib;..\SrcTools;..\MitmLibrary;..\BasicLibrary;..\RitmHeart\include;..\RitmHeart\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
+				AdditionalIncludeDirectories="..\RitmBaseTestLib;..\ProtoLibTest;..\MitmLibrary;..\BasicLibrary;..\RitmHeart\include;..\RitmHeart\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,10 +117,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS /wd4250"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\RitmBaseTestLib;..\SrcTools;..\MitmLibrary;..\BasicLibrary;..\RitmHeart\include;..\RitmHeart\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\RitmBaseTestLib;..\ProtoLibTest;..\MitmLibrary;..\BasicLibrary;..\RitmHeart\include;..\RitmHeart\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;LITTLE_ENDIAN"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"

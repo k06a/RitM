@@ -40,8 +40,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS /wd4250"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools;..\RitmHeart\include;..\RitmHeart\include\options"
+				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmHeart\include;..\RitmHeart\include\options"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MITMTOOLS_EXPORTS;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -115,10 +116,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS /wd4250"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools;..\RitmHeart\include;..\RitmHeart\include\options"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MITMTOOLS_EXPORTS"
+				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmHeart\include;..\RitmHeart\include\options"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MITMTOOLS_EXPORTS;LITTLE_ENDIAN"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
