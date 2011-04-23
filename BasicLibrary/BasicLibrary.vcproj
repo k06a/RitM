@@ -187,6 +187,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
+						ObjectFile="$(IntDir)\dllmain\"
 						CompileAsManaged="0"
 					/>
 				</FileConfiguration>
@@ -196,6 +197,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
+						ObjectFile="$(IntDir)\dllmain\"
 						CompileAsManaged="0"
 					/>
 				</FileConfiguration>

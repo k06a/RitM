@@ -177,6 +177,22 @@
 			<File
 				RelativePath=".\dllmain.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\dllmain\"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\dllmain\"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter

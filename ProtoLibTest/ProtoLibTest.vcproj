@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\SrcTools;..\BasicLibrary;..\DiplomBukov\include;..\DiplomBukov\include\options;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
