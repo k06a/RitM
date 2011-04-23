@@ -7,6 +7,7 @@ using namespace DiplomBukov;
 void TimedStarter::addAdapter(AdapterPtr adapter)
 {
     adapters.push_back(adapter);
+    delays.push_back(DelayInjectProcessorPtr(new DelayInjectProcessor));
 }
 
 void TimedStarter::start()
