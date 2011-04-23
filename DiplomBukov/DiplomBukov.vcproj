@@ -476,14 +476,6 @@
 						Name="Protocols"
 						>
 						<File
-							RelativePath=".\IcmpHeaderProcessor.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\IcmpHeaderProcessor.h"
-							>
-						</File>
-						<File
 							RelativePath=".\Ipv4Defragger.cpp"
 							>
 						</File>
@@ -505,22 +497,6 @@
 						</File>
 						<File
 							RelativePath=".\TcpOptionsRemover.h"
-							>
-						</File>
-						<File
-							RelativePath=".\TransportPortProcessor.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\TransportPortProcessor.h"
-							>
-						</File>
-						<File
-							RelativePath=".\UdpHeaderProcessor.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\UdpHeaderProcessor.h"
 							>
 						</File>
 					</Filter>
@@ -624,6 +600,14 @@
 						Name="Headers"
 						>
 						<File
+							RelativePath=".\IcmpHeaderProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\IcmpHeaderProcessor.h"
+							>
+						</File>
+						<File
 							RelativePath=".\Ipv4HeaderProcessor.cpp"
 							>
 						</File>
@@ -647,6 +631,34 @@
 							RelativePath=".\TcpHeaderProcessor.h"
 							>
 						</File>
+						<File
+							RelativePath=".\UdpHeaderProcessor.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\UdpHeaderProcessor.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Switches"
+						>
+						<File
+							RelativePath=".\MacSwitch.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\MacSwitch.h"
+							>
+						</File>
+						<File
+							RelativePath=".\MacSwitchPort.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\MacSwitchPort.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -666,26 +678,6 @@
 					</File>
 					<File
 						RelativePath=".\ProtocolConnector.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Switches"
-					>
-					<File
-						RelativePath=".\MacSwitch.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\MacSwitch.h"
-						>
-					</File>
-					<File
-						RelativePath=".\MacSwitchPort.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\MacSwitchPort.h"
 						>
 					</File>
 				</Filter>
