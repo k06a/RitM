@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include "CommonInclude.h"
-#include "RawPacket.h"
+#include "IPacket.h"
 #include "AbstractProcessor.h"
 
 namespace DiplomBukov
@@ -15,11 +15,12 @@ namespace DiplomBukov
         std::vector<bool> mask;
         bool lastFragmentReceived;
 
-        DefragPacket()
-            : pack(new RawPacket(65536))
+        DefragPacket(PacketPtr temp)
+            : pack(temp->CreateCopy())
             , mask(65536, false)
             , lastFragmentReceived(false)
         {
+            pack->data().resize(65536);
         }
 
         void append(int offset, u8 * ptr, int size, bool flag_mf)

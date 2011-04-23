@@ -6,12 +6,13 @@
 #include "MacHeaderProcessor.h"
 #include "MacSwitch.h"
 #include "TcpLayerProcessor.h"
-#include "FileAdapterPairReader.h"
 #include "Ipv4HeaderProcessor.h"
 #include "TcpHeaderProcessor.h"
 #include "Ipv4Splitter.h"
 #include "TcpSplitter.h"
 #include "AcceptProcessor.h"
+
+#include "TimedStarter.h"
 
 using ::testing::_;
 using ::testing::Return;
@@ -62,9 +63,14 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
 
         // --------------------------------
 
-        adapter1->run(false);
-        adapter2->run(false);
-        fileAdapterPairReader(adapter1, adapter2);
+        StarterPtr starter(new TimedStarter());
+        starter->addAdapter(adapter1);
+        starter->addAdapter(adapter2);
+        starter->start();
+
+        //adapter1->run(false);
+        //adapter2->run(false);
+        //fileAdapterPairReader(adapter1, adapter2);
 
         // --------------------------------
 

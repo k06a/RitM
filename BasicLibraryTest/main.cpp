@@ -1,8 +1,5 @@
-#include <iostream>
 #include "gtest\gtest.h"
 #include "gmock\gmock.h"
-
-#include <memory>
 
 int main(int argc, char *argv[])
 {

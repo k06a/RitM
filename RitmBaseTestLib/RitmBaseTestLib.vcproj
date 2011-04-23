@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="DiplomBukovTest"
-	ProjectGUID="{2DF5B52D-3035-4E05-A246-4C4EC2F0C3B4}"
-	RootNamespace="DiplomBukovTest"
+	Name="RitmBaseTestLib"
+	ProjectGUID="{A978F7FB-E101-4352-B035-54DA680DF351}"
+	RootNamespace="RitmBaseTest"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -40,9 +40,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/wd4251 -D_SCL_SECURE_NO_WARNINGS"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\SrcTools;..\DiplomBukov;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
+				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools;..\RitmHeart\include;..\RitmHeart\include\options"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,20 +60,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="wpcap.lib Packet.lib ..\DiplomBukov\Debug\*.obj"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\winpcap\lib"
-				IgnoreDefaultLibraryNames=""
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -84,9 +73,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -117,11 +103,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/wd4250"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\SrcTools;..\DiplomBukov;..\gtest-1.6.0;..\gtest-1.6.0\include;..\gmock-1.6.0;..\gmock-1.6.0\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;LITTLE_ENDIAN"
+				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools;..\RitmHeart\include;..\RitmHeart\include\options"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -139,9 +124,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wpcap.lib Packet.lib ..\DiplomBukov\Release\*.obj"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\winpcap\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -180,109 +163,25 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\gmock-1.6.0\src\gmock-all.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\gtest-1.6.0\src\gtest-all.cc"
-				>
-			</File>
-			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\expect_file.cpp"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Tests"
+			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<Filter
-				Name="Modules"
+			<File
+				RelativePath=".\expect_file.h"
 				>
-			</Filter>
-			<Filter
-				Name="Objects"
-				>
-				<Filter
-					Name="Adapters"
-					>
-					<File
-						RelativePath=".\FileAdapterTest.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Connectors"
-					>
-				</Filter>
-				<Filter
-					Name="Processors"
-					>
-					<Filter
-						Name="Protocols"
-						>
-						<Filter
-							Name="Tcp"
-							>
-							<File
-								RelativePath=".\TcpLayerProcessorTest.cpp"
-								>
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="Applicative"
-						>
-						<File
-							RelativePath=".\DnsMessageProcessorTest.cpp"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="Switches"
-					>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="Options"
-				>
-			</Filter>
-			<Filter
-				Name="Plugins"
-				>
-			</Filter>
-			<Filter
-				Name="SrcTools"
-				>
-				<Filter
-					Name="network"
-					>
-					<File
-						RelativePath=".\http_header_test.cpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-		</Filter>
-		<Filter
-			Name="Header files"
-			>
-			<File
-				RelativePath=".\expect_file.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\expect_file.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

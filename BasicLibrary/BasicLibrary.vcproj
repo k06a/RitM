@@ -40,8 +40,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS /wd4250"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools"
+				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools;..\RitmHeart\include;..\RitmHeart\include\options"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;BASICLIBRARY_EXPORTS;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="wpcap.lib packet.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\winpcap\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -113,9 +116,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools"
+				AdditionalIncludeDirectories="..\winpcap\include;..\SrcTools;..\RitmHeart\include;..\RitmHeart\include\options"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;BASICLIBRARY_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -134,7 +138,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="wpcap.lib packet.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\winpcap\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -173,10 +179,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\BasicLibrary.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\dllmain.cpp"
 				>
 				<FileConfiguration
@@ -200,14 +202,300 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="SrcTools"
 			>
+			<File
+				RelativePath="..\SrcTools\crc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SrcTools\i64u64.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SrcTools\LittleBigEndian.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SrcTools\stdbuk.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SrcTools\triplet.h"
+				>
+			</File>
+			<Filter
+				Name="network"
+				>
+				<File
+					RelativePath="..\SrcTools\network\dns_header.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SrcTools\network\http_header.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SrcTools\network\icmp_header.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SrcTools\network\ipv4_header.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SrcTools\network\mac_header.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SrcTools\network\tcp_header.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SrcTools\network\tcpudp_header.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SrcTools\network\udp_header.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Implementation"
+			>
+			<File
+				RelativePath=".\BasicLibrary.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\BasicLibrary.h"
 				>
 			</File>
+			<Filter
+				Name="Connectors"
+				>
+				<File
+					RelativePath=".\BruteConnector.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\BruteConnector.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ProtocolConnector.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ProtocolConnector.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Adapters"
+				>
+				<File
+					RelativePath=".\FileAdapter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FileAdapter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PcapAdapter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PcapAdapter.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Starters"
+				>
+				<File
+					RelativePath=".\TimedStarter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TimedStarter.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Processors"
+				>
+				<Filter
+					Name="Headers"
+					>
+					<File
+						RelativePath=".\IcmpHeaderProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\IcmpHeaderProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4HeaderProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4HeaderProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\MacHeaderProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\MacHeaderProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpHeaderProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpHeaderProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\UdpHeaderProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\UdpHeaderProcessor.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Splitters"
+					>
+					<File
+						RelativePath=".\Ipv4Splitter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4Splitter.h"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpSplitter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpSplitter.h"
+						>
+					</File>
+					<File
+						RelativePath=".\UdpSplitter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\UdpSplitter.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Switch"
+					>
+					<File
+						RelativePath=".\ISwitch.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ISwitchPort.h"
+						>
+					</File>
+					<File
+						RelativePath=".\MacSwitch.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\MacSwitch.h"
+						>
+					</File>
+					<File
+						RelativePath=".\MacSwitchPort.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\MacSwitchPort.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Filters"
+					>
+					<File
+						RelativePath=".\TransportPortFilter.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TransportPortFilter.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Custom"
+					>
+					<File
+						RelativePath=".\AcceptProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\AcceptProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4Defragger.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Ipv4Defragger.h"
+						>
+					</File>
+					<File
+						RelativePath=".\RejectProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\RejectProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpLayerProcessor.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpLayerProcessor.h"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpOptionsRemover.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TcpOptionsRemover.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="OptionsWalkers"
+				>
+				<File
+					RelativePath=".\ConsoleOptionWalker.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ConsoleOptionWalket.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

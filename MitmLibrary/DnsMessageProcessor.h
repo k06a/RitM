@@ -8,7 +8,7 @@
 
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
-#include "network\dns_header.h"
+#include "network/dns_header.h"
 #include "SwitchOption.h"
 #include "TextLineOption.h"
 #include "ListOption.h"

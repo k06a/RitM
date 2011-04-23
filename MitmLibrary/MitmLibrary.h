@@ -6,14 +6,14 @@
 
 namespace DiplomBukov
 {
-    class BasicLibrary : public ILibrary
+    class MitmLibrary : public ILibrary
     {
     public:
         virtual std::deque<ConnectorModulePtr> getConnectorModules() const;
         virtual std::deque<AdapterModulePtr>   getAdapterModules() const;
         virtual std::deque<ProcessorModulePtr> getProcessorModules() const;
     };
-    // class BasicLibrary
+    // class MitmLibrary
 }
 // namespace DiplomBukov
 

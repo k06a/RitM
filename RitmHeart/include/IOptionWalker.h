@@ -2,7 +2,7 @@
 #define IOPTIONWALKER_H
 
 #include "CommonInclude.h"
-#include "OptionsForwardDecls.h"
+#include "Options.h"
 
 namespace DiplomBukov
 {

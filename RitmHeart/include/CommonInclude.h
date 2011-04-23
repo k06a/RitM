@@ -41,6 +41,7 @@ namespace DiplomBukov
     class IOptionWalker;
 
     class ILibrary;
+    class IStarter;
 
     typedef SharedPointer<IPacket>::Type             PacketPtr;
     typedef SharedPointer<IAdapter>::Type            AdapterPtr;
@@ -57,4 +58,5 @@ namespace DiplomBukov
     typedef SharedPointer<IOptionWalker>::Type       OptionWalkerPtr;
 
     typedef SharedPointer<ILibrary>::Type            LibraryPtr;
+    typedef SharedPointer<IStarter>::Type            StarterPtr;
 }

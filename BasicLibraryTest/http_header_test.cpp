@@ -1,8 +1,7 @@
 #include "gmock\gmock.h"
 #include "gtest\gtest.h"
-#include "expect_file.h"
 
-#include "network\http_header.h"
+#include "network/http_header.h"
 
 using ::testing::_;
 using ::testing::Return;

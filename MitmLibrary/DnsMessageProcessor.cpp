@@ -1,7 +1,7 @@
 #include "DnsMessageProcessor.h"
 #include <algorithm>
 #include "IPacket.h"
-#include "network\ipv4_header.h"
+#include "network/ipv4_header.h"
 #include "GroupOption.h"
 
 using namespace DiplomBukov;

@@ -3,7 +3,7 @@
 
 #include "CommonInclude.h"
 #include "IOptionWalker.h"
-#include "OptionsForwardDecls.h"
+#include "Options.h"
 
 #include "CheckOption.h"
 #include "SwitchOption.h"

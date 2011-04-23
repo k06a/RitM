@@ -1,17 +1,35 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiplomBukov", "DiplomBukov\DiplomBukov.vcproj", "{DFDF4EB3-A8B5-442C-A327-B7069FC45970}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RitmHeart", "RitmHeart\RitmHeart.vcproj", "{DFDF4EB3-A8B5-442C-A327-B7069FC45970}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicLibraryTest", "BasicLibraryTest\BasicLibraryTest.vcproj", "{2DF5B52D-3035-4E05-A246-4C4EC2F0C3B4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9611FD16-6A75-413C-BD09-78EED627D2CA} = {9611FD16-6A75-413C-BD09-78EED627D2CA}
+		{DFDF4EB3-A8B5-442C-A327-B7069FC45970} = {DFDF4EB3-A8B5-442C-A327-B7069FC45970}
+		{A978F7FB-E101-4352-B035-54DA680DF351} = {A978F7FB-E101-4352-B035-54DA680DF351}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiplomBukovTest", "DiplomBukovTest\DiplomBukovTest.vcproj", "{2DF5B52D-3035-4E05-A246-4C4EC2F0C3B4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicLibrary", "BasicLibrary\BasicLibrary.vcproj", "{9611FD16-6A75-413C-BD09-78EED627D2CA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DFDF4EB3-A8B5-442C-A327-B7069FC45970} = {DFDF4EB3-A8B5-442C-A327-B7069FC45970}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicLibrary", "BasicLibrary\BasicLibrary.vcproj", "{9611FD16-6A75-413C-BD09-78EED627D2CA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MitmLibrary", "MitmLibrary\MitmLibrary.vcproj", "{2E16AF09-6879-44A4-B577-696FE080A7B5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DFDF4EB3-A8B5-442C-A327-B7069FC45970} = {DFDF4EB3-A8B5-442C-A327-B7069FC45970}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MitmLibraryTest", "MitmLibraryTest\MitmLibraryTest.vcproj", "{8F3EA9DA-FBC1-4518-94B4-115E6159FBE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E16AF09-6879-44A4-B577-696FE080A7B5} = {2E16AF09-6879-44A4-B577-696FE080A7B5}
+		{DFDF4EB3-A8B5-442C-A327-B7069FC45970} = {DFDF4EB3-A8B5-442C-A327-B7069FC45970}
+		{A978F7FB-E101-4352-B035-54DA680DF351} = {A978F7FB-E101-4352-B035-54DA680DF351}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProtoLibTest", "ProtoLibTest\ProtoLibTest.vcproj", "{054D1B63-C66F-40DF-B215-E11B48132C53}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RitmBaseTestLib", "RitmBaseTestLib\RitmBaseTestLib.vcproj", "{A978F7FB-E101-4352-B035-54DA680DF351}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +49,22 @@ Global
 		{9611FD16-6A75-413C-BD09-78EED627D2CA}.Debug|Win32.Build.0 = Debug|Win32
 		{9611FD16-6A75-413C-BD09-78EED627D2CA}.Release|Win32.ActiveCfg = Release|Win32
 		{9611FD16-6A75-413C-BD09-78EED627D2CA}.Release|Win32.Build.0 = Release|Win32
+		{2E16AF09-6879-44A4-B577-696FE080A7B5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E16AF09-6879-44A4-B577-696FE080A7B5}.Debug|Win32.Build.0 = Debug|Win32
+		{2E16AF09-6879-44A4-B577-696FE080A7B5}.Release|Win32.ActiveCfg = Release|Win32
+		{2E16AF09-6879-44A4-B577-696FE080A7B5}.Release|Win32.Build.0 = Release|Win32
+		{8F3EA9DA-FBC1-4518-94B4-115E6159FBE7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8F3EA9DA-FBC1-4518-94B4-115E6159FBE7}.Debug|Win32.Build.0 = Debug|Win32
+		{8F3EA9DA-FBC1-4518-94B4-115E6159FBE7}.Release|Win32.ActiveCfg = Release|Win32
+		{8F3EA9DA-FBC1-4518-94B4-115E6159FBE7}.Release|Win32.Build.0 = Release|Win32
+		{054D1B63-C66F-40DF-B215-E11B48132C53}.Debug|Win32.ActiveCfg = Debug|Win32
+		{054D1B63-C66F-40DF-B215-E11B48132C53}.Debug|Win32.Build.0 = Debug|Win32
+		{054D1B63-C66F-40DF-B215-E11B48132C53}.Release|Win32.ActiveCfg = Release|Win32
+		{054D1B63-C66F-40DF-B215-E11B48132C53}.Release|Win32.Build.0 = Release|Win32
+		{A978F7FB-E101-4352-B035-54DA680DF351}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A978F7FB-E101-4352-B035-54DA680DF351}.Debug|Win32.Build.0 = Debug|Win32
+		{A978F7FB-E101-4352-B035-54DA680DF351}.Release|Win32.ActiveCfg = Release|Win32
+		{A978F7FB-E101-4352-B035-54DA680DF351}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

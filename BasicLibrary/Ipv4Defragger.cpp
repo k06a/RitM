@@ -28,7 +28,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet,
     {
         if (fullPacket == NULL)
         {
-            fullPacket = new DefragPacket();
+            fullPacket = new DefragPacket(packet);
             ipDataOffset = offset + ipv4->size();
             fullPacket->append(0, &packet->data()[0], ipDataOffset, ipv4->flag_mf);
         }
