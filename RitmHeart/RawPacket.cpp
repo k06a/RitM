@@ -114,7 +114,7 @@ void RawPacket::push_front(int length)
 void RawPacket::erase(int p1, int p2)
 {
     data_.erase(data_.begin() + p1,
-                data_.end() + p2);
+                data_.begin() + p2);
     setRealSize(realSize() - (p2-p1));
 }
 
