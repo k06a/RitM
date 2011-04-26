@@ -21,12 +21,12 @@ ProcessingStatus TcpOptionsRemover::forwardProcess(Protocol proto, PacketPtr pac
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
+    tcp_header * tcp = (tcp_header *)(&(*packet)[offset]);
     if (tcp->header_size() > sizeof(tcp_header))
     {
-        packet->data().erase(
-            packet->data().begin() + offset + sizeof(tcp_header),
-            packet->data().begin() + offset + tcp->header_size());
+        packet->erase(
+            offset + sizeof(tcp_header),
+            offset + tcp->header_size());
         packet->setRealSize(packet->size());
         tcp->set_header_size(sizeof(tcp_header));
     }

@@ -31,8 +31,8 @@ ProcessingStatus HttpSwapProcessor::forwardProcess(Protocol proto, PacketPtr pac
     int oldSize = blob.size();
     blob.resize(oldSize + packet->size() - offset);
     std::copy(
-        packet->data().begin() + offset,
-        packet->data().end(),
+        packet->dataBegin() + offset,
+        packet->dataEnd(),
         blob.begin() + oldSize);
 
     // Checking end of chunk

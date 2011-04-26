@@ -33,73 +33,93 @@
 
 using namespace DiplomBukov;
 
-std::deque<ConnectorModulePtr> BasicLibrary::getConnectorModules() const
+BasicLibrary::BasicLibrary()
 {
-    std::deque<ConnectorModulePtr> list;
-    
-    list.push_back(ConnectorModulePtr(new TemplateConnectorModule<BruteConnector>(
+    // ----------------------------------------------------------------
+
+    list_con.push_back(ConnectorModulePtr(new TemplateConnectorModule<BruteConnector>(
         " оннектор, осуществл€ющий передачу пакетов всем подключЄнным процессорам.")));
-    list.push_back(ConnectorModulePtr(new TemplateConnectorModule<ProtocolConnector>(
+    list_con.push_back(ConnectorModulePtr(new TemplateConnectorModule<ProtocolConnector>(
         " оннектор, осуществл€ющий передачу пакетов исход€ из протокола пакета и "
         "входных протоколов процессоров. ≈сли у пакета нет протокола - он передаЄтс€ "
         "всем процессорам. ≈сли у пакета есть протокол - он передаЄтс€ только "
         "процессорам с этим же протоколам и процесоорам не имеющим протокола.")));
 
-    return list;
-}
+    // ----------------------------------------------------------------
 
-std::deque<AdapterModulePtr> BasicLibrary::getAdapterModules() const
-{
-    std::deque<AdapterModulePtr> list;
-
-    list.push_back(AdapterModulePtr(new TemplateAdapterModule<FileAdapter>(
+    list_ad.push_back(AdapterModulePtr(new TemplateAdapterModule<FileAdapter>(
         "јдаптер, осуществл€ющий считывание пакетов из файла и запись пакетов файл. "
         "¬ходной файл должен соответствовать формату PCAP.")));
-    list.push_back(AdapterModulePtr(new TemplateAdapterModule<PcapAdapter>(
+    list_ad.push_back(AdapterModulePtr(new TemplateAdapterModule<PcapAdapter>(
         "јдаптер, осуществл€ющий информационный обмен пакетами с сетевым интерфейсом.")));
 
-    return list;
-}
+    // ----------------------------------------------------------------
 
-std::deque<ProcessorModulePtr> BasicLibrary::getProcessorModules() const
-{
-    std::deque<ProcessorModulePtr> list;
-
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacSwitch>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacSwitch>(
         "ќбработчик, осуществл€ющий коммутацию кадров между интерфейсами по MAC-адресам.")));
 
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<AcceptProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<AcceptProcessor>(
         "ќбработчик, осуществл€ющий проталкивание пакета.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<RejectProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<RejectProcessor>(
         "ќбработчик, осуществл€ющий отклонение пакета.")));
 
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacHeaderProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacHeaderProcessor>(
         "ќбработчик, осуществл€ющий разбор заголовка Ethernet II.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4HeaderProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4HeaderProcessor>(
         "ќбработчик, осуществл€ющий разбор заголовка IPv4.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpHeaderProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpHeaderProcessor>(
         "ќбработчик, осуществл€ющий разбор заголовка TCP.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<UdpHeaderProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<UdpHeaderProcessor>(
         "ќбработчик, осуществл€ющий разбор заголовка UDP.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<IcmpHeaderProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<IcmpHeaderProcessor>(
         "ќбработчик, осуществл€ющий разбор заголовка ICMP.")));
 
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4Splitter>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4Splitter>(
         "ќбработчик, осуществл€ющий разделение потоков по IPv4-адресам.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpSplitter>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpSplitter>(
         "ќбработчик, осуществл€ющий разделение потоков по TCP-портам.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<UdpSplitter>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<UdpSplitter>(
         "ќбработчик, осуществл€ющий разделение потоков по UDP-портам.")));
 
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<TransportPortFilter>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TransportPortFilter>(
         "ќбработчик, осуществл€ющий фильтрацию потоков по TCP/UDP-портам.")));
 
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4Defragger>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4Defragger>(
         "ќбработчик, осуществл€ющий (де)фрагментацию IP-пакетов.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpLayerProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpLayerProcessor>(
         "ќбработчик, осуществл€ющий подмену потоков данных на уровне TCP.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpOptionsRemover>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpOptionsRemover>(
         "ќбработчик, осуществл€ющий стирание TCP-опций в пакете.")));
     
-    return list;
+    // ----------------------------------------------------------------
+}
+
+int BasicLibrary::getConnectorModules_size() const
+{
+    return list_con.size();
+}
+
+int BasicLibrary::getAdapterModules_size() const
+{
+    return list_ad.size();
+}
+
+int BasicLibrary::getProcessorModules_size() const
+{
+    return list_proc.size();
+}
+
+ConnectorModulePtr BasicLibrary::getConnectorModules_item(int i) const
+{
+    return list_con[i];
+}
+
+AdapterModulePtr BasicLibrary::getAdapterModules_item(int i) const
+{
+    return list_ad[i];
+}
+
+ProcessorModulePtr BasicLibrary::getProcessorModules_item(int i) const
+{
+    return list_proc[i];
 }

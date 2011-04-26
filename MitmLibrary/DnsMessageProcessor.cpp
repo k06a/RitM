@@ -56,7 +56,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
     if (destType->getSelectedText() == "Mail Exchange")
         answerType = DnsRequest::MX;
 
-    dnsMessage.parse(&packet->data()[offset], packet->size()-offset);
+    dnsMessage.parse(&*(packet->dataBegin() + offset), packet->size()-offset);
 
     bool podmena = false;
 
@@ -97,9 +97,9 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
     if ((podmena) || alwaysResave->isChecked())
     {
         std::vector<u8> vec = dnsMessage.dump();
-        packet->data().resize(offset + vec.size());
+        packet->resize(offset + vec.size());
         packet->setRealSize(offset + vec.size());
-        std::copy(vec.begin(), vec.end(), &packet->data()[offset]);
+        std::copy(vec.begin(), vec.end(), &(*packet)[offset]);
     }
 
     backwardProcess(proto, packet, offset);

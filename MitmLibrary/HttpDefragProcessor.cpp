@@ -78,8 +78,8 @@ ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, PacketPtr p
     int oldSize = blob.size();
     blob.resize(oldSize + packet->size() - offset);
     std::copy(
-        packet->data().begin() + offset,
-        packet->data().end(),
+        packet->dataBegin() + offset,
+        packet->dataEnd(),
         blob.begin() + oldSize);
 
     // Checking end of chunk
@@ -143,8 +143,7 @@ ProcessingStatus HttpDefragProcessor::forwardProcess(Protocol proto, PacketPtr p
 
     if (httpHeader.type == HttpHeader::GetRequest)
     {
-        packet->data() = blob;
-        packet->setRealSize(packet->data().size());
+        packet->setData(&blob[0], blob.size());
         backwardProcess(proto, packet, 0);
         return ProcessingStatus::Accepted;
     }

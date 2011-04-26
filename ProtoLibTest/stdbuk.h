@@ -2,7 +2,7 @@
 #define STDBUK_H
 
 template <typename _FwdIt1, typename _FwdIt2>
-bool startsWitch(_FwdIt1 _First1, _FwdIt1 _Last1, _FwdIt2 _First2)
+bool startsWith(_FwdIt1 _First1, _FwdIt1 _Last1, _FwdIt2 _First2)
 {
     _FwdIt1 it1 = _First1;
     _FwdIt1 it2 = _First2;

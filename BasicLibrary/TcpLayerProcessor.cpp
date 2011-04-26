@@ -38,7 +38,7 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, PacketPtr pac
         return ProcessingStatus::Rejected;
 
     packet->addProcessor(shared_from_this());
-    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
+    tcp_header * tcp = (tcp_header *)&(*packet)[offset];
     unsigned dataInTcp = packet->size() - offset - tcp->header_size();
     maxDataInTcp = std::max(maxDataInTcp, dataInTcp);
 
@@ -266,8 +266,8 @@ ProcessingStatus TcpLayerProcessor::forwardProcess(Protocol proto, PacketPtr pac
 
 ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
-    int dataInTcp = packet->data().size() - offset - tcp->header_size();
+    tcp_header * tcp = (tcp_header *)&(*packet)[offset];
+    int dataInTcp = packet->size() - offset - tcp->header_size();
 
     Abonent & toAbonent =
         (packet->direction() == IPacket::ClientToServer)
@@ -287,12 +287,12 @@ ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, PacketPtr pa
             if (b_delete_from > b_delete_to)
                 b_delete_from = b_delete_to;
 
-            packetCopy->data().erase(
-                packetCopy->data().begin()+b_delete_from,
-                packetCopy->data().begin()+b_delete_to);
-            packetCopy->data().erase(
-                packetCopy->data().begin()+a_delete_from,
-                packetCopy->data().begin()+a_delete_to);
+            packetCopy->erase(
+                b_delete_from,
+                b_delete_to);
+            packetCopy->erase(
+                a_delete_from,
+                a_delete_to);
 
             toAbonent.toSendBuffer.push_back(
                 QuededPacket(0, proto, packetCopy, offset,
@@ -312,8 +312,8 @@ ProcessingStatus TcpLayerProcessor::backwardProcess(Protocol proto, PacketPtr pa
 
 ProcessingStatus TcpLayerProcessor::privateBackwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
-    int dataInTcp = packet->data().size() - offset - tcp->header_size();
+    tcp_header * tcp = (tcp_header *)&(*packet)[offset];
+    int dataInTcp = packet->size() - offset - tcp->header_size();
 
     Abonent & toAbonent =
         (packet->direction() == IPacket::ClientToServer)
@@ -356,7 +356,7 @@ PacketPtr TcpLayerProcessor::createAck(const QuededPacket & qpacket)
 
     pack->swapDirection();
     pack->setRealSize(pack->realSize() - dataInTcp);
-    pack->data().resize(pack->realSize());
+    pack->resize(pack->realSize());
 
     Abonent & abonent =
         (pack->direction() == IPacket::ClientToServer)
@@ -366,7 +366,7 @@ PacketPtr TcpLayerProcessor::createAck(const QuededPacket & qpacket)
         (pack->direction() == IPacket::ClientToServer)
         ? server : client;
 
-    tcp_header * tcp = (tcp_header *)&pack->data()[qpacket.offset];
+    tcp_header * tcp = (tcp_header *)&(*pack)[qpacket.offset];
     tcp->flags = tcp_header::flags_struct::ACK;
     tcp->seq = toAbonent.currentSendSN;
     tcp->ack = toAbonent.currentRecvSN;
@@ -377,18 +377,18 @@ PacketPtr TcpLayerProcessor::createAck(const QuededPacket & qpacket)
 std::pair<PacketPtr,unsigned> TcpLayerProcessor::mergePackets(const std::deque<QuededPacket> & arr)
 {
     PacketPtr pack = arr[0].packet->CreateCopy();
-    pack->data().resize(arr[0].offset);
+    pack->resize(arr[0].offset);
     
     for (std::deque<QuededPacket>::const_iterator it = arr.begin();
         it != arr.end(); ++it)
     {
         // ¬ставка в конец сырых данных из пакета
-        pack->data().insert(
-            pack->data().end(),
-            it->packet->data().begin()+it->offset,
-            it->packet->data().end());
+        pack->insert(
+            pack->size(),
+            &(*it->packet)[it->offset],
+            it->packet->size() - it->offset);
     }
 
-    pack->setRealSize(pack->data().size());
+    pack->setRealSize(pack->size());
     return std::make_pair(pack, arr[0].offset);
 }

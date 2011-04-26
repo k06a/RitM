@@ -20,12 +20,12 @@ namespace DiplomBukov
             , mask(65536, false)
             , lastFragmentReceived(false)
         {
-            pack->data().resize(65536);
+            pack->resize(65536);
         }
 
         void append(int offset, u8 * ptr, int size, bool flag_mf)
         {
-            std::copy(pack->data().begin() + offset, pack->data().end(), ptr);
+            std::copy(pack->dataBegin() + offset, pack->dataEnd(), ptr);
             std::fill(mask.begin()+offset, mask.begin()+offset+size, true);
 
             if (!flag_mf)

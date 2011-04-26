@@ -84,10 +84,13 @@ struct http_header
         std::string::iterator offset = header.begin();
         while (offset != header.end())
         {
-            const char rnrn[] = "\r\n";
+            const char rn[] = "\r\n";
             std::string::iterator it =
-                std::search(offset, header.end(), rnrn, rnrn+2);
+                std::search(offset, header.end(), rn, rn+2);
             
+            if (it == offset)
+                break;
+
             std::string line(it - offset, 'a');
             std::copy(offset, it, line.begin());
 
@@ -106,7 +109,7 @@ struct http_header
     }
 };
 
-struct http_respounce
+struct http_response
 {
     enum Version
     {
@@ -163,10 +166,6 @@ struct http_respounce
             default:   return "";
         }
     }
-
-public:
-    Version version;
-    int code;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -206,7 +205,36 @@ struct http_request
 public:
     Method method;
     std::string url;
-    http_respounce::Version version;
+    http_response::Version version;
+};
+
+//////////////////////////////////////////////////////////////////////////
+
+struct http_responce_parse
+{
+    http_response::Version version;
+    int code;
+    std::string codeStr;
+    http_header::HeaderNameValueList header;
+    std::pair<Blob,int> blob;
+
+    http_responce_parse(const Blob & data)
+    {
+        parse(data);
+    }
+
+    bool parse(const Blob & data)
+    {
+        const char rnrn[] = "\r\n\r\n";
+        Blob::const_iterator it =
+            std::search(data.begin(), data.end(), rnrn, rnrn+4);
+
+        if (it == data.end())
+            return false;
+
+        std::string headerStr(data.begin(), it);
+        header = http_header::parseHeader(headerStr);
+    }
 };
 
 #endif // HTTP_HEADER_H

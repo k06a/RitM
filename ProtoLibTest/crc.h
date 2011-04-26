@@ -14,7 +14,7 @@
   MaxLen: 268 435 455 байт (2 147 483 647 бит) - обнаружение
           одинарных, двойных, пакетных и всех нечетных ошибок
 */
-u32 Crc32(const u8 * buf, unsigned len)
+u32 crc32(const u8 * buf, unsigned len)
 {
     u32 crc_table[256];
     for (int i = 0; i < 256; i++)

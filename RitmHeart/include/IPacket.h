@@ -42,8 +42,12 @@ namespace DiplomBukov
         virtual void setData(u8 * ptr, unsigned size) = 0;
         virtual u8 & operator [] (unsigned index) = 0;
         virtual unsigned size() const = 0;
-        virtual std::vector<u8> & data() = 0;
+        virtual void resize(unsigned sz) = 0;
+        virtual std::vector<u8>::iterator dataBegin() = 0;
+        virtual std::vector<u8>::iterator dataEnd() = 0;
         virtual void push_front(int length) = 0;
+        virtual void erase(int p1, int p2) = 0;
+        virtual void insert(int p, u8 * data, int size) = 0;
 
         virtual unsigned realSize() const = 0;
         virtual void setRealSize(unsigned size) = 0;
@@ -51,8 +55,9 @@ namespace DiplomBukov
         virtual IAdapter * adapter() const = 0;
         virtual void setAdapter(IAdapter * ad) = 0;
         
-        virtual const std::deque<ProcessorPtr> & processors() const = 0;
         virtual void addProcessor(ProcessorPtr pro) = 0;
+        virtual ProcessorPtr processorBefore(ProcessorPtr pro) const = 0;
+        virtual bool haveProcessor(ProcessorPtr proc) const = 0;
         
         virtual const std::deque<Protocol> & protocols() const = 0;
         virtual void addProtocol(Protocol pro) = 0;
@@ -69,9 +74,6 @@ namespace DiplomBukov
         
         virtual const Protocol::NetworkLayer & format() const = 0;
         virtual void setFormat(const Protocol::NetworkLayer & layer) = 0;
-
-        virtual ProcessorPtr processorBefore(ProcessorPtr current) const = 0;
-        virtual bool haveProcessor(ProcessorPtr proc) const = 0;
     };
     // class IPacket
 

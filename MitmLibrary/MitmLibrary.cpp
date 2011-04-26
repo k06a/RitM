@@ -11,30 +11,44 @@
 
 using namespace DiplomBukov;
 
-std::deque<ConnectorModulePtr> MitmLibrary::getConnectorModules() const
+MitmLibrary::MitmLibrary()
 {
-    std::deque<ConnectorModulePtr> list;
-    return list;
-}
-
-std::deque<AdapterModulePtr> MitmLibrary::getAdapterModules() const
-{
-    std::deque<AdapterModulePtr> list;
-    return list;
-}
-
-std::deque<ProcessorModulePtr> MitmLibrary::getProcessorModules() const
-{
-    std::deque<ProcessorModulePtr> list;
-
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<DnsMessageProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<DnsMessageProcessor>(
         "ќбработчик, осуществл€ющий подлог данных DNS.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<HttpDefragProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<HttpDefragProcessor>(
         "ќбработчик, осуществл€ющий сборку сообщений HTTP.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<HttpSwapProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<HttpSwapProcessor>(
         "ќбработчик, осуществл€ющий подлог данных HTTP.")));
-    list.push_back(ProcessorModulePtr(new TemplateProcessorModule<TelnetSwapper>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TelnetSwapper>(
         "ќбработчик, осуществл€ющий подлог данных Telnet.")));
+}
 
-    return list;
+int MitmLibrary::getConnectorModules_size() const
+{
+    return list_con.size();
+}
+
+int MitmLibrary::getAdapterModules_size() const
+{
+    return list_ad.size();
+}
+
+int MitmLibrary::getProcessorModules_size() const
+{
+    return list_proc.size();
+}
+
+ConnectorModulePtr MitmLibrary::getConnectorModules_item(int i) const
+{
+    return list_con[i];
+}
+
+AdapterModulePtr MitmLibrary::getAdapterModules_item(int i) const
+{
+    return list_ad[i];
+}
+
+ProcessorModulePtr MitmLibrary::getProcessorModules_item(int i) const
+{
+    return list_proc[i];
 }

@@ -74,7 +74,8 @@ IPacket::PacketPolicy RawPacket::status() const
 void RawPacket::setData(u8 * ptr, unsigned size)
 {
     std::vector<u8> tmp(ptr, ptr+size);
-    data_.swap(tmp);    
+    data_.swap(tmp);
+    setRealSize(size);
 }
 
 u8 & RawPacket::operator [] (unsigned index)
@@ -87,9 +88,20 @@ unsigned RawPacket::size() const
     return data_.size();
 }
 
-std::vector<u8> & RawPacket::data()
+void RawPacket::resize(unsigned sz)
 {
-    return data_;
+    data_.resize(sz);
+    setRealSize(sz);
+}
+
+std::vector<u8>::iterator RawPacket::dataBegin()
+{
+    return data_.begin();
+}
+
+std::vector<u8>::iterator RawPacket::dataEnd()
+{
+    return data_.end();
 }
 
 void RawPacket::push_front(int length)
@@ -97,6 +109,20 @@ void RawPacket::push_front(int length)
     std::vector<u8> tmp(data_.size() + length, 0);
     std::copy(data_.begin(), data_.end(), tmp.begin() + length);
     data_.swap(tmp);
+}
+
+void RawPacket::erase(int p1, int p2)
+{
+    data_.erase(data_.begin() + p1,
+                data_.end() + p2);
+    setRealSize(realSize() - (p2-p1));
+}
+
+void RawPacket::insert(int p, u8 * data, int size)
+{
+    data_.insert(data_.begin() + p,
+                 data, data + size);
+    setRealSize(realSize() + size);
 }
 
 void RawPacket::setRealSize(unsigned size)
@@ -124,9 +150,20 @@ void RawPacket::addProcessor(ProcessorPtr pro)
     processors_.push_back(pro);
 }
 
-const std::deque<ProcessorPtr> & RawPacket::processors() const
+ProcessorPtr RawPacket::processorBefore(ProcessorPtr pro) const
 {
-    return processors_;
+    std::deque<ProcessorPtr>::const_iterator it = 
+        std::find(processors_.begin(), processors_.end(), pro);
+    if (it == processors_.begin() || it == processors_.end())
+        return ProcessorPtr();
+    return *(--it);
+}
+
+bool RawPacket::haveProcessor(ProcessorPtr proc) const
+{
+    std::deque<ProcessorPtr>::const_iterator it =
+        std::find(processors_.begin(), processors_.end(), proc);
+    return (it != processors_.end());
 }
 
 void RawPacket::addProtocol(Protocol pro)
@@ -192,20 +229,4 @@ void RawPacket::setDstMac(const mac_addr & dst)
 void RawPacket::setFormat(const Protocol::NetworkLayer & layer)
 {
     format_ = layer;
-}
-
-ProcessorPtr RawPacket::processorBefore(ProcessorPtr current) const
-{
-    std::deque<ProcessorPtr>::const_iterator it =
-        std::find(processors_.begin(), processors_.end(), current);
-    if ((it != processors_.end()) && (it != processors_.begin()))
-        return *(--it);
-    return ProcessorPtr();
-}
-
-bool RawPacket::haveProcessor(ProcessorPtr proc) const
-{
-    std::deque<ProcessorPtr>::const_iterator it =
-        std::find(processors_.begin(), processors_.end(), proc);
-    return (it != processors_.end());
 }

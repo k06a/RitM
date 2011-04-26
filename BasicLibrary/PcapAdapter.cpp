@@ -59,12 +59,12 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, PacketPtr packet, 
         return ProcessingStatus::Accepted;
 
     // Save hash
-    u32 hash = Crc32(&packet->data()[offset], packet->size() - offset);
+    u32 hash = crc32(&(*packet)[offset], packet->size() - offset);
     hashes.push_back(hash);
 
     std::cout << '-' << devicesSwitch->getSelectedIndex();
 
-    int ret = pcap_sendpacket(device, &packet->data()[offset], packet->size() - offset);
+    int ret = pcap_sendpacket(device, &(*packet)[offset], packet->size() - offset);
 
     return ProcessingStatus::Accepted;
 }
@@ -109,7 +109,7 @@ bool PcapAdapter::tick()
         return true;
 
     // Find in hash
-    u32 hash = Crc32(pkt_data, header.caplen);
+    u32 hash = crc32(pkt_data, header.caplen);
     std::deque<u32>::iterator it = std::find(hashes.begin(), hashes.end(), hash);
     if (it != hashes.end())
     {

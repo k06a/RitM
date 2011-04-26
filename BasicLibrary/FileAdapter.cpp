@@ -74,7 +74,7 @@ ProcessingStatus FileAdapter::backwardProcess(Protocol proto, PacketPtr packet, 
     pph.orig_len = packet->realSize();
     fwrite(&pph, sizeof(pph), 1, file2);
 
-    fwrite(&packet->data()[offset], 1, packet->size() - offset, file2);
+    fwrite(&(*packet)[offset], 1, packet->size() - offset, file2);
     statCounter->i_count_out++;
     
     return ProcessingStatus::Accepted;

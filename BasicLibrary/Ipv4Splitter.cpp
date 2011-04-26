@@ -33,7 +33,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, PacketPtr packet, 
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[offset]);
+    ipv4_header * ipv4 = (ipv4_header *)(&(*packet)[offset]);
     ipv4_addr adr1 = ipv4->src_data;
     ipv4_addr adr2 = ipv4->dst_data;
 
@@ -71,7 +71,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, PacketPtr packet, 
 
 ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    ipv4_header * ipv4 = (ipv4_header *)(&packet->data()[offset]);
+    ipv4_header * ipv4 = (ipv4_header *)(&(*packet)[offset]);
 
     ipv4->src_data = para.first;
     ipv4->dst_data = para.second;

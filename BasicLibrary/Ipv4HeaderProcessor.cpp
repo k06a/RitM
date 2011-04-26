@@ -24,11 +24,11 @@ ProcessingStatus Ipv4HeaderProcessor::forwardProcess(Protocol proto, PacketPtr p
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    ipv4_header * ip = (ipv4_header *)(&packet->data()[offset]);
+    ipv4_header * ip = (ipv4_header *)(&(*packet)[offset]);
     header.resize(ip->size());
     std::copy(
-        packet->data().begin() + offset,
-        packet->data().begin() + offset + ip->size(),
+        packet->dataBegin() + offset,
+        packet->dataBegin() + offset + ip->size(),
         header.begin());
 
     offset += ip->size();
@@ -53,11 +53,11 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, PacketPtr 
     }
     offset -= sizeof(ipv4_header);
 
-    ipv4_header * ip = (ipv4_header *)(&packet->data()[offset]);
-    std::copy(header.begin(), header.end(), &packet->data()[offset]);
+    ipv4_header * ip = (ipv4_header *)(&(*packet)[offset]);
+    std::copy(header.begin(), header.end(), &(*packet)[offset]);
 
     ip->proto = proto.code;
-    ip->totalLength = packet->data().size() - offset;
+    ip->totalLength = packet->size() - offset;
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(ip->src_data, ip->dst_data);
 

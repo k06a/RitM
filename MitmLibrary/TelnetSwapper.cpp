@@ -31,7 +31,7 @@ ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, PacketPtr packet,
 
     char w[] = "hello";
 
-    std::string text(packet->data().begin() + offset, packet->data().end());
+    std::string text(packet->dataBegin() + offset, packet->dataEnd());
     std::string::iterator it = std::search(text.begin(), text.end(), w, w+4);
     bool cut = false;
     if (it != text.end())
@@ -43,12 +43,12 @@ ProcessingStatus TelnetSwapper::forwardProcess(Protocol proto, PacketPtr packet,
         cut = true;
     }
 
-    if (packet->data().size() != offset + text.size())
+    if (packet->size() != offset + text.size())
     {
-        packet->data().resize(offset + text.size());
+        packet->resize(offset + text.size());
         packet->setRealSize(offset + text.size());
     }
-    std::copy(text.begin(), text.end(), &packet->data()[offset]);
+    std::copy(text.begin(), text.end(), &(*packet)[offset]);
 
     backwardProcess(proto, packet, offset);
     packet->setStatus(IPacket::Rejected);

@@ -22,11 +22,11 @@ ProcessingStatus TcpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr pa
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    tcp_header * tcp = (tcp_header *)(&packet->data()[offset]);
+    tcp_header * tcp = (tcp_header *)(&(*packet)[offset]);
     header.resize(tcp->header_size());
     std::copy(
-        packet->data().begin() + offset,
-        packet->data().begin() + offset + tcp->header_size(),
+        packet->dataBegin() + offset,
+        packet->dataBegin() + offset + tcp->header_size(),
         header.begin());
 
     offset += tcp->header_size();
@@ -56,8 +56,8 @@ ProcessingStatus TcpHeaderProcessor::backwardProcess(Protocol proto, PacketPtr p
     }
     offset -= header.size();
 
-    tcp_header * tcp = (tcp_header *)&packet->data()[offset];
-    std::copy(header.begin(), header.end(), &packet->data()[offset]);
+    tcp_header * tcp = (tcp_header *)&(*packet)[offset];
+    std::copy(header.begin(), header.end(), &(*packet)[offset]);
 
     if (packet->direction() == IPacket::ServerToClient)
         std::swap(tcp->src_port, tcp->dst_port);

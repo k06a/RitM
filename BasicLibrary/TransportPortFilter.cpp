@@ -31,7 +31,7 @@ ProcessingStatus TransportPortFilter::forwardProcess(Protocol proto, PacketPtr p
 
     packet->addProcessor(shared_from_this());
 
-    tcpudp_header * header = (tcpudp_header*)&packet->data()[offset];
+    tcpudp_header * header = (tcpudp_header*)&(*packet)[offset];
     IntOption * opt = (IntOption*)portOption.get();
     if (header->dst_port != opt->intValue())
         return ProcessingStatus::Rejected;

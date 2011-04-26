@@ -22,7 +22,7 @@ ProcessingStatus UdpHeaderProcessor::forwardProcess(Protocol proto, PacketPtr pa
     if ((proto != Protocol::None) && (proto != getProtocol()))
         return ProcessingStatus::Rejected;
 
-    udp_header * udp = (udp_header *)(&packet->data()[offset]);
+    udp_header * udp = (udp_header *)(&(*packet)[offset]);
     header = *udp;
 
     offset += sizeof(udp_header);
@@ -52,7 +52,7 @@ ProcessingStatus UdpHeaderProcessor::backwardProcess(Protocol proto, PacketPtr p
     }
     offset -= sizeof(udp_header);
 
-    udp_header * udp = (udp_header *)&packet->data()[offset];
+    udp_header * udp = (udp_header *)&(*packet)[offset];
     *udp = header;
     udp->length = packet->size() - offset;
     

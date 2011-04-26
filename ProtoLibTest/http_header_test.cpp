@@ -8,105 +8,88 @@ using ::testing::Return;
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(http_transfer_coding, parseIdentGood)
+TEST(http_header, parseLineTest)
 {
     typedef unsigned char uchar;
-    typedef std::vector<uchar> Blob;
 
-    unsigned char * data = (uchar *)"abcdefgh";
-    int contentLength = 8;
-    Blob blob(data, data + contentLength);
-    
-    std::pair<Blob,int> para =
-        http_transfer_coding::parseIdent(blob, contentLength);
+    std::string line = "Header-Name: value";
 
-    EXPECT_EQ(contentLength, para.second);
-    EXPECT_EQ(blob, para.first);
+    http_header::HeaderNameValue para =
+        http_header::parseLine(line);
+
+    std::string answer1 = "Header-Name";
+    std::string answer2 = "value";
+
+    EXPECT_STREQ(answer1.c_str(), para.first.c_str());
+    EXPECT_STREQ(answer2.c_str(), para.second.c_str());
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(http_transfer_coding, parseIdentTooShort)
+TEST(http_header, parseLineMultiTest)
 {
     typedef unsigned char uchar;
-    typedef std::vector<uchar> Blob;
 
-    unsigned char * data = (uchar *)"abcdefgh";
-    int realSize = 8;
-    int contentLength = 20;
-    Blob blob(data, data + realSize);
+    std::string line = "Header-Name: value\r\n"
+        " ending\r\n"
+        " finishing";
 
-    std::pair<Blob,int> para =
-        http_transfer_coding::parseIdent(blob, contentLength);
+    http_header::HeaderNameValue para =
+        http_header::parseLine(line);
 
-    EXPECT_EQ(-1, para.second);
+    std::string answer1 = "Header-Name";
+    std::string answer2 = "value\r\n ending\r\n finishing";
+
+    EXPECT_STREQ(answer1.c_str(), para.first.c_str());
+    EXPECT_STREQ(answer2.c_str(), para.second.c_str());
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(http_transfer_coding, parseIdentTooLong)
+TEST(http_header, parseHeaderTest)
 {
     typedef unsigned char uchar;
-    typedef std::vector<uchar> Blob;
 
-    unsigned char * data = (uchar *)"abcdefgh";
-    int realSize = 8;
-    int contentLength = 4;
-    Blob blob(data, data + realSize);
+    std::string header = "Header-Name1: value1\r\n"
+                         "Header-Name2: value1 value2\r\n"
+                         "\r\n";
 
-    std::pair<Blob,int> para =
-        http_transfer_coding::parseIdent(blob, contentLength);
+    http_header::HeaderNameValueList paras =
+        http_header::parseHeader(header);
 
-    Blob ans;
-    ans.push_back((unsigned char)'a');
-    ans.push_back((unsigned char)'b');
-    ans.push_back((unsigned char)'c');
-    ans.push_back((unsigned char)'d');
+    http_header::HeaderNameValue a1("Header-Name1", "value1");
+    http_header::HeaderNameValue a2("Header-Name2", "value1 value2");
 
-    EXPECT_EQ(contentLength, para.second);
-    EXPECT_EQ(ans, para.first);
+    EXPECT_STREQ(a1.first.c_str(), paras[0].first.c_str());
+    EXPECT_STREQ(a1.second.c_str(), paras[0].second.c_str());
+    EXPECT_STREQ(a2.first.c_str(), paras[1].first.c_str());
+    EXPECT_STREQ(a2.second.c_str(), paras[1].second.c_str());
+
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-TEST(http_transfer_coding, parseIdentEmpty)
+TEST(http_header, parseHeaderMultilineTest)
 {
     typedef unsigned char uchar;
-    typedef std::vector<uchar> Blob;
 
-    unsigned char * data = (uchar *)"abcdefgh";
-    int realSize = 8;
-    int contentLength = 0;
-    Blob blob(data, data + realSize);
+    std::string header = "Header-Name1: value1\r\n"
+                         "Header-Name2: value1 value2\r\n"
+                                      " value3 value4\r\n"
+                                      " value5 value6\r\n"
+                         "\r\n";
 
-    std::pair<Blob,int> para =
-        http_transfer_coding::parseIdent(blob, contentLength);
+    http_header::HeaderNameValueList paras =
+        http_header::parseHeader(header);
 
-    EXPECT_EQ(contentLength, para.second);
-    EXPECT_EQ(Blob(), para.first);
-}
+    http_header::HeaderNameValue a1("Header-Name1", "value1");
+    http_header::HeaderNameValue a2("Header-Name2", "value1 value2 value3 value4 value5 value6");
 
-//////////////////////////////////////////////////////////////////////////
+    EXPECT_STREQ(a1.first.c_str(), paras[0].first.c_str());
+    EXPECT_STREQ(a1.second.c_str(), paras[0].second.c_str());
+    EXPECT_STREQ(a2.first.c_str(), paras[1].first.c_str());
+    EXPECT_STREQ(a2.second.c_str(), paras[1].second.c_str());
 
-TEST(http_transfer_coding, parseChunkSingle)
-{
-    typedef unsigned char uchar;
-    typedef std::vector<uchar> Blob;
-
-    char data[] = "11\r\nabcdefghabcdefghx\r\n0\r\n";
-    int realSize = sizeof(data)-1;
-    int contentLength = realSize;
-    Blob blob((uchar*)data, (uchar*)data + realSize);
-
-    std::pair<Blob,int> para =
-        http_transfer_coding::parseChunked(blob, contentLength);
-
-    char answer[] = "abcdefghabcdefghx";
-    int realAnswerSize = sizeof(answer)-1;
-    Blob ans((uchar*)answer, (uchar*)answer + realAnswerSize);
-
-    EXPECT_EQ(contentLength, para.second);
-    EXPECT_EQ(ans, para.first);
 }
 
 //////////////////////////////////////////////////////////////////////////

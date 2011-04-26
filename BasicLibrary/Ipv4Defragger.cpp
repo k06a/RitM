@@ -22,7 +22,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet,
     
     packet->addProcessor(shared_from_this());
 
-    ipv4_header_data * ipv4 = (ipv4_header_data *)(&packet->data()[offset]);
+    ipv4_header_data * ipv4 = (ipv4_header_data *)(&(*packet)[offset]);
 
     if (ipv4->flag_mf || (ipv4->fragmentOffset() != 0))
     {
@@ -30,7 +30,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet,
         {
             fullPacket = new DefragPacket(packet);
             ipDataOffset = offset + ipv4->size();
-            fullPacket->append(0, &packet->data()[0], ipDataOffset, ipv4->flag_mf);
+            fullPacket->append(0, &(*packet)[0], ipDataOffset, ipv4->flag_mf);
         }
         
         fullPacket->append(ipDataOffset + ipv4->fragmentOffset(),
@@ -40,7 +40,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet,
 
         if (fullPacket->finished())
         {
-            ipv4_header * newIp = (ipv4_header *)(&fullPacket->pack->data()[0] + offset);
+            ipv4_header * newIp = (ipv4_header *)(&(*fullPacket->pack)[0] + offset);
             newIp->flag_mf = 0;
             newIp->setFragmentOffset(0);
             newIp->totalLength = ipv4->fragmentOffset() + ipv4->totalLength;
