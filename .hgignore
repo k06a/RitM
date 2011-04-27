@@ -1,2 +1,8 @@
 syntax: regexp
 \.user$
+debug/
+release/
+\.pdb$
+\.idb$
+syntax: glob
+ui_*.h

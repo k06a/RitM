@@ -26,5 +26,8 @@
         <file>images/redo.png</file>
         <file>images/undo.png</file>
         <file>images/logo.png</file>
+        <file>images/check.png</file>
+        <file>images/start.png</file>
+        <file>images/stop.png</file>
     </qresource>
 </RCC>

@@ -81,20 +81,21 @@ MainWindow::MainWindow(QWidget *parent)
     foreach(QDockWidget * dockWidget, findChildren<QDockWidget*>())
         ui->menu_widgets->addAction(dockWidget->toggleViewAction());
 
-    ModuleHolder * holder = ModuleHolder::instance();
-    holder->addModule(NULL,tr(":/images/processor.svg"),"Processor","Base");
-    holder->addModule(NULL,tr(":/images/adapter.svg"),"Adapter","Base");
-    holder->addModule(NULL,tr(":/images/connector.svg"),"Connector","Base");
+    ui->listWidget_elements->clear();
+    ModuleHolder * holder = ModuleHolder::instance(ui->listWidget_elements);
+    //holder->addModule(tr(":/images/processor.svg"),"Processor","Base");
+    //holder->addModule(tr(":/images/adapter.svg"),"Adapter","Base");
+    //holder->addModule(tr(":/images/connector.svg"),"Connector","Base");
 
     // Add all pipes
-    holder->addModule(NULL,tr(":/images/pipes/Left2Right.svg"),"Left2Right","Pipe");
-    holder->addModule(NULL,tr(":/images/pipes/Top2Bottom.svg"),"Top2Bottom","Pipe");
-    holder->addModule(NULL,tr(":/images/pipes/Left2TopBottom.svg"),"Left2TopBottom","Pipe");
-    holder->addModule(NULL,tr(":/images/pipes/TopBottom2Right.svg"),"TopBottom2Right","Pipe");
-    holder->addModule(NULL,tr(":/images/pipes/Left2Top.svg"),"Left2Top","Pipe");
-    holder->addModule(NULL,tr(":/images/pipes/Left2Bottom.svg"),"Left2Bottom","Pipe");
-    holder->addModule(NULL,tr(":/images/pipes/Top2Right.svg"),"Top2Right","Pipe");
-    holder->addModule(NULL,tr(":/images/pipes/Bottom2Right.svg"),"Bottom2Right","Pipe");
+    holder->addModule("Pipe", "Left2Right", tr(":/images/pipes/Left2Right.svg"));
+    holder->addModule("Pipe", "Top2Bottom", tr(":/images/pipes/Top2Bottom.svg"));
+    holder->addModule("Pipe", "Left2TopBottom", tr(":/images/pipes/Left2TopBottom.svg"));
+    holder->addModule("Pipe", "TopBottom2Right", tr(":/images/pipes/TopBottom2Right.svg"));
+    holder->addModule("Pipe", "Left2Top", tr(":/images/pipes/Left2Top.svg"));
+    holder->addModule("Pipe", "Left2Bottom", tr(":/images/pipes/Left2Bottom.svg"));
+    holder->addModule("Pipe", "Top2Right", tr(":/images/pipes/Top2Right.svg"));
+    holder->addModule("Pipe", "Bottom2Right", tr(":/images/pipes/Bottom2Right.svg"));
 
     ui->listWidget_elements->setSlider(ui->horizontalSlider_elements);
     ui->listWidget_pipes->setSlider(ui->horizontalSlider_elements);
@@ -276,6 +277,25 @@ bool MainWindow::openFile(QString filename)
 
 void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
 {
+    if (value == ui->horizontalSlider_elements->minimum()
+        && ui->listWidget_elements->viewMode() == QListView::IconMode)
+    {
+        ui->listWidget_elements->setViewMode(QListView::ListMode);
+        ui->listWidget_elements->setIconSize(QSize(16,16));
+        ui->listWidget_pipes->setViewMode(QListView::ListMode);
+        ui->listWidget_pipes->setIconSize(QSize(16,16));
+        ui->listWidget_elements->setGridSize(QSize(16,16));
+        ui->listWidget_pipes->setGridSize(QSize(16,16));
+        return;
+    }
+
+    if (value > ui->horizontalSlider_elements->minimum()
+        && ui->listWidget_elements->viewMode() == QListView::ListMode)
+    {
+        ui->listWidget_elements->setViewMode(QListView::IconMode);
+        ui->listWidget_pipes->setViewMode(QListView::IconMode);
+    }
+
     ui->listWidget_elements->setIconSize(QSize(value,value));
     ui->listWidget_elements->setGridSize(QSize(value*1.4,value*1.4));
     ui->listWidget_pipes->setIconSize(QSize(value,value));
@@ -288,4 +308,64 @@ void MainWindow::on_tableWidget_field_itemSelectionChanged()
     ui->action_cut->setEnabled(count > 0);
     ui->action_copy->setEnabled(count > 0);
     ui->action_delete->setEnabled(count > 0);
+}
+
+void MainWindow::on_action_check_triggered()
+{
+    struct TableCell
+    {
+        int row;
+        int column;
+        ProcTableWidgetItem * item;
+    };
+
+    QList<TableCell> adapters;
+    QList<TableCell> connectors;
+    QList<TableCell> processors;
+    QList<TableCell> pipes;
+
+    for (int i = 0; i < ui->tableWidget_field->rowCount(); i++)
+    for (int j = 0; j < ui->tableWidget_field->columnCount(); j++)
+    {
+        ProcTableWidgetItem * w =
+            qobject_cast<ProcTableWidgetItem*>(
+                ui->tableWidget_field->cellWidget(i,j));
+        if (w == NULL)
+            continue;
+
+        TableCell tc = {i,j,w};
+
+        QString s = w->text();
+        if (w->moduleFullName().startsWith("Pipe."))
+        {
+            pipes.append(tc);
+            continue;
+        }
+
+        ModuleRecord * rec = w->record();
+        if (rec->module.adapterModule != NULL)
+            adapters.append(tc);
+        if (rec->module.connectorModule != NULL)
+            connectors.append(tc);
+        if (rec->module.processorModule != NULL)
+            processors.append(tc);
+    }
+
+    if (adapters.size() == 0)
+    {
+        QMessageBox::warning(this, tr("Ошибка в построении тракта"),
+            tr("В тракте отсутствуют источники трафика. Необходимо "
+               "использовать хотя бы один объект адаптера."));
+        return;
+    }
+}
+
+void MainWindow::on_action_start_triggered()
+{
+
+}
+
+void MainWindow::on_action_stop_triggered()
+{
+
 }

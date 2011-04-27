@@ -99,7 +99,8 @@ void ProcListWidget::mouseMoveEvent(QMouseEvent * event)
     QListWidgetItem * item = selectedItems()[0];
     viewportEntered();
 
-    QPixmap pixmap = item->icon().pixmap(iconSize());
+    QPixmap pixmap = item->icon().pixmap(
+        (iconSize().width()==16) ? QSize(32,32) : iconSize());
     QPainter p(&pixmap);
     p.setPen(QColor(0,0,192));
     p.drawRect(0,0,pixmap.rect().width()-1,pixmap.rect().height()-1);
@@ -108,9 +109,12 @@ void ProcListWidget::mouseMoveEvent(QMouseEvent * event)
     p.end();
 
     ProcMimeData * mimeData = new ProcMimeData;
-    mimeData->setModuleName(item->text());
+    mimeData->setModuleName(item->toolTip());
     QDrag * drag = new QDrag(this);
-    drag->setHotSpot(m_dragStartPosition - visualItemRect(item).topLeft() - QPoint(8,0));
+    QPoint hotSpot = m_dragStartPosition - visualItemRect(item).topLeft() - QPoint(8,0);
+    if (visualItemRect(item).height()*5 < visualItemRect(item).width())
+        hotSpot = QPoint(16,16);
+    drag->setHotSpot(hotSpot);
     drag->setPixmap(pixmap);
     drag->setMimeData(mimeData);
 

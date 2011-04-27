@@ -1,17 +1,40 @@
 #ifndef MODULEHOLDER_H
 #define MODULEHOLDER_H
 
+#include "CommonInclude.h"
 #include <QString>
 #include <QList>
 
-class IModule;
+using namespace DiplomBukov;
+
+struct Module
+{
+    AdapterModulePtr   adapterModule;
+    ConnectorModulePtr connectorModule;
+    ProcessorModulePtr processorModule;
+    Module()
+        : adapterModule()
+        , connectorModule()
+        , processorModule()
+    {
+    }
+};
 
 struct ModuleRecord
 {
     QString lib;
     QString name;
-    IModule * module;
     QString pixmapPath;
+    Module module;
+
+    ModuleRecord(QString lib = "",
+                 QString name = "",
+                 QString pixmapPath = "")
+        : lib(lib)
+        , name(name)
+        , pixmapPath(pixmapPath)
+    {
+    }
 
     QString fullName() const
     {
@@ -24,22 +47,24 @@ struct ModuleRecord
     }
 };
 
+class QListWidget;
+
 class ModuleHolder
 {
     typedef QList<ModuleRecord> ModuleVector;
 
     ModuleVector modules;
+    QListWidget * list;
 
 private:
     static ModuleHolder * m_instance;
 
 public:
-    static ModuleHolder * instance();
+    static ModuleHolder * instance(QListWidget * list = 0);
 
-    void addModule(IModule * module,
-                   QString pixmapPath,
+    void addModule(QString libName,
                    QString moduleName,
-                   QString libName);
+                   QString pixmapPath);
 
     void clear();
     const ModuleVector & moduleList() const;
@@ -47,8 +72,10 @@ public:
                                  QString moduleName);
     ModuleRecord * moduleForName(QString fullName);
 
+    void LoadLibrary(QString dllName);
+
 private:
-    ModuleHolder();
+    ModuleHolder(QListWidget * list = 0);
 };
 
 #endif // MODULEHOLDER_H

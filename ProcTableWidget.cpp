@@ -429,6 +429,7 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
         ProcTableWidgetItem * w = new ProcTableWidgetItem();
         w->setPixmap(rec->pixmapPath);
         w->setText(rec->fullName());
+        w->setModuleFullName(rec->fullName());
 
         ProcItem proc(rowAt(event->pos().y()),
                       columnAt(event->pos().x()), w);

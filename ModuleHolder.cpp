@@ -1,24 +1,98 @@
 #include "ModuleHolder.h"
+#include "ILibrary.h"
+#include "IAdapterModule.h"
+#include "IConnectorModule.h"
+#include "IProcessorModule.h"
+#include <QDir>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QLibrary>
+#include <QCoreApplication>
+
+using namespace DiplomBukov;
 
 ModuleHolder * ModuleHolder::m_instance = NULL;
 
-ModuleHolder::ModuleHolder()
+ModuleHolder::ModuleHolder(QListWidget * list)
+    : list(list)
 {
+    QDir dir(QCoreApplication::applicationDirPath());// + "/plugins");
+    QFileInfoList dlls = dir.entryInfoList(QStringList() << "*.dll");
+    foreach(QFileInfo dll, dlls)
+        LoadLibrary(dll.absoluteFilePath());
 }
 
-ModuleHolder * ModuleHolder::instance()
+void ModuleHolder::LoadLibrary(QString dllName)
+{
+    QLibrary lib(dllName);
+    TCreateLibrary libCreate = (TCreateLibrary)lib.resolve("createLibrary");
+    TDeleteLibrary libDelete = (TDeleteLibrary)lib.resolve("deleteLibrary");
+    if ((libCreate == NULL) || (libDelete == NULL))
+    {
+        QString p = lib.errorString();
+        return;
+    }
+    ILibrary * library(libCreate());
+
+    ModuleVector newList;
+    QString moduleName = QFileInfo(dllName).fileName();
+    moduleName.chop(4);
+
+    for (int i = 0; i < library->getAdapterModules_size(); i++)
+    {
+        ModuleRecord mr;
+        mr.lib = moduleName;
+        mr.module.adapterModule = library->getAdapterModules_item(i);
+        mr.name = mr.module.adapterModule->name();
+        mr.pixmapPath = QObject::tr(":/images/adapter.svg");
+        newList.append(mr);
+    }
+
+    for (int i = 0; i < library->getConnectorModules_size(); i++)
+    {
+        ModuleRecord mr;
+        mr.lib = moduleName;
+        mr.module.connectorModule = library->getConnectorModules_item(i);
+        mr.name = mr.module.connectorModule->name();
+        mr.pixmapPath = QObject::tr(":/images/connector.svg");
+        newList.append(mr);
+    }
+
+    for (int i = 0; i < library->getProcessorModules_size(); i++)
+    {
+        ModuleRecord mr;
+        mr.lib = moduleName;
+        mr.module.processorModule = library->getProcessorModules_item(i);
+        mr.name = mr.module.processorModule->name();
+        mr.pixmapPath = QObject::tr(":/images/processor.svg");
+        newList.append(mr);
+    }
+
+    foreach(ModuleRecord mr, newList)
+    {
+        QListWidgetItem * it = new QListWidgetItem();
+        it->setText(mr.fullName());
+        it->setToolTip(mr.fullName());
+        it->setIcon(QIcon(mr.pixmapPath));
+        list->addItem(it);
+    }
+
+    modules.append(newList);
+    libDelete(library);
+}
+
+ModuleHolder * ModuleHolder::instance(QListWidget * list)
 {
     if (m_instance == NULL)
-        m_instance = new ModuleHolder();
+        m_instance = new ModuleHolder(list);
     return m_instance;
 }
 
-void ModuleHolder::addModule(IModule * module,
-                             QString pixmapPath,
+void ModuleHolder::addModule(QString libName,
                              QString moduleName,
-                             QString libName)
+                             QString pixmapPath)
 {
-    ModuleRecord rec = { libName, moduleName, module, pixmapPath };
+    ModuleRecord rec(libName, moduleName, pixmapPath);
     modules.push_back(rec);
 }
 

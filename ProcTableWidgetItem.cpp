@@ -23,17 +23,19 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
 ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm)
     : QWidget()
 {
-    m_text = stringForm;
+    m_moduleFullName = stringForm;
     ModuleHolder * holder = ModuleHolder::instance();
-    ModuleRecord * rec = holder->moduleForName(m_text);
+    ModuleRecord * rec = holder->moduleForName(m_moduleFullName);
     m_pixmapPath = rec->pixmapPath;
     m_pixmap = QPixmap(m_pixmapPath);
+    m_text = rec->name;
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)
     : QWidget(parent)
     , m_text(centerText)
     , m_pixmap(iconPath)
+    , m_moduleFullName(centerText)
     , m_pixmapPath(iconPath)
 {
     //setAutoFillBackground(true);
@@ -66,6 +68,16 @@ void ProcTableWidgetItem::setPixmap(QPixmap pixmap)
     m_pixmap = pixmap;
 }
 
+QString ProcTableWidgetItem::moduleFullName() const
+{
+    return m_moduleFullName;
+}
+
+void ProcTableWidgetItem::setModuleFullName(QString moduleFullName)
+{
+    m_moduleFullName = moduleFullName;
+}
+
 QString ProcTableWidgetItem::toStringForm()
 {
     return m_text;
@@ -73,7 +85,13 @@ QString ProcTableWidgetItem::toStringForm()
 
 bool ProcTableWidgetItem::isEqualProc(ProcTableWidgetItem * w)
 {
-    return (m_text == w->m_text);
+    return (m_moduleFullName == w->m_moduleFullName);
+}
+
+ModuleRecord * ProcTableWidgetItem::record()
+{
+    ModuleHolder * holder = ModuleHolder::instance();
+    return holder->moduleForName(m_text);
 }
 
 void ProcTableWidgetItem::paintEvent(QPaintEvent * event)

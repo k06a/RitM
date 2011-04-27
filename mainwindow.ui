@@ -212,9 +212,18 @@
     <addaction name="action_zoomin"/>
     <addaction name="action_zoomout"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Процесс</string>
+    </property>
+    <addaction name="action_check"/>
+    <addaction name="action_start"/>
+    <addaction name="action_stop"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_view"/>
    <addaction name="menu_edit"/>
+   <addaction name="menu"/>
    <addaction name="menu_widgets"/>
    <addaction name="menu_info"/>
   </widget>
@@ -241,6 +250,10 @@
    <addaction name="action_cut"/>
    <addaction name="action_copy"/>
    <addaction name="action_paste"/>
+   <addaction name="separator"/>
+   <addaction name="action_check"/>
+   <addaction name="action_start"/>
+   <addaction name="action_stop"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget_elements">
@@ -412,6 +425,9 @@
         <property name="text">
          <string>Pipe.Left2Right</string>
         </property>
+        <property name="toolTip">
+         <string>Pipe.Left2Right</string>
+        </property>
         <property name="icon">
          <iconset resource="res.qrc">
           <normaloff>:/images/pipes/Left2Right.svg</normaloff>:/images/pipes/Left2Right.svg</iconset>
@@ -419,6 +435,9 @@
        </item>
        <item>
         <property name="text">
+         <string>Pipe.Left2Top</string>
+        </property>
+        <property name="toolTip">
          <string>Pipe.Left2Top</string>
         </property>
         <property name="icon">
@@ -430,6 +449,9 @@
         <property name="text">
          <string>Pipe.Left2Bottom</string>
         </property>
+        <property name="toolTip">
+         <string>Pipe.Left2Bottom</string>
+        </property>
         <property name="icon">
          <iconset resource="res.qrc">
           <normaloff>:/images/pipes/Left2Bottom.svg</normaloff>:/images/pipes/Left2Bottom.svg</iconset>
@@ -437,6 +459,9 @@
        </item>
        <item>
         <property name="text">
+         <string>Pipe.Left2TopBottom</string>
+        </property>
+        <property name="toolTip">
          <string>Pipe.Left2TopBottom</string>
         </property>
         <property name="icon">
@@ -448,6 +473,9 @@
         <property name="text">
          <string>Pipe.Top2Right</string>
         </property>
+        <property name="toolTip">
+         <string>Pipe.Top2Right</string>
+        </property>
         <property name="icon">
          <iconset resource="res.qrc">
           <normaloff>:/images/pipes/Top2Right.svg</normaloff>:/images/pipes/Top2Right.svg</iconset>
@@ -455,6 +483,9 @@
        </item>
        <item>
         <property name="text">
+         <string>Pipe.Bottom2Right</string>
+        </property>
+        <property name="toolTip">
          <string>Pipe.Bottom2Right</string>
         </property>
         <property name="icon">
@@ -466,6 +497,9 @@
         <property name="text">
          <string>Pipe.TopBottom2Right</string>
         </property>
+        <property name="toolTip">
+         <string>Pipe.TopBottom2Right</string>
+        </property>
         <property name="icon">
          <iconset resource="res.qrc">
           <normaloff>:/images/pipes/TopBottom2Right.svg</normaloff>:/images/pipes/TopBottom2Right.svg</iconset>
@@ -473,6 +507,9 @@
        </item>
        <item>
         <property name="text">
+         <string>Pipe.Top2Bottom</string>
+        </property>
+        <property name="toolTip">
          <string>Pipe.Top2Bottom</string>
         </property>
         <property name="icon">
@@ -690,6 +727,48 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="action_check">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/check.png</normaloff>:/images/check.png</iconset>
+   </property>
+   <property name="text">
+    <string>Проверить схему</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="action_start">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/start.png</normaloff>:/images/start.png</iconset>
+   </property>
+   <property name="text">
+    <string>Запустить обработку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="action_stop">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Остановить обработку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
    </property>
   </action>
  </widget>

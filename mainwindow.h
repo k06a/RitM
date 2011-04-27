@@ -40,6 +40,10 @@ private slots:
     void on_horizontalSlider_elements_valueChanged(int value);
     void on_tableWidget_field_itemSelectionChanged();
 
+    void on_action_check_triggered();
+    void on_action_start_triggered();
+    void on_action_stop_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

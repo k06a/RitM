@@ -2,10 +2,10 @@
 #define MIMEDATA_H
 
 #include <QMimeData>
+#include "ModuleHolder.h"
 
 class ProcTableWidget;
 class QRubberBand;
-class IModule;
 
 class ProcMimeData : public QMimeData
 {
@@ -19,13 +19,13 @@ class ProcMimeData : public QMimeData
                READ tableWidget
                WRITE setTableWidget)
 
-    Q_PROPERTY(IModule * m_module
+    Q_PROPERTY(Module m_module
                READ module
                WRITE setModule)
 
     QString m_moduleName;
     ProcTableWidget * m_tableWidget;
-    IModule * m_module;
+    Module m_module;
 
 public:
     ProcMimeData();
@@ -36,8 +36,8 @@ public:
     ProcTableWidget * tableWidget() const;
     void setTableWidget(ProcTableWidget * tableWidget);
 
-    IModule * module() const;
-    void setModule(IModule * module);
+    Module module() const;
+    void setModule(Module module);
 
 signals:
 
