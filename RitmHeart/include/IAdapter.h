@@ -2,6 +2,7 @@
 #define IADAPTER_H
 
 #include "CommonInclude.h"
+#include "IProcessor.h"
 
 namespace DiplomBukov
 {
