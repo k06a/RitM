@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "ProcTableWidgetItem.h"
 #include "ModuleHolder.h"
+#include "IAdapter.h"
+#include "IAdapterModule.h"
 #include <QVariant>
 #include <QCheckBox>
 #include <QUndoStack>
@@ -88,14 +90,14 @@ MainWindow::MainWindow(QWidget *parent)
     //holder->addModule(tr(":/images/connector.svg"),"Connector","Base");
 
     // Add all pipes
-    holder->addModule("Pipe", "Left2Right", tr(":/images/pipes/Left2Right.svg"));
-    holder->addModule("Pipe", "Top2Bottom", tr(":/images/pipes/Top2Bottom.svg"));
-    holder->addModule("Pipe", "Left2TopBottom", tr(":/images/pipes/Left2TopBottom.svg"));
-    holder->addModule("Pipe", "TopBottom2Right", tr(":/images/pipes/TopBottom2Right.svg"));
-    holder->addModule("Pipe", "Left2Top", tr(":/images/pipes/Left2Top.svg"));
-    holder->addModule("Pipe", "Left2Bottom", tr(":/images/pipes/Left2Bottom.svg"));
-    holder->addModule("Pipe", "Top2Right", tr(":/images/pipes/Top2Right.svg"));
-    holder->addModule("Pipe", "Bottom2Right", tr(":/images/pipes/Bottom2Right.svg"));
+    holder->addModule(Direction::LeftRight,      "Pipe", "Left2Right", tr(":/images/pipes/Left2Right.svg"));
+    holder->addModule(Direction::TopBottom,      "Pipe", "Top2Bottom", tr(":/images/pipes/Top2Bottom.svg"));
+    holder->addModule(Direction::LeftTopBottom,  "Pipe", "Left2TopBottom", tr(":/images/pipes/Left2TopBottom.svg"));
+    holder->addModule(Direction::TopBottomRight, "Pipe", "TopBottom2Right", tr(":/images/pipes/TopBottom2Right.svg"));
+    holder->addModule(Direction::LeftTop,        "Pipe", "Left2Top", tr(":/images/pipes/Left2Top.svg"));
+    holder->addModule(Direction::LeftBottom,     "Pipe", "Left2Bottom", tr(":/images/pipes/Left2Bottom.svg"));
+    holder->addModule(Direction::TopRight,       "Pipe", "Top2Right", tr(":/images/pipes/Top2Right.svg"));
+    holder->addModule(Direction::BottomRight,    "Pipe", "Bottom2Right", tr(":/images/pipes/Bottom2Right.svg"));
 
     ui->listWidget_elements->setSlider(ui->horizontalSlider_elements);
     ui->listWidget_pipes->setSlider(ui->horizontalSlider_elements);
@@ -357,6 +359,13 @@ void MainWindow::on_action_check_triggered()
             tr("В тракте отсутствуют источники трафика. Необходимо "
                "использовать хотя бы один объект адаптера."));
         return;
+    }
+
+    foreach(TableCell admod, adapters)
+    {
+        AdapterPtr ad = admod.item->record()->module.adapterModule->createAdapter();
+        //
+        ad->ping(ProcessorPtr());
     }
 }
 

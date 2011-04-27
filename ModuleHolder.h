@@ -4,6 +4,7 @@
 #include "CommonInclude.h"
 #include <QString>
 #include <QList>
+#include <QPair>
 
 using namespace DiplomBukov;
 
@@ -20,20 +21,65 @@ struct Module
     }
 };
 
+struct Direction
+{
+    enum DirectionEnum
+    {
+        Left   = 1,
+        Right  = 2,
+        Top    = 4,
+        Bottom = 8,
+
+        LeftRight      = Left   | Right,
+        TopBottom      = Top    | Left,
+        LeftTop        = Left   | Top,
+        LeftBottom     = Left   | Bottom,
+        TopRight       = Top    | Right,
+        BottomRight    = Bottom | Right,
+        LeftTopBottom  = Left   | Top    | Bottom,
+        TopBottomRight = Top    | Bottom | Right
+    };
+
+    static QList<QPair<int,int> > toShift(int dir)
+    {
+        QList<QPair<int,int> > list;
+        if (dir & Left)   list.append(toShiftBasic(Left));
+        if (dir & Right)  list.append(toShiftBasic(Right));
+        if (dir & Top)    list.append(toShiftBasic(Top));
+        if (dir & Bottom) list.append(toShiftBasic(Bottom));
+        return list;
+    }
+
+    static QPair<int,int> toShiftBasic(DirectionEnum dir)
+    {
+        switch (dir)
+        {
+            case Left:   return qMakePair(-1,0);
+            case Right:  return qMakePair(+1,0);
+            case Top:    return qMakePair(0,-1);
+            case Bottom: return qMakePair(0,+1);
+        }
+        return qMakePair(0,0);
+    }
+};
+
 struct ModuleRecord
 {
     QString lib;
     QString name;
     QString pixmapPath;
     Module module;
+    QList<QPair<int,int> > sides;
 
-    ModuleRecord(QString lib = "",
+    ModuleRecord(int direction,
+                 QString lib = "",
                  QString name = "",
                  QString pixmapPath = "")
         : lib(lib)
         , name(name)
         , pixmapPath(pixmapPath)
     {
+        sides.append(Direction::toShift(direction));
     }
 
     QString fullName() const
@@ -62,7 +108,8 @@ private:
 public:
     static ModuleHolder * instance(QListWidget * list = 0);
 
-    void addModule(QString libName,
+    void addModule(int direction,
+                   QString libName,
                    QString moduleName,
                    QString pixmapPath);
 

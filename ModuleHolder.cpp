@@ -40,7 +40,7 @@ void ModuleHolder::LoadLibrary(QString dllName)
 
     for (int i = 0; i < library->getAdapterModules_size(); i++)
     {
-        ModuleRecord mr;
+        ModuleRecord mr(Direction::Left|Direction::Right);
         mr.lib = moduleName;
         mr.module.adapterModule = library->getAdapterModules_item(i);
         mr.name = mr.module.adapterModule->name();
@@ -50,7 +50,7 @@ void ModuleHolder::LoadLibrary(QString dllName)
 
     for (int i = 0; i < library->getConnectorModules_size(); i++)
     {
-        ModuleRecord mr;
+        ModuleRecord mr(Direction::Left|Direction::Right);
         mr.lib = moduleName;
         mr.module.connectorModule = library->getConnectorModules_item(i);
         mr.name = mr.module.connectorModule->name();
@@ -60,7 +60,7 @@ void ModuleHolder::LoadLibrary(QString dllName)
 
     for (int i = 0; i < library->getProcessorModules_size(); i++)
     {
-        ModuleRecord mr;
+        ModuleRecord mr(Direction::Left|Direction::Right);
         mr.lib = moduleName;
         mr.module.processorModule = library->getProcessorModules_item(i);
         mr.name = mr.module.processorModule->name();
@@ -88,11 +88,12 @@ ModuleHolder * ModuleHolder::instance(QListWidget * list)
     return m_instance;
 }
 
-void ModuleHolder::addModule(QString libName,
+void ModuleHolder::addModule(int direction,
+                             QString libName,
                              QString moduleName,
                              QString pixmapPath)
 {
-    ModuleRecord rec(libName, moduleName, pixmapPath);
+    ModuleRecord rec(direction, libName, moduleName, pixmapPath);
     modules.push_back(rec);
 }
 
