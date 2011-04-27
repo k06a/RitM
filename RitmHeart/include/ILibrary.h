@@ -23,4 +23,7 @@ namespace DiplomBukov
 }
 // namespace DiplomBukov
 
+typedef DiplomBukov::ILibrary * (__cdecl *TCreateLibrary)(void);
+typedef void (__cdecl *TDeleteLibrary)(DiplomBukov::ILibrary *);
+
 #endif // ILIBRARY_H

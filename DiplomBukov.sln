@@ -45,6 +45,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FakeMitmLib", "FakeMitmLib\
 		{2E16AF09-6879-44A4-B577-696FE080A7B5} = {2E16AF09-6879-44A4-B577-696FE080A7B5}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiplomGui", "DiplomGui\DiplomGui.vcproj", "{3252F711-91E8-3837-B958-A746248824DC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DFDF4EB3-A8B5-442C-A327-B7069FC45970} = {DFDF4EB3-A8B5-442C-A327-B7069FC45970}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -87,6 +92,10 @@ Global
 		{803F39CF-0A27-4988-9D77-50419C79E1DE}.Debug|Win32.Build.0 = Debug|Win32
 		{803F39CF-0A27-4988-9D77-50419C79E1DE}.Release|Win32.ActiveCfg = Release|Win32
 		{803F39CF-0A27-4988-9D77-50419C79E1DE}.Release|Win32.Build.0 = Release|Win32
+		{3252F711-91E8-3837-B958-A746248824DC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3252F711-91E8-3837-B958-A746248824DC}.Debug|Win32.Build.0 = Debug|Win32
+		{3252F711-91E8-3837-B958-A746248824DC}.Release|Win32.ActiveCfg = Release|Win32
+		{3252F711-91E8-3837-B958-A746248824DC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

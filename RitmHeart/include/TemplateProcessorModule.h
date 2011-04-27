@@ -8,11 +8,13 @@ namespace DiplomBukov
     template<typename T>
     class TemplateProcessorModule : public IProcessorModule
     {
+        std::string m_name;
         std::string m_info;
 
     public:
-        TemplateProcessorModule(const std::string & info)
-            : m_info(info)
+        TemplateProcessorModule(const std::string & name,
+                                const std::string & info)
+            : m_name(name), m_info(info)
         {
         }
 
@@ -21,9 +23,14 @@ namespace DiplomBukov
             return ProcessorPtr(new T());
         }
 
-        virtual std::string info() const
+        virtual const char * name() const
         {
-            return m_info;
+            return m_name.c_str();
+        }
+
+        virtual const char * info() const
+        {
+            return m_info.c_str();
         }
     };
     // class TemplateModule

@@ -15,16 +15,28 @@ namespace DiplomBukov
     public:
         MitmLibrary();
 
-        virtual int getConnectorModules_size() const = 0;
-        virtual int   getAdapterModules_size() const = 0;
-        virtual int getProcessorModules_size() const = 0;
+        virtual int getConnectorModules_size() const;
+        virtual int   getAdapterModules_size() const;
+        virtual int getProcessorModules_size() const;
 
-        virtual ConnectorModulePtr getConnectorModules_item(int i) const = 0;
-        virtual AdapterModulePtr     getAdapterModules_item(int i) const = 0;
-        virtual ProcessorModulePtr getProcessorModules_item(int i) const = 0;
+        virtual ConnectorModulePtr getConnectorModules_item(int i) const;
+        virtual AdapterModulePtr     getAdapterModules_item(int i) const;
+        virtual ProcessorModulePtr getProcessorModules_item(int i) const;
     };
     // class MitmLibrary
 }
 // namespace DiplomBukov
+
+extern "C" __declspec(dllexport)
+DiplomBukov::ILibrary * createLibrary()
+{
+    return new DiplomBukov::MitmLibrary();
+}
+
+extern "C" __declspec(dllexport)
+void deleteLibrary(DiplomBukov::ILibrary * lib)
+{
+    delete lib;
+}
 
 #endif // BASICLIBRARY_H

@@ -10,7 +10,8 @@ namespace DiplomBukov
     public:
         virtual ~IModule() {}
 
-        virtual std::string info() const = 0;
+        virtual const char * name() const = 0;
+        virtual const char * info() const = 0;
     };
     // class IModule
 }

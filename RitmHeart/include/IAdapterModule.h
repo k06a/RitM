@@ -6,7 +6,7 @@
 
 namespace DiplomBukov
 {
-    class IAdapterModule
+    class IAdapterModule : public IModule
     {
     public:
         virtual ~IAdapterModule() {}

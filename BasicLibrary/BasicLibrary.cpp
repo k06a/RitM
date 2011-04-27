@@ -38,9 +38,9 @@ BasicLibrary::BasicLibrary()
     // ----------------------------------------------------------------
 
     list_con.push_back(ConnectorModulePtr(new TemplateConnectorModule<BruteConnector>(
-        "Коннектор, осуществляющий передачу пакетов всем подключённым процессорам.")));
+        "BruteConnector", "Коннектор, осуществляющий передачу пакетов всем подключённым процессорам.")));
     list_con.push_back(ConnectorModulePtr(new TemplateConnectorModule<ProtocolConnector>(
-        "Коннектор, осуществляющий передачу пакетов исходя из протокола пакета и "
+        "ProtocolConnector", "Коннектор, осуществляющий передачу пакетов исходя из протокола пакета и "
         "входных протоколов процессоров. Если у пакета нет протокола - он передаётся "
         "всем процессорам. Если у пакета есть протокол - он передаётся только "
         "процессорам с этим же протоколам и процесоорам не имеющим протокола.")));
@@ -48,48 +48,48 @@ BasicLibrary::BasicLibrary()
     // ----------------------------------------------------------------
 
     list_ad.push_back(AdapterModulePtr(new TemplateAdapterModule<FileAdapter>(
-        "Адаптер, осуществляющий считывание пакетов из файла и запись пакетов файл. "
+        "FileAdapter", "Адаптер, осуществляющий считывание пакетов из файла и запись пакетов файл. "
         "Входной файл должен соответствовать формату PCAP.")));
     list_ad.push_back(AdapterModulePtr(new TemplateAdapterModule<PcapAdapter>(
-        "Адаптер, осуществляющий информационный обмен пакетами с сетевым интерфейсом.")));
+        "PcapAdapter", "Адаптер, осуществляющий информационный обмен пакетами с сетевым интерфейсом.")));
 
     // ----------------------------------------------------------------
 
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacSwitch>(
-        "Обработчик, осуществляющий коммутацию кадров между интерфейсами по MAC-адресам.")));
+        "MacSwitch", "Обработчик, осуществляющий коммутацию кадров между интерфейсами по MAC-адресам.")));
 
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<AcceptProcessor>(
-        "Обработчик, осуществляющий проталкивание пакета.")));
+        "AcceptProcessor", "Обработчик, осуществляющий проталкивание пакета.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<RejectProcessor>(
-        "Обработчик, осуществляющий отклонение пакета.")));
+        "RejectProcessor", "Обработчик, осуществляющий отклонение пакета.")));
 
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacHeaderProcessor>(
-        "Обработчик, осуществляющий разбор заголовка Ethernet II.")));
+        "MacHeaderProcessor", "Обработчик, осуществляющий разбор заголовка Ethernet II.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4HeaderProcessor>(
-        "Обработчик, осуществляющий разбор заголовка IPv4.")));
+        "Ipv4HeaderProcessor", "Обработчик, осуществляющий разбор заголовка IPv4.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpHeaderProcessor>(
-        "Обработчик, осуществляющий разбор заголовка TCP.")));
+        "TcpHeaderProcessor", "Обработчик, осуществляющий разбор заголовка TCP.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<UdpHeaderProcessor>(
-        "Обработчик, осуществляющий разбор заголовка UDP.")));
+        "UdpHeaderProcessor", "Обработчик, осуществляющий разбор заголовка UDP.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<IcmpHeaderProcessor>(
-        "Обработчик, осуществляющий разбор заголовка ICMP.")));
+        "IcmpHeaderProcessor", "Обработчик, осуществляющий разбор заголовка ICMP.")));
 
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4Splitter>(
-        "Обработчик, осуществляющий разделение потоков по IPv4-адресам.")));
+        "Ipv4Splitter", "Обработчик, осуществляющий разделение потоков по IPv4-адресам.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpSplitter>(
-        "Обработчик, осуществляющий разделение потоков по TCP-портам.")));
+        "TcpSplitter", "Обработчик, осуществляющий разделение потоков по TCP-портам.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<UdpSplitter>(
-        "Обработчик, осуществляющий разделение потоков по UDP-портам.")));
+        "UdpSplitter", "Обработчик, осуществляющий разделение потоков по UDP-портам.")));
 
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TransportPortFilter>(
-        "Обработчик, осуществляющий фильтрацию потоков по TCP/UDP-портам.")));
+        "TransportPortFilter", "Обработчик, осуществляющий фильтрацию потоков по TCP/UDP-портам.")));
 
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<Ipv4Defragger>(
-        "Обработчик, осуществляющий (де)фрагментацию IP-пакетов.")));
+        "Ipv4Defragger", "Обработчик, осуществляющий (де)фрагментацию IP-пакетов.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpLayerProcessor>(
-        "Обработчик, осуществляющий подмену потоков данных на уровне TCP.")));
+        "TcpLayerProcessor", "Обработчик, осуществляющий подмену потоков данных на уровне TCP.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TcpOptionsRemover>(
-        "Обработчик, осуществляющий стирание TCP-опций в пакете.")));
+        "TcpOptionsRemover", "Обработчик, осуществляющий стирание TCP-опций в пакете.")));
     
     // ----------------------------------------------------------------
 }

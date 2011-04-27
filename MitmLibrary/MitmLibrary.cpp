@@ -14,13 +14,13 @@ using namespace DiplomBukov;
 MitmLibrary::MitmLibrary()
 {
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<DnsMessageProcessor>(
-        "ќбработчик, осуществл€ющий подлог данных DNS.")));
+        "DnsMessageProcessor", "ќбработчик, осуществл€ющий подлог данных DNS.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<HttpDefragProcessor>(
-        "ќбработчик, осуществл€ющий сборку сообщений HTTP.")));
+        "HttpDefragProcessor", "ќбработчик, осуществл€ющий сборку сообщений HTTP.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<HttpSwapProcessor>(
-        "ќбработчик, осуществл€ющий подлог данных HTTP.")));
+        "HttpSwapProcessor", "ќбработчик, осуществл€ющий подлог данных HTTP.")));
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<TelnetSwapper>(
-        "ќбработчик, осуществл€ющий подлог данных Telnet.")));
+        "TelnetSwapper", "ќбработчик, осуществл€ющий подлог данных Telnet.")));
 }
 
 int MitmLibrary::getConnectorModules_size() const

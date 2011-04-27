@@ -6,7 +6,7 @@
 
 namespace DiplomBukov
 {
-    class IConnectorModule
+    class IConnectorModule : public IModule
     {
     public:
         virtual ~IConnectorModule() {}

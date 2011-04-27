@@ -27,4 +27,16 @@ namespace DiplomBukov
 }
 // namespace DiplomBukov
 
+extern "C" __declspec(dllexport)
+DiplomBukov::ILibrary * createLibrary()
+{
+    return new DiplomBukov::BasicLibrary();
+}
+
+extern "C" __declspec(dllexport)
+void deleteLibrary(DiplomBukov::ILibrary * lib)
+{
+    delete lib;
+}
+
 #endif // BASICLIBRARY_H
