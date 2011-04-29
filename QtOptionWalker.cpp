@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QVariant>
 #include <QFileDialog>
+#include <QComboBox>
 
 #include "QtOptionWalker.h"
 #include "IProcessor.h"
@@ -84,6 +85,20 @@ void QtOptionWalker::visit(SwitchOptionPtr opt)
     m_layoutStack.last()->addWidget(gb);
 }
 
+void QtOptionWalker::visit(ComboOptionPtr opt)
+{
+    QComboBox * box = new QComboBox;
+    for (int i = 0; i < opt->getTextItems_size(); i++)
+    {
+        QString str = opt->getTextItems_item(i);
+        str.remove("   ");
+        box->addItem(str);
+    }
+    box->setCurrentIndex(opt->getSelectedIndex());
+    
+    m_layoutStack.last()->addWidget(box);
+}
+
 void QtOptionWalker::visit(IntOptionPtr opt)
 {
     QSpinBox * sb = new QSpinBox;
@@ -108,6 +123,16 @@ void QtOptionWalker::visit(TextLineOptionPtr opt)
 
 void QtOptionWalker::visit(FileOpenOptionPtr opt)
 {
+    visitFileOption(opt, SLOT(FileOpenOption_buttonClicked()));
+}
+
+void QtOptionWalker::visit(FileSaveOptionPtr opt)
+{
+    visitFileOption(opt, SLOT(FileSaveOption_buttonClicked()));
+}
+
+void QtOptionWalker::visitFileOption(FileOpenOptionPtr opt, const char * member)
+{
     QWidget * w = new QWidget;
     w->setLayout(new QHBoxLayout);
 
@@ -121,7 +146,7 @@ void QtOptionWalker::visit(FileOpenOptionPtr opt)
     pb->setProperty("extension", tr(opt->getExtension()));
     pb->setProperty("fileLineEdit", (int)le);
 
-    connect(pb, SIGNAL(clicked()), this, SLOT(TextLineOption_buttonClicked()));
+    connect(pb, SIGNAL(clicked()), this, member);
 
     w->layout()->addWidget(lb);
     w->layout()->addWidget(le);
@@ -159,7 +184,7 @@ void QtOptionWalker::visit(OptionPtr opt)
     throw "Not Implemented";
 }
 
-void QtOptionWalker::TextLineOption_buttonClicked()
+void QtOptionWalker::FileOpenOption_buttonClicked()
 {
     QPushButton * pushButton = (QPushButton *)sender();
     QString ext = pushButton->property("extension").toString();
@@ -167,6 +192,18 @@ void QtOptionWalker::TextLineOption_buttonClicked()
     QLineEdit * lineEdit = (QLineEdit *)fileLineEdit_addr;
 
     QString str = QFileDialog::getOpenFileName(m_dialog, tr("Выбрать файл"), "", ext);
+    if (!str.isEmpty())
+        lineEdit->setText(str);
+}
+
+void QtOptionWalker::FileSaveOption_buttonClicked()
+{
+    QPushButton * pushButton = (QPushButton *)sender();
+    QString ext = pushButton->property("extension").toString();
+    int fileLineEdit_addr = pushButton->property("fileLineEdit").toInt();
+    QLineEdit * lineEdit = (QLineEdit *)fileLineEdit_addr;
+
+    QString str = QFileDialog::getSaveFileName(m_dialog, tr("Выбрать файл"), "", ext);
     if (!str.isEmpty())
         lineEdit->setText(str);
 }
