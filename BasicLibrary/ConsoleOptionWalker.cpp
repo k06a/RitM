@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 
-#include "ConsoleOptionWalket.h"
+#include "ConsoleOptionWalker.h"
 #include "IProcessor.h"
 #include "IAdapter.h"
 
@@ -49,10 +49,10 @@ void ConsoleOptionWalker::visit(CheckOptionPtr opt)
 void ConsoleOptionWalker::visit(SwitchOptionPtr opt)
 {
     std::cout << opt->getName() << ":" << std::endl;
-    for (unsigned i = 0; i < opt->getTextItems_size(); i++)
+    for (int i = 0; i < opt->getTextItems_size(); i++)
         std::cout << i+1 << ". " << opt->getTextItems_item(i) << std::endl;
 
-    unsigned ans;
+    int ans;
     do 
     {
         std::cout << "Select one value (1-"
@@ -62,6 +62,12 @@ void ConsoleOptionWalker::visit(SwitchOptionPtr opt)
     } while ((ans < 1) || (ans > opt->getTextItems_size()));
 
     opt->setSelectedIndex(ans);
+}
+
+void ConsoleOptionWalker::visit(ComboOptionPtr opt)
+{
+    SwitchOptionPtr p = SharedPointerCast<SwitchOption>(shared_from_this());
+    visit(p);
 }
 
 void ConsoleOptionWalker::visit(IntOptionPtr opt)
@@ -90,7 +96,16 @@ void ConsoleOptionWalker::visit(TextLineOptionPtr opt)
 
 void ConsoleOptionWalker::visit(FileOpenOptionPtr opt)
 {
-    std::cout << "Enter filename for \""
+    std::cout << "Enter filename to open for \""
+        << opt->getName() << "\": ";
+    std::string ans;
+    std::getline(std::cin, ans, '\n');
+    opt->setFilename(ans.c_str());
+}
+
+void ConsoleOptionWalker::visit(FileSaveOptionPtr opt)
+{
+    std::cout << "Enter filename to save for \""
         << opt->getName() << "\": ";
     std::string ans;
     std::getline(std::cin, ans, '\n');
@@ -99,7 +114,7 @@ void ConsoleOptionWalker::visit(FileOpenOptionPtr opt)
 
 void ConsoleOptionWalker::visit(GroupOptionPtr opt)
 {
-    for (unsigned i = 0; i < opt->options_size(); i++)
+    for (int i = 0; i < opt->options_size(); i++)
         opt->options_item(i)->visitMe(shared_from_this());
 }
 

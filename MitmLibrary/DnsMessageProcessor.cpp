@@ -13,7 +13,7 @@ DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
 
     check = CheckOptionPtr(new CheckOption(false, "Вкл/Выкл"));
     source = TextLineOptionPtr(new TextLineOption("www.example.com"));
-    destType = SwitchOptionPtr(new SwitchOption);
+    destType = ComboOptionPtr(new ComboOption);
     destType->addTextItem("IPv4");
     destType->addTextItem("Domain Name");
     destType->addTextItem("Mail Exchange");

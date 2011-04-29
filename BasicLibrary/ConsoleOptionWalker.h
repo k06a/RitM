@@ -7,10 +7,12 @@
 
 #include "CheckOption.h"
 #include "SwitchOption.h"
+#include "ComboOption.h"
 #include "IntOption.h"
 #include "GroupOption.h"
 #include "TextLineOption.h"
 #include "FileOpenOption.h"
+#include "FileSaveOption.h"
 #include "ListOption.h"
 
 namespace DiplomBukov
@@ -27,10 +29,12 @@ namespace DiplomBukov
 
         virtual void visit(CheckOptionPtr opt);
         virtual void visit(SwitchOptionPtr opt);
+        virtual void visit(ComboOptionPtr opt);
         virtual void visit(IntOptionPtr opt);
         virtual void visit(GroupOptionPtr opt);
         virtual void visit(TextLineOptionPtr opt);
         virtual void visit(FileOpenOptionPtr opt);
+        virtual void visit(FileSaveOptionPtr opt);
 
         virtual void visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt);
 

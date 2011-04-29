@@ -16,10 +16,12 @@ namespace DiplomBukov
         
         virtual void visit(CheckOptionPtr opt) = 0;
         virtual void visit(SwitchOptionPtr opt) = 0;
+        virtual void visit(ComboOptionPtr opt) = 0;
         virtual void visit(IntOptionPtr opt) = 0;
         virtual void visit(GroupOptionPtr opt) = 0;
         virtual void visit(TextLineOptionPtr opt) = 0;
         virtual void visit(FileOpenOptionPtr opt) = 0;
+        virtual void visit(FileSaveOptionPtr opt) = 0;
 
         virtual void visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt) = 0;
 

@@ -168,7 +168,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ComboOption.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\FileOpenOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FileSaveOption.cpp"
 					>
 				</File>
 				<File
@@ -203,7 +211,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Options.h"
+				RelativePath=".\include\Options.h"
 				>
 			</File>
 			<File
@@ -294,7 +302,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\options\ComboOption.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\options\FileOpenOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\options\FileSaveOption.h"
 					>
 				</File>
 				<File

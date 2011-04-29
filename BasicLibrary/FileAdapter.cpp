@@ -32,7 +32,7 @@ FileAdapter::FileAdapter(ProcessorPtr Connector)
     , linkType(0), buffer(NULL)
     , groupOption(new GroupOption(true))
     , inFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Входной файл:"))
-    , outFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Выходной файл:"))
+    , outFile(new FileSaveOption("Packet CAPture (*.cap *.pcap)", "Выходной файл:"))
 {
     setNextProcessor(Connector);
     groupOption->addOption(inFile);

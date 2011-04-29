@@ -10,6 +10,7 @@
 #include "AbstractProcessor.h"
 #include "network/dns_header.h"
 #include "SwitchOption.h"
+#include "ComboOption.h"
 #include "TextLineOption.h"
 #include "ListOption.h"
 #include "GroupOption.h"
@@ -23,7 +24,7 @@ namespace DiplomBukov
         CheckOptionPtr alwaysResave;
         CheckOptionPtr check;
         TextLineOptionPtr source;
-        SwitchOptionPtr destType;
+        ComboOptionPtr destType;
         TextLineOptionPtr destination;
         GroupOptionPtr options;
 

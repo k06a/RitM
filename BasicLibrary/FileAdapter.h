@@ -10,6 +10,7 @@
 #include "IStatsProvider.h"
 #include "GroupOption.h"
 #include "FileOpenOption.h"
+#include "FileSaveOption.h"
 
 namespace DiplomBukov
 {
@@ -60,7 +61,7 @@ namespace DiplomBukov
 
         GroupOptionPtr groupOption;
         FileOpenOptionPtr inFile;
-        FileOpenOptionPtr outFile;
+        FileSaveOptionPtr outFile;
 
 	public:
         FileAdapter(ProcessorPtr Connector = ProcessorPtr());
