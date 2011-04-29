@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/editcopy.png</file>
+        <file>images/editcut.png</file>
+        <file>images/editpaste.png</file>
+        <file>images/filenew.png</file>
+        <file>images/fileopen.png</file>
+        <file>images/filesave.png</file>
+        <file>images/zoomin.png</file>
+        <file>images/zoomout.png</file>
+        <file>images/pipes/Bottom2Right.svg</file>
+        <file>images/pipes/Left2Bottom.svg</file>
+        <file>images/pipes/Left2Right.svg</file>
+        <file>images/pipes/Left2Top.svg</file>
+        <file>images/pipes/Left2TopBottom.svg</file>
+        <file>images/pipes/Top2Bottom.svg</file>
+        <file>images/pipes/Top2Right.svg</file>
+        <file>images/pipes/TopBottom2Right.svg</file>
+        <file>images/editdelete.png</file>
+        <file>images/quit.png</file>
+        <file>images/help.png</file>
+        <file>images/about.png</file>
+        <file>images/adapter.svg</file>
+        <file>images/connector.svg</file>
+        <file>images/processor.svg</file>
+        <file>images/redo.png</file>
+        <file>images/undo.png</file>
+        <file>images/logo.png</file>
+        <file>images/check.png</file>
+        <file>images/start.png</file>
+        <file>images/stop.png</file>
+    </qresource>
+</RCC>
