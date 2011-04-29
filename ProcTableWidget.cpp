@@ -12,6 +12,10 @@
 #include "ProcMimeData.h"
 #include "ModuleHolder.h"
 #include "ProcCommands.h"
+#include "QtOptionWalker.h"
+#include "IProcessor.h"
+#include "IAdapter.h"
+#include "IConnector.h"
 
 ProcTableWidget::ProcTableWidget(QWidget *parent)
     : QTableWidget(parent)
@@ -330,6 +334,33 @@ void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
     }
 }
 
+void ProcTableWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QTableWidgetItem * it = itemAt(event->pos());
+    if (it == NULL)
+        return;
+
+    ProcTableWidgetItem * w =
+        qobject_cast<ProcTableWidgetItem*>(cellWidget(it->row(), it->column()));
+    if (w == NULL)
+        return;
+
+    QtOptionWalkerPtr walker(new QtOptionWalker());
+    OptionPtr opts;
+    if (w->procRecord().adapter)
+        opts = w->procRecord().adapter->getOptions();
+    if (w->procRecord().connector)
+        opts = w->procRecord().connector->getOptions();
+    if (w->procRecord().processor)
+        opts = w->procRecord().processor->getOptions();
+
+    if (opts != NULL)
+    {
+        opts->visitMe(walker);
+        walker->dialog()->exec();
+    }
+}
+
 Qt::DropActions ProcTableWidget::supportedDropActions() const
 {
     return Qt::CopyAction | Qt::MoveAction;
@@ -430,6 +461,8 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
         w->setPixmap(rec->pixmapPath);
         w->setText(rec->fullName());
         w->setModuleFullName(rec->fullName());
+        ProcRecord procRec(rec->module);
+        w->setProcRecord(procRec);
 
         ProcItem proc(rowAt(event->pos().y()),
                       columnAt(event->pos().x()), w);

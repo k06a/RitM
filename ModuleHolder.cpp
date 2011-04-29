@@ -40,7 +40,7 @@ void ModuleHolder::LoadLibrary(QString dllName)
 
     for (int i = 0; i < library->getAdapterModules_size(); i++)
     {
-        ModuleRecord mr(Direction::Left|Direction::Right);
+        ModuleRecord mr(Direction::Right);
         mr.lib = moduleName;
         mr.module.adapterModule = library->getAdapterModules_item(i);
         mr.name = mr.module.adapterModule->name();

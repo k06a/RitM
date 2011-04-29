@@ -157,7 +157,7 @@ void MainWindow::stackChanged()
 void MainWindow::clipboardChanged()
 {
     const QMimeData * mime = QApplication::clipboard()->mimeData();
-    bool b = (mime->formats().first() == "RitM/processors");
+    bool b = (mime->formats().size() > 0) && (mime->formats().first() == "RitM/processors");
     ui->action_paste->setEnabled(b);
 }
 

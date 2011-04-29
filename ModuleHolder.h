@@ -2,6 +2,9 @@
 #define MODULEHOLDER_H
 
 #include "CommonInclude.h"
+#include "IAdapterModule.h"
+#include "IConnectorModule.h"
+#include "IProcessorModule.h"
 #include <QString>
 #include <QList>
 #include <QPair>
@@ -13,11 +16,47 @@ struct Module
     AdapterModulePtr   adapterModule;
     ConnectorModulePtr connectorModule;
     ProcessorModulePtr processorModule;
+
     Module()
         : adapterModule()
         , connectorModule()
         , processorModule()
     {
+    }
+};
+
+struct ProcRecord
+{
+    AdapterPtr   adapter;
+    ConnectorPtr connector;
+    ProcessorPtr processor;
+
+    ProcRecord()
+        : adapter()
+        , connector()
+        , processor()
+    {
+    }
+
+    ProcRecord(Module module)
+        : adapter()
+        , connector()
+        , processor()
+    {
+        if (module.adapterModule != NULL)
+        {
+            adapter = module.adapterModule->createAdapter();
+            //processor = ProcessorPtr(adapter);
+        } else
+        if (module.connectorModule != NULL)
+        {
+            connector = module.connectorModule->createConnector();
+            //processor = ProcessorPtr(connector);
+        }
+        else
+        {
+            processor = module.processorModule->createProcessor();
+        }
     }
 };
 

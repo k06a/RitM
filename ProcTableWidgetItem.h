@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPixmap>
+#include "ModuleHolder.h"
 
 struct ModuleRecord;
 
@@ -22,9 +23,16 @@ class ProcTableWidgetItem : public QWidget
                READ moduleFullName
                WRITE setModuleFullName)
 
+    /*
+    Q_PROPERTY(ProcRecord m_procRecord
+               READ record
+               WRITE setRecord)
+    */
+
     QString m_text;
     QPixmap m_pixmap;
     QString m_moduleFullName;
+    ProcRecord m_procRecord;
 
     QString m_pixmapPath;
 
@@ -42,6 +50,9 @@ public:
 
     QString moduleFullName() const;
     void setModuleFullName(QString moduleFullName);
+
+    ProcRecord procRecord() const;
+    void setProcRecord(ProcRecord procRecord);
 
     QString toStringForm();
     bool isEqualProc(ProcTableWidgetItem * w);

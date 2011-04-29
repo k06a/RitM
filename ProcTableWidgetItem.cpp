@@ -17,6 +17,7 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
     , m_text(item->m_text)
     , m_pixmap(item->m_pixmap)
     , m_pixmapPath(item->m_pixmapPath)
+    , m_procRecord(item->m_procRecord)
 {
 }
 
@@ -76,6 +77,16 @@ QString ProcTableWidgetItem::moduleFullName() const
 void ProcTableWidgetItem::setModuleFullName(QString moduleFullName)
 {
     m_moduleFullName = moduleFullName;
+}
+
+ProcRecord ProcTableWidgetItem::procRecord() const
+{
+    return m_procRecord;
+}
+
+void ProcTableWidgetItem::setProcRecord(ProcRecord record)
+{
+    m_procRecord = record;
 }
 
 QString ProcTableWidgetItem::toStringForm()
