@@ -31,8 +31,8 @@ FileAdapter::FileAdapter(ProcessorPtr Connector)
     , file1(NULL), file2(NULL), id(0)
     , linkType(0), buffer(NULL)
     , groupOption(new GroupOption(true))
-    , inFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Входной файл"))
-    , outFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Выходной файл"))
+    , inFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Входной файл:"))
+    , outFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Выходной файл:"))
 {
     setNextProcessor(Connector);
     groupOption->addOption(inFile);

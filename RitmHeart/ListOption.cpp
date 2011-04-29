@@ -29,13 +29,13 @@ OptionPtr ListOption<T1,T2>::CreateCopy() const
 }
 
 template<typename T1, typename T2>
-const std::string & ListOption<T1,T2>::getName() const
+const char * ListOption<T1,T2>::getName() const
 {
     return label;
 }
 
 template<typename T1, typename T2>
-void ListOption<T1,T2>::setName(const std::string & text)
+void ListOption<T1,T2>::setName(const char * text)
 {
     label = text;
 }

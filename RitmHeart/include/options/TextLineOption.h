@@ -18,16 +18,16 @@ namespace DiplomBukov
         std::string textline;
 
     public:
-        TextLineOption(const std::string & text = "");
+        TextLineOption(const char * text = "");
         virtual OptionPtr CreateCopy() const;
 
-        virtual const std::string & getName() const;
-        virtual void setName(const std::string & name);
+        virtual const char * getName() const;
+        virtual void setName(const char * name);
 
         virtual void visitMe(OptionWalkerPtr walker);
 
-        const std::string & getText() const;
-        void setText(const std::string & name);
+        const char * getText() const;
+        void setText(const char * name);
     };
     // class TextLineOption
 }

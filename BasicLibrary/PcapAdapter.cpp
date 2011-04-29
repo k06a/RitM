@@ -8,7 +8,7 @@
 using namespace DiplomBukov;
 
 PcapAdapter::PcapAdapter(ProcessorPtr Connector)
-    : devicesSwitch(new SwitchOption())
+    : devicesSwitch(new SwitchOption)
     , deviceList(NULL)
     , device(NULL)
 {
@@ -21,15 +21,15 @@ PcapAdapter::PcapAdapter(ProcessorPtr Connector)
         throw std::string("Error in pcap_findalldevs: ") + errbuf + "\n";
     
     std::deque<std::string> arr;
+    devicesSwitch->setName("Сетевые адаптеры:");
+    devicesSwitch->addTextItem("None");
     for(pcap_if_t * dev = deviceList; dev != NULL; dev = dev->next)
     {
         std::string about;
         about = about + dev->description + "\n   (" + dev->name + ")";
         arr.push_back(about);
+        devicesSwitch->addTextItem(about.c_str());
     }
-    
-    devicesSwitch->setName("Network interfaces");
-    devicesSwitch->setTextItems(arr);
 }
 
 ProcessorPtr PcapAdapter::CreateCopy() const
@@ -77,8 +77,11 @@ OptionPtr PcapAdapter::getOptions()
 
 void PcapAdapter::run(bool always)
 {
+    if (devicesSwitch->getSelectedIndex() == 0)
+        throw std::exception("Ни один из сеттвых адапетеров не выбран. Проверьте настройки.");
+
     pcap_if_t * dev = deviceList;
-    for (int i = 0; i < devicesSwitch->getSelectedIndex(); i++)
+    for (int i = 1; i < devicesSwitch->getSelectedIndex(); i++)
         dev = dev->next;
     
     char errbuf[PCAP_ERRBUF_SIZE];

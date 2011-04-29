@@ -2,24 +2,24 @@
 
 using namespace DiplomBukov;
 
-TextLineOption::TextLineOption(const std::string & text)
+TextLineOption::TextLineOption(const char * text)
     : label(""), textline(text)
 {
 }
 
 OptionPtr TextLineOption::CreateCopy() const
 {
-    TextLineOptionPtr ptr(new TextLineOption(textline));
+    TextLineOptionPtr ptr(new TextLineOption(textline.c_str()));
     ptr->setName(getName());
     return ptr;
 }
 
-const std::string & TextLineOption::getName() const
+const char * TextLineOption::getName() const
 {
-    return label;
+    return label.c_str();
 }
 
-void TextLineOption::setName(const std::string & text)
+void TextLineOption::setName(const char * text)
 {
     label = text;
 }
@@ -29,12 +29,12 @@ void TextLineOption::visitMe(OptionWalkerPtr walker)
     walker->visit(shared_from_this());
 }
 
-const std::string & TextLineOption::getText() const
+const char * TextLineOption::getText() const
 {
-    return textline;
+    return textline.c_str();
 }
 
-void TextLineOption::setText(const std::string & text)
+void TextLineOption::setText(const char * text)
 {
     textline = text;
 }

@@ -19,17 +19,20 @@ namespace DiplomBukov
         std::string filename;
 
     public:
-        FileOpenOption(const std::string & ext = "*.*",
-                       const std::string & label = "");
+        FileOpenOption(const char * ext = "*.*",
+                       const char * label = "");
         virtual OptionPtr CreateCopy() const;
 
-        virtual const std::string & getName() const;
-        virtual void setName(const std::string & name);
+        virtual const char * getName() const;
+        virtual void setName(const char * name);
 
         virtual void visitMe(OptionWalkerPtr walker);
 
-        const std::string & getFilename() const;
-        void setFilename(const std::string & name);
+        const char * getFilename() const;
+        void setFilename(const char * name);
+
+        const char * getExtension() const;
+        void setExtension(const char * extension);
     };
     // class FileOpenOption
 }

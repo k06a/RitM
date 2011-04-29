@@ -19,11 +19,11 @@ namespace DiplomBukov
         bool vertical;
 
     public:
-        GroupOption(bool vertical = true, const std::string & name = "");
+        GroupOption(bool vertical = true, const char * name = "");
         virtual OptionPtr CreateCopy() const;
 
-        virtual const std::string & getName() const;
-        virtual void setName(const std::string & name);
+        virtual const char * getName() const;
+        virtual void setName(const char * name);
 
         virtual void visitMe(OptionWalkerPtr walker);
 
@@ -32,7 +32,8 @@ namespace DiplomBukov
         bool isHoizontal();
         bool isVertical();
 
-        std::deque<OptionPtr> & options();
+        int options_size() const;
+        OptionPtr options_item(int i) const;
         void addOption(OptionPtr option);
         void removeOptions(OptionPtr option);
     };

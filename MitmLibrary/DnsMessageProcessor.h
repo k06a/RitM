@@ -20,11 +20,11 @@ namespace DiplomBukov
     class DnsMessageProcessor : public AbstractProcessor
     {
         DnsMessage dnsMessage;
-        CheckOption * alwaysResave;
-        CheckOption * check;
-        TextLineOption * source;
-        SwitchOption * destType;
-        TextLineOption * destination;
+        CheckOptionPtr alwaysResave;
+        CheckOptionPtr check;
+        TextLineOptionPtr source;
+        SwitchOptionPtr destType;
+        TextLineOptionPtr destination;
         GroupOptionPtr options;
 
     public:

@@ -7,6 +7,11 @@
 
 using namespace DiplomBukov;
 
+ConsoleOptionWalker::ConsoleOptionWalker()
+{
+
+}
+
 void ConsoleOptionWalker::visit(AdapterPtr adap)
 {
     OptionPtr opt = adap->getOptions();
@@ -44,17 +49,17 @@ void ConsoleOptionWalker::visit(CheckOptionPtr opt)
 void ConsoleOptionWalker::visit(SwitchOptionPtr opt)
 {
     std::cout << opt->getName() << ":" << std::endl;
-    for (unsigned i = 0; i < opt->getTextItems().size(); i++)
-        std::cout << i+1 << ". " << opt->getTextItems()[i] << std::endl;
+    for (unsigned i = 0; i < opt->getTextItems_size(); i++)
+        std::cout << i+1 << ". " << opt->getTextItems_item(i) << std::endl;
 
     unsigned ans;
     do 
     {
         std::cout << "Select one value (1-"
-                  << opt->getTextItems().size()
+                  << opt->getTextItems_size()
                   << "): ";
         std::cin >> ans;
-    } while ((ans < 1) || (ans > opt->getTextItems().size()));
+    } while ((ans < 1) || (ans > opt->getTextItems_size()));
 
     opt->setSelectedIndex(ans);
 }
@@ -80,7 +85,7 @@ void ConsoleOptionWalker::visit(TextLineOptionPtr opt)
               << opt->getName() << "\": ";
     std::string ans;
     std::getline(std::cin, ans, '\n');
-    opt->setText(ans);
+    opt->setText(ans.c_str());
 }
 
 void ConsoleOptionWalker::visit(FileOpenOptionPtr opt)
@@ -89,13 +94,13 @@ void ConsoleOptionWalker::visit(FileOpenOptionPtr opt)
         << opt->getName() << "\": ";
     std::string ans;
     std::getline(std::cin, ans, '\n');
-    opt->setFilename(ans);
+    opt->setFilename(ans.c_str());
 }
 
 void ConsoleOptionWalker::visit(GroupOptionPtr opt)
 {
-    for (unsigned i = 0; i < opt->options().size(); i++)
-        opt->options()[i]->visitMe(shared_from_this());
+    for (unsigned i = 0; i < opt->options_size(); i++)
+        opt->options_item(i)->visitMe(shared_from_this());
 }
 
 void ConsoleOptionWalker::visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt)

@@ -19,12 +19,12 @@ OptionPtr IntOption::CreateCopy() const
     return ptr;
 }
 
-const std::string & IntOption::getName() const
+const char * IntOption::getName() const
 {
-    return label;
+    return label.c_str();
 }
 
-void IntOption::setName(const std::string & text)
+void IntOption::setName(const char * text)
 {
     label = text;
 }

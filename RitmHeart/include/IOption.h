@@ -11,8 +11,8 @@ namespace DiplomBukov
         virtual ~IOption() {}
         virtual OptionPtr CreateCopy() const = 0;
 
-        virtual const std::string & getName() const = 0;
-        virtual void setName(const std::string & text) = 0;
+        virtual const char * getName() const = 0;
+        virtual void setName(const char * text) = 0;
 
         virtual void visitMe(OptionWalkerPtr walker) = 0;
     };

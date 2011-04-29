@@ -2,7 +2,7 @@
 
 using namespace DiplomBukov;
 
-CheckOption::CheckOption(bool checked, const std::string & name)
+CheckOption::CheckOption(bool checked, const char * name)
     : label(name), value(checked)
 {
 }
@@ -14,12 +14,12 @@ OptionPtr CheckOption::CreateCopy() const
     return ptr;
 }
 
-const std::string & CheckOption::getName() const
+const char * CheckOption::getName() const
 {
-    return label;
+    return label.c_str();
 }
 
-void CheckOption::setName(const std::string & name)
+void CheckOption::setName(const char * name)
 {
     label = name;
 }

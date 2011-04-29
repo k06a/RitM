@@ -2,25 +2,25 @@
 
 using namespace DiplomBukov;
 
-FileOpenOption::FileOpenOption(const std::string & ext,
-                               const std::string & label)
+FileOpenOption::FileOpenOption(const char * ext,
+                               const char * label)
     : label(label), ext(ext), filename("")
 {
 }
 
 OptionPtr FileOpenOption::CreateCopy() const
 {
-    FileOpenOptionPtr ptr(new FileOpenOption(filename));
+    FileOpenOptionPtr ptr(new FileOpenOption(ext.c_str(),label.c_str()));
     ptr->setFilename(getFilename());
     return ptr;
 }
 
-const std::string & FileOpenOption::getName() const
+const char * FileOpenOption::getName() const
 {
-    return label;
+    return label.c_str();
 }
 
-void FileOpenOption::setName(const std::string & text)
+void FileOpenOption::setName(const char * text)
 {
     label = text;
 }
@@ -30,12 +30,22 @@ void FileOpenOption::visitMe(OptionWalkerPtr walker)
     walker->visit(shared_from_this());
 }
 
-const std::string & FileOpenOption::getFilename() const
+const char * FileOpenOption::getFilename() const
 {
-    return filename;
+    return filename.c_str();
 }
 
-void FileOpenOption::setFilename(const std::string & text)
+void FileOpenOption::setFilename(const char * text)
 {
     filename = text;
+}
+
+const char * FileOpenOption::getExtension() const
+{
+    return ext.c_str();
+}
+
+void FileOpenOption::setExtension(const char * extension)
+{
+    ext = extension;
 }

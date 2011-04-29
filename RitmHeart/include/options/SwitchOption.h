@@ -20,26 +20,24 @@ namespace DiplomBukov
 
     public:
         SwitchOption();
-        SwitchOption(const std::string & item,
-                     const std::string & name = "");
-        SwitchOption(const std::deque<std::string> & text,
-                     const std::string & name = "");
+        SwitchOption(const char * name);
         virtual OptionPtr CreateCopy() const;
 
-        virtual const std::string & getName() const;
-        virtual void setName(const std::string & text);
+        virtual const char * getName() const;
+        virtual void setName(const char * text);
 
         virtual void visitMe(OptionWalkerPtr walker);
 
-        const std::deque<std::string> & getTextItems() const;
-        void setTextItems(const std::deque<std::string> & text);
-        void addTextItem(const std::string & text);
-        void removeTextItem(const std::string & text);
-        int getIndexOf(const std::string & item);
+        int getTextItems_size() const;
+        const char * getTextItems_item(int i) const;
+
+        void addTextItem(const char * text);
+        void removeTextItem(const char * text);
+        int getIndexOf(const char * item);
 
         int getSelectedIndex() const;
         void setSelectedIndex(int index);
-        std::string getSelectedText() const;
+        const char * getSelectedText() const;
     };
     // class SwitchOption
 }

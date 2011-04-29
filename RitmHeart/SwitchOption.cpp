@@ -8,31 +8,25 @@ SwitchOption::SwitchOption()
 {
 }
 
-SwitchOption::SwitchOption(const std::string & item,
-                           const std::string & name)
-    : label(name), labels(1, item), selected(0)
-{
-}
-
-SwitchOption::SwitchOption(const std::deque<std::string> & items,
-                           const std::string & name)
-    : label(name), labels(items), selected(0)
+SwitchOption::SwitchOption(const char * name)
+    : label(name), labels(), selected(0)
 {
 }
 
 OptionPtr SwitchOption::CreateCopy() const
 {
-    SwitchOptionPtr ptr(new SwitchOption(labels));
-    ptr->setName(getName());
+    SwitchOptionPtr ptr(new SwitchOption(getName()));
+    for (int i = 0; i < getTextItems_size(); i++)
+        ptr->addTextItem(getTextItems_item(i));
     return ptr;
 }
 
-const std::string & SwitchOption::getName() const
+const char * SwitchOption::getName() const
 {
-    return label;
+    return label.c_str();
 }
 
-void SwitchOption::setName(const std::string & text)
+void SwitchOption::setName(const char * text)
 {
     label = text;
 }
@@ -42,30 +36,32 @@ void SwitchOption::visitMe(OptionWalkerPtr walker)
     walker->visit(shared_from_this());
 }
 
-const std::deque<std::string> & SwitchOption::getTextItems() const
+int SwitchOption::getTextItems_size() const
 {
-    return labels;
+    return labels.size();
 }
 
-void SwitchOption::setTextItems(const std::deque<std::string> & items)
+const char * SwitchOption::getTextItems_item(int i) const
 {
-    labels = items;
+    return labels[i].c_str();
 }
 
-void SwitchOption::addTextItem(const std::string & item)
+void SwitchOption::addTextItem(const char * item)
 {
     labels.push_back(item);
 }
 
-void SwitchOption::removeTextItem(const std::string & item)
+void SwitchOption::removeTextItem(const char * item)
 {
-    std::remove(labels.begin(), labels.end(), item);
+    std::string str(item);
+    std::remove(labels.begin(), labels.end(), str);
 }
 
-int SwitchOption::getIndexOf(const std::string & item)
+int SwitchOption::getIndexOf(const char * item)
 {
+    std::string str(item);
     std::deque<std::string>::iterator it =
-        std::find(labels.begin(), labels.end(), item);
+        std::find(labels.begin(), labels.end(), str);
     if (it == labels.end())
         return -1;
     return it - labels.begin();
@@ -81,7 +77,7 @@ void SwitchOption::setSelectedIndex(int index)
     selected = index;
 }
 
-std::string SwitchOption::getSelectedText() const
+const char * SwitchOption::getSelectedText() const
 {
-    return labels[selected];
+    return labels[selected].c_str();
 }

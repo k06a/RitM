@@ -28,7 +28,7 @@ TEST(FileAdapterTest, ReadingWholePcapFile)
 {
     AdapterPtr adapter(new FileAdapter());
     GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
-    FileOpenOptionPtr infile = SharedPointerCast<FileOpenOption>(gr->options()[0]);
+    FileOpenOptionPtr infile = SharedPointerCast<FileOpenOption>(gr->options_item(0));
     infile->setFilename("FileAdapterTest.pcap");
 
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
@@ -52,7 +52,7 @@ TEST(FileAdapterTest, ReadingSequentialyPcapFile)
 {
     AdapterPtr adapter(new FileAdapter());
     GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
-    FileOpenOptionPtr infile = SharedPointerCast<FileOpenOption>(gr->options()[0]);
+    FileOpenOptionPtr infile = SharedPointerCast<FileOpenOption>(gr->options_item(0));
     infile->setFilename("FileAdapterTest.pcap");
 
     TestingReadingProcessor * testProc = new TestingReadingProcessor();
@@ -84,8 +84,8 @@ TEST(FileAdapterTest, WritingPcapFile)
     {
         AdapterPtr adapter(new FileAdapter());
         GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
-        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options()[0]);
-        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options()[1]);
+        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options_item(0));
+        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options_item(1));
         infile->setFilename("FileAdapterTest.pcap");
         outfile->setFilename("FileAdapterTest.WritingPcapFile.out.pcap");
 

@@ -3,7 +3,7 @@
 
 using namespace DiplomBukov;
 
-GroupOption::GroupOption(bool vertical, const std::string & name)
+GroupOption::GroupOption(bool vertical, const char * name)
     : label(name), vertical(vertical)
 {
 }
@@ -17,12 +17,12 @@ OptionPtr GroupOption::CreateCopy() const
     return ptr;
 }
 
-const std::string & GroupOption::getName() const
+const char * GroupOption::getName() const
 {
-    return label;
+    return label.c_str();
 }
 
-void GroupOption::setName(const std::string & name)
+void GroupOption::setName(const char * name)
 {
     label = name;
 }
@@ -53,9 +53,14 @@ bool GroupOption::isVertical()
     return vertical;
 }
 
-std::deque<OptionPtr> & GroupOption::options()
+int GroupOption::options_size() const
 {
-    return optionList;
+    return optionList.size();
+}
+
+OptionPtr GroupOption::options_item(int i) const
+{
+    return optionList[i];
 }
 
 void GroupOption::addOption(OptionPtr option)

@@ -20,7 +20,7 @@ namespace DiplomBukov
         , public IOptionWalker
     {
     public:
-        virtual ~ConsoleOptionWalker() {}
+        ConsoleOptionWalker();
 
         virtual void visit(AdapterPtr adap);
         virtual void visit(ProcessorPtr proc);

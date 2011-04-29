@@ -26,15 +26,15 @@ TEST(TcpLayerProcessorTest, ConnectionEstablishing)
     {
         AdapterPtr adapter1(new FileAdapter());
         GroupOptionPtr gr1 = SharedPointerCast<GroupOption>(adapter1->getOptions());
-        FileOpenOptionPtr infile1  = SharedPointerCast<FileOpenOption>(gr1->options()[0]);
-        FileOpenOptionPtr outfile1 = SharedPointerCast<FileOpenOption>(gr1->options()[1]);
+        FileOpenOptionPtr infile1  = SharedPointerCast<FileOpenOption>(gr1->options_item(0));
+        FileOpenOptionPtr outfile1 = SharedPointerCast<FileOpenOption>(gr1->options_item(1));
         infile1->setFilename("TcpLayerProcessorTest.clientSide.in.pcap");
         outfile1->setFilename("TcpLayerProcessorTest.clientSide.out.pcap");
 
         AdapterPtr adapter2(new FileAdapter());
         GroupOptionPtr gr2 = SharedPointerCast<GroupOption>(adapter2->getOptions());
-        FileOpenOptionPtr infile2  = SharedPointerCast<FileOpenOption>(gr2->options()[0]);
-        FileOpenOptionPtr outfile2 = SharedPointerCast<FileOpenOption>(gr2->options()[1]);
+        FileOpenOptionPtr infile2  = SharedPointerCast<FileOpenOption>(gr2->options_item(0));
+        FileOpenOptionPtr outfile2 = SharedPointerCast<FileOpenOption>(gr2->options_item(1));
         infile2->setFilename("TcpLayerProcessorTest.serverSide.in.pcap");
         outfile2->setFilename("TcpLayerProcessorTest.serverSide.out.pcap");
 

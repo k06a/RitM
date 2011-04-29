@@ -7,19 +7,17 @@
 using namespace DiplomBukov;
 
 DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
-    : options(new GroupOption(false))
+    : options(new GroupOption(true))
 {
     setNextProcessor(processor);
 
-    std::deque<std::string> types;
-    types.push_back("IPv4");
-    types.push_back("Domain Name");
-    types.push_back("Mail Exchange");
-
-    check = new CheckOption(false, "Вкл/Выкл");
-    source = new TextLineOption("www.example.com");
-    destType = new SwitchOption(types);
-    destination = new TextLineOption("192.168.1.1");
+    check = CheckOptionPtr(new CheckOption(false, "Вкл/Выкл"));
+    source = TextLineOptionPtr(new TextLineOption("www.example.com"));
+    destType = SwitchOptionPtr(new SwitchOption);
+    destType->addTextItem("IPv4");
+    destType->addTextItem("Domain Name");
+    destType->addTextItem("Mail Exchange");
+    destination = TextLineOptionPtr(new TextLineOption("192.168.1.1"));
 
     GroupOptionPtr group(new GroupOption(false));
     group->addOption(OptionPtr(check));
@@ -27,8 +25,8 @@ DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
     group->addOption(OptionPtr(destType));
     group->addOption(OptionPtr(destination));
 
-    alwaysResave = new CheckOption(false, "Перепаковывать все");
-    options->addOption(OptionPtr(alwaysResave));
+    alwaysResave = CheckOptionPtr(new CheckOption(false, "Перепаковывать все пакеты"));
+    options->addOption(alwaysResave);
     options->addOption(group);
 }
 

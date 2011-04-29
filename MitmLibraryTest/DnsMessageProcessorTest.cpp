@@ -27,8 +27,8 @@ TEST(DnsMessageProcessorTest, ReparseDnsHeader)
     {
         AdapterPtr adapter(new FileAdapter());
         GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
-        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options()[0]);
-        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options()[1]);
+        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options_item(0));
+        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options_item(1));
         infile->setFilename("DnsMessageProcessorTest.in.pcap");
         outfile->setFilename("DnsMessageProcessorTest.ReparseDnsHeader.out.pcap");
         
@@ -46,7 +46,7 @@ TEST(DnsMessageProcessorTest, ReparseDnsHeader)
         adapter->ping(ProcessorPtr());
 
         GroupOption * opts = (GroupOption *)dnsProcessor->getOptions().get();
-        CheckOption * always = (CheckOption *)opts->options()[0].get();
+        CheckOption * always = (CheckOption *)opts->options_item(0).get();
         always->setChecked(true);
 
         adapter->run(true);
@@ -65,8 +65,8 @@ TEST(DnsMessageProcessorTest, SwapNetbsdToYandex)
     {
         AdapterPtr adapter(new FileAdapter());
         GroupOptionPtr gr = SharedPointerCast<GroupOption>(adapter->getOptions());
-        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options()[0]);
-        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options()[1]);
+        FileOpenOptionPtr infile  = SharedPointerCast<FileOpenOption>(gr->options_item(0));
+        FileOpenOptionPtr outfile = SharedPointerCast<FileOpenOption>(gr->options_item(1));
         infile->setFilename("DnsMessageProcessorTest.in.pcap");
         outfile->setFilename("DnsMessageProcessorTest.SwapNetbsdToYandex.out.pcap");
         
@@ -84,11 +84,11 @@ TEST(DnsMessageProcessorTest, SwapNetbsdToYandex)
         adapter->ping(ProcessorPtr());
 
         GroupOption * opts = (GroupOption *)dnsProcessor->getOptions().get();
-        GroupOption * dnsOpt = (GroupOption *)opts->options()[1].get();
-        CheckOption * checked = (CheckOption *)dnsOpt->options()[0].get();
-        TextLineOption * source = (TextLineOption *)dnsOpt->options()[1].get();
-        SwitchOption * destType = (SwitchOption *)dnsOpt->options()[2].get();
-        TextLineOption * destination = (TextLineOption *)dnsOpt->options()[3].get();
+        GroupOption * dnsOpt = (GroupOption *)opts->options_item(1).get();
+        CheckOption * checked = (CheckOption *)dnsOpt->options_item(0).get();
+        TextLineOption * source = (TextLineOption *)dnsOpt->options_item(1).get();
+        SwitchOption * destType = (SwitchOption *)dnsOpt->options_item(2).get();
+        TextLineOption * destination = (TextLineOption *)dnsOpt->options_item(3).get();
 
         checked->setChecked(true);
         source->setText("www.netbsd.org");
