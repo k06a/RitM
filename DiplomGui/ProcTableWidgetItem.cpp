@@ -150,7 +150,13 @@ void ProcTableWidgetItem::paintEvent(QPaintEvent * event)
         QString str = m_statValues[key];
         p.drawText(rect(), align, str);
     }
-    p.drawText(rect(), Qt::AlignHCenter | Qt::AlignBottom, m_text);
+    if (m_procRecord.adapter != NULL
+        || m_procRecord.connector != NULL
+        || m_procRecord.processor != NULL)
+    {
+        if (rect().width() > 200)
+            p.drawText(rect(), Qt::AlignCenter, m_text);
+    }
     p.end();
 
     QWidget::paintEvent(event);

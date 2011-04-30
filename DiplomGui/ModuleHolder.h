@@ -62,13 +62,17 @@ struct ProcRecord
             info = module.connectorModule->info();
             elementName = QObject::tr("коннектор");
         }
-        else
+        if (module.processorModule != NULL)
         {
             processor = module.processorModule->createProcessor();
             statsProvider = processor->statsProvider();
             options = processor->getOptions();
             info = module.processorModule->info();
             elementName = QObject::tr("процессор");
+        } else
+        {
+            info = "Трубы предназначены для создания связей между обработчиками.";
+            elementName = QObject::tr("труба");
         }
     }
 };

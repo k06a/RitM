@@ -283,11 +283,11 @@ void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
         && ui->listWidget_elements->viewMode() == QListView::IconMode)
     {
         ui->listWidget_elements->setViewMode(QListView::ListMode);
-        ui->listWidget_elements->setIconSize(QSize(16,16));
+        ui->listWidget_elements->setIconSize(QSize(40,16));
         ui->listWidget_pipes->setViewMode(QListView::ListMode);
-        ui->listWidget_pipes->setIconSize(QSize(16,16));
-        ui->listWidget_elements->setGridSize(QSize(16,16));
-        ui->listWidget_pipes->setGridSize(QSize(16,16));
+        ui->listWidget_pipes->setIconSize(QSize(40,16));
+        ui->listWidget_elements->setGridSize(QSize(40,16));
+        ui->listWidget_pipes->setGridSize(QSize(40,16));
         return;
     }
 
@@ -299,9 +299,9 @@ void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
     }
 
     ui->listWidget_elements->setIconSize(QSize(value,value));
-    ui->listWidget_elements->setGridSize(QSize(value*1.4,value*1.4));
+    ui->listWidget_elements->setGridSize(QSize(value*1.4*2.5,value*1.4));
     ui->listWidget_pipes->setIconSize(QSize(value,value));
-    ui->listWidget_pipes->setGridSize(QSize(value*1.4,value*1.4));
+    ui->listWidget_pipes->setGridSize(QSize(value*1.4*2.5,value*1.4));
 }
 
 void MainWindow::on_tableWidget_field_itemSelectionChanged()
