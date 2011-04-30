@@ -5,6 +5,9 @@
 #include "IAdapterModule.h"
 #include "IConnectorModule.h"
 #include "IProcessorModule.h"
+#include "IAdapter.h"
+#include "IConnector.h"
+#include "IProcessor.h"
 #include <QString>
 #include <QList>
 #include <QPair>
@@ -30,32 +33,42 @@ struct ProcRecord
     AdapterPtr   adapter;
     ConnectorPtr connector;
     ProcessorPtr processor;
+    StatsProviderPtr statsProvider;
+    OptionPtr options;
+    const char * info;
+    QString elementName;
 
     ProcRecord()
-        : adapter()
-        , connector()
-        , processor()
+        : info("")
     {
     }
 
     ProcRecord(Module module)
-        : adapter()
-        , connector()
-        , processor()
+        : info("")
     {
         if (module.adapterModule != NULL)
         {
             adapter = module.adapterModule->createAdapter();
-            //processor = ProcessorPtr(adapter);
+            statsProvider = adapter->statsProvider();
+            options = adapter->getOptions();
+            info = module.adapterModule->info();
+            elementName = QObject::tr("адапетер");
         } else
         if (module.connectorModule != NULL)
         {
             connector = module.connectorModule->createConnector();
-            //processor = ProcessorPtr(connector);
+            statsProvider = connector->statsProvider();
+            options = connector->getOptions();
+            info = module.connectorModule->info();
+            elementName = QObject::tr("коннектор");
         }
         else
         {
             processor = module.processorModule->createProcessor();
+            statsProvider = processor->statsProvider();
+            options = processor->getOptions();
+            info = module.processorModule->info();
+            elementName = QObject::tr("процессор");
         }
     }
 };

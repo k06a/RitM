@@ -9,6 +9,12 @@
 #include <QClipboard>
 #include <QAction>
 #include <QMenu>
+#include <QLabel>
+#include <QGridLayout>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QGroupBox>
+#include <QPushButton>
 
 #include "ProcTableWidgetItem.h"
 #include "ProcMimeData.h"
@@ -18,6 +24,7 @@
 #include "IProcessor.h"
 #include "IAdapter.h"
 #include "IConnector.h"
+#include "IStatsProvider.h"
 
 ProcTableWidget::ProcTableWidget(QWidget *parent)
     : QTableWidget(parent)
@@ -378,6 +385,8 @@ void ProcTableWidget::dragMoveEvent(QDragMoveEvent * event)
 
     if (event->source() != this)
     {
+        if (!this->hasFocus())
+            this->setFocus();
         clearSelection();
 
         QTableWidgetItem * it = itemAt(event->pos());
@@ -437,15 +446,31 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
 
     if (event->source() != this)
     {
-        //clearSelection();
+        setCurrentCell(rowAt(event->pos().y()),
+                       columnAt(event->pos().x()));
+
         ModuleHolder * holder = ModuleHolder::instance();
         ModuleRecord * rec = holder->moduleForName(mimeData->moduleName());
         ProcTableWidgetItem * w = new ProcTableWidgetItem();
         w->setPixmap(rec->pixmapPath);
-        w->setText(rec->fullName());
+        w->setText(tr("[%1]").arg(rec->name));
         w->setModuleFullName(rec->fullName());
         ProcRecord procRec(rec->module);
         w->setProcRecord(procRec);
+
+        // Разбиение строки для ToolTip-а
+        QString str = tr(procRec.info);
+        QString tip = "";
+        while (str.length() > 40)
+        {
+            int pos = 40;
+            while (str[pos] != ' ') pos++;
+            while (!QChar(str[pos]).isLetter()) pos++;
+            tip += str.left(pos) + "\n";
+            str.remove(0, pos);
+        }
+        tip += str;
+        itemAt(event->pos())->setToolTip(tip);
 
         ProcItem proc(rowAt(event->pos().y()),
                       columnAt(event->pos().x()), w);
@@ -490,20 +515,49 @@ void ProcTableWidget::contextMenu(const QPoint & pos)
         return;
 
     OptionPtr opts;
+    StatsProviderPtr stats;
     if (w->procRecord().adapter)
+    {
         opts = w->procRecord().adapter->getOptions();
+        stats = w->procRecord().adapter->statsProvider();
+    }
     if (w->procRecord().connector)
+    {
         opts = w->procRecord().connector->getOptions();
+        stats = w->procRecord().connector->statsProvider();
+    }
     if (w->procRecord().processor)
+    {
         opts = w->procRecord().processor->getOptions();
+        stats = w->procRecord().processor->statsProvider();
+    }
+
+    QMenu * menu = new QMenu;
+    QAction * infoAction = NULL;
+    QAction * statsAction = NULL;
+    QAction * optionsAction = NULL;
+
+    infoAction = menu->addAction(QIcon(":/images/info.png"),
+                                 tr("Информация"), this,
+                                 SLOT(processorInfoAction()));
+
+    if (stats != NULL)
+    {
+        statsAction = menu->addAction(QIcon(":/images/statistics.png"),
+                                      tr("Показатели"), this,
+                                      SLOT(processorStatsAction()));
+    }
 
     if (opts != NULL)
     {
-        QMenu * menu = new QMenu;
-        menu->move(mapToGlobal(pos));
-        menu->addAction(QIcon(":/images/options.png"), tr("Настройки"), this, SLOT(processorPropertiesAction()));
-        menu->exec();
+        optionsAction = menu->addAction(QIcon(":/images/options.png"),
+                                        tr("Настройки"), this,
+                                        SLOT(processorPropertiesAction()));
     }
+
+    menu->move(mapToGlobal(pos));
+    menu->setDefaultAction(optionsAction);
+    menu->exec();
 }
 
 void ProcTableWidget::processorPropertiesAction()
@@ -516,33 +570,132 @@ void ProcTableWidget::processorPropertiesAction()
         qobject_cast<ProcTableWidgetItem*>(cellWidget(it->row(), it->column()));
     if (w == NULL)
         return;
-
-    OptionPtr opts;
-    QString element;
-    if (w->procRecord().adapter)
-    {
-        opts = w->procRecord().adapter->getOptions();
-        element = tr("адапетер");
-    }
-    if (w->procRecord().connector)
-    {
-        opts = w->procRecord().connector->getOptions();
-        element = tr("коннектор");
-    }
-    if (w->procRecord().processor)
-    {
-        opts = w->procRecord().processor->getOptions();
-        element = tr("процессор");
-    }
-
-    if (opts != NULL)
+    
+    if (w->procRecord().options != NULL)
     {
         QtOptionWalkerPtr walker(new QtOptionWalker());
-        opts->visitMe(walker);
+        w->procRecord().options->visitMe(walker);
         walker->dialog()->setWindowIcon(QIcon(":/images/options.png"));
-        walker->dialog()->setWindowTitle(tr("Настройки %1а").arg(element));
+        walker->dialog()->setWindowTitle(tr("Настройки %1а").arg(w->procRecord().elementName));
         walker->dialog()->exec();
     }
+}
+
+void ProcTableWidget::processorStatsAction()
+{
+    QTableWidgetItem * it = this->currentItem();
+    if (it == NULL)
+        return;
+
+    ProcTableWidgetItem * w =
+        qobject_cast<ProcTableWidgetItem*>(cellWidget(it->row(), it->column()));
+    if (w == NULL)
+        return;
+
+    StatsProviderPtr stat = w->procRecord().statsProvider;
+    
+    QDialog * dialog = new QDialog(this);
+
+    // Top Grid Layout
+
+    QGridLayout * topGridLayout = new QGridLayout;
+    for (int i = 0; i < stat->getStatistic_size(); i++)
+    {
+        QLabel * label1 = new QLabel(tr(stat->getStatistic_name(i))+":");
+        QLineEdit * le2 = new QLineEdit(tr("%%1").arg(i+1));
+        le2->setReadOnly(true);
+        //le2->setDisabled(true);
+        //le2->setStyleSheet( QString( "background-color: lightgray"));
+        topGridLayout->addWidget(label1, i+1, 0);
+        topGridLayout->addWidget(le2, i+1, 1);
+    }
+
+    // Bottom Grid Layout
+
+    QGridLayout * bottomGridLayout = new QGridLayout;
+    
+    bottomGridLayout->addWidget(new QLabel(tr("Левый верхний угол:")),  0, 0);
+    bottomGridLayout->addWidget(new QLabel(tr("Правый верхний угол:")), 1, 0);
+    bottomGridLayout->addWidget(new QLabel(tr("Левый нижний угол:")),   2, 0);
+    bottomGridLayout->addWidget(new QLabel(tr("правый нижний угол:")),  3, 0);
+    
+    QLineEdit * topLeft  = new QLineEdit(w->statText(Direction::LeftTop));
+    QLineEdit * topRight = new QLineEdit(w->statText(Direction::TopRight));
+    QLineEdit * botLeft  = new QLineEdit(w->statText(Direction::LeftBottom));
+    QLineEdit * botRight = new QLineEdit(w->statText(Direction::BottomRight));
+
+    bottomGridLayout->addWidget(topLeft,  0, 1);
+    bottomGridLayout->addWidget(topRight, 1, 1);
+    bottomGridLayout->addWidget(botLeft,  2, 1);
+    bottomGridLayout->addWidget(botRight, 3, 1);
+
+    // Left Layout
+
+    QGroupBox * topGroupBox = new QGroupBox(tr("Показатели модуля"));
+    topGroupBox->setLayout(topGridLayout);
+    QGroupBox * bottomGroupBox = new QGroupBox(tr("Отображение показателей"));
+    bottomGroupBox->setLayout(bottomGridLayout);
+
+    QVBoxLayout * leftLayout = new QVBoxLayout;
+    leftLayout->addWidget(topGroupBox);
+    leftLayout->addWidget(bottomGroupBox);
+    
+    // QDialogButtonBox
+
+    QDialogButtonBox * buttonBox = new QDialogButtonBox(
+        QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Vertical);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ок"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Отмена"));
+    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    // Main Layout
+
+    QHBoxLayout * mainLayout = new QHBoxLayout;
+    mainLayout->addLayout(leftLayout);
+    mainLayout->addWidget(buttonBox);
+
+    // Dialog
+
+    dialog->setWindowIcon(QIcon(":/images/statistics.png"));
+    dialog->setWindowTitle(tr("Показатели статистики"));
+    dialog->setLayout(mainLayout);
+    int ret = dialog->exec();
+
+    if (ret == QDialog::Rejected)
+        return;
+
+    w->setStatText(Direction::LeftTop,     topLeft->text());
+    w->setStatText(Direction::TopRight,    topRight->text());
+    w->setStatText(Direction::LeftBottom,  botLeft->text());
+    w->setStatText(Direction::BottomRight, botRight->text());
+}
+
+void ProcTableWidget::processorInfoAction()
+{
+    QTableWidgetItem * it = this->currentItem();
+    if (it == NULL)
+        return;
+
+    ProcTableWidgetItem * w =
+        qobject_cast<ProcTableWidgetItem*>(cellWidget(it->row(), it->column()));
+    if (w == NULL)
+        return;
+
+    QDialog * dialog = new QDialog(this);
+    dialog->setWindowIcon(QIcon(":/images/info.png"));
+    dialog->setWindowTitle(tr("Описание %1а").arg(w->procRecord().elementName));
+    
+    QLabel * label = new QLabel(tr(w->procRecord().info));
+    label->setWordWrap(true);
+    QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ок"));
+    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
+
+    dialog->setLayout(new QVBoxLayout);
+    dialog->layout()->addWidget(label);
+    dialog->layout()->addWidget(buttonBox);
+    dialog->exec();
 }
 
 void ProcTableWidget::cutSlot()

@@ -44,8 +44,9 @@ namespace DiplomBukov
             i64 i_count_out;
 
             StatCounter();
-            virtual std::vector<std::string> getStatisticNames() const;
-            virtual std::vector<i64> getStatisticValues() const;
+            virtual int getStatistic_size() const;
+            virtual i64 getStatistic_value(int i) const;
+            virtual const char * getStatistic_name(int i) const;
         };
 
         typedef SharedPointer<StatCounter>::Type StatCounterPtr;

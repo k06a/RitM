@@ -107,6 +107,8 @@ signals:
 public slots:
     void contextMenu(const QPoint & pos);
     void processorPropertiesAction();
+    void processorStatsAction();
+    void processorInfoAction();
 
     void cutSlot();
     void copySlot();

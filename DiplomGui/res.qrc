@@ -30,5 +30,7 @@
         <file>images/start.png</file>
         <file>images/stop.png</file>
         <file>images/options.png</file>
+        <file>images/statistics.png</file>
+        <file>images/info.png</file>
     </qresource>
 </RCC>

@@ -594,10 +594,6 @@
    </property>
   </action>
   <action name="action_saveas">
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/images/filesave.png</normaloff>:/images/filesave.png</iconset>
-   </property>
    <property name="text">
     <string>Сохранить как ...</string>
    </property>

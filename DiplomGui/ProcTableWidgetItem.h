@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPixmap>
+#include <QMap>
 #include "ModuleHolder.h"
 
 struct ModuleRecord;
@@ -35,6 +36,8 @@ class ProcTableWidgetItem : public QWidget
     ProcRecord m_procRecord;
 
     QString m_pixmapPath;
+    QMap<int,QString> m_statPositions;
+    QMap<int,QString> m_statValues;
 
 public:
     explicit ProcTableWidgetItem();
@@ -53,6 +56,10 @@ public:
 
     ProcRecord procRecord() const;
     void setProcRecord(ProcRecord procRecord);
+
+    void setStatText(int direction, QString str);
+    QString statText(int direction);
+    void updateStats();
 
     QString toStringForm();
     bool isEqualProc(ProcTableWidgetItem * w);

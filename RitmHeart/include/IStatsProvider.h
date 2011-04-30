@@ -12,8 +12,9 @@ namespace DiplomBukov
     public:
         virtual ~IStatsProvider() {}
 
-        virtual std::vector<std::string> getStatisticNames() const = 0;
-        virtual std::vector<i64> getStatisticValues() const = 0;
+        virtual int getStatistic_size() const = 0;
+        virtual i64 getStatistic_value(int i) const = 0;
+        virtual const char * getStatistic_name(int i) const = 0;
     };
     // class IStatsProvider
 }

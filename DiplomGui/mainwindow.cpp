@@ -48,8 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Configure table zoom
 
-    ui->tableWidget_field->setBaseZoomWidth(64);
-    ui->tableWidget_field->setBaseZoomHeight(64);
+    ui->tableWidget_field->setBaseZoomWidth(32*5);
+    ui->tableWidget_field->setBaseZoomHeight(32*2);
     ui->tableWidget_field->setMinimumZoom(0.5);
     ui->tableWidget_field->setMaximumZoom(5.0);
     ui->tableWidget_field->setZoomStep(0.2);

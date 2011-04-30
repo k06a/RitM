@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QPicture>
 #include "ModuleHolder.h"
+#include "IStatsProvider.h"
 
 ProcTableWidgetItem::ProcTableWidgetItem()
     : QWidget()
@@ -18,6 +19,7 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
     , m_pixmap(item->m_pixmap)
     , m_pixmapPath(item->m_pixmapPath)
     , m_procRecord(item->m_procRecord)
+    , m_statPositions(item->m_statPositions)
 {
 }
 
@@ -89,6 +91,34 @@ void ProcTableWidgetItem::setProcRecord(ProcRecord record)
     m_procRecord = record;
 }
 
+void ProcTableWidgetItem::setStatText(int direction, QString str)
+{
+    m_statPositions[direction] = str;
+}
+
+QString ProcTableWidgetItem::statText(int direction)
+{
+    return m_statPositions[direction];
+}
+
+void ProcTableWidgetItem::updateStats()
+{
+    if (m_procRecord.statsProvider == NULL)
+        return;
+
+    std::vector<int> stats;
+    for (int i = 0; i < m_procRecord.statsProvider->getStatistic_size(); i++)
+        stats.push_back(m_procRecord.statsProvider->getStatistic_value(i));
+
+    foreach(int key, m_statPositions.keys())
+    {
+        QString str = m_statPositions[key];
+        for (int i = 0; i < m_procRecord.statsProvider->getStatistic_size(); i++)
+            str.replace(tr("%%1").arg(i+1), tr("%1").arg(stats[i]));
+        m_statValues[key] = str;
+    }
+}
+
 QString ProcTableWidgetItem::toStringForm()
 {
     return m_text;
@@ -109,6 +139,18 @@ void ProcTableWidgetItem::paintEvent(QPaintEvent * event)
 {
     QPainter p(this);
     p.drawPixmap(rect(), m_pixmap);
+    foreach(int key, m_statValues.keys())
+    {
+        int align = 0;
+        if (key & Direction::Left)   align |= Qt::AlignLeft;
+        if (key & Direction::Right)  align |= Qt::AlignRight;
+        if (key & Direction::Top)    align |= Qt::AlignTop;
+        if (key & Direction::Bottom) align |= Qt::AlignBottom;
+
+        QString str = m_statValues[key];
+        p.drawText(rect(), align, str);
+    }
+    p.drawText(rect(), Qt::AlignHCenter | Qt::AlignBottom, m_text);
     p.end();
 
     QWidget::paintEvent(event);

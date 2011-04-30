@@ -1019,6 +1019,26 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\images\info.png"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\images\pipes\left2bottom.svg"
 				>
 				<FileConfiguration
@@ -1208,7 +1228,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png"
+						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png;.\images\statistics.png;.\images\info.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -1219,13 +1239,33 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png"
+						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png;.\images\statistics.png;.\images\info.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\images\start.png"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\images\statistics.png"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"

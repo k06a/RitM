@@ -10,20 +10,29 @@ FileAdapter::StatCounter::StatCounter()
 {
 }
 
-std::vector<std::string> FileAdapter::StatCounter::getStatisticNames() const
+int FileAdapter::StatCounter::getStatistic_size() const
 {
-    std::vector<std::string> vec;
-    vec.push_back("Кол-во полученных пакетов");
-    vec.push_back("Кол-во переданных пакетов");
-    return vec;
+    return 2;
 }
 
-std::vector<i64> FileAdapter::StatCounter::getStatisticValues() const
+i64 FileAdapter::StatCounter::getStatistic_value(int i) const
 {
-    std::vector<i64> vec;
-    vec.push_back(i_count_in);
-    vec.push_back(i_count_out);
-    return vec;
+    switch(i)
+    {
+        case 0: return i_count_in;
+        case 1: return i_count_out;
+    }
+    return 0;
+}
+
+const char * FileAdapter::StatCounter::getStatistic_name(int i) const
+{
+    switch(i)
+    {
+        case 0: return "Кол-во полученных пакетов";
+        case 1: return "Кол-во переданных пакетов";
+    }
+    return "";
 }
 
 FileAdapter::FileAdapter(ProcessorPtr Connector)
