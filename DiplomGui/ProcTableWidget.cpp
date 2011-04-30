@@ -7,6 +7,8 @@
 #include <QPainter>
 #include <QDebug>
 #include <QClipboard>
+#include <QAction>
+#include <QMenu>
 
 #include "ProcTableWidgetItem.h"
 #include "ProcMimeData.h"
@@ -20,6 +22,9 @@
 ProcTableWidget::ProcTableWidget(QWidget *parent)
     : QTableWidget(parent)
 {
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(contextMenu(QPoint)));
 }
 
 int ProcTableWidget::baseZoomWidth() const
@@ -336,29 +341,7 @@ void ProcTableWidget::mouseReleaseEvent(QMouseEvent * event)
 
 void ProcTableWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    QTableWidgetItem * it = itemAt(event->pos());
-    if (it == NULL)
-        return;
-
-    ProcTableWidgetItem * w =
-        qobject_cast<ProcTableWidgetItem*>(cellWidget(it->row(), it->column()));
-    if (w == NULL)
-        return;
-
-    QtOptionWalkerPtr walker(new QtOptionWalker());
-    OptionPtr opts;
-    if (w->procRecord().adapter)
-        opts = w->procRecord().adapter->getOptions();
-    if (w->procRecord().connector)
-        opts = w->procRecord().connector->getOptions();
-    if (w->procRecord().processor)
-        opts = w->procRecord().processor->getOptions();
-
-    if (opts != NULL)
-    {
-        opts->visitMe(walker);
-        walker->dialog()->exec();
-    }
+    processorPropertiesAction();
 }
 
 Qt::DropActions ProcTableWidget::supportedDropActions() const
@@ -494,6 +477,73 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
 }
 
 // slots
+
+void ProcTableWidget::contextMenu(const QPoint & pos)
+{
+    QTableWidgetItem * it = itemAt(pos);
+    if (it == NULL)
+        return;
+
+    ProcTableWidgetItem * w =
+        qobject_cast<ProcTableWidgetItem*>(cellWidget(it->row(), it->column()));
+    if (w == NULL)
+        return;
+
+    OptionPtr opts;
+    if (w->procRecord().adapter)
+        opts = w->procRecord().adapter->getOptions();
+    if (w->procRecord().connector)
+        opts = w->procRecord().connector->getOptions();
+    if (w->procRecord().processor)
+        opts = w->procRecord().processor->getOptions();
+
+    if (opts != NULL)
+    {
+        QMenu * menu = new QMenu;
+        menu->move(mapToGlobal(pos));
+        menu->addAction(QIcon(":/images/options.png"), tr("Настройки"), this, SLOT(processorPropertiesAction()));
+        menu->exec();
+    }
+}
+
+void ProcTableWidget::processorPropertiesAction()
+{
+    QTableWidgetItem * it = this->currentItem();
+    if (it == NULL)
+        return;
+
+    ProcTableWidgetItem * w =
+        qobject_cast<ProcTableWidgetItem*>(cellWidget(it->row(), it->column()));
+    if (w == NULL)
+        return;
+
+    OptionPtr opts;
+    QString element;
+    if (w->procRecord().adapter)
+    {
+        opts = w->procRecord().adapter->getOptions();
+        element = tr("адапетер");
+    }
+    if (w->procRecord().connector)
+    {
+        opts = w->procRecord().connector->getOptions();
+        element = tr("коннектор");
+    }
+    if (w->procRecord().processor)
+    {
+        opts = w->procRecord().processor->getOptions();
+        element = tr("процессор");
+    }
+
+    if (opts != NULL)
+    {
+        QtOptionWalkerPtr walker(new QtOptionWalker());
+        opts->visitMe(walker);
+        walker->dialog()->setWindowIcon(QIcon(":/images/options.png"));
+        walker->dialog()->setWindowTitle(tr("Настройки %1а").arg(element));
+        walker->dialog()->exec();
+    }
+}
 
 void ProcTableWidget::cutSlot()
 {

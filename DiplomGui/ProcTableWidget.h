@@ -105,6 +105,9 @@ protected:
 signals:
 
 public slots:
+    void contextMenu(const QPoint & pos);
+    void processorPropertiesAction();
+
     void cutSlot();
     void copySlot();
     void pasteSlot();

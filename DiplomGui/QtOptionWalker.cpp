@@ -63,6 +63,11 @@ void QtOptionWalker::visit(CheckOptionPtr opt)
 {
     QCheckBox * checkBox = new QCheckBox(tr(opt->getName()), m_dialog);
     checkBox->setChecked(opt->isChecked());
+
+    checkBox->setProperty("option", (int)opt.get());
+    connect(checkBox, SIGNAL(stateChanged(int)),
+            this, SLOT(CheckOptionPtr_changed(int)));
+
     m_layoutStack.last()->addWidget(checkBox);
 }
 
@@ -71,14 +76,20 @@ void QtOptionWalker::visit(SwitchOptionPtr opt)
     QWidget * gb = (opt->getName()[0] == 0)
                     ? new QWidget()
                     : new QGroupBox(tr(opt->getName()));
-    QVBoxLayout * lay = new QVBoxLayout;
+    QLayout * lay = new QVBoxLayout;
     for (int i = 0; i < opt->getTextItems_size(); i++)
     {
         QString str = opt->getTextItems_item(i);
         str.remove("   ");
-        QRadioButton * rb = new QRadioButton(str);
-        rb->setChecked(i == opt->getSelectedIndex());
-        lay->addWidget(rb);
+
+        QRadioButton * radioButton = new QRadioButton(str);
+        radioButton->setProperty("option", (int)opt.get());
+        radioButton->setProperty("switch_id", i);
+        radioButton->setChecked(i == opt->getSelectedIndex());
+        connect(radioButton, SIGNAL(clicked(bool)),
+                this, SLOT(SwitchOptionPtr_changed(bool)));
+
+        lay->addWidget(radioButton);
     }
     gb->setLayout(lay);
 
@@ -87,38 +98,50 @@ void QtOptionWalker::visit(SwitchOptionPtr opt)
 
 void QtOptionWalker::visit(ComboOptionPtr opt)
 {
-    QComboBox * box = new QComboBox;
+    QComboBox * comboBox = new QComboBox;
     for (int i = 0; i < opt->getTextItems_size(); i++)
     {
         QString str = opt->getTextItems_item(i);
         str.remove("   ");
-        box->addItem(str);
+        comboBox->addItem(str);
     }
-    box->setCurrentIndex(opt->getSelectedIndex());
+    comboBox->setCurrentIndex(opt->getSelectedIndex());
     
-    m_layoutStack.last()->addWidget(box);
+    comboBox->setProperty("option", (int)opt.get());
+    connect(comboBox, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(ComboOptionPtr_currentChanged(int)));
+
+    m_layoutStack.last()->addWidget(comboBox);
 }
 
 void QtOptionWalker::visit(IntOptionPtr opt)
 {
-    QSpinBox * sb = new QSpinBox;
-    sb->setMinimum(opt->minValue());
-    sb->setMaximum(opt->maxValue());
-    sb->setValue(opt->intValue());
-    QLabel * lb = new QLabel;
-    lb->setBuddy(sb);
+    QSpinBox * spinBox = new QSpinBox;
+    spinBox->setMinimum(opt->minValue());
+    spinBox->setMaximum(opt->maxValue());
+    spinBox->setValue(opt->intValue());
+    QLabel * label = new QLabel;
+    label->setBuddy(spinBox);
 
-    m_layoutStack.last()->addWidget(sb);
+    spinBox->setProperty("option", (int)opt.get());
+    connect(spinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(IntOptionPtr_changed(int)));
+
+    m_layoutStack.last()->addWidget(spinBox);
 }
 
 void QtOptionWalker::visit(TextLineOptionPtr opt)
 {
-    QLineEdit * le = new QLineEdit;
-    le->setText(opt->getText());
-    QLabel * lb = new QLabel(opt->getName());
-    lb->setBuddy(le);
+    QLineEdit * lineEdit = new QLineEdit;
+    lineEdit->setText(opt->getText());
+    QLabel * label = new QLabel(opt->getName());
+    label->setBuddy(lineEdit);
 
-    m_layoutStack.last()->addWidget(le);
+    lineEdit->setProperty("option", (int)opt.get());
+    connect(lineEdit, SIGNAL(textEdited(QString)),
+            this, SLOT(TextLineOptionPtr_edited(QString)));
+
+    m_layoutStack.last()->addWidget(lineEdit);
 }
 
 void QtOptionWalker::visit(FileOpenOptionPtr opt)
@@ -136,21 +159,23 @@ void QtOptionWalker::visitFileOption(FileOpenOptionPtr opt, const char * member)
     QWidget * w = new QWidget;
     w->setLayout(new QHBoxLayout);
 
-    QLineEdit * le = new QLineEdit;
-    le->setText(opt->getFilename());
-    QLabel * lb = new QLabel(tr(opt->getName()));
-    lb->setBuddy(le);
-    QPushButton * pb = new QPushButton(QObject::tr("Выбрать ..."));
-    //QVariant extension = ;
-    //QVariant fileLineEdit = ;
-    pb->setProperty("extension", tr(opt->getExtension()));
-    pb->setProperty("fileLineEdit", (int)le);
+    QLineEdit * lineEdit = new QLineEdit;
+    lineEdit->setText(opt->getFilename());
+    QLabel * label = new QLabel(tr(opt->getName()));
+    label->setBuddy(lineEdit);
 
-    connect(pb, SIGNAL(clicked()), this, member);
+    QPushButton * pushButton = new QPushButton(QObject::tr("Выбрать ..."));
+    pushButton->setProperty("extension", tr(opt->getExtension()));
+    pushButton->setProperty("fileLineEdit", (int)lineEdit);
 
-    w->layout()->addWidget(lb);
-    w->layout()->addWidget(le);
-    w->layout()->addWidget(pb);
+    connect(pushButton, SIGNAL(clicked()), this, member);
+    lineEdit->setProperty("option", (int)opt.get());
+    connect(lineEdit, SIGNAL(textChanged(QString)),
+            this, SLOT(FileOptionPtr_edited(QString)));
+
+    w->layout()->addWidget(label);
+    w->layout()->addWidget(lineEdit);
+    w->layout()->addWidget(pushButton);
 
     m_layoutStack.last()->addWidget(w);
 }
@@ -184,6 +209,52 @@ void QtOptionWalker::visit(OptionPtr opt)
     throw "Not Implemented";
 }
 
+// Slots
+
+void QtOptionWalker::CheckOptionPtr_changed(int state)
+{
+    QCheckBox * checkBox = (QCheckBox *)sender();
+    int opt_addr = checkBox->property("option").toInt();
+    CheckOption * opt = (CheckOption *)opt_addr;
+    opt->setChecked(state == Qt::Checked);
+}
+
+void QtOptionWalker::SwitchOptionPtr_changed(bool checked)
+{
+    if (!checked)
+        return;
+
+    QRadioButton * radioButton = (QRadioButton *)sender();
+    int opt_addr = radioButton->property("option").toInt();
+    int opt_id = radioButton->property("switch_id").toInt();
+    SwitchOption * opt = (SwitchOption *)opt_addr;
+    opt->setSelectedIndex(opt_id);
+}
+
+void QtOptionWalker::ComboOptionPtr_currentChanged(int current)
+{
+    QComboBox * comboBox = (QComboBox *)sender();
+    int opt_addr = comboBox->property("option").toInt();
+    ComboOption * opt = (ComboOption *)opt_addr;
+    opt->setSelectedIndex(current);
+}
+
+void QtOptionWalker::IntOptionPtr_changed(int value)
+{
+    QSpinBox * spinBox = (QSpinBox *)sender();
+    int opt_addr = spinBox->property("option").toInt();
+    IntOption * opt = (IntOption *)opt_addr;
+    opt->setIntValue(value);
+}
+
+void QtOptionWalker::TextLineOptionPtr_edited(QString text)
+{
+    QLineEdit * lineEdit = (QLineEdit *)sender();
+    int opt_addr = lineEdit->property("option").toInt();
+    TextLineOption * opt = (TextLineOption *)opt_addr;
+    opt->setText(text.toAscii().data());
+}
+
 void QtOptionWalker::FileOpenOption_buttonClicked()
 {
     QPushButton * pushButton = (QPushButton *)sender();
@@ -194,6 +265,14 @@ void QtOptionWalker::FileOpenOption_buttonClicked()
     QString str = QFileDialog::getOpenFileName(m_dialog, tr("Выбрать файл"), "", ext);
     if (!str.isEmpty())
         lineEdit->setText(str);
+}
+
+void QtOptionWalker::FileOptionPtr_edited(QString text)
+{
+    QLineEdit * lineEdit = (QLineEdit *)sender();
+    int opt_addr = lineEdit->property("option").toInt();
+    FileOpenOption * opt = (FileOpenOption *)opt_addr;
+    opt->setFilename(text.toAscii().data());
 }
 
 void QtOptionWalker::FileSaveOption_buttonClicked()

@@ -29,5 +29,6 @@
         <file>images/check.png</file>
         <file>images/start.png</file>
         <file>images/stop.png</file>
+        <file>images/options.png</file>
     </qresource>
 </RCC>

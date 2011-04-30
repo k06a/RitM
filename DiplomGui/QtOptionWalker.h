@@ -55,6 +55,13 @@ namespace DiplomBukov
         void visitFileOption(FileOpenOptionPtr opt, const char * member);
 
     public slots:
+        void CheckOptionPtr_changed(int state);
+        void SwitchOptionPtr_changed(bool checked);
+        void ComboOptionPtr_currentChanged(int current);
+        void IntOptionPtr_changed(int value);
+        void TextLineOptionPtr_edited(QString text);
+        void FileOptionPtr_edited(QString text);
+
         void FileOpenOption_buttonClicked();
         void FileSaveOption_buttonClicked();
     };
