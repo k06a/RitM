@@ -464,8 +464,8 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
         while (str.length() > 40)
         {
             int pos = 40;
-            while (str[pos] != ' ') pos++;
-            while (!QChar(str[pos]).isLetter()) pos++;
+            while ((str[pos] != ' ') && (pos < str.length())) pos++;
+            while (!QChar(str[pos]).isLetter() && (pos < str.length())) pos++;
             tip += str.left(pos) + "\n";
             str.remove(0, pos);
         }

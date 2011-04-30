@@ -58,7 +58,7 @@
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
       <property name="horizontalScrollMode">
-       <enum>QAbstractItemView::ScrollPerItem</enum>
+       <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
       <property name="showGrid">
        <bool>true</bool>

@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget_field->setBaseZoomWidth(32*5);
     ui->tableWidget_field->setBaseZoomHeight(32*2);
     ui->tableWidget_field->setMinimumZoom(0.5);
-    ui->tableWidget_field->setMaximumZoom(5.0);
-    ui->tableWidget_field->setZoomStep(0.2);
+    ui->tableWidget_field->setMaximumZoom(2.0);
+    ui->tableWidget_field->setZoomStep(0.1);
     ui->tableWidget_field->setCurrentZoom(1.0);
 
     connect(ui->action_zoomin, SIGNAL(triggered()), ui->tableWidget_field, SLOT(zoomIn()));

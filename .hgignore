@@ -11,3 +11,4 @@ Release/
 DiplomBukov/*.pcap
 cpp-netlib
 debug/
+release/
