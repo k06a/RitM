@@ -540,20 +540,17 @@ void ProcTableWidget::contextMenu(const QPoint & pos)
     infoAction = menu->addAction(QIcon(":/images/info.png"),
                                  tr("Информация"), this,
                                  SLOT(processorInfoAction()));
+    statsAction = menu->addAction(QIcon(":/images/statistics.png"),
+                                  tr("Показатели"), this,
+                                  SLOT(processorStatsAction()));
+    optionsAction = menu->addAction(QIcon(":/images/options.png"),
+                                    tr("Настройки"), this,
+                                    SLOT(processorPropertiesAction()));
 
-    if (stats != NULL)
-    {
-        statsAction = menu->addAction(QIcon(":/images/statistics.png"),
-                                      tr("Показатели"), this,
-                                      SLOT(processorStatsAction()));
-    }
-
-    if (opts != NULL)
-    {
-        optionsAction = menu->addAction(QIcon(":/images/options.png"),
-                                        tr("Настройки"), this,
-                                        SLOT(processorPropertiesAction()));
-    }
+    if (stats == NULL)
+        statsAction->setDisabled(true);
+    if (opts == NULL)
+        optionsAction->setDisabled(true);
 
     menu->move(mapToGlobal(pos));
     menu->setDefaultAction(optionsAction);
