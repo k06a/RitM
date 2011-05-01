@@ -50,6 +50,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiplomGui", "DiplomGui\Dipl
 		{DFDF4EB3-A8B5-442C-A327-B7069FC45970} = {DFDF4EB3-A8B5-442C-A327-B7069FC45970}
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "RitMSetup", "RitMSetup\RitMSetup.vdproj", "{C5C523A8-8101-4F41-8E11-2BD73EF390E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -96,6 +98,8 @@ Global
 		{3252F711-91E8-3837-B958-A746248824DC}.Debug|Win32.Build.0 = Debug|Win32
 		{3252F711-91E8-3837-B958-A746248824DC}.Release|Win32.ActiveCfg = Release|Win32
 		{3252F711-91E8-3837-B958-A746248824DC}.Release|Win32.Build.0 = Release|Win32
+		{C5C523A8-8101-4F41-8E11-2BD73EF390E7}.Debug|Win32.ActiveCfg = Debug
+		{C5C523A8-8101-4F41-8E11-2BD73EF390E7}.Release|Win32.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

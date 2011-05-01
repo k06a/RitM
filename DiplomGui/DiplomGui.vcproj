@@ -170,6 +170,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(QTDIR)\plugins\imageformats&quot;;&quot;$(QTDIR)\plugins\iconengines&quot;;&quot;$(QTDIR)\lib&quot;;&quot;C:\OpenSSL-Win32_full\lib&quot;"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="false"
 				ProgramDatabaseFile=""
 				SubSystem="2"
