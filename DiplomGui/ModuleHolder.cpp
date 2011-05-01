@@ -40,30 +40,30 @@ void ModuleHolder::LoadLibrary(QString dllName)
 
     for (int i = 0; i < library->getAdapterModules_size(); i++)
     {
-        ModuleRecord mr(Direction::Right);
+        ModuleRecord mr(Direction::None, Direction::Right);
         mr.lib = moduleName;
-        mr.module.adapterModule = library->getAdapterModules_item(i);
-        mr.name = mr.module.adapterModule->name();
+        mr.adapterModule = library->getAdapterModules_item(i);
+        mr.name = mr.adapterModule->name();
         mr.pixmapPath = QObject::tr(":/images/adapter.svg");
         newList.append(mr);
     }
 
     for (int i = 0; i < library->getConnectorModules_size(); i++)
     {
-        ModuleRecord mr(Direction::Left|Direction::Right);
+        ModuleRecord mr(Direction::Left, Direction::Right);
         mr.lib = moduleName;
-        mr.module.connectorModule = library->getConnectorModules_item(i);
-        mr.name = mr.module.connectorModule->name();
+        mr.connectorModule = library->getConnectorModules_item(i);
+        mr.name = mr.connectorModule->name();
         mr.pixmapPath = QObject::tr(":/images/connector.svg");
         newList.append(mr);
     }
 
     for (int i = 0; i < library->getProcessorModules_size(); i++)
     {
-        ModuleRecord mr(Direction::Left|Direction::Right);
+        ModuleRecord mr(Direction::Left, Direction::Right);
         mr.lib = moduleName;
-        mr.module.processorModule = library->getProcessorModules_item(i);
-        mr.name = mr.module.processorModule->name();
+        mr.processorModule = library->getProcessorModules_item(i);
+        mr.name = mr.processorModule->name();
         mr.pixmapPath = QObject::tr(":/images/processor.svg");
         newList.append(mr);
     }
@@ -88,12 +88,13 @@ ModuleHolder * ModuleHolder::instance(QListWidget * list)
     return m_instance;
 }
 
-void ModuleHolder::addModule(int direction,
+void ModuleHolder::addModule(int directionIn,
+                             int directionOut,
                              QString libName,
                              QString moduleName,
                              QString pixmapPath)
 {
-    ModuleRecord rec(direction, libName, moduleName, pixmapPath);
+    ModuleRecord rec(directionIn, directionOut, libName, moduleName, pixmapPath);
     modules.push_back(rec);
 }
 

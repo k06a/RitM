@@ -31,7 +31,8 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm)
     ModuleRecord * rec = holder->moduleForName(m_moduleFullName);
     m_pixmapPath = rec->pixmapPath;
     m_pixmap = QPixmap(m_pixmapPath);
-    m_text = rec->name;
+    m_procRecord = ProcRecord(*rec);
+    m_text = "[" + rec->name + "]";
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)
@@ -121,7 +122,7 @@ void ProcTableWidgetItem::updateStats()
 
 QString ProcTableWidgetItem::toStringForm()
 {
-    return m_text;
+    return m_moduleFullName;
 }
 
 bool ProcTableWidgetItem::isEqualProc(ProcTableWidgetItem * w)
@@ -139,6 +140,12 @@ void ProcTableWidgetItem::paintEvent(QPaintEvent * event)
 {
     QPainter p(this);
     p.drawPixmap(rect(), m_pixmap);
+
+    QFont font = p.font();
+    int size = (rect().width())/24 - 1;
+    font.setPointSize(size);
+    p.setFont(font);
+    
     foreach(int key, m_statValues.keys())
     {
         int align = 0;
@@ -150,13 +157,15 @@ void ProcTableWidgetItem::paintEvent(QPaintEvent * event)
         QString str = m_statValues[key];
         p.drawText(rect(), align, str);
     }
+    
     if (m_procRecord.adapter != NULL
         || m_procRecord.connector != NULL
         || m_procRecord.processor != NULL)
     {
-        if (rect().width() > 200)
+        if (rect().width() > 80)
             p.drawText(rect(), Qt::AlignCenter, m_text);
     }
+    
     p.end();
 
     QWidget::paintEvent(event);

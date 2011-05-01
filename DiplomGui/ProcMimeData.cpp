@@ -25,12 +25,12 @@ void ProcMimeData::setTableWidget(ProcTableWidget * tableWidget)
     m_tableWidget = tableWidget;
 }
 
-Module ProcMimeData::module() const
+ModuleRecord ProcMimeData::module() const
 {
     return m_module;
 }
 
-void ProcMimeData::setModule(Module module)
+void ProcMimeData::setModule(ModuleRecord module)
 {
     m_module = module;
 }

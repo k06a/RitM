@@ -13,6 +13,10 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QFileDialog>
+#include <QTextBrowser>
+#include <QPushButton>
+
+using DiplomBukov::ProcessorPtr;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -50,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->tableWidget_field->setBaseZoomWidth(32*5);
     ui->tableWidget_field->setBaseZoomHeight(32*2);
-    ui->tableWidget_field->setMinimumZoom(0.5);
+    ui->tableWidget_field->setMinimumZoom(0.3);
     ui->tableWidget_field->setMaximumZoom(2.0);
     ui->tableWidget_field->setZoomStep(0.1);
     ui->tableWidget_field->setCurrentZoom(1.0);
@@ -90,14 +94,14 @@ MainWindow::MainWindow(QWidget *parent)
     //holder->addModule(tr(":/images/connector.svg"),"Connector","Base");
 
     // Add all pipes
-    holder->addModule(Direction::LeftRight,      "Pipe", "Left2Right", tr(":/images/pipes/Left2Right.svg"));
-    holder->addModule(Direction::TopBottom,      "Pipe", "Top2Bottom", tr(":/images/pipes/Top2Bottom.svg"));
-    holder->addModule(Direction::LeftTopBottom,  "Pipe", "Left2TopBottom", tr(":/images/pipes/Left2TopBottom.svg"));
-    holder->addModule(Direction::TopBottomRight, "Pipe", "TopBottom2Right", tr(":/images/pipes/TopBottom2Right.svg"));
-    holder->addModule(Direction::LeftTop,        "Pipe", "Left2Top", tr(":/images/pipes/Left2Top.svg"));
-    holder->addModule(Direction::LeftBottom,     "Pipe", "Left2Bottom", tr(":/images/pipes/Left2Bottom.svg"));
-    holder->addModule(Direction::TopRight,       "Pipe", "Top2Right", tr(":/images/pipes/Top2Right.svg"));
-    holder->addModule(Direction::BottomRight,    "Pipe", "Bottom2Right", tr(":/images/pipes/Bottom2Right.svg"));
+    holder->addModule(Direction::Left,      Direction::Right,     "Pipe", "Left2Right",      tr(":/images/pipes/Left2Right.svg"));
+    holder->addModule(Direction::Top,       Direction::Bottom,    "Pipe", "Top2Bottom",      tr(":/images/pipes/Top2Bottom.svg"));
+    holder->addModule(Direction::Left,      Direction::TopBottom, "Pipe", "Left2TopBottom",  tr(":/images/pipes/Left2TopBottom.svg"));
+    holder->addModule(Direction::TopBottom, Direction::Right,     "Pipe", "TopBottom2Right", tr(":/images/pipes/TopBottom2Right.svg"));
+    holder->addModule(Direction::Left,      Direction::Top,       "Pipe", "Left2Top",        tr(":/images/pipes/Left2Top.svg"));
+    holder->addModule(Direction::Left,      Direction::Bottom,    "Pipe", "Left2Bottom",     tr(":/images/pipes/Left2Bottom.svg"));
+    holder->addModule(Direction::Top,       Direction::Right,     "Pipe", "Top2Right",       tr(":/images/pipes/Top2Right.svg"));
+    holder->addModule(Direction::Bottom,    Direction::Right,     "Pipe", "Bottom2Right",    tr(":/images/pipes/Bottom2Right.svg"));
 
     ui->listWidget_elements->setSlider(ui->horizontalSlider_elements);
     ui->listWidget_pipes->setSlider(ui->horizontalSlider_elements);
@@ -312,19 +316,10 @@ void MainWindow::on_tableWidget_field_itemSelectionChanged()
     ui->action_delete->setEnabled(count > 0);
 }
 
-void MainWindow::on_action_check_triggered()
+bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
 {
-    struct TableCell
-    {
-        int row;
-        int column;
-        ProcTableWidgetItem * item;
-    };
-
     QList<TableCell> adapters;
-    QList<TableCell> connectors;
-    QList<TableCell> processors;
-    QList<TableCell> pipes;
+    QList<TableCell> cells;
 
     for (int i = 0; i < ui->tableWidget_field->rowCount(); i++)
     for (int j = 0; j < ui->tableWidget_field->columnCount(); j++)
@@ -336,21 +331,11 @@ void MainWindow::on_action_check_triggered()
             continue;
 
         TableCell tc = {i,j,w};
-
-        QString s = w->text();
-        if (w->moduleFullName().startsWith("Pipe."))
-        {
-            pipes.append(tc);
-            continue;
-        }
-
-        ModuleRecord * rec = w->record();
-        if (rec->module.adapterModule != NULL)
+        
+        if (w->procRecord().adapter != NULL)
             adapters.append(tc);
-        if (rec->module.connectorModule != NULL)
-            connectors.append(tc);
-        if (rec->module.processorModule != NULL)
-            processors.append(tc);
+        else
+            cells.append(tc);
     }
 
     if (adapters.size() == 0)
@@ -358,23 +343,102 @@ void MainWindow::on_action_check_triggered()
         QMessageBox::warning(this, tr("Ошибка в построении тракта"),
             tr("В тракте отсутствуют источники трафика. Необходимо "
                "использовать хотя бы один объект адаптера."));
-        return;
+        return false;
     }
 
-    foreach(TableCell admod, adapters)
+    QString statForAdaps;
+    foreach(TableCell adcell, adapters)
     {
-        AdapterPtr ad = admod.item->record()->module.adapterModule->createAdapter();
-        //
+        AdapterPtr ad = adcell.item->procRecord().adapter;
+        int r = adcell.row;
+        int c = adcell.column + 1;
+        TractStat stat = connectRecursive(ad, cells, r, c, 0, 1);
         ad->ping(ProcessorPtr());
+
+        if (!statForAdaps.isEmpty())
+            statForAdaps += "\n";
+
+        statForAdaps +=
+            tr("Тракт за адаптером %1(row:%2, column:%3):\n"
+               "Коннекторов:\t%4\n"
+               "Процессоров:\t%5\n"
+               "Труб:\t%6\n"
+               "Итого:\t%7\n")
+               .arg(adcell.item->moduleFullName())
+               .arg(adcell.row)
+               .arg(adcell.column)
+               .arg(stat.conns)
+               .arg(stat.procs)
+               .arg(stat.pipes)
+               .arg(stat.conns + stat.procs + stat.pipes);
     }
+
+    if (!silentOnSuccess)
+    {
+        QMessageBox * messageBox = new QMessageBox(this);
+        messageBox->setWindowTitle(tr("Тракт успешно построен"));
+        messageBox->setText(
+            tr("Обратите внимание, что потоки данных никогда не следуют справа налево "
+               "какую бы иерархию вы не соорудили. Не подключенные элементы участия в "
+               "обработке принимать не будут."));
+        messageBox->setDetailedText(statForAdaps);
+        QTextEdit * textEdit = messageBox->findChild<QTextEdit*>();
+        textEdit->setTabStopWidth(100);
+        messageBox->exec();
+    }
+
+    return true;
 }
 
 void MainWindow::on_action_start_triggered()
 {
-
+    if (!on_action_check_triggered(true))
+        return;
 }
 
 void MainWindow::on_action_stop_triggered()
 {
 
+}
+
+MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<TableCell> cells, int r, int c, int dr, int dc)
+{
+    TableCell cell = {r,c};
+    int pos = cells.indexOf(cell);
+    if (pos == -1)
+        return 0;
+
+    ProcRecord procRec = cells[pos].item->procRecord();
+    ModuleRecord modRec = procRec.module;
+
+    if (modRec.sidesIn.indexOf(qMakePair(-dr,-dc)) == -1)
+        return 0;
+
+    TractStat tractStat;
+
+    ProcessorPtr newProc = nowProc;
+    if (modRec.lib != "Pipe")
+    {
+        if (procRec.connector != NULL)
+        {
+            newProc = SharedPointerCast<IProcessor>(procRec.connector);
+            tractStat.conns++;
+        }
+        if (procRec.processor != NULL)
+        {
+            newProc = SharedPointerCast<IProcessor>(procRec.processor);
+            tractStat.procs++;
+        }
+        nowProc->setNextProcessor(newProc->getPointer());
+    } else
+        tractStat.pipes++;
+
+    for (int i = 0; i < modRec.sidesOut.size(); i++)
+    {
+        int dr2 = modRec.sidesOut[i].first;
+        int dc2 = modRec.sidesOut[i].second;
+        tractStat += connectRecursive(newProc, cells, r+dr2, c+dc2, dr2, dc2);
+    }
+
+    return tractStat;
 }

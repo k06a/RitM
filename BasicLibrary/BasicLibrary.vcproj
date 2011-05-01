@@ -255,18 +255,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Starters"
-				>
-				<File
-					RelativePath=".\TimedStarter.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\TimedStarter.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Processors"
 				>
 				<Filter

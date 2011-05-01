@@ -19,13 +19,13 @@ class ProcMimeData : public QMimeData
                READ tableWidget
                WRITE setTableWidget)
 
-    Q_PROPERTY(Module m_module
+    Q_PROPERTY(ModuleRecord m_module
                READ module
                WRITE setModule)
 
     QString m_moduleName;
     ProcTableWidget * m_tableWidget;
-    Module m_module;
+    ModuleRecord m_module;
 
 public:
     ProcMimeData();
@@ -36,8 +36,8 @@ public:
     ProcTableWidget * tableWidget() const;
     void setTableWidget(ProcTableWidget * tableWidget);
 
-    Module module() const;
-    void setModule(Module module);
+    ModuleRecord module() const;
+    void setModule(ModuleRecord module);
 
 signals:
 

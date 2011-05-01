@@ -455,7 +455,7 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
         w->setPixmap(rec->pixmapPath);
         w->setText(tr("[%1]").arg(rec->name));
         w->setModuleFullName(rec->fullName());
-        ProcRecord procRec(rec->module);
+        ProcRecord procRec(*rec);
         w->setProcRecord(procRec);
 
         // Разбиение строки для ToolTip-а
@@ -641,8 +641,8 @@ void ProcTableWidget::processorStatsAction()
 
     QDialogButtonBox * buttonBox = new QDialogButtonBox(
         QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Vertical);
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ок"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Отмена"));
+    //buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ок"));
+    //buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Отмена"));
     connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
@@ -686,7 +686,7 @@ void ProcTableWidget::processorInfoAction()
     QLabel * label = new QLabel(tr(w->procRecord().info));
     label->setWordWrap(true);
     QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ок"));
+    //buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ок"));
     connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
 
     dialog->setLayout(new QVBoxLayout);

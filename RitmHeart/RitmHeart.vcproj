@@ -157,7 +157,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\RawPacket.h"
+				RelativePath=".\TimedStarter.cpp"
 				>
 			</File>
 			<Filter
@@ -220,6 +220,14 @@
 			</File>
 			<File
 				RelativePath=".\include\Protocol.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\RawPacket.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TimedStarter.h"
 				>
 			</File>
 			<Filter
