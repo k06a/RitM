@@ -20,6 +20,7 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
     , m_pixmapPath(item->m_pixmapPath)
     , m_procRecord(item->m_procRecord)
     , m_statPositions(item->m_statPositions)
+    , m_moduleFullName(item->m_moduleFullName)
 {
 }
 
@@ -142,8 +143,8 @@ void ProcTableWidgetItem::paintEvent(QPaintEvent * event)
     p.drawPixmap(rect(), m_pixmap);
 
     QFont font = p.font();
-    int size = (rect().width())/24 - 1;
-    font.setPointSize(size);
+    int size = (rect().width())/18;
+    font.setPixelSize(size);
     p.setFont(font);
     
     foreach(int key, m_statValues.keys())

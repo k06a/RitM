@@ -176,9 +176,9 @@ bool MainWindow::saveOrCancel()
     msgBox.setInformativeText(tr("Сохранить изменения в файле?"));
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Save);
-    msgBox.setButtonText(QMessageBox::Save, tr("Сохранить"));
+    //msgBox.setButtonText(QMessageBox::Save, tr("Сохранить"));
     msgBox.setButtonText(QMessageBox::Discard, tr("Не сохранять"));
-    msgBox.setButtonText(QMessageBox::Cancel, tr("Отмена"));
+    //msgBox.setButtonText(QMessageBox::Cancel, tr("Отмена"));
     int ret = msgBox.exec();
 
     switch (ret)
@@ -378,12 +378,13 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
         QMessageBox * messageBox = new QMessageBox(this);
         messageBox->setWindowTitle(tr("Тракт успешно построен"));
         messageBox->setText(
-            tr("Обратите внимание, что потоки данных никогда не следуют справа налево "
+            tr("Обратите внимание, что потоки данных никогда не следуют справа налево, "
                "какую бы иерархию вы не соорудили. Не подключенные элементы участия в "
                "обработке принимать не будут."));
         messageBox->setDetailedText(statForAdaps);
         QTextEdit * textEdit = messageBox->findChild<QTextEdit*>();
-        textEdit->setTabStopWidth(100);
+        if (textEdit != NULL)
+            textEdit->setTabStopWidth(100);
         messageBox->exec();
     }
 

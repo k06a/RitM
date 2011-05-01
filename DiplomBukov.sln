@@ -100,6 +100,7 @@ Global
 		{3252F711-91E8-3837-B958-A746248824DC}.Release|Win32.Build.0 = Release|Win32
 		{C5C523A8-8101-4F41-8E11-2BD73EF390E7}.Debug|Win32.ActiveCfg = Debug
 		{C5C523A8-8101-4F41-8E11-2BD73EF390E7}.Release|Win32.ActiveCfg = Release
+		{C5C523A8-8101-4F41-8E11-2BD73EF390E7}.Release|Win32.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
