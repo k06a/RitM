@@ -248,8 +248,8 @@ void ProcTableWidget::wheelEvent(QWheelEvent * event)
 void ProcTableWidget::mousePressEvent(QMouseEvent * event)
 {
     m_firstTouch = event->pos();
-    m_lastTouch.setY(event->pos().y());
-    m_lastTouch.setX(event->pos().x());
+    m_lastTouch.setY(-1);
+    m_lastTouch.setX(-1);
 
     if (!(event->modifiers() & Qt::ControlModifier))
     {
@@ -443,6 +443,13 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
         qobject_cast<const ProcMimeData*>(event->mimeData());
     if (mimeData == NULL)
         return;
+
+    // Если сдвига не было
+    if (rowAt(event->pos().y()) == rowAt(m_firstTouch.y())
+        && columnAt(event->pos().x()) == columnAt(m_firstTouch.x()))
+    {
+        return;
+    }
 
     if (event->source() != this)
     {
