@@ -40,18 +40,32 @@ FileAdapter::FileAdapter(ProcessorPtr Connector)
     , file1(NULL), file2(NULL), id(0)
     , linkType(0), buffer(NULL)
     , groupOption(new GroupOption(true))
-    , inFile(new FileOpenOption("Packet CAPture (*.cap *.pcap)", "Входной файл:"))
-    , outFile(new FileSaveOption("Packet CAPture (*.cap *.pcap)", "Выходной файл:"))
+    , inFile(new FileOpenOption("Packet CAPture (*.pcap *.cap)", "Входной файл:"))
+    , outFile(new FileSaveOption("Packet CAPture (*.pcap *.cap)", "Выходной файл:"))
 {
     setNextProcessor(Connector);
     groupOption->addOption(inFile);
     groupOption->addOption(outFile);
 }
 
+FileAdapter::FileAdapter(const FileAdapter & ad)
+    : statCounter(new StatCounter)
+    , file1(NULL), file2(NULL), id(0)
+    , linkType(ad.linkType), buffer(NULL)
+    , groupOption(new GroupOption(true))
+    , inFile(new FileOpenOption("Packet CAPture (*.pcap *.cap)", "Входной файл:"))
+    , outFile(new FileSaveOption("Packet CAPture (*.pcap *.cap)", "Выходной файл:"))
+{
+    inFile->setFilename(ad.inFile->getFilename());
+    outFile->setFilename(ad.outFile->getFilename());
+    groupOption->addOption(inFile);
+    groupOption->addOption(outFile);
+}
+
 ProcessorPtr FileAdapter::CreateCopy() const
 {
-    throw "Not Implemented";
-    return ProcessorPtr();
+    ProcessorPtr p(new FileAdapter(*this));
+    return p;
 }
 
 FileAdapter::~FileAdapter()

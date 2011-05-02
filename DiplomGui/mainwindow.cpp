@@ -4,6 +4,7 @@
 #include "ModuleHolder.h"
 #include "IAdapter.h"
 #include "IAdapterModule.h"
+#include "TimedStarter.h"
 #include <QVariant>
 #include <QCheckBox>
 #include <QUndoStack>
@@ -17,6 +18,7 @@
 #include <QPushButton>
 
 using DiplomBukov::ProcessorPtr;
+using DiplomBukov::StarterPtr;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -150,6 +152,20 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue("elementsZoom", ui->horizontalSlider_elements->value());
     settings.setValue("fieldZoom", ui->tableWidget_field->currentZoom());
     QMainWindow::closeEvent(event);
+}
+
+void MainWindow::timerEvent(QTimerEvent * event)
+{
+    if (event->timerId() == m_refreshId)
+    {
+        foreach(ProcTableWidgetItem * item, m_refreshCells)
+            item->updateStats();
+        ui->tableWidget_field->update();
+        event->accept();
+        return;
+    }
+
+    QMainWindow::timerEvent(event);
 }
 
 void MainWindow::stackChanged()
@@ -318,6 +334,8 @@ void MainWindow::on_tableWidget_field_itemSelectionChanged()
 
 bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
 {
+    m_starter = StarterPtr();
+
     QList<TableCell> adapters;
     QList<TableCell> cells;
 
@@ -333,9 +351,23 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
         TableCell tc = {i,j,w};
         
         if (w->procRecord().adapter != NULL)
+        {
+            ProcessorPtr p = w->procRecord().adapter->CreateCopy();
+            w->procRecord().adapter = SharedPointerCast<IAdapter>(p);
             adapters.append(tc);
-        else
+        } else
+        if (w->procRecord().connector != NULL)
+        {
+            ProcessorPtr p = w->procRecord().connector->CreateCopy();
+            w->procRecord().connector = SharedPointerCast<IConnector>(p);
             cells.append(tc);
+        } else
+        if (w->procRecord().processor != NULL)
+        {
+            ProcessorPtr p = w->procRecord().processor->CreateCopy();
+            w->procRecord().processor = SharedPointerCast<IProcessor>(p);
+            cells.append(tc);
+        }
     }
 
     if (adapters.size() == 0)
@@ -350,6 +382,7 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
     foreach(TableCell adcell, adapters)
     {
         AdapterPtr ad = adcell.item->procRecord().adapter;
+
         int r = adcell.row;
         int c = adcell.column + 1;
         TractStat stat = connectRecursive(ad, cells, r, c, 0, 1);
@@ -388,13 +421,27 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
         messageBox->exec();
     }
 
+    m_starter = StarterPtr(new TimedStarter);
+    foreach(TableCell adcell, adapters)
+    {
+        AdapterPtr ad = adcell.item->procRecord().adapter;
+        m_starter->addAdapter(ad);
+    }
+
     return true;
 }
 
 void MainWindow::on_action_start_triggered()
 {
+    m_refreshCells.clear();
     if (!on_action_check_triggered(true))
         return;
+
+    ui->action_start->setDisabled(true);
+    ui->action_stop->setEnabled(true);
+
+    m_starter->start();
+    m_refreshId = startTimer(100);
 }
 
 void MainWindow::on_action_stop_triggered()
@@ -431,6 +478,7 @@ MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<T
             tractStat.procs++;
         }
         nowProc->setNextProcessor(newProc->getPointer());
+        m_refreshCells.insert(cells[pos].item);
     } else
         tractStat.pipes++;
 

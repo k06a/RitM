@@ -66,6 +66,7 @@ namespace DiplomBukov
 
 	public:
         FileAdapter(ProcessorPtr Connector = ProcessorPtr());
+        FileAdapter(const FileAdapter & ad);
 		virtual ProcessorPtr CreateCopy() const;
         ~FileAdapter();
         

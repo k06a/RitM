@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSet>
 
 #include "CommonInclude.h"
 #include "IProcessor.h"
@@ -17,11 +18,17 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    struct TableCell;
+
     double tableZoom;
     QUndoStack * m_stack;
     QAction * m_action_undo;
     QAction * m_action_redo;
     QString m_filename;
+
+    DiplomBukov::StarterPtr m_starter;
+    int m_refreshId;
+    QSet<ProcTableWidgetItem*> m_refreshCells;
 
     struct TableCell
     {
@@ -66,6 +73,7 @@ public:
 protected:
     virtual void showEvent(QShowEvent * event);
     virtual void closeEvent(QCloseEvent * event);
+    virtual void timerEvent(QTimerEvent * event);
 
 private slots:
     void stackChanged();
