@@ -57,6 +57,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2A7DB024A8C84C0EA77B15AFC22C5FBC"
+        "OwnerKey" = "8:_E3E193A052734E459999F3BF5C978789"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4136B48705B7A8D3BDC2D93AA024CC55"
         "OwnerKey" = "8:_DC180560BAE544F5A4D61565F0649D8F"
         "MsmSig" = "8:_UNDEFINED"
@@ -81,12 +87,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_68F45455321F4E64B898A394B7042032"
-        "OwnerKey" = "8:_A7C5FBBF752F4D67B7519340475D1C33"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A04200142B2445ACA217F824FF0DBAA2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -105,31 +105,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A7C5FBBF752F4D67B7519340475D1C33"
-        "OwnerKey" = "8:_54F6FDA8C1134AC38884D2F67EAF18BE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A7C5FBBF752F4D67B7519340475D1C33"
-        "OwnerKey" = "8:_DC180560BAE544F5A4D61565F0649D8F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A7C5FBBF752F4D67B7519340475D1C33"
-        "OwnerKey" = "8:_A58F94C553E34F81B85DC609851EF7C1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AA7D5D574F5393C3CD2D9E0D52653B78"
-        "OwnerKey" = "8:_A58F94C553E34F81B85DC609851EF7C1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D3691AC90918DCEA9B94BFFCDDDACA49"
+        "MsmKey" = "8:_BA7144B391591F0DDAAE4D117428E26D"
         "OwnerKey" = "8:_A58F94C553E34F81B85DC609851EF7C1"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -141,8 +117,32 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E3E193A052734E459999F3BF5C978789"
+        "OwnerKey" = "8:_54F6FDA8C1134AC38884D2F67EAF18BE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E3E193A052734E459999F3BF5C978789"
+        "OwnerKey" = "8:_DC180560BAE544F5A4D61565F0649D8F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E3E193A052734E459999F3BF5C978789"
+        "OwnerKey" = "8:_A58F94C553E34F81B85DC609851EF7C1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E4E79B7E0DB0435495D02F15C2D919C7"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9AC9CFE67075C6AE61847D52E60290F"
+        "OwnerKey" = "8:_A58F94C553E34F81B85DC609851EF7C1"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -170,6 +170,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5.SP1"
+                    {
+                    "Name" = "8:.NET Framework 3.5 SP1"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
         "Release"
@@ -399,7 +412,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -483,30 +496,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AA7D5D574F5393C3CD2D9E0D52653B78"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BA7144B391591F0DDAAE4D117428E26D"
             {
-            "SourcePath" = "8:QtCored4.dll"
-            "TargetName" = "8:QtCored4.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B19290D0BE574F328E1571553CE86380"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D3691AC90918DCEA9B94BFFCDDDACA49"
-            {
-            "SourcePath" = "8:QtGuid4.dll"
-            "TargetName" = "8:QtGuid4.dll"
+            "SourcePath" = "8:QtGui4.dll"
+            "TargetName" = "8:QtGui4.dll"
             "Tag" = "8:"
             "Folder" = "8:_B19290D0BE574F328E1571553CE86380"
             "Condition" = "8:"
@@ -541,6 +534,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F9AC9CFE67075C6AE61847D52E60290F"
+            {
+            "SourcePath" = "8:QtCore4.dll"
+            "TargetName" = "8:QtCore4.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B19290D0BE574F328E1571553CE86380"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -656,7 +669,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:RitM"
         "ProductCode" = "8:{FBCEF10F-6C6F-4CCD-A13E-8063AD52E7AC}"
-        "PackageCode" = "8:{8B62157F-2E6A-47B7-BA95-9B0BA91925CD}"
+        "PackageCode" = "8:{94C8AEB2-D6DD-4EF7-8B85-E85590495D4D}"
         "UpgradeCode" = "8:{F4FCA0F7-BBD5-44BF-A48B-3D3B6659F6E6}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
@@ -779,7 +792,7 @@
             {
             "Name" = "8:RitM"
             "Arguments" = "8:"
-            "Description" = "8:"
+            "Description" = "8:Ritm in the Middle"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
@@ -793,7 +806,7 @@
             {
             "Name" = "8:RitM"
             "Arguments" = "8:"
-            "Description" = "8:"
+            "Description" = "8:RitM in the Middle"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
@@ -1199,11 +1212,11 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_68F45455321F4E64B898A394B7042032"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_2A7DB024A8C84C0EA77B15AFC22C5FBC"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:microsoft_vc90_debugcrt_x86.msm"
+            "SourcePath" = "8:microsoft_vc90_crt_x86.msm"
                 "Properties"
                 {
                 }
@@ -1213,11 +1226,11 @@
             "Feature" = "8:"
             "IsolateTo" = "8:"
             }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_A7C5FBBF752F4D67B7519340475D1C33"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_E3E193A052734E459999F3BF5C978789"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:policy_9_0_Microsoft_VC90_DebugCRT_x86.msm"
+            "SourcePath" = "8:policy_9_0_Microsoft_VC90_CRT_x86.msm"
                 "Properties"
                 {
                 }

@@ -162,13 +162,12 @@ void MainWindow::timerEvent(QTimerEvent * event)
     if (event->timerId() == m_refreshId)
     {
         foreach(ProcTableWidgetItem * item, m_refreshCells)
+        {
             item->updateStats();
-        ui->tableWidget_field->update();
-        event->accept();
+            item->update();
+        }
         return;
     }
-
-    QMainWindow::timerEvent(event);
 }
 
 void MainWindow::stackChanged()
@@ -322,9 +321,9 @@ void MainWindow::on_horizontalSlider_elements_valueChanged(int value)
     }
 
     ui->listWidget_elements->setIconSize(QSize(value,value));
-    ui->listWidget_elements->setGridSize(QSize(value*1.4*2.5,value*1.4));
+    ui->listWidget_elements->setGridSize(QSize(value*1.4,value*1.4/1.5));
     ui->listWidget_pipes->setIconSize(QSize(value,value));
-    ui->listWidget_pipes->setGridSize(QSize(value*1.4*2.5,value*1.4));
+    ui->listWidget_pipes->setGridSize(QSize(value*1.4,value*1.4/1.5));
 }
 
 void MainWindow::on_tableWidget_field_itemSelectionChanged()
@@ -337,8 +336,6 @@ void MainWindow::on_tableWidget_field_itemSelectionChanged()
 
 bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
 {
-    m_starter = StarterPtr();
-
     QList<TableCell> adapters;
     QList<TableCell> cells;
 
@@ -384,9 +381,11 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
         return false;
     }
 
+    m_refreshCells.clear();
     QString statForAdaps;
     foreach(TableCell adcell, adapters)
     {
+        m_refreshCells.insert(adcell.item);
         AdapterPtr ad = adcell.item->procRecord().adapter;
 
         int r = adcell.row;
@@ -439,7 +438,6 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
 
 void MainWindow::on_action_start_triggered()
 {
-    m_refreshCells.clear();
     if (!on_action_check_triggered(true))
         return;
 
@@ -449,13 +447,13 @@ void MainWindow::on_action_start_triggered()
     ui->action_copy->setDisabled(true);
     ui->action_paste->setDisabled(true);
 
+    m_refreshId = startTimer(100);
+
     if (thread)
         delete thread;
     thread = new RitmThread;
     thread->setStarter(m_starter);
     thread->start();
-    
-    m_refreshId = startTimer(100);
 }
 
 void MainWindow::on_action_stop_triggered()
@@ -498,7 +496,9 @@ MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<T
             tractStat.procs++;
         }
         nowProc->setNextProcessor(newProc->getPointer());
-        m_refreshCells.insert(cells[pos].item);
+
+        if (cells[pos].item->procRecord().statsProvider != NULL)
+            m_refreshCells.insert(cells[pos].item);
     } else
         tractStat.pipes++;
 

@@ -611,7 +611,7 @@ void ProcTableWidget::processorStatsAction()
     bottomGridLayout->addWidget(new QLabel(tr("Левый верхний угол:")),  0, 0);
     bottomGridLayout->addWidget(new QLabel(tr("Правый верхний угол:")), 1, 0);
     bottomGridLayout->addWidget(new QLabel(tr("Левый нижний угол:")),   2, 0);
-    bottomGridLayout->addWidget(new QLabel(tr("правый нижний угол:")),  3, 0);
+    bottomGridLayout->addWidget(new QLabel(tr("Правый нижний угол:")),  3, 0);
     
     QLineEdit * topLeft  = new QLineEdit(w->statText(Direction::LeftTop));
     QLineEdit * topRight = new QLineEdit(w->statText(Direction::TopRight));

@@ -50,6 +50,7 @@ void TimedStarter::start()
                 return;
         }
 
+        /*
         // Если все оставшиеся процессоры типа Online
         if (mintime == 0)
         {
@@ -57,6 +58,7 @@ void TimedStarter::start()
                 delays[i]->go();
             continue;
         }
+        */
 
         if (mintime_index == -1)
             break;

@@ -9,6 +9,7 @@
 #include "AbstractProcessor.h"
 #include "IAdapter.h"
 #include "SwitchOption.h"
+#include "IStatsProvider.h"
 
 namespace DiplomBukov
 {
@@ -16,6 +17,22 @@ namespace DiplomBukov
         : public AbstractProcessor
         , public IAdapter
     {
+        class StatCounter : public IStatsProvider
+        {
+        public:
+            i64 i_count_in;
+            i64 i_count_out;
+
+            StatCounter();
+            virtual int getStatistic_size() const;
+            virtual i64 getStatistic_value(int i) const;
+            virtual const char * getStatistic_name(int i) const;
+        };
+
+        typedef SharedPointer<StatCounter>::Type StatCounterPtr;
+
+        StatCounterPtr statCounter;
+
         SwitchOptionPtr devicesSwitch;
 
         pcap_if_t * deviceList;
@@ -41,6 +58,8 @@ namespace DiplomBukov
         virtual bool tick();
 
         virtual Type type();
+
+        virtual StatsProviderPtr statsProvider();
     };
     // class PcapAdapter
 

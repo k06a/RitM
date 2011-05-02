@@ -7,8 +7,39 @@
 
 using namespace DiplomBukov;
 
+PcapAdapter::StatCounter::StatCounter()
+    : i_count_in(0), i_count_out(0)
+{
+}
+
+int PcapAdapter::StatCounter::getStatistic_size() const
+{
+    return 2;
+}
+
+i64 PcapAdapter::StatCounter::getStatistic_value(int i) const
+{
+    switch(i)
+    {
+        case 0: return i_count_in;
+        case 1: return i_count_out;
+    }
+    return 0;
+}
+
+const char * PcapAdapter::StatCounter::getStatistic_name(int i) const
+{
+    switch(i)
+    {
+        case 0: return "Кол-во полученных пакетов";
+        case 1: return "Кол-во переданных пакетов";
+    }
+    return "";
+}
+
 PcapAdapter::PcapAdapter(ProcessorPtr Connector)
-    : devicesSwitch(new SwitchOption)
+    : statCounter(new StatCounter)
+    , devicesSwitch(new SwitchOption)
     , deviceList(NULL)
     , device(NULL)
 {
@@ -65,6 +96,7 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, PacketPtr packet, 
     std::cout << '-' << devicesSwitch->getSelectedIndex();
 
     int ret = pcap_sendpacket(device, &(*packet)[offset], packet->size() - offset);
+    statCounter->i_count_out++;
 
     return ProcessingStatus::Accepted;
 }
@@ -123,19 +155,26 @@ bool PcapAdapter::tick()
     PacketPtr packet(new RawPacket(pkt_data, header.caplen));
     packet->setStatus(IPacket::Accepted);
     packet->setId(id++);
-    packet->setTime(header.ts.tv_sec);
+    packet->setTime(0);//header.ts.tv_sec);
     packet->setAdapter(this);
     packet->addProcessor(shared_from_this());
 
     std::cout << '+' << devicesSwitch->getSelectedIndex();
 
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
-    nextProcessor->forwardProcess(proto, packet, 0);
-
+    if (nextProcessor != NULL)
+        nextProcessor->forwardProcess(proto, packet, 0);
+    
+    statCounter->i_count_in++;
     return true;
 }
 
 IAdapter::Type PcapAdapter::type()
 {
     return Online;
+}
+
+StatsProviderPtr PcapAdapter::statsProvider()
+{
+    return statCounter;
 }

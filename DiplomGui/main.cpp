@@ -1,7 +1,10 @@
 #include <QtGui/QApplication>
 #include <QTextCodec>
 #include <QTranslator>
+#include <QDir>
 #include "mainwindow.h"
+
+#include <QLabel>
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +12,7 @@ int main(int argc, char *argv[])
     
     QApplication app(argc, argv);
     
+    QDir::setCurrent(QApplication::applicationDirPath());
     QTranslator translator;
     translator.load("qt_ru");
     app.installTranslator(&translator);

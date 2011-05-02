@@ -61,6 +61,7 @@ void RemoveProcCommand::undo()
         ProcTableWidgetItem * w = new ProcTableWidgetItem(item.widget);
         table->setCellWidget(item.row, item.column, w);
         table->item(item.row, item.column)->setSelected(true);
+        table->item(item.row, item.column)->setToolTip(item.widget->procRecord().toolTip);
     }
 }
 
@@ -71,6 +72,7 @@ void RemoveProcCommand::redo()
     {
         table->removeCellWidget(item.row, item.column);
         table->item(item.row, item.column)->setSelected(true);
+        table->item(item.row, item.column)->setToolTip("");
     }
 }
 /*
@@ -115,6 +117,7 @@ void PutProcCommand::undo()
     if (old_w != NULL)
         old_w = new ProcTableWidgetItem(old_w);
     table->setCellWidget(backup.row, backup.column, old_w);
+    table->item(backup.row, backup.column)->setToolTip(old_w->procRecord().toolTip);
 
     // Change selection
     table->clearSelection();
@@ -134,6 +137,7 @@ void PutProcCommand::redo()
     if (new_w != NULL)
         new_w = new ProcTableWidgetItem(new_w);
     table->setCellWidget(item.row, item.column, new_w);
+    table->item(item.row, item.column)->setToolTip(item.widget->procRecord().toolTip);
 
     // Change selection
     table->clearSelection();
@@ -204,6 +208,7 @@ void CopyProcCommand::undo()
         if (old_w != NULL)
             old_w = new ProcTableWidgetItem(old_w);
         table->setCellWidget(item.row, item.column, old_w);
+        table->item(item.row, item.column)->setToolTip(old_w->procRecord().toolTip);
         table->item(item.row, item.column)->setSelected(true);
     }
 }
@@ -242,6 +247,7 @@ void CopyProcCommand::redo()
         if (new_w != NULL)
             new_w = new ProcTableWidgetItem(new_w);
         table->setCellWidget(r, c, new_w);
+        table->item(r, c)->setToolTip(new_w->procRecord().toolTip);
 
         QTableWidgetItem * it = table->item(r,c);
         if (it == NULL)
