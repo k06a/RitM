@@ -247,6 +247,10 @@
 				RelativePath=".\QtOptionWalker.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\RitmThread.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -487,6 +491,32 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\RitmThread.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_SVG_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DLITTLE_ENDIAN &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtSvg&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I.\..\..\..\Qt\SDK_1.1_RC\Desktop\Qt\4.7.3\msvc2008\mkspecs\default&quot; &quot;-I.\..\winpcap\include&quot; &quot;-I.\..\ProtoLibTest&quot; &quot;-I.\..\RitmHeart&quot; &quot;-I.\..\RitmHeart\include&quot; &quot;-I.\..\RitmHeart\include\options&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DQT_NO_DEBUG -DNDEBUG -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_SVG_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DLITTLE_ENDIAN &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtSvg&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I.\..\..\..\Qt\SDK_1.1_RC\Desktop\Qt\4.7.3\msvc2008\mkspecs\default&quot; &quot;-I.\..\winpcap\include&quot; &quot;-I.\..\ProtoLibTest&quot; &quot;-I.\..\RitmHeart&quot; &quot;-I.\..\RitmHeart\include&quot; &quot;-I.\..\RitmHeart\include\options&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="Generated Files"
@@ -628,6 +658,18 @@
 						/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath=".\Debug\moc_RitmThread.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 			<Filter
 				Name="Release"
@@ -708,6 +750,18 @@
 				</File>
 				<File
 					RelativePath=".\Release\moc_QtOptionWalker.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\Release\moc_RitmThread.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -1180,6 +1234,26 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\images\processor_end.svg"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\images\quit.png"
 				>
 				<FileConfiguration
@@ -1229,7 +1303,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png;.\images\statistics.png;.\images\info.png"
+						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png;.\images\statistics.png;.\images\info.png;.\images\processor_end.svg"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -1240,7 +1314,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png;.\images\statistics.png;.\images\info.png"
+						AdditionalDependencies="$(InputPath);.\images\editcopy.png;.\images\editcut.png;.\images\editpaste.png;.\images\filenew.png;.\images\fileopen.png;.\images\filesave.png;.\images\zoomin.png;.\images\zoomout.png;.\images\pipes\Bottom2Right.svg;.\images\pipes\Left2Bottom.svg;.\images\pipes\Left2Right.svg;.\images\pipes\Left2Top.svg;.\images\pipes\Left2TopBottom.svg;.\images\pipes\Top2Bottom.svg;.\images\pipes\Top2Right.svg;.\images\pipes\TopBottom2Right.svg;.\images\editdelete.png;.\images\quit.png;.\images\help.png;.\images\about.png;.\images\adapter.svg;.\images\connector.svg;.\images\processor.svg;.\images\redo.png;.\images\undo.png;.\images\logo.png;.\images\check.png;.\images\start.png;.\images\stop.png;.\images\options.png;.\images\statistics.png;.\images\info.png;.\images\processor_end.svg"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>

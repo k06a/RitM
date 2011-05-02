@@ -120,3 +120,8 @@ const char * HttpSwapProcessor::getProcessorName()
 {
     return "HttpSwapProcessor";
 }
+
+bool HttpSwapProcessor::isFinal()
+{
+    return true;
+}

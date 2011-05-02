@@ -119,6 +119,7 @@ struct ProcRecord
     OptionPtr options;
     const char * info;
     QString elementName;
+    QString toolTip;
 
     ModuleRecord module;
 
@@ -127,9 +128,15 @@ struct ProcRecord
     {
     }
 
-    ProcRecord(ModuleRecord module)
-        : info(""), module(module)
+    ProcRecord(ModuleRecord module, int row, int column)
+        : info("")
     {
+        init(module, row, column);
+    }
+
+    void init(ModuleRecord module, int row, int column)
+    {
+        this->module = module;
         if (module.adapterModule != NULL)
         {
             adapter = module.adapterModule->createAdapter();
@@ -145,7 +152,7 @@ struct ProcRecord
             options = connector->getOptions();
             info = module.connectorModule->info();
             elementName = QObject::tr("коннектор");
-        }
+        } else
         if (module.processorModule != NULL)
         {
             processor = module.processorModule->createProcessor();
@@ -158,6 +165,21 @@ struct ProcRecord
             info = "Трубы предназначены для создания связей между обработчиками.";
             elementName = QObject::tr("труба");
         }
+
+        // Разбиение строки для ToolTip-а
+        QString str = QObject::tr("Строка %1, столбец %2: %3")
+            .arg(row+1)
+            .arg(column+1)
+            .arg(QObject::tr(info));
+        while (str.length() > 40)
+        {
+            int pos = 40;
+            while ((str[pos] != ' ') && (pos < str.length())) pos++;
+            while (!QChar(str[pos]).isLetter() && (pos < str.length())) pos++;
+            toolTip += str.left(pos) + "\n";
+            str.remove(0, pos);
+        }
+        toolTip += str;
     }
 };
 

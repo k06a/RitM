@@ -5,6 +5,8 @@
 #include "IAdapter.h"
 #include "IAdapterModule.h"
 #include "TimedStarter.h"
+#include "RitmThread.h"
+
 #include <QVariant>
 #include <QCheckBox>
 #include <QUndoStack>
@@ -23,6 +25,7 @@ using DiplomBukov::StarterPtr;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , tableZoom(1.0)
+    , thread(NULL)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -97,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Add all pipes
     holder->addModule(Direction::Left,      Direction::Right,     "Pipe", "Left2Right",      tr(":/images/pipes/Left2Right.svg"));
-    holder->addModule(Direction::Top,       Direction::Bottom,    "Pipe", "Top2Bottom",      tr(":/images/pipes/Top2Bottom.svg"));
+    holder->addModule(Direction::TopBottom, Direction::TopBottom, "Pipe", "Top2Bottom",      tr(":/images/pipes/Top2Bottom.svg"));
     holder->addModule(Direction::Left,      Direction::TopBottom, "Pipe", "Left2TopBottom",  tr(":/images/pipes/Left2TopBottom.svg"));
     holder->addModule(Direction::TopBottom, Direction::Right,     "Pipe", "TopBottom2Right", tr(":/images/pipes/TopBottom2Right.svg"));
     holder->addModule(Direction::Left,      Direction::Top,       "Pipe", "Left2Top",        tr(":/images/pipes/Left2Top.svg"));
@@ -367,6 +370,9 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
             ProcessorPtr p = w->procRecord().processor->CreateCopy();
             w->procRecord().processor = SharedPointerCast<IProcessor>(p);
             cells.append(tc);
+        } else
+        {
+            cells.append(tc);
         }
     }
 
@@ -392,14 +398,14 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
             statForAdaps += "\n";
 
         statForAdaps +=
-            tr("Тракт за адаптером %1(row:%2, column:%3):\n"
+            tr("Тракт за адаптером %1 (row:%2, column:%3):\n"
                "Коннекторов:\t%4\n"
                "Процессоров:\t%5\n"
                "Труб:\t%6\n"
                "Итого:\t%7\n")
                .arg(adcell.item->moduleFullName())
-               .arg(adcell.row)
-               .arg(adcell.column)
+               .arg(adcell.row+1)
+               .arg(adcell.column+1)
                .arg(stat.conns)
                .arg(stat.procs)
                .arg(stat.pipes)
@@ -439,13 +445,28 @@ void MainWindow::on_action_start_triggered()
 
     ui->action_start->setDisabled(true);
     ui->action_stop->setEnabled(true);
+    ui->action_cut->setDisabled(true);
+    ui->action_copy->setDisabled(true);
+    ui->action_paste->setDisabled(true);
 
-    m_starter->start();
+    if (thread)
+        delete thread;
+    thread = new RitmThread;
+    thread->setStarter(m_starter);
+    thread->start();
+    
     m_refreshId = startTimer(100);
 }
 
 void MainWindow::on_action_stop_triggered()
 {
+    thread->stop();
+    killTimer(m_refreshId);
+    ui->action_start->setEnabled(true);
+    ui->action_stop->setDisabled(true);
+    ui->action_cut->setEnabled(true);
+    ui->action_copy->setEnabled(true);
+    ui->action_paste->setEnabled(true);
 
 }
 
@@ -463,7 +484,6 @@ MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<T
         return 0;
 
     TractStat tractStat;
-
     ProcessorPtr newProc = nowProc;
     if (modRec.lib != "Pipe")
     {

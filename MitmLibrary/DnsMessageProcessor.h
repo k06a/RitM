@@ -39,6 +39,8 @@ namespace DiplomBukov
         virtual const char * getProcessorName();
 
         virtual OptionPtr getOptions();
+
+        virtual bool isFinal();
     };
     // class DnsMessageProcessor
 

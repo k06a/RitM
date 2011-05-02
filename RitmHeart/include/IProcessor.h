@@ -34,6 +34,8 @@ namespace DiplomBukov
         virtual OptionPtr getOptions() = 0;
 
         virtual StatsProviderPtr statsProvider() = 0;
+
+        virtual bool isFinal() = 0;
     };
     // class IProcessor
 }

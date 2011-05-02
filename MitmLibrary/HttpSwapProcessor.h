@@ -30,6 +30,8 @@ namespace DiplomBukov
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
+
+        virtual bool isFinal();
     };
     // class HttpSwapProcessor
 

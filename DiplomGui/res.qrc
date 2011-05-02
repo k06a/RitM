@@ -32,5 +32,6 @@
         <file>images/options.png</file>
         <file>images/statistics.png</file>
         <file>images/info.png</file>
+        <file>images/processor_end.svg</file>
     </qresource>
 </RCC>

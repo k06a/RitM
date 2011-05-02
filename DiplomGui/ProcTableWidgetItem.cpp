@@ -24,7 +24,7 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
 {
 }
 
-ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm)
+ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm, int row, int column)
     : QWidget()
 {
     m_moduleFullName = stringForm;
@@ -32,7 +32,7 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm)
     ModuleRecord * rec = holder->moduleForName(m_moduleFullName);
     m_pixmapPath = rec->pixmapPath;
     m_pixmap = QPixmap(m_pixmapPath);
-    m_procRecord = ProcRecord(*rec);
+    m_procRecord.init(*rec, row, column);
     m_text = "[" + rec->name + "]";
 }
 

@@ -58,9 +58,9 @@ BasicLibrary::BasicLibrary()
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacSwitch>(
         "MacSwitch", "ќбработчик, осуществл€ющий коммутацию кадров между интерфейсами по MAC-адресам.")));
 
-    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<AcceptProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<AcceptProcessor,true>(
         "AcceptProcessor", "ќбработчик, осуществл€ющий проталкивание пакета.")));
-    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<RejectProcessor>(
+    list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<RejectProcessor,true>(
         "RejectProcessor", "ќбработчик, осуществл€ющий отклонение пакета.")));
 
     list_proc.push_back(ProcessorModulePtr(new TemplateProcessorModule<MacHeaderProcessor>(

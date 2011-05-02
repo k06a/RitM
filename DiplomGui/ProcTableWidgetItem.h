@@ -42,7 +42,7 @@ class ProcTableWidgetItem : public QWidget
 public:
     explicit ProcTableWidgetItem();
     explicit ProcTableWidgetItem(ProcTableWidgetItem * item);
-    ProcTableWidgetItem(QString stringForm);
+    ProcTableWidgetItem(QString stringForm, int row, int column);
     ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent = 0);
 
     QString text() const;

@@ -41,6 +41,8 @@ namespace DiplomBukov
         virtual OptionPtr getOptions();
 
         virtual StatsProviderPtr statsProvider();
+
+        virtual bool isFinal();
     };
     // class AbstractProcessor
 }

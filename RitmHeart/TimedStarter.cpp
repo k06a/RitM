@@ -4,6 +4,11 @@
 
 using namespace DiplomBukov;
 
+TimedStarter::TimedStarter()
+    : m_shouldStop(false)
+{
+}
+
 void TimedStarter::addAdapter(AdapterPtr adapter)
 {
     adapters.push_back(adapter);
@@ -40,6 +45,9 @@ void TimedStarter::start()
                     mintime_index = i;
                 }
             }
+
+            if (m_shouldStop)
+                return;
         }
 
         // Если все оставшиеся процессоры типа Online
@@ -54,4 +62,9 @@ void TimedStarter::start()
             break;
         delays[mintime_index]->go();
     }
+}
+
+void TimedStarter::stop()
+{
+    m_shouldStop = true;
 }

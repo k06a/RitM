@@ -32,3 +32,8 @@ const char * RejectProcessor::getProcessorName()
 {
     return "RejectProcessor";
 }
+
+bool RejectProcessor::isFinal()
+{
+    return true;
+}

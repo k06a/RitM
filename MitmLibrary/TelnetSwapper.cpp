@@ -72,3 +72,8 @@ const char * TelnetSwapper::getProcessorName()
 {
     return "TelnetSwapper";
 }
+
+bool TelnetSwapper::isFinal()
+{
+    return true;
+}

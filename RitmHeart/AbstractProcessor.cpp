@@ -99,3 +99,8 @@ StatsProviderPtr AbstractProcessor::statsProvider()
 {
     return StatsProviderPtr();
 }
+
+bool AbstractProcessor::isFinal()
+{
+    return false;
+}

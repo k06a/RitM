@@ -35,3 +35,8 @@ const char * AcceptProcessor::getProcessorName()
 {
     return "AcceptProcessor";
 }
+
+bool AcceptProcessor::isFinal()
+{
+    return true;
+}

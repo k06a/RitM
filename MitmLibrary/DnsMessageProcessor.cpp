@@ -126,3 +126,8 @@ OptionPtr DnsMessageProcessor::getOptions()
 {
     return options;
 }
+
+bool DnsMessageProcessor::isFinal()
+{
+    return true;
+}

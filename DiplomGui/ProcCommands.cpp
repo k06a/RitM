@@ -10,7 +10,7 @@ ProcItem::ProcItem(QString rcw)
     QStringList rcwList = rcw.split("|rcw|");
     row = rcwList[0].toInt();
     column = rcwList[1].toInt();
-    widget = new ProcTableWidgetItem(rcwList[2]);
+    widget = new ProcTableWidgetItem(rcwList[2], row, column);
 }
 
 QString ProcItem::toString()

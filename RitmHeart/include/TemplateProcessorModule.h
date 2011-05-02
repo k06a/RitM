@@ -5,7 +5,7 @@
 
 namespace DiplomBukov
 {
-    template<typename T>
+    template<typename T, bool isFinal_value = false>
     class TemplateProcessorModule : public IProcessorModule
     {
         std::string m_name;
@@ -31,6 +31,11 @@ namespace DiplomBukov
         virtual const char * info() const
         {
             return m_info.c_str();
+        }
+
+        virtual bool isFinal()
+        {
+            return isFinal_value;
         }
     };
     // class TemplateModule

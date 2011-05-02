@@ -74,9 +74,14 @@ namespace DiplomBukov
         std::vector<AdapterPtr> adapters;
         std::vector<DelayInjectProcessorPtr> delays;
 
+        bool m_shouldStop;
+
     public:
+        TimedStarter();
+
         virtual void addAdapter(AdapterPtr adapter);
         virtual void start();
+        virtual void stop();
     };
 }
 // namespace DiplomBukov

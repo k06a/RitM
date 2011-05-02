@@ -7,6 +7,7 @@
 #include "CommonInclude.h"
 #include "IProcessor.h"
 
+class RitmThread;
 class QUndoStack;
 class ProcTableWidgetItem;
 
@@ -26,6 +27,7 @@ class MainWindow : public QMainWindow
     QAction * m_action_redo;
     QString m_filename;
 
+    RitmThread * thread;
     DiplomBukov::StarterPtr m_starter;
     int m_refreshId;
     QSet<ProcTableWidgetItem*> m_refreshCells;

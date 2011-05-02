@@ -65,6 +65,11 @@ void ModuleHolder::LoadLibrary(QString dllName)
         mr.processorModule = library->getProcessorModules_item(i);
         mr.name = mr.processorModule->name();
         mr.pixmapPath = QObject::tr(":/images/processor.svg");
+        if (mr.processorModule->createProcessor()->isFinal())
+        {
+            mr.pixmapPath = QObject::tr(":/images/processor_end.svg");
+            mr.sidesOut.clear();
+        }
         newList.append(mr);
     }
 

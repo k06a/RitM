@@ -160,6 +160,7 @@ void ProcTableWidget::load(QByteArray arr)
         setCellWidget(pi.row, pi.column, pi.widget);
         if (item(pi.row, pi.column) == NULL)
             setItem(pi.row, pi.column, new QTableWidgetItem);
+        item(pi.row, pi.column)->setToolTip(pi.widget->procRecord().toolTip);
     }
 }
 
@@ -444,17 +445,12 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
     if (mimeData == NULL)
         return;
 
-    // Если сдвига не было
-    if (rowAt(event->pos().y()) == rowAt(m_firstTouch.y())
-        && columnAt(event->pos().x()) == columnAt(m_firstTouch.x()))
-    {
-        return;
-    }
+    int row = rowAt(event->pos().y());
+    int column = columnAt(event->pos().x());
 
     if (event->source() != this)
     {
-        setCurrentCell(rowAt(event->pos().y()),
-                       columnAt(event->pos().x()));
+        setCurrentCell(row, column);
 
         ModuleHolder * holder = ModuleHolder::instance();
         ModuleRecord * rec = holder->moduleForName(mimeData->moduleName());
@@ -462,30 +458,24 @@ void ProcTableWidget::dropEvent(QDropEvent * event)
         w->setPixmap(rec->pixmapPath);
         w->setText(tr("[%1]").arg(rec->name));
         w->setModuleFullName(rec->fullName());
-        ProcRecord procRec(*rec);
+        
+        ProcRecord procRec(*rec, row, column);
         w->setProcRecord(procRec);
+        itemAt(event->pos())->setToolTip(procRec.toolTip);
 
-        // Разбиение строки для ToolTip-а
-        QString str = tr(procRec.info);
-        QString tip = "";
-        while (str.length() > 40)
-        {
-            int pos = 40;
-            while ((str[pos] != ' ') && (pos < str.length())) pos++;
-            while (!QChar(str[pos]).isLetter() && (pos < str.length())) pos++;
-            tip += str.left(pos) + "\n";
-            str.remove(0, pos);
-        }
-        tip += str;
-        itemAt(event->pos())->setToolTip(tip);
-
-        ProcItem proc(rowAt(event->pos().y()),
-                      columnAt(event->pos().x()), w);
+        ProcItem proc(row, column, w);
         m_stack->push(new PutProcCommand(this, proc));
         setFocus();
     }
     else
     {
+        // Если сдвига не было
+        if (row == rowAt(m_firstTouch.y())
+            && column == columnAt(m_firstTouch.x()))
+        {
+            return;
+        }
+
         QList<ProcItem> list;
         foreach (QTableWidgetItem * item, m_dragItems)
         {
