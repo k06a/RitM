@@ -15,6 +15,9 @@ namespace DiplomBukov
         virtual void setName(const char * text) = 0;
 
         virtual void visitMe(OptionWalkerPtr walker) = 0;
+
+        virtual std::string saveToString(int level = 0) = 0;
+        virtual void loadFromString(std::string str, int level = 0) = 0;
     };
     // class IOption
 }

@@ -38,3 +38,13 @@ void TextLineOption::setText(const char * text)
 {
     textline = text;
 }
+
+std::string TextLineOption::saveToString(int level)
+{
+    return textline;
+}
+
+void TextLineOption::loadFromString(std::string str, int level)
+{
+    textline = str;
+}

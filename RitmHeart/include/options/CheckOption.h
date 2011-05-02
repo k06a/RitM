@@ -27,6 +27,9 @@ namespace DiplomBukov
 
         bool isChecked();
         void setChecked(bool checked);
+
+        virtual std::string saveToString(int level);
+        virtual void loadFromString(std::string str, int level = 0);
     };
     // class CheckOption
 }

@@ -68,3 +68,17 @@ bool IntOption::setIntValue(i64 val)
     }
     return false;
 }
+
+std::string IntOption::saveToString(int level)
+{
+    char buf[20];
+    sprintf_s(buf, 20, "%d", value);
+    return buf;
+}
+
+void IntOption::loadFromString(std::string str, int level)
+{
+    sscanf_s(str.c_str(), "%d", &value);
+    if (value > max) value = max;
+    if (value < min) value = min;
+}

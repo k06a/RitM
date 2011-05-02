@@ -49,3 +49,13 @@ void FileOpenOption::setExtension(const char * extension)
 {
     ext = extension;
 }
+
+std::string FileOpenOption::saveToString(int level)
+{
+    return filename;
+}
+
+void FileOpenOption::loadFromString(std::string str, int level)
+{
+    filename = str;
+}

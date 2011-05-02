@@ -6,6 +6,7 @@
 #include <QPicture>
 #include "ModuleHolder.h"
 #include "IStatsProvider.h"
+#include "IOption.h"
 
 ProcTableWidgetItem::ProcTableWidgetItem()
     : QWidget()
@@ -27,13 +28,20 @@ ProcTableWidgetItem::ProcTableWidgetItem(ProcTableWidgetItem * item)
 ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm, int row, int column)
     : QWidget()
 {
-    m_moduleFullName = stringForm;
+    QStringList strs = stringForm.split("{@}");
+
+    m_moduleFullName = strs[0];
     ModuleHolder * holder = ModuleHolder::instance();
     ModuleRecord * rec = holder->moduleForName(m_moduleFullName);
     m_pixmapPath = rec->pixmapPath;
     m_pixmap = QPixmap(m_pixmapPath);
     m_procRecord.init(*rec, row, column);
     m_text = "[" + rec->name + "]";
+
+    if (strs.size() == 1)
+        return;
+    QString optStr = strs[1];
+    m_procRecord.options->loadFromString(optStr.toStdString());
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)
@@ -123,7 +131,10 @@ void ProcTableWidgetItem::updateStats()
 
 QString ProcTableWidgetItem::toStringForm()
 {
-    return m_moduleFullName;
+    QString str = m_moduleFullName;
+    if (m_procRecord.options != NULL)
+        str += "{@}" + QString::fromStdString(m_procRecord.options->saveToString());
+    return str;
 }
 
 bool ProcTableWidgetItem::isEqualProc(ProcTableWidgetItem * w)

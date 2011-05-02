@@ -28,6 +28,9 @@ namespace DiplomBukov
 
         const char * getText() const;
         void setText(const char * name);
+
+        virtual std::string saveToString(int level = 0);
+        virtual void loadFromString(std::string str, int level = 0);
     };
     // class TextLineOption
 }

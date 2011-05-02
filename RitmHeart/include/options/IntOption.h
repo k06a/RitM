@@ -36,6 +36,9 @@ namespace DiplomBukov
         
         i64 intValue();
         bool setIntValue(i64 val);
+
+        virtual std::string saveToString(int level = 0);
+        virtual void loadFromString(std::string str, int level = 0);
     };
     // class IntOption
 }

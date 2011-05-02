@@ -38,3 +38,13 @@ void CheckOption::setChecked(bool checked)
 {
     value = checked;
 }
+
+std::string CheckOption::saveToString(int level)
+{
+    return value ? "1" : "0";
+}
+
+void CheckOption::loadFromString(std::string str, int level)
+{
+    value = (str == "1");
+}

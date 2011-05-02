@@ -33,6 +33,9 @@ namespace DiplomBukov
 
         const char * getExtension() const;
         void setExtension(const char * extension);
+
+        virtual std::string saveToString(int level = 0);
+        virtual void loadFromString(std::string str, int level = 0);
     };
     // class FileOpenOption
 }

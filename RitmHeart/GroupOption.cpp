@@ -72,3 +72,42 @@ void GroupOption::removeOptions(OptionPtr option)
 {
     std::remove(optionList.begin(), optionList.end(), option);
 }
+
+std::string GroupOption::saveToString(int level)
+{
+    std::string delim = "(";
+    for (int l = 0; l <= level; l++)
+        delim += "@";
+    delim += ")";
+
+    std::string str;
+    for (unsigned i = 0; i < optionList.size(); i++)
+    {
+        if (str.size() > 0)
+            str += delim;
+        str += optionList[i]->saveToString(level + 1);
+    }
+    return str;
+}
+
+void GroupOption::loadFromString(std::string str, int level)
+{
+    std::string delim = "(";
+    for (int l = 0; l <= level; l++)
+        delim += "@";
+    delim += ")";
+
+    unsigned i = 0;
+    while (str.size() > 0 && i < optionList.size())
+    {
+        std::string::iterator it = std::search(str.begin(), str.end(),
+                                               delim.begin(), delim.end());
+        optionList[i]->loadFromString(str.substr(0,it-str.begin()), level+1);
+
+        if (it == str.end())
+            str.erase(str.begin(), str.end());
+        else
+            str.erase(str.begin(), it + delim.size());
+        i++;
+    }
+}

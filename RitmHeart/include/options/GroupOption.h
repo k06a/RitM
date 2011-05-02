@@ -36,6 +36,9 @@ namespace DiplomBukov
         OptionPtr options_item(int i) const;
         void addOption(OptionPtr option);
         void removeOptions(OptionPtr option);
+
+        virtual std::string saveToString(int level = 0);
+        virtual void loadFromString(std::string str, int level = 0);
     };
     // class GroupOption
 }

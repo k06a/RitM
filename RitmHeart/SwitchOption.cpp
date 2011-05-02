@@ -81,3 +81,17 @@ const char * SwitchOption::getSelectedText() const
 {
     return labels[selected].c_str();
 }
+
+std::string SwitchOption::saveToString(int level)
+{
+    char buf[20];
+    sprintf_s(buf, 20, "%d", selected);
+    return buf;
+}
+
+void SwitchOption::loadFromString(std::string str, int level)
+{
+    sscanf_s(str.c_str(), "%d", &selected);
+    if (selected > getTextItems_size())
+        selected = 0;
+}

@@ -38,6 +38,9 @@ namespace DiplomBukov
         int getSelectedIndex() const;
         void setSelectedIndex(int index);
         const char * getSelectedText() const;
+
+        virtual std::string saveToString(int level = 0);
+        virtual void loadFromString(std::string str, int level = 0);
     };
     // class SwitchOption
 }
