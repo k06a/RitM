@@ -7,38 +7,8 @@
 
 using namespace DiplomBukov;
 
-PcapAdapter::StatCounter::StatCounter()
-    : i_count_in(0), i_count_out(0)
-{
-}
-
-int PcapAdapter::StatCounter::getStatistic_size() const
-{
-    return 2;
-}
-
-i64 PcapAdapter::StatCounter::getStatistic_value(int i) const
-{
-    switch(i)
-    {
-        case 0: return i_count_in;
-        case 1: return i_count_out;
-    }
-    return 0;
-}
-
-const char * PcapAdapter::StatCounter::getStatistic_name(int i) const
-{
-    switch(i)
-    {
-        case 0: return "Кол-во полученных пакетов";
-        case 1: return "Кол-во переданных пакетов";
-    }
-    return "";
-}
-
 PcapAdapter::PcapAdapter(ProcessorPtr Connector)
-    : statCounter(new StatCounter)
+    : statCounter(new BasicStatCounter)
     , devicesSwitch(new SwitchOption)
     , deviceList(NULL)
     , device(NULL)

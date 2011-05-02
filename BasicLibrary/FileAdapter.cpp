@@ -2,41 +2,12 @@
 #include "RawPacket.h"
 #include <list>
 #include <iostream>
+#include <sstream>
 
 using namespace DiplomBukov;
 
-FileAdapter::StatCounter::StatCounter()
-    : i_count_in(0), i_count_out(0)
-{
-}
-
-int FileAdapter::StatCounter::getStatistic_size() const
-{
-    return 2;
-}
-
-i64 FileAdapter::StatCounter::getStatistic_value(int i) const
-{
-    switch(i)
-    {
-        case 0: return i_count_in;
-        case 1: return i_count_out;
-    }
-    return 0;
-}
-
-const char * FileAdapter::StatCounter::getStatistic_name(int i) const
-{
-    switch(i)
-    {
-        case 0: return "Кол-во полученных пакетов";
-        case 1: return "Кол-во переданных пакетов";
-    }
-    return "";
-}
-
 FileAdapter::FileAdapter(ProcessorPtr Connector)
-	: statCounter(new StatCounter)
+	: statCounter(new BasicStatCounter)
     , file1(NULL), file2(NULL), id(0)
     , linkType(0), buffer(NULL)
     , groupOption(new GroupOption(true))
@@ -49,7 +20,7 @@ FileAdapter::FileAdapter(ProcessorPtr Connector)
 }
 
 FileAdapter::FileAdapter(const FileAdapter & ad)
-    : statCounter(new StatCounter)
+    : statCounter(new BasicStatCounter)
     , file1(NULL), file2(NULL), id(0)
     , linkType(ad.linkType), buffer(NULL)
     , groupOption(new GroupOption(true))
@@ -112,15 +83,17 @@ void FileAdapter::run(bool always)
 
     if (fopen_s(&file1, filename1.c_str(), "rb") != 0)
     {
-        std::cerr << "Error opening file \"" << filename1 << '"' << std::endl;
-        throw 1;
+        std::stringstream buf;
+        buf << "Error opening file \"" << filename1 << '"' << std::endl;
+        throw std::exception(buf.str().c_str());
     }
 
     if (!filename2.empty())
     if (fopen_s(&file2, filename2.c_str(), "wb") != 0)
     {
-        std::cerr << "Error opening file \"" << filename2 << '"' << std::endl;
-        throw 1;
+        std::stringstream buf;
+        buf << "Error opening file \"" << filename2 << '"' << std::endl;
+        throw std::exception(buf.str().c_str());
     }
 
     // Reading

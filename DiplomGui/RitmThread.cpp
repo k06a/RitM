@@ -19,15 +19,14 @@ void RitmThread::setStarter(StarterPtr starter)
 
 void RitmThread::run()
 {
-    //try
+    try
     {
         m_starter->start();
     }
-    /*catch(...)
+    catch(std::exception ex)
     {
-        throw;
-        //std::cerr << "Exception XXX";
-    }*/
+        std::string str = ex.what();
+    }
 }
 
 void RitmThread::stop()

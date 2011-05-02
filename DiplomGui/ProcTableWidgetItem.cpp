@@ -38,10 +38,21 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString stringForm, int row, int column
     m_procRecord.init(*rec, row, column);
     m_text = "[" + rec->name + "]";
 
-    if (strs.size() == 1)
-        return;
-    QString optStr = strs[1];
-    m_procRecord.options->loadFromString(optStr.toStdString());
+    if (strs.size() > 1 && strs[1].size() > 0)
+        m_procRecord.options->loadFromString(strs[1].toStdString());
+    
+    if (strs.size() > 2 && strs[2].size() > 0)
+    {
+        m_statPositions.clear();
+        QStringList statList = strs[2].split("(@)");
+        foreach(QString stat, statList)
+        {
+            QStringList keyValue = stat.split("(_@_)");
+            int key = keyValue[0].toInt();
+            QString value = keyValue[1];
+            m_statPositions[key] = value;
+        }
+    }
 }
 
 ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, QWidget * parent)
@@ -132,8 +143,21 @@ void ProcTableWidgetItem::updateStats()
 QString ProcTableWidgetItem::toStringForm()
 {
     QString str = m_moduleFullName;
+    str += "{@}";
     if (m_procRecord.options != NULL)
-        str += "{@}" + QString::fromStdString(m_procRecord.options->saveToString());
+        str += QString::fromStdString(m_procRecord.options->saveToString());
+    str += "{@}";
+    if (m_procRecord.statsProvider != NULL)
+    {
+        QString s;
+        foreach(int key, m_statPositions.keys())
+        {
+            if (!s.isEmpty())
+                s += "(@)";
+            s += tr("%1(_@_)%2").arg(key).arg(m_statPositions[key]);
+        }
+        str += s;
+    }
     return str;
 }
 

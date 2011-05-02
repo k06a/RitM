@@ -21,6 +21,8 @@ class MainWindow : public QMainWindow
 
     struct TableCell;
 
+    QList<TableCell> adapters;
+
     double tableZoom;
     QUndoStack * m_stack;
     QAction * m_action_undo;

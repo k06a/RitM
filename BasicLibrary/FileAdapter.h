@@ -7,10 +7,10 @@
 
 #include "AbstractProcessor.h"
 #include "IAdapter.h"
-#include "IStatsProvider.h"
 #include "GroupOption.h"
 #include "FileOpenOption.h"
 #include "FileSaveOption.h"
+#include "BasicStatCounter.h"
 
 namespace DiplomBukov
 {
@@ -37,21 +37,7 @@ namespace DiplomBukov
         : public AbstractProcessor
         , public IAdapter
 	{
-        class StatCounter : public IStatsProvider
-        {
-        public:
-            i64 i_count_in;
-            i64 i_count_out;
-
-            StatCounter();
-            virtual int getStatistic_size() const;
-            virtual i64 getStatistic_value(int i) const;
-            virtual const char * getStatistic_name(int i) const;
-        };
-
-        typedef SharedPointer<StatCounter>::Type StatCounterPtr;
-
-        StatCounterPtr statCounter;
+        BasicStatCounterPtr statCounter;
 
 		FILE * file1;
         FILE * file2;

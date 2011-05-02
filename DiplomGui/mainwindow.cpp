@@ -336,7 +336,7 @@ void MainWindow::on_tableWidget_field_itemSelectionChanged()
 
 bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
 {
-    QList<TableCell> adapters;
+    adapters.clear();
     QList<TableCell> cells;
 
     for (int i = 0; i < ui->tableWidget_field->rowCount(); i++)
@@ -460,6 +460,13 @@ void MainWindow::on_action_stop_triggered()
 {
     thread->stop();
     killTimer(m_refreshId);
+
+    foreach(TableCell cell, adapters)
+    {
+        AdapterPtr ad = cell.item->procRecord().adapter;
+        ad->DestroyHierarchy();
+    }
+
     ui->action_start->setEnabled(true);
     ui->action_stop->setDisabled(true);
     ui->action_cut->setEnabled(true);
