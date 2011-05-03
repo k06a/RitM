@@ -47,9 +47,12 @@ namespace DiplomBukov
             if (recvProto.size() == 0)
                 return;
 
-            nextProcessor->forwardProcess(recvProto.front(),
-                                          recvPacket.front(),
-                                          recvOffset.front());
+            if (nextProcessor != NULL)
+            {
+                nextProcessor->forwardProcess(recvProto.front(),
+                                              recvPacket.front(),
+                                              recvOffset.front());
+            }
 
             recvProto.pop_front();
             recvPacket.pop_front();
@@ -61,7 +64,8 @@ namespace DiplomBukov
             ProcessorPtr self = shared_from_this();
 
             self->setNextProcessor(adap->getNextProcessor());
-            adap->getNextProcessor()->setPrevProcessor(self);
+            if (adap->getNextProcessor() != NULL)
+                adap->getNextProcessor()->setPrevProcessor(self);
             adap->setNextProcessor(self);
             self->setPrevProcessor(adap);
         }
@@ -80,6 +84,7 @@ namespace DiplomBukov
         TimedStarter();
 
         virtual void addAdapter(AdapterPtr adapter);
+        virtual void clearAdapters();
         virtual void start();
         virtual void stop();
     };

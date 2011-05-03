@@ -15,6 +15,12 @@ void TimedStarter::addAdapter(AdapterPtr adapter)
     delays.push_back(DelayInjectProcessorPtr(new DelayInjectProcessor));
 }
 
+void TimedStarter::clearAdapters()
+{
+    adapters.clear();
+    delays.clear();
+}
+
 void TimedStarter::start()
 {
     int n = adapters.size();
@@ -31,37 +37,25 @@ void TimedStarter::start()
         int mintime_index = -1;
         for (int i = 0; i < n; i++)
         {
-            if (delays[i]->recvPacket.size() == 0)
-                adapters[i]->tick();
-            
-            if (adapters[i]->type() != IAdapter::Offline)
-                continue;
-
-            if (delays[i]->recvPacket.size() > 0)
-            {
-                if (delays[i]->recvPacket.front()->time() < mintime)
-                {
-                    mintime = delays[i]->recvPacket.front()->time();
-                    mintime_index = i;
-                }
-            }
-
             if (m_shouldStop)
                 return;
-        }
 
-        /*
-        // Если все оставшиеся процессоры типа Online
-        if (mintime == 0)
-        {
-            for (int i = 0; i < n; i++)
-                delays[i]->go();
-            continue;
+            if (delays[i]->recvPacket.size() == 0)
+                adapters[i]->tick();
+        
+            if (delays[i]->recvPacket.size() == 0)
+                continue;
+
+            if (delays[i]->recvPacket.front()->time() < mintime)
+            {
+                mintime = delays[i]->recvPacket.front()->time();
+                mintime_index = i;
+            }
         }
-        */
 
         if (mintime_index == -1)
-            break;
+            continue;
+
         delays[mintime_index]->go();
     }
 }

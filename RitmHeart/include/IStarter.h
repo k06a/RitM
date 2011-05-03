@@ -11,6 +11,7 @@ namespace DiplomBukov
         virtual ~IStarter() {}
 
         virtual void addAdapter(AdapterPtr adapter) = 0;
+        virtual void clearAdapters() = 0;
         virtual void start() = 0;
         virtual void stop() = 0;
     };

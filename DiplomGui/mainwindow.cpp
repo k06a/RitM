@@ -458,9 +458,11 @@ void MainWindow::on_action_start_triggered()
 
 void MainWindow::on_action_stop_triggered()
 {
-    thread->stop();
     killTimer(m_refreshId);
+    thread->stop();
+    thread->wait();
 
+    m_starter->clearAdapters();
     foreach(TableCell cell, adapters)
     {
         AdapterPtr ad = cell.item->procRecord().adapter;

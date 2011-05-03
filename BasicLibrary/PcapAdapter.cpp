@@ -125,7 +125,7 @@ bool PcapAdapter::tick()
     PacketPtr packet(new RawPacket(pkt_data, header.caplen));
     packet->setStatus(IPacket::Accepted);
     packet->setId(id++);
-    packet->setTime(0);//header.ts.tv_sec);
+    packet->setTime(header.ts.tv_sec, header.ts.tv_usec);
     packet->setAdapter(this);
     packet->addProcessor(shared_from_this());
 
