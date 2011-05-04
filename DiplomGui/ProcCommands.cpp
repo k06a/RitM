@@ -117,7 +117,10 @@ void PutProcCommand::undo()
     if (old_w != NULL)
         old_w = new ProcTableWidgetItem(old_w);
     table->setCellWidget(backup.row, backup.column, old_w);
-    table->item(backup.row, backup.column)->setToolTip(old_w->procRecord().toolTip);
+    if (old_w != NULL)
+        table->item(backup.row, backup.column)->setToolTip(old_w->procRecord().toolTip);
+    else 
+        table->item(backup.row, backup.column)->setToolTip("");
 
     // Change selection
     table->clearSelection();
@@ -208,7 +211,10 @@ void CopyProcCommand::undo()
         if (old_w != NULL)
             old_w = new ProcTableWidgetItem(old_w);
         table->setCellWidget(item.row, item.column, old_w);
-        table->item(item.row, item.column)->setToolTip(old_w->procRecord().toolTip);
+        if (old_w != NULL)
+            table->item(item.row, item.column)->setToolTip(old_w->procRecord().toolTip);
+        else 
+            table->item(item.row, item.column)->setToolTip("");
         table->item(item.row, item.column)->setSelected(true);
     }
 }
