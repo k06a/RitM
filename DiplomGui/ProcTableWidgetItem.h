@@ -54,8 +54,8 @@ public:
     QString moduleFullName() const;
     void setModuleFullName(QString moduleFullName);
 
-    ProcRecord procRecord() const;
-    void setProcRecord(ProcRecord procRecord);
+    ProcRecord & procRecord();
+    void setProcRecord(const ProcRecord & procRecord);
 
     void setStatText(int direction, QString str);
     QString statText(int direction);

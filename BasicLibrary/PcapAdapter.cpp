@@ -39,7 +39,10 @@ ProcessorPtr PcapAdapter::CreateCopy() const
     if (nextProcessor != NULL)
         np = nextProcessor->CreateCopy();
 
-    return ProcessorPtr(new PcapAdapter(np));
+    PcapAdapterPtr p(new PcapAdapter(np));
+    p->devicesSwitch->setSelectedIndex(devicesSwitch->getSelectedIndex());
+
+    return p;
 }
 
 PcapAdapter::~PcapAdapter()

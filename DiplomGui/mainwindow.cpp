@@ -352,20 +352,17 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
         
         if (w->procRecord().adapter != NULL)
         {
-            ProcessorPtr p = w->procRecord().adapter->CreateCopy();
-            w->procRecord().adapter = SharedPointerCast<IAdapter>(p);
+            w->procRecord().MoveToCopy();
             adapters.append(tc);
         } else
         if (w->procRecord().connector != NULL)
         {
-            ProcessorPtr p = w->procRecord().connector->CreateCopy();
-            w->procRecord().connector = SharedPointerCast<IConnector>(p);
+            w->procRecord().MoveToCopy();
             cells.append(tc);
         } else
         if (w->procRecord().processor != NULL)
         {
-            ProcessorPtr p = w->procRecord().processor->CreateCopy();
-            w->procRecord().processor = SharedPointerCast<IProcessor>(p);
+            w->procRecord().MoveToCopy();
             cells.append(tc);
         } else
         {

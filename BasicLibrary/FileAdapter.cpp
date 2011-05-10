@@ -35,7 +35,7 @@ FileAdapter::FileAdapter(const FileAdapter & ad)
 
 ProcessorPtr FileAdapter::CreateCopy() const
 {
-    ProcessorPtr p(new FileAdapter(*this));
+    FileAdapterPtr p(new FileAdapter(*this));
     return p;
 }
 

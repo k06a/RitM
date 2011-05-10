@@ -86,6 +86,18 @@ struct ModuleRecord
     {
     }
 
+    ModuleRecord(const ModuleRecord & mod)
+        : lib(mod.lib)
+        , name(mod.name)
+        , pixmapPath(mod.pixmapPath)
+        , adapterModule(mod.adapterModule)
+        , connectorModule(mod.connectorModule)
+        , processorModule(mod.processorModule)
+        , sidesIn(mod.sidesIn)
+        , sidesOut(mod.sidesOut)
+    {
+    }
+
     ModuleRecord(int directionIn,
                  int directionOut,
                  QString lib = "",
@@ -126,6 +138,45 @@ struct ProcRecord
     ProcRecord()
         : info("")
     {
+    }
+
+    ProcRecord(const ProcRecord & proc)
+        : info(proc.info)
+        , elementName(proc.elementName)
+        , toolTip(proc.toolTip)
+        , module(proc.module)
+    {
+        *this = proc;
+    }
+
+    ProcRecord & operator = (const ProcRecord & proc)
+    {
+        info = proc.info;
+        elementName = proc.elementName;
+        toolTip = proc.toolTip;
+        module = proc.module;
+
+        ProcessorPtr newProc;
+        if (proc.adapter != NULL)
+        {
+            newProc = proc.adapter->CreateCopy();
+            adapter = SharedPointerCast<IAdapter>(newProc);
+        }
+        else if (proc.connector != NULL)
+        {
+            newProc = proc.connector->CreateCopy();
+            connector = SharedPointerCast<IConnector>(newProc);
+        }
+        else if (proc.processor != NULL)
+        {
+             newProc = proc.processor->CreateCopy();
+             processor = newProc;
+        }
+
+        statsProvider = newProc->statsProvider();
+        options = newProc->getOptions();
+
+        return *this;
     }
 
     ProcRecord(ModuleRecord module, int row, int column)
@@ -180,6 +231,30 @@ struct ProcRecord
             str.remove(0, pos);
         }
         toolTip += str;
+    }
+
+    void MoveToCopy()
+    {
+        if (adapter != NULL)
+        {
+            adapter = SharedPointerCast<IAdapter>(adapter->CreateCopy());
+            statsProvider = adapter->statsProvider();
+            options = adapter->getOptions();
+        } else
+        if (connector != NULL)
+        {
+            connector = SharedPointerCast<IConnector>(connector->CreateCopy());
+            statsProvider = connector->statsProvider();
+            options = connector->getOptions();
+        } else
+        if (processor != NULL)
+        {
+            processor = processor->CreateCopy();
+            statsProvider = processor->statsProvider();
+            options = processor->getOptions();
+        }
+        else
+            return;
     }
 };
 

@@ -60,6 +60,7 @@ ProcTableWidgetItem::ProcTableWidgetItem(QString iconPath, QString centerText, Q
     , m_text(centerText)
     , m_pixmap(iconPath)
     , m_moduleFullName(centerText)
+    , m_procRecord()
     , m_pixmapPath(iconPath)
 {
     //setAutoFillBackground(true);
@@ -102,12 +103,12 @@ void ProcTableWidgetItem::setModuleFullName(QString moduleFullName)
     m_moduleFullName = moduleFullName;
 }
 
-ProcRecord ProcTableWidgetItem::procRecord() const
+ProcRecord & ProcTableWidgetItem::procRecord()
 {
     return m_procRecord;
 }
 
-void ProcTableWidgetItem::setProcRecord(ProcRecord record)
+void ProcTableWidgetItem::setProcRecord(const ProcRecord & record)
 {
     m_procRecord = record;
 }
