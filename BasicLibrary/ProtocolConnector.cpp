@@ -66,6 +66,13 @@ ProcessingStatus ProtocolConnector::forwardProcess(Protocol proto, PacketPtr pac
 
 void ProtocolConnector::addNextProcessor(ProcessorPtr processor)
 {
+    if (processor == NULL)
+    {
+        procMap.clear();
+        procList.clear();
+        return;
+    }
+
     Protocol proto = processor->getProtocol();
     procMap.insert(std::make_pair(proto, processor));
     AbstractConnector::addNextProcessor(processor);

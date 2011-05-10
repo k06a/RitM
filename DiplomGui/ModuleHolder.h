@@ -172,6 +172,8 @@ struct ProcRecord
              newProc = proc.processor->CreateCopy();
              processor = newProc;
         }
+        else
+            return *this;
 
         statsProvider = newProc->statsProvider();
         options = newProc->getOptions();

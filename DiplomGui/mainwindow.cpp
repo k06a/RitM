@@ -19,6 +19,7 @@
 #include <QTextBrowser>
 #include <QPushButton>
 #include <QDateTime>
+#include <QFile>
 
 using DiplomBukov::ProcessorPtr;
 using DiplomBukov::StarterPtr;
@@ -448,6 +449,7 @@ void MainWindow::on_action_start_triggered()
     ui->action_copy->setDisabled(true);
     ui->action_paste->setDisabled(true);
     ui->tableWidget_field->setLocked(true);
+    printStringSlot(tr("[ Осуществление запуска ]"));
 
     m_refreshId = startTimer(100);
 
@@ -482,11 +484,16 @@ void MainWindow::on_action_stop_triggered()
     ui->action_copy->setEnabled(true);
     ui->action_paste->setEnabled(true);
     ui->tableWidget_field->setLocked(false);
+    printStringSlot(tr("[ Остановка пользователем ]"));
 }
 
 void MainWindow::printStringSlot(QString str)
 {
-    ui->textBrowser_log->append(QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz: ") + str);
+    QString line = QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz: ") + str;
+    ui->textBrowser_log->append(line);
+    QFile file("RitM.log");
+    if (file.open(QIODevice::Append))
+        file.write((line + "\n").toUtf8());
 }
 
 MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<TableCell> cells, int r, int c, int dr, int dc)
