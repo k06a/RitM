@@ -28,6 +28,7 @@
 
 ProcTableWidget::ProcTableWidget(QWidget *parent)
     : QTableWidget(parent)
+    , m_locked(false)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(QPoint)),
@@ -278,6 +279,9 @@ void ProcTableWidget::mouseMoveEvent(QMouseEvent * event)
         < QApplication::startDragDistance())
         return;
 
+    if (m_locked)
+        return;
+
     QTableWidgetItem * it = itemAt(m_firstTouch);
     if (it == NULL) return;
     if (!itemAt(m_firstTouch)->isSelected())
@@ -367,6 +371,9 @@ Qt::DropActions ProcTableWidget::supportedDropActions() const
 
 void ProcTableWidget::dragEnterEvent(QDragEnterEvent * event)
 {
+    if (m_locked)
+        return;
+
     //if (event->source() != this)
     //{
         const ProcMimeData * mimeData =
@@ -575,7 +582,7 @@ void ProcTableWidget::processorPropertiesAction()
     
     if (w->procRecord().options != NULL)
     {
-        QtOptionWalkerPtr walker(new QtOptionWalker());
+        QtOptionWalkerPtr walker(new QtOptionWalker(m_locked));
         w->procRecord().options->visitMe(walker);
         walker->dialog()->setWindowIcon(QIcon(":/images/options.png"));
         walker->dialog()->setWindowTitle(tr("Настройки %1а").arg(w->procRecord().elementName));
@@ -702,6 +709,9 @@ void ProcTableWidget::processorInfoAction()
 
 void ProcTableWidget::cutSlot()
 {
+    if (m_locked)
+        return;
+
     QString str = cut();
     if (str.isEmpty())
         return;
@@ -728,6 +738,9 @@ void ProcTableWidget::copySlot()
 
 void ProcTableWidget::pasteSlot()
 {
+    if (m_locked)
+        return;
+
     QClipboard * clipboard = QApplication::clipboard();
     const QMimeData * mime = clipboard->mimeData();
     if (mime->formats().first() != "RitM/processors")
@@ -764,6 +777,9 @@ void ProcTableWidget::zoomTo(float value)
 
 void ProcTableWidget::deleteSelectedItems()
 {
+    if (m_locked)
+        return;
+
     QList<ProcItem> list;
     foreach(QModelIndex index, selectedIndexes())
     {

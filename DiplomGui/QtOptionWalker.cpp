@@ -20,10 +20,11 @@
 
 using namespace DiplomBukov;
 
-QtOptionWalker::QtOptionWalker()
+QtOptionWalker::QtOptionWalker(bool locked)
     : QObject()
     , m_dialog(new QDialog)
     , m_layoutStack()
+    , m_locked(locked)
 {
     QLayout * lay = new QVBoxLayout;
     m_dialog->setLayout(lay);
@@ -69,6 +70,8 @@ void QtOptionWalker::visit(CheckOptionPtr opt)
     connect(checkBox, SIGNAL(stateChanged(int)),
             this, SLOT(CheckOptionPtr_changed(int)));
 
+    checkBox->setDisabled(m_locked);
+
     m_layoutStack.last()->addWidget(checkBox);
 }
 
@@ -89,6 +92,8 @@ void QtOptionWalker::visit(SwitchOptionPtr opt)
         radioButton->setChecked(i == opt->getSelectedIndex());
         connect(radioButton, SIGNAL(clicked(bool)),
                 this, SLOT(SwitchOptionPtr_changed(bool)));
+
+        radioButton->setDisabled(m_locked);
 
         lay->addWidget(radioButton);
     }
@@ -112,6 +117,8 @@ void QtOptionWalker::visit(ComboOptionPtr opt)
     connect(comboBox, SIGNAL(currentIndexChanged(int)),
         this, SLOT(ComboOptionPtr_currentChanged(int)));
 
+    comboBox->setDisabled(m_locked);
+
     m_layoutStack.last()->addWidget(comboBox);
 }
 
@@ -128,6 +135,8 @@ void QtOptionWalker::visit(IntOptionPtr opt)
     connect(spinBox, SIGNAL(valueChanged(int)),
             this, SLOT(IntOptionPtr_changed(int)));
 
+    spinBox->setDisabled(m_locked);
+
     m_layoutStack.last()->addWidget(spinBox);
 }
 
@@ -141,6 +150,8 @@ void QtOptionWalker::visit(TextLineOptionPtr opt)
     lineEdit->setProperty("option", (int)opt.get());
     connect(lineEdit, SIGNAL(textEdited(QString)),
             this, SLOT(TextLineOptionPtr_edited(QString)));
+
+    lineEdit->setDisabled(m_locked);
 
     m_layoutStack.last()->addWidget(lineEdit);
 }
@@ -177,6 +188,9 @@ void QtOptionWalker::visitFileOption(FileOpenOptionPtr opt, const char * member)
     w->layout()->addWidget(label);
     w->layout()->addWidget(lineEdit);
     w->layout()->addWidget(pushButton);
+
+    pushButton->setDisabled(m_locked);
+    lineEdit->setDisabled(m_locked);
 
     m_layoutStack.last()->addWidget(w);
 }

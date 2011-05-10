@@ -566,7 +566,7 @@
     <layout class="QVBoxLayout" name="verticalLayout_2"/>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="dockWidget_log">
    <property name="floating">
     <bool>false</bool>
    </property>

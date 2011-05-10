@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->dockWidget_log->hide();
     ui->statusBar->hide();
 
     // Configure Undo/Redo actions
@@ -446,6 +447,7 @@ void MainWindow::on_action_start_triggered()
     ui->action_cut->setDisabled(true);
     ui->action_copy->setDisabled(true);
     ui->action_paste->setDisabled(true);
+    ui->tableWidget_field->setLocked(true);
 
     m_refreshId = startTimer(100);
 
@@ -479,6 +481,7 @@ void MainWindow::on_action_stop_triggered()
     ui->action_cut->setEnabled(true);
     ui->action_copy->setEnabled(true);
     ui->action_paste->setEnabled(true);
+    ui->tableWidget_field->setLocked(false);
 }
 
 void MainWindow::printStringSlot(QString str)

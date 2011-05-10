@@ -102,7 +102,7 @@ void FileAdapter::run(bool always)
 
     if (filename1.empty() && filename2.empty())
     {
-        LogLine() << "У адаптера не заданы ни входной ни выходной файлы.";
+        LogLine() << "У файлового адаптера не заданы ни входной ни выходной файлы.";
         return;
     }
 

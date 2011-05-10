@@ -29,9 +29,10 @@ namespace DiplomBukov
 
         QDialog * m_dialog;
         QList<QLayout*> m_layoutStack;
+        bool m_locked;
 
     public:
-        QtOptionWalker();
+        QtOptionWalker(bool locked = false);
 
         void clear();
         QDialog * dialog() const;

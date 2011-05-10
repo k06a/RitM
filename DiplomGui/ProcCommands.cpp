@@ -253,7 +253,8 @@ void CopyProcCommand::redo()
         if (new_w != NULL)
             new_w = new ProcTableWidgetItem(new_w);
         table->setCellWidget(r, c, new_w);
-        table->item(r, c)->setToolTip(new_w->procRecord().toolTip);
+        if (table->item(r,c) != NULL)
+            table->item(r,c)->setToolTip(new_w->procRecord().toolTip);
 
         QTableWidgetItem * it = table->item(r,c);
         if (it == NULL)
