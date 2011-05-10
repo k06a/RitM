@@ -2,11 +2,14 @@
 #define RITMTHREAD_H
 
 #include "CommonInclude.h"
+#include "Log.h"
 #include <QThread>
 
 using DiplomBukov::StarterPtr;
 
-class RitmThread : public QThread
+class RitmThread
+    : public QThread
+    , public DiplomBukov::ILogPrinter
 {
     Q_OBJECT
 
@@ -25,8 +28,10 @@ public:
     virtual void run();
     void stop();
 
-private:
-    
+    virtual void printString(const char * str);
+
+signals:
+    void printStringSignal(QString str);
 };
 
 #endif // RITMTHREAD_H

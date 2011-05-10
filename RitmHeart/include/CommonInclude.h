@@ -6,6 +6,12 @@
 
 #include "i64u64.h"
 
+#ifdef RITM_DLLLIB_EXPORTS
+#define RITM_API __declspec(dllexport)
+#else
+#define RITM_API __declspec(dllimport)
+#endif
+
 namespace DiplomBukov
 {
     template<typename T>

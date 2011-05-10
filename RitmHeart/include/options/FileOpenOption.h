@@ -10,7 +10,7 @@
 
 namespace DiplomBukov
 {
-    class FileOpenOption
+    class RITM_API FileOpenOption
         : public EnableSharedFromThis<FileOpenOption>::Type
         , public IOption
     {

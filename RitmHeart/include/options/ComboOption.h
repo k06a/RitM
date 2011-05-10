@@ -6,7 +6,7 @@
 
 namespace DiplomBukov
 {
-    class ComboOption : public SwitchOption
+    class RITM_API ComboOption : public SwitchOption
     {
     public:
         ComboOption();

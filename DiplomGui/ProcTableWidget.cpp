@@ -109,6 +109,16 @@ void ProcTableWidget::setStack(QUndoStack * stack)
     m_stack = stack;
 }
 
+bool ProcTableWidget::locked() const
+{
+    return m_locked;
+}
+
+void ProcTableWidget::setLocked(bool locked)
+{
+    m_locked = locked;
+}
+
 // Cut Copy Paste
 
 QString ProcTableWidget::cut()
@@ -149,8 +159,6 @@ void ProcTableWidget::paste(QString str)
 void ProcTableWidget::load(QByteArray arr)
 {
     QStringList itemList = QString::fromUtf8(arr).split("|RxC|");
-    if (itemList.size() < 2)
-        throw "";
     setRowCount(itemList.takeFirst().toInt());
     setColumnCount(itemList.takeFirst().toInt());
 

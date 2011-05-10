@@ -18,6 +18,7 @@
 #include <QFileDialog>
 #include <QTextBrowser>
 #include <QPushButton>
+#include <QDateTime>
 
 using DiplomBukov::ProcessorPtr;
 using DiplomBukov::StarterPtr;
@@ -29,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->statusBar->hide();
 
     // Configure Undo/Redo actions
 
@@ -449,6 +452,11 @@ void MainWindow::on_action_start_triggered()
     if (thread)
         delete thread;
     thread = new RitmThread;
+
+    Log::setLogPrinter(thread);
+    connect(thread, SIGNAL(printStringSignal(QString)),
+            this, SLOT(printStringSlot(QString)));
+
     thread->setStarter(m_starter);
     thread->start();
 }
@@ -471,7 +479,11 @@ void MainWindow::on_action_stop_triggered()
     ui->action_cut->setEnabled(true);
     ui->action_copy->setEnabled(true);
     ui->action_paste->setEnabled(true);
+}
 
+void MainWindow::printStringSlot(QString str)
+{
+    ui->textBrowser_log->append(QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz: ") + str);
 }
 
 MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<TableCell> cells, int r, int c, int dr, int dc)

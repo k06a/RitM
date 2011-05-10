@@ -16,13 +16,15 @@ namespace DiplomBukov
 {
 	struct pcap_file_header 
 	{
+        static const int magic_value = 0xa1b2c3d4;
+
 		unsigned   int magic_number;   /* magic number */
 		unsigned short version_major;  /* major version number */
 		unsigned short version_minor;  /* minor version number */
 		  signed   int thiszone;       /* GMT to local correction */
 		unsigned   int sigfigs;        /* accuracy of timestamps */
 		unsigned   int snaplen;        /* max length of captured packets, in octets */
-		unsigned   int network;        /* data link type */
+		unsigned   int network;        /* data link type http://www.tcpdump.org/linktypes.html */
 	};
 	
 	struct pcap_packet_header
@@ -41,6 +43,8 @@ namespace DiplomBukov
 
 		FILE * file1;
         FILE * file2;
+
+        bool afterHeader;
 
         unsigned id;
         int linkType;

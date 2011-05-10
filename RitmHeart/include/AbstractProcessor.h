@@ -6,7 +6,7 @@
 
 namespace DiplomBukov
 {
-    class AbstractProcessor
+    class RITM_API AbstractProcessor
         : public EnableSharedFromThis<IProcessor>::Type
         , public virtual IProcessor
     {

@@ -39,6 +39,10 @@ class ProcTableWidget : public QTableWidget
                READ stack
                WRITE setStack);
 
+    Q_PROPERTY(bool locked
+               READ locked
+               WRITE setLocked);
+
     int m_baseZoomWidth;
     int m_baseZoomHeight;
     float m_minimumZoom;
@@ -46,6 +50,7 @@ class ProcTableWidget : public QTableWidget
     float m_zoomStep;
     float m_currentZoom;
     QUndoStack * m_stack;
+    bool m_locked;
 
     bool m_waitForMove;
     QTableWidgetItem * m_touchItem;
@@ -76,6 +81,9 @@ public:
 
     QUndoStack * stack() const;
     void setStack(QUndoStack * stack);
+
+    bool locked() const;
+    void setLocked(bool locked);
 
     QString cut();
     QString copy() const;

@@ -4,6 +4,7 @@
 #include "ConsoleOptionWalker.h"
 #include "IProcessor.h"
 #include "IAdapter.h"
+#include "Log.h"
 
 using namespace DiplomBukov;
 
@@ -126,5 +127,5 @@ void ConsoleOptionWalker::visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt)
 
 void ConsoleOptionWalker::visit(OptionPtr opt)
 {
-    throw "Not Implemented";
+    LogLine() << "В обходчике опций ConsoleOptionWalker не реализован обход этого типа опций" << '\n';
 }

@@ -73,7 +73,7 @@ namespace DiplomBukov
 
     typedef SharedPointer<DelayInjectProcessor>::Type DelayInjectProcessorPtr;
 
-    class TimedStarter : public IStarter
+    class RITM_API TimedStarter : public IStarter
     {
         std::vector<AdapterPtr> adapters;
         std::vector<DelayInjectProcessorPtr> delays;

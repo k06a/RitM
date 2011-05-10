@@ -10,7 +10,7 @@
 
 namespace DiplomBukov
 {
-    class TextLineOption
+    class RITM_API TextLineOption
         : public EnableSharedFromThis<TextLineOption>::Type
         , public IOption
     {

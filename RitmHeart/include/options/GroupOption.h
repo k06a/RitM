@@ -10,7 +10,7 @@
 
 namespace DiplomBukov
 {
-    class GroupOption
+    class RITM_API GroupOption
         : public EnableSharedFromThis<GroupOption>::Type
         , public IOption
     {

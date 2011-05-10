@@ -16,6 +16,7 @@
 #include "QtOptionWalker.h"
 #include "IProcessor.h"
 #include "IAdapter.h"
+#include "Log.h"
 
 using namespace DiplomBukov;
 
@@ -206,7 +207,7 @@ void QtOptionWalker::visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt)
 
 void QtOptionWalker::visit(OptionPtr opt)
 {
-    throw "Not Implemented";
+    LogLine() << "В обходчике опций QtOptionWalker не реализован обход этого типа опций" << '\n';
 }
 
 // Slots

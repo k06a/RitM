@@ -5,7 +5,7 @@
 
 namespace DiplomBukov
 {
-    class IOption
+    class RITM_API IOption
     {
     public:
         virtual ~IOption() {}

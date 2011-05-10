@@ -9,7 +9,7 @@
 
 namespace DiplomBukov
 {
-    class IPacket
+    class RITM_API IPacket
     {
     public:
         enum Direction
@@ -75,7 +75,7 @@ namespace DiplomBukov
         virtual const Protocol::NetworkLayer & format() const = 0;
         virtual void setFormat(const Protocol::NetworkLayer & layer) = 0;
     };
-    // class IPacket
+    // class RITM_API IPacket
 
     typedef std::tr1::shared_ptr<IPacket> PacketPtr;
 }

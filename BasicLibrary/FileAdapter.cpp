@@ -1,15 +1,17 @@
 #include "FileAdapter.h"
 #include "RawPacket.h"
+#include "Log.h"
 #include <list>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 using namespace DiplomBukov;
 
 FileAdapter::FileAdapter(ProcessorPtr Connector)
 	: statCounter(new BasicStatCounter)
     , file1(NULL), file2(NULL), id(0)
-    , linkType(0), buffer(NULL)
+    , linkType(0), buffer(NULL), afterHeader(false)
     , groupOption(new GroupOption(true))
     , inFile(new FileOpenOption("Packet CAPture (*.pcap *.cap)", "Входной файл:"))
     , outFile(new FileSaveOption("Packet CAPture (*.pcap *.cap)", "Выходной файл:"))
@@ -22,7 +24,7 @@ FileAdapter::FileAdapter(ProcessorPtr Connector)
 FileAdapter::FileAdapter(const FileAdapter & ad)
     : statCounter(new BasicStatCounter)
     , file1(NULL), file2(NULL), id(0)
-    , linkType(ad.linkType), buffer(NULL)
+    , linkType(ad.linkType), buffer(NULL), afterHeader(false)
     , groupOption(new GroupOption(true))
     , inFile(new FileOpenOption("Packet CAPture (*.pcap *.cap)", "Входной файл:"))
     , outFile(new FileSaveOption("Packet CAPture (*.pcap *.cap)", "Выходной файл:"))
@@ -56,10 +58,27 @@ const char * FileAdapter::getProcessorName()
 
 ProcessingStatus FileAdapter::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
-    if (file2 == NULL) return ProcessingStatus::Accepted;
+    if (file2 == NULL)
+        return ProcessingStatus::Accepted;
 
     if (packet->status() == IPacket::Rejected)
         return ProcessingStatus::Accepted;
+
+    if (!afterHeader)
+    {
+        pcap_file_header pfh =
+        {
+            pcap_file_header::magic_value, // magic_number
+            2,                             // version_major
+            4,                             // version_minor
+            0,                             // thiszone
+            0,                             // sigfigs
+            65535,                         // snaplen
+            linkType                       // network
+        };
+        fwrite(&pfh, sizeof(pfh), 1, file2);
+        afterHeader = true;
+    }
 
     pcap_packet_header pph;
     pph.ts_sec = packet->time() >> 32;
@@ -81,32 +100,31 @@ void FileAdapter::run(bool always)
     std::string filename1 = inFile->getFilename();
     std::string filename2 = outFile->getFilename();
 
-    if (fopen_s(&file1, filename1.c_str(), "rb") != 0)
+    if (filename1.empty() && filename2.empty())
     {
-        std::stringstream buf;
-        buf << "Error opening file \"" << filename1 << '"' << std::endl;
-        throw std::exception(buf.str().c_str());
+        LogLine() << "У адаптера не заданы ни входной ни выходной файлы.";
+        return;
     }
+
+    if (!filename1.empty())
+    if (fopen_s(&file1, filename1.c_str(), "rb") != 0)
+        LogLine() << "Ошибка открытия файла на чтение \"" << filename1 << '"';
 
     if (!filename2.empty())
     if (fopen_s(&file2, filename2.c_str(), "wb") != 0)
-    {
-        std::stringstream buf;
-        buf << "Error opening file \"" << filename2 << '"' << std::endl;
-        throw std::exception(buf.str().c_str());
-    }
+        LogLine() << "Ошибка открытия файла на запись \"" << filename2 << '"';
 
     // Reading
 
-    pcap_file_header pfh;
-    fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file1);
-    if (file2 != NULL)
-        fwrite(&pfh, sizeof(pfh), 1, file2);
-
+    if (file1 != NULL)
+    {
+        pcap_file_header pfh;
+        fread_s(&pfh, sizeof(pfh), 1, sizeof(pfh), file1);
+        linkType = pfh.network;
+    }
+    
     id = 1;
-    linkType = pfh.network;
     buffer = new u8 [65536];
-
     while (always)
 	{
         if (!tick()) break;
@@ -115,6 +133,9 @@ void FileAdapter::run(bool always)
 
 bool FileAdapter::tick()
 {
+    if (file1 == NULL)
+        return false;
+    
     int ret;
     pcap_packet_header pph;
     ret = fread_s(&pph, sizeof(pph), 1, sizeof(pph), file1);

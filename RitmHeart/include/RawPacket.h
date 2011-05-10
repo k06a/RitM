@@ -9,7 +9,7 @@
 
 namespace DiplomBukov
 {
-    class RawPacket : public IPacket
+    class RITM_API RawPacket : public IPacket
     {
         unsigned id_;
         u64 time_;

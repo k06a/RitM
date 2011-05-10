@@ -10,7 +10,7 @@
 
 namespace DiplomBukov
 {
-    class SwitchOption
+    class RITM_API SwitchOption
         : public EnableSharedFromThis<SwitchOption>::Type
         , public IOption
     {

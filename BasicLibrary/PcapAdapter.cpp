@@ -1,5 +1,6 @@
 #include "PcapAdapter.h"
 #include "RawPacket.h"
+#include "Log.h"
 #include "crc.h"
 #include <pcap.h>
 #include <iostream>
@@ -15,20 +16,21 @@ PcapAdapter::PcapAdapter(ProcessorPtr Connector)
 {
     setNextProcessor(Connector);
 
-    char errbuf[PCAP_ERRBUF_SIZE];
-
-    // Retrieve the device list from the local machine
-    if (pcap_findalldevs(&deviceList, errbuf) == -1)
-        throw std::string("Error in pcap_findalldevs: ") + errbuf + "\n";
-    
-    std::deque<std::string> arr;
     devicesSwitch->setName("Сетевые адаптеры:");
     devicesSwitch->addTextItem("None");
+
+    // Retrieve the device list from the local machine
+    char errbuf[PCAP_ERRBUF_SIZE];
+    if (pcap_findalldevs(&deviceList, errbuf) == -1)
+    {
+        LogLine() << "Ошибка при вызове pcap_findalldevs(): " << errbuf;
+        return;
+    }
+    
     for(pcap_if_t * dev = deviceList; dev != NULL; dev = dev->next)
     {
         std::string about;
         about = about + dev->description + "\n   (" + dev->name + ")";
-        arr.push_back(about);
         devicesSwitch->addTextItem(about.c_str());
     }
 }
@@ -66,7 +68,7 @@ ProcessingStatus PcapAdapter::backwardProcess(Protocol proto, PacketPtr packet, 
     u32 hash = crc32(&(*packet)[offset], packet->size() - offset);
     hashes.push_back(hash);
 
-    std::cout << '-' << devicesSwitch->getSelectedIndex();
+    //std::cout << '-' << devicesSwitch->getSelectedIndex();
 
     int ret = pcap_sendpacket(device, &(*packet)[offset], packet->size() - offset);
     statCounter->i_count_out++;
@@ -83,7 +85,9 @@ OptionPtr PcapAdapter::getOptions()
 void PcapAdapter::run(bool always)
 {
     if (devicesSwitch->getSelectedIndex() == 0)
-        throw std::exception("Ни один из сеттвых адапетеров не выбран. Проверьте настройки.");
+    {
+        LogLine() << "Ни один из сетевых адапетеров не выбран. Проверьте настройки.";
+    }
 
     pcap_if_t * dev = deviceList;
     for (int i = 1; i < devicesSwitch->getSelectedIndex(); i++)
@@ -99,7 +103,12 @@ void PcapAdapter::run(bool always)
         errbuf);    // error buffer
 
     if (device == NULL)
-        throw std::string("Unable to open the adapter. %s is not supported by WinPcap");
+    {
+        LogLine() << "Не удалось открыть сетевой адаптер: "
+                   << dev->name
+                   << '(' << dev->description << ')';
+        return;
+    }
 
     id = 0;
     linkType = pcap_datalink(device);
@@ -132,7 +141,7 @@ bool PcapAdapter::tick()
     packet->setAdapter(this);
     packet->addProcessor(shared_from_this());
 
-    std::cout << '+' << devicesSwitch->getSelectedIndex();
+    //std::cout << '+' << devicesSwitch->getSelectedIndex();
 
     Protocol::PhysicalLayer proto = (Protocol::PhysicalLayer)linkType;
     if (nextProcessor != NULL)

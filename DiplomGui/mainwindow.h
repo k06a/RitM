@@ -96,6 +96,8 @@ private slots:
     void on_action_start_triggered();
     void on_action_stop_triggered();
 
+    void printStringSlot(QString str);
+
     TractStat connectRecursive(DiplomBukov::ProcessorPtr nowProc, QList<TableCell> cells, int r, int c, int dx, int dy);
 
 private:

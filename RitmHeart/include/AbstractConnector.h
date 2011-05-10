@@ -11,7 +11,7 @@
 
 namespace DiplomBukov
 {
-    class AbstractConnector
+    class RITM_API AbstractConnector
         : public AbstractProcessor
         , public IConnector
     {

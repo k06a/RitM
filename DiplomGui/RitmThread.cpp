@@ -33,3 +33,8 @@ void RitmThread::stop()
 {
     m_starter->stop();
 }
+
+void RitmThread::printString(const char * str)
+{
+    emit printStringSignal(tr(str));
+}

@@ -9,7 +9,7 @@
 
 namespace DiplomBukov
 {
-    class IntOption
+    class RITM_API IntOption
         : public EnableSharedFromThis<IntOption>::Type
         , public IOption
     {

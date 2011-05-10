@@ -6,7 +6,7 @@
 
 namespace DiplomBukov
 {
-    class FileSaveOption : public FileOpenOption
+    class RITM_API FileSaveOption : public FileOpenOption
     {
     public:
         FileSaveOption(const char * ext = "*.*",

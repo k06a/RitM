@@ -9,7 +9,7 @@
 
 namespace DiplomBukov
 {
-    class CheckOption
+    class RITM_API CheckOption
         : public EnableSharedFromThis<CheckOption>::Type
         , public IOption
     {
