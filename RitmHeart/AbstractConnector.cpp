@@ -36,6 +36,10 @@ void AbstractConnector::ping(ProcessorPtr prevProcessor)
 
 void AbstractConnector::addNextProcessor(ProcessorPtr processor)
 {
+    if (std::find(procList.begin(), procList.end(), processor)
+        != procList.end())
+        return;
+
     procList.push_back(processor);
 }
 

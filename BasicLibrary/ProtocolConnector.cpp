@@ -73,6 +73,10 @@ void ProtocolConnector::addNextProcessor(ProcessorPtr processor)
         return;
     }
 
+    if (std::find(procList.begin(), procList.end(), processor)
+        != procList.end())
+        return;
+
     Protocol proto = processor->getProtocol();
     procMap.insert(std::make_pair(proto, processor));
     AbstractConnector::addNextProcessor(processor);
