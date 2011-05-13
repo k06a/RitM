@@ -355,24 +355,11 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
 
         TableCell tc = {i,j,w};
         
+        w->procRecord().MoveToCopy();
         if (w->procRecord().adapter != NULL)
-        {
-            w->procRecord().MoveToCopy();
             adapters.append(tc);
-        } else
-        if (w->procRecord().connector != NULL)
-        {
-            w->procRecord().MoveToCopy();
+        else
             cells.append(tc);
-        } else
-        if (w->procRecord().processor != NULL)
-        {
-            w->procRecord().MoveToCopy();
-            cells.append(tc);
-        } else
-        {
-            cells.append(tc);
-        }
     }
 
     if (adapters.size() == 0)
@@ -383,6 +370,7 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
         return false;
     }
 
+    ui->tableWidget_field->clearSelection();
     m_refreshCells.clear();
     QString statForAdaps;
     foreach(TableCell adcell, adapters)
@@ -392,6 +380,7 @@ bool MainWindow::on_action_check_triggered(bool silentOnSuccess)
 
         int r = adcell.row;
         int c = adcell.column + 1;
+        ui->tableWidget_field->item(r,c-1)->setSelected(true);
         TractStat stat = connectRecursive(ad, cells, r, c, 0, 1);
         ad->ping(ProcessorPtr());
 
@@ -449,7 +438,7 @@ void MainWindow::on_action_start_triggered()
     ui->action_copy->setDisabled(true);
     ui->action_paste->setDisabled(true);
     ui->tableWidget_field->setLocked(true);
-    printStringSlot(tr("[ Осуществление запуска ]"));
+    printStringSlot(tr("[ Запуск обработки ]"));
 
     m_refreshId = startTimer(100);
 
@@ -484,7 +473,7 @@ void MainWindow::on_action_stop_triggered()
     ui->action_copy->setEnabled(true);
     ui->action_paste->setEnabled(true);
     ui->tableWidget_field->setLocked(false);
-    printStringSlot(tr("[ Остановка пользователем ]"));
+    printStringSlot(tr("[ Остановка обработки ]"));
 }
 
 void MainWindow::printStringSlot(QString str)
@@ -496,36 +485,40 @@ void MainWindow::printStringSlot(QString str)
         file.write((line + "\n").toUtf8());
 }
 
-MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<TableCell> cells, int r, int c, int dr, int dc)
+MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr currProc, QList<TableCell> cells, int r, int c, int dr, int dc)
 {
     TableCell cell = {r,c};
     int pos = cells.indexOf(cell);
     if (pos == -1)
         return 0;
 
-    ProcRecord procRec = cells[pos].item->procRecord();
-    ModuleRecord modRec = procRec.module;
+    ProcRecord & procRec = cells[pos].item->procRecord();
+    ModuleRecord & modRec = procRec.module;
 
+    // Если с этой стороны нет входа
     if (modRec.sidesIn.indexOf(qMakePair(-dr,-dc)) == -1)
         return 0;
 
+    // Выделение
+    ui->tableWidget_field->item(r,c)->setSelected(true);
+
     TractStat tractStat;
-    ProcessorPtr newProc = nowProc;
+    ProcessorPtr nextProc = currProc;
     if (modRec.lib != "Pipe")
     {
         if (procRec.connector != NULL)
         {
-            newProc = SharedPointerCast<IProcessor>(procRec.connector);
+            nextProc = SharedPointerCast<IProcessor>(procRec.connector);
             tractStat.conns++;
         }
         if (procRec.processor != NULL)
         {
-            newProc = SharedPointerCast<IProcessor>(procRec.processor);
+            nextProc = SharedPointerCast<IProcessor>(procRec.processor);
             tractStat.procs++;
         }
-        nowProc->setNextProcessor(newProc->getPointer());
+        currProc->setNextProcessor(nextProc->getPointer());
 
-        if (cells[pos].item->procRecord().statsProvider != NULL)
+        if (procRec.statsProvider != NULL)
             m_refreshCells.insert(cells[pos].item);
     } else
         tractStat.pipes++;
@@ -534,7 +527,7 @@ MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr nowProc, QList<T
     {
         int dr2 = modRec.sidesOut[i].first;
         int dc2 = modRec.sidesOut[i].second;
-        tractStat += connectRecursive(newProc, cells, r+dr2, c+dc2, dr2, dc2);
+        tractStat += connectRecursive(nextProc, cells, r+dr2, c+dc2, dr2, dc2);
     }
 
     return tractStat;
