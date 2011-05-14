@@ -35,13 +35,16 @@ void TimedStarter::start()
     {
         u64 mintime = ULLONG_MAX;
         int mintime_index = -1;
+        bool allFalse = true;
         for (int i = 0; i < n; i++)
         {
             if (m_shouldStop)
                 return;
 
             if (delays[i]->recvPacket.size() == 0)
-                adapters[i]->tick();
+                allFalse &= !adapters[i]->tick();
+            else
+                allFalse = false;
         
             if (delays[i]->recvPacket.size() == 0)
                 continue;
@@ -52,6 +55,9 @@ void TimedStarter::start()
                 mintime_index = i;
             }
         }
+
+        if (allFalse)
+            break;
 
         if (mintime_index == -1)
             continue;

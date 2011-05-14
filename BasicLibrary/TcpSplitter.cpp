@@ -50,7 +50,7 @@ ProcessingStatus TcpSplitter::forwardProcess(Protocol proto, PacketPtr packet, u
     }
 
     // Determine direction
-    if ((packet->direction() == IPacket::Unknown) && (adr1 != adr2))
+    //if ((packet->direction() == IPacket::Unknown) && (adr1 != adr2))
     {
         bool cts = (adr1 == para.first);
         packet->setDirection(cts ? IPacket::ClientToServer : IPacket::ServerToClient);
@@ -70,8 +70,8 @@ ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, PacketPtr packet, 
     tcp->src_port = para.first;
     tcp->dst_port = para.second;
 
-    //if (packet->direction() == IPacket::ServerToClient)
-    //    std::swap(tcp->src_port, tcp->dst_port);
+    if (packet->direction() == IPacket::ServerToClient)
+        std::swap(tcp->src_port, tcp->dst_port);
 
     if (packet->processorBefore(shared_from_this()) != NULL)
         packet->processorBefore(shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);

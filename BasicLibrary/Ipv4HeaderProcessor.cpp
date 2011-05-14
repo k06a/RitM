@@ -58,8 +58,8 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, PacketPtr 
 
     ip->proto = proto.code;
     ip->totalLength = packet->size() - offset;
-    if (packet->direction() == IPacket::ServerToClient)
-        std::swap(ip->src_data, ip->dst_data);
+    //if (packet->direction() == IPacket::ServerToClient)
+    //    std::swap(ip->src_data, ip->dst_data);
 
     ip->recountSum();
     if (proto == Protocol::TCP)
