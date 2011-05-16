@@ -15,18 +15,48 @@
 #include "ListOption.h"
 #include "GroupOption.h"
 #include "CheckOption.h"
+#include "PushButtonOption.h"
 
 namespace DiplomBukov
 {
     class DnsMessageProcessor : public AbstractProcessor
     {
+
+        class AppendLitener : public IPushButtonOptionListener
+        {
+            GroupOptionPtr groupOption;
+
+        public:
+            AppendLitener(GroupOptionPtr groupOption);
+            virtual void clicked();
+        };
+        // AppendLitener
+        
+        //
+
+        class RemoveLitener : public IPushButtonOptionListener
+        {
+            GroupOptionPtr groupOption;
+
+        public:
+            RemoveLitener(GroupOptionPtr groupOption);
+            virtual void clicked();
+        };
+        // RemoveLitener
+
+        //
+
         DnsMessage dnsMessage;
         CheckOptionPtr alwaysResave;
         CheckOptionPtr check;
         TextLineOptionPtr source;
         ComboOptionPtr destType;
         TextLineOptionPtr destination;
+        GroupOptionPtr options_list;
         GroupOptionPtr options;
+
+        PushButtonOptionListenerPtr appendListener;
+        PushButtonOptionListenerPtr removeListener;
 
     public:
         DnsMessageProcessor(ProcessorPtr processor = ProcessorPtr());

@@ -14,6 +14,8 @@ namespace DiplomBukov
     class TextLineOption;
     class FileOpenOption;
     class FileSaveOption;
+    class PushButtonOption;
+    class IPushButtonOptionListener;
     class GroupOption;
 
     template<typename T1, typename T2>
@@ -28,6 +30,8 @@ namespace DiplomBukov
     typedef SharedPointer<TextLineOption>::Type TextLineOptionPtr;
     typedef SharedPointer<FileOpenOption>::Type FileOpenOptionPtr;
     typedef SharedPointer<FileSaveOption>::Type FileSaveOptionPtr;
+    typedef SharedPointer<PushButtonOption>::Type PushButtonOptionPtr;
+    typedef SharedPointer<IPushButtonOptionListener>::Type PushButtonOptionListenerPtr;
     typedef SharedPointer<GroupOption>::Type GroupOptionPtr;
 
     template<typename T1, typename T2>

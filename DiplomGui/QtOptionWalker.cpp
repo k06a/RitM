@@ -166,6 +166,15 @@ void QtOptionWalker::visit(FileSaveOptionPtr opt)
     visitFileOption(opt, SLOT(FileSaveOption_buttonClicked()));
 }
 
+void QtOptionWalker::visit(PushButtonOptionPtr opt)
+{
+    QPushButton * pushButton = new QPushButton(QObject::tr(opt->getName()));
+    pushButton->setProperty("option", (int)opt.get());
+    connect(pushButton, SIGNAL(clicked()),
+            this, SLOT(PushButtonOptionPtr_clicked()));
+    m_layoutStack.last()->addWidget(pushButton);
+}
+
 void QtOptionWalker::visitFileOption(FileOpenOptionPtr opt, const char * member)
 {
     QWidget * w = new QWidget;
@@ -300,4 +309,12 @@ void QtOptionWalker::FileSaveOption_buttonClicked()
     QString str = QFileDialog::getSaveFileName(m_dialog, tr("Выбрать файл"), "", ext);
     if (!str.isEmpty())
         lineEdit->setText(str);
+}
+
+void QtOptionWalker::PushButtonOptionPtr_clicked()
+{
+    QPushButton * pushButton = (QPushButton *)sender();
+    int opt_addr = pushButton->property("option").toInt();
+    PushButtonOption * opt = (PushButtonOption *)opt_addr;
+    opt->click();
 }

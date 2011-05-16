@@ -73,6 +73,11 @@ void GroupOption::removeOptions(OptionPtr option)
     std::remove(optionList.begin(), optionList.end(), option);
 }
 
+void GroupOption::removeLastOption()
+{
+    optionList.pop_back();
+}
+
 std::string GroupOption::saveToString(int level)
 {
     std::string delim = "(";

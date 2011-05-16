@@ -22,6 +22,7 @@ namespace DiplomBukov
         virtual void visit(TextLineOptionPtr opt) = 0;
         virtual void visit(FileOpenOptionPtr opt) = 0;
         virtual void visit(FileSaveOptionPtr opt) = 0;
+        virtual void visit(PushButtonOptionPtr opt) = 0;
 
         virtual void visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt) = 0;
 

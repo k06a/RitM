@@ -98,7 +98,7 @@ void ConsoleOptionWalker::visit(TextLineOptionPtr opt)
 void ConsoleOptionWalker::visit(FileOpenOptionPtr opt)
 {
     std::cout << "Enter filename to open for \""
-        << opt->getName() << "\": ";
+              << opt->getName() << "\": ";
     std::string ans;
     std::getline(std::cin, ans, '\n');
     opt->setFilename(ans.c_str());
@@ -107,10 +107,25 @@ void ConsoleOptionWalker::visit(FileOpenOptionPtr opt)
 void ConsoleOptionWalker::visit(FileSaveOptionPtr opt)
 {
     std::cout << "Enter filename to save for \""
-        << opt->getName() << "\": ";
+              << opt->getName() << "\": ";
     std::string ans;
     std::getline(std::cin, ans, '\n');
     opt->setFilename(ans.c_str());
+}
+
+void ConsoleOptionWalker::visit(PushButtonOptionPtr opt)
+{
+    while (true)
+    {
+        std::cout << "Would you like to press button \""
+                  << opt->getName() << "\"?[y/n]: ";
+        std::string ans;
+        std::getline(std::cin, ans, '\n');
+        if (ans == "y")
+            opt->click();
+        else
+            break;
+    }
 }
 
 void ConsoleOptionWalker::visit(GroupOptionPtr opt)

@@ -11,6 +11,7 @@ namespace DiplomBukov
     public:
         ComboOption();
         ComboOption(const char * name);
+        virtual OptionPtr CreateCopy() const;
 
         virtual void visitMe(OptionWalkerPtr walker);
     };

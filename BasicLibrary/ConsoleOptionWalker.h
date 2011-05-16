@@ -13,6 +13,7 @@
 #include "TextLineOption.h"
 #include "FileOpenOption.h"
 #include "FileSaveOption.h"
+#include "PushButtonOption.h"
 #include "ListOption.h"
 
 namespace DiplomBukov
@@ -35,6 +36,7 @@ namespace DiplomBukov
         virtual void visit(TextLineOptionPtr opt);
         virtual void visit(FileOpenOptionPtr opt);
         virtual void visit(FileSaveOptionPtr opt);
+        virtual void visit(PushButtonOptionPtr opt);
 
         virtual void visit(ListOptionPtr<OptionPtr,OptionPtr>::Type opt);
 

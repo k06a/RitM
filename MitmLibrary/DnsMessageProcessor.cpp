@@ -6,8 +6,33 @@
 
 using namespace DiplomBukov;
 
+DnsMessageProcessor::AppendLitener::AppendLitener(GroupOptionPtr groupOption)
+    : groupOption(groupOption)
+{
+}
+
+void DnsMessageProcessor::AppendLitener::clicked()
+{
+    OptionPtr opt = groupOption->options_item(0)->CreateCopy();
+    groupOption->addOption(opt);
+}
+
+DnsMessageProcessor::RemoveLitener::RemoveLitener(GroupOptionPtr groupOption)
+    : groupOption(groupOption)
+{
+}
+
+void DnsMessageProcessor::RemoveLitener::clicked()
+{
+    if (groupOption->options_size() > 1)
+        groupOption->removeLastOption();
+}
+
 DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
-    : options(new GroupOption(true))
+    : options_list(new GroupOption(true))
+    , options(new GroupOption(true))
+    , appendListener(new AppendLitener(options_list))
+    , removeListener(new RemoveLitener(options_list))
 {
     setNextProcessor(processor);
 
@@ -25,9 +50,21 @@ DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
     group->addOption(OptionPtr(destType));
     group->addOption(OptionPtr(destination));
 
+    options_list->addOption(group);
+
     alwaysResave = CheckOptionPtr(new CheckOption(false, "Перепаковывать все пакеты"));
+
+    PushButtonOptionPtr addButton(new PushButtonOption("Добавить"));
+    addButton->setListener(appendListener);
+    PushButtonOptionPtr delButton(new PushButtonOption("Удалить"));
+    delButton->setListener(removeListener);
+    GroupOptionPtr group2(new GroupOption(false));
+    group2->addOption(addButton);
+    group2->addOption(delButton);
+
     options->addOption(alwaysResave);
-    options->addOption(group);
+    options->addOption(options_list);
+    options->addOption(group2);
 }
 
 ProcessorPtr DnsMessageProcessor::CreateCopy() const

@@ -208,6 +208,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\PushButtonOption.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\SwitchOption.cpp"
 					>
 				</File>
@@ -351,6 +355,10 @@
 				</File>
 				<File
 					RelativePath=".\include\options\ListOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\options\PushButtonOption.h"
 					>
 				</File>
 				<File
