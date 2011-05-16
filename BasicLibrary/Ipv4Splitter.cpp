@@ -1,7 +1,7 @@
 #include "Ipv4Splitter.h"
 #include "network/ipv4_header.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 Ipv4Splitter::Ipv4Splitter(ProcessorPtr Connector)
 {

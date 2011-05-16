@@ -1,6 +1,6 @@
 #include "UdpSplitter.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 UdpSplitter::UdpSplitter(ProcessorPtr Connector)
     : TcpSplitter(Connector)

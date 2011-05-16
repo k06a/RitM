@@ -18,7 +18,7 @@
 #include "IAdapter.h"
 #include "Log.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 QtOptionWalker::QtOptionWalker(bool locked)
     : QObject()

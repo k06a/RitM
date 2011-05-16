@@ -4,7 +4,7 @@
 #include "CommonInclude.h"
 #include "SwitchOption.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API ComboOption : public SwitchOption
     {
@@ -17,6 +17,6 @@ namespace DiplomBukov
     };
     // class ComboOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // COMBOOPTION_H

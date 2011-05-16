@@ -1,6 +1,6 @@
 #include "Log.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 #pragma data_seg(".shared")
 ILogPrinter * Log::m_printer = NULL;

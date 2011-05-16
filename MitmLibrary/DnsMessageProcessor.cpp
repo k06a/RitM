@@ -4,7 +4,7 @@
 #include "network/ipv4_header.h"
 #include "GroupOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 DnsMessageProcessor::AppendLitener::AppendLitener(GroupOptionPtr groupOption)
     : groupOption(groupOption)

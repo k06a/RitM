@@ -1,7 +1,7 @@
 #include "TcpSplitter.h"
 #include "network/tcp_header.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 TcpSplitter::TcpSplitter(ProcessorPtr Connector)
 {

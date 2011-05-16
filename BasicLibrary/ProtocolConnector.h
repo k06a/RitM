@@ -7,7 +7,7 @@
 #include "CommonInclude.h"
 #include "AbstractConnector.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class ProtocolConnector : public AbstractConnector
     {
@@ -32,6 +32,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<ProtocolConnector>::Type ProtocolConnectorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // PROTOCOLCONNECTOR_H

@@ -4,7 +4,7 @@
 #include "CommonInclude.h"
 #include "Options.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IOptionWalker
     {
@@ -30,6 +30,6 @@ namespace DiplomBukov
     };
     // class IOptionWalker
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IOPTIONWALKER_H

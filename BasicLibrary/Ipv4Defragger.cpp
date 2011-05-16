@@ -1,7 +1,7 @@
 #include "Ipv4Defragger.h"
 #include "network/ipv4_header.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 Ipv4Defragger::Ipv4Defragger(ProcessorPtr Connector)
     : fullPacket(NULL)

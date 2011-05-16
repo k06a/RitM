@@ -8,7 +8,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API FileOpenOption
         : public EnableSharedFromThis<FileOpenOption>::Type
@@ -39,6 +39,6 @@ namespace DiplomBukov
     };
     // class FileOpenOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // FILEOPENOPTION_H

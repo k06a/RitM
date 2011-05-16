@@ -6,7 +6,7 @@
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class TelnetSwapper : public AbstractProcessor
     {
@@ -26,6 +26,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<TelnetSwapper>::Type TelnetSwapperPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TELNETSWAPPER_H

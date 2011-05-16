@@ -1,6 +1,6 @@
 #include "PushButtonOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 PushButtonOption::PushButtonOption(const char * name)
     : label(name)

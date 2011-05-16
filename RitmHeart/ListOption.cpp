@@ -1,7 +1,7 @@
 #include "ListOption.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 /*
 template<typename T1, typename T2>
 ListOption<T1,T2>::ListOption(bool vertical,

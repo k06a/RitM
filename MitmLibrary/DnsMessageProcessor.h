@@ -17,7 +17,7 @@
 #include "CheckOption.h"
 #include "PushButtonOption.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class DnsMessageProcessor : public AbstractProcessor
     {
@@ -76,6 +76,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<DnsMessageProcessor>::Type DnsMessageProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // DNSMESSAGEPROCESSOR_H

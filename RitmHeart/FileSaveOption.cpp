@@ -1,6 +1,6 @@
 #include "FileSaveOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 FileSaveOption::FileSaveOption(const char * ext,
                                const char * label)

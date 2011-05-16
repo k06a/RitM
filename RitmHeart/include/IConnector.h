@@ -6,7 +6,7 @@
 #include "CommonInclude.h"
 #include "IProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IConnector : public virtual IProcessor
     {
@@ -19,6 +19,6 @@ namespace DiplomBukov
     };
     // class IConnector
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ICONNECTOR_H

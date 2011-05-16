@@ -3,7 +3,7 @@
 
 #include "IStatsProvider.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 class BasicStatCounter : public IStatsProvider
 {

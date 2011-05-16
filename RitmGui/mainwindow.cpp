@@ -21,8 +21,8 @@
 #include <QDateTime>
 #include <QFile>
 
-using DiplomBukov::ProcessorPtr;
-using DiplomBukov::StarterPtr;
+using RitM::ProcessorPtr;
+using RitM::StarterPtr;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

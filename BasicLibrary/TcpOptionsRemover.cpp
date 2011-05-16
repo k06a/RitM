@@ -1,6 +1,6 @@
 #include "TcpOptionsRemover.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 TcpOptionsRemover::TcpOptionsRemover(ProcessorPtr Connector)
 {

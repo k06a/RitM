@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 BruteConnector::BruteConnector()
 {

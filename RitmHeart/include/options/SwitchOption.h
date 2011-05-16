@@ -8,7 +8,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API SwitchOption
         : public EnableSharedFromThis<SwitchOption>::Type
@@ -44,6 +44,6 @@ namespace DiplomBukov
     };
     // class SwitchOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // SWITCHOPTION_H

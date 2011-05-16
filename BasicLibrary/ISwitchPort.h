@@ -3,7 +3,7 @@
 
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class ISwitchPort : public IPacketProcessor
     {
@@ -17,6 +17,6 @@ namespace DiplomBukov
     };
     // class ISwitchPort
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ISWITCHPORT_H

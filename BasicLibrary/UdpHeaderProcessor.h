@@ -8,7 +8,7 @@
 #include "IPacket.h"
 #include "network/udp_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class UdpHeaderProcessor : public AbstractProcessor
     {
@@ -29,6 +29,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<UdpHeaderProcessor>::Type UdpHeaderProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // UDPHEADERPROCESSOR_H

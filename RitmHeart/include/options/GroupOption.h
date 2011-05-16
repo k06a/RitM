@@ -8,7 +8,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API GroupOption
         : public EnableSharedFromThis<GroupOption>::Type
@@ -43,6 +43,6 @@ namespace DiplomBukov
     };
     // class GroupOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // UNITEDOPTION_H

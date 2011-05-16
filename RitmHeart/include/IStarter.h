@@ -3,7 +3,7 @@
 
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IStarter
     {
@@ -17,6 +17,6 @@ namespace DiplomBukov
     };
     // class IStarter
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ISTARTER_H

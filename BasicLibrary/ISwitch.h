@@ -3,7 +3,7 @@
 
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class ISwitch
     {
@@ -15,6 +15,6 @@ namespace DiplomBukov
     };
     // class ISwitch
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ISWITCH_H

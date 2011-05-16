@@ -4,7 +4,7 @@
 #include "CommonInclude.h"
 #include "IProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API AbstractProcessor
         : public EnableSharedFromThis<IProcessor>::Type
@@ -46,6 +46,6 @@ namespace DiplomBukov
     };
     // class AbstractProcessor
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ABSTRACTPROCESSOR_H

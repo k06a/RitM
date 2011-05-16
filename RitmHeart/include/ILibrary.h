@@ -4,7 +4,7 @@
 #include <vector>
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class ILibrary
     {
@@ -21,9 +21,9 @@ namespace DiplomBukov
     };
     // class ILibrary
 }
-// namespace DiplomBukov
+// namespace RitM
 
-typedef DiplomBukov::ILibrary * (__cdecl *TCreateLibrary)(void);
-typedef void (__cdecl *TDeleteLibrary)(DiplomBukov::ILibrary *);
+typedef RitM::ILibrary * (__cdecl *TCreateLibrary)(void);
+typedef void (__cdecl *TDeleteLibrary)(RitM::ILibrary *);
 
 #endif // ILIBRARY_H

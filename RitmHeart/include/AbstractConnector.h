@@ -9,7 +9,7 @@
 #include "IProcessor.h"
 #include "IConnector.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API AbstractConnector
         : public AbstractProcessor
@@ -36,6 +36,6 @@ namespace DiplomBukov
     };
     // class AbstractConnector
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ABSTRACTCONNECTOR_H

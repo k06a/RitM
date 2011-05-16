@@ -1,6 +1,6 @@
 #include "CheckOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 CheckOption::CheckOption(bool checked, const char * name)
     : label(name), value(checked)

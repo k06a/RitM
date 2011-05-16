@@ -5,11 +5,11 @@
 #include "Log.h"
 #include <QThread>
 
-using DiplomBukov::StarterPtr;
+using RitM::StarterPtr;
 
 class RitmThread
     : public QThread
-    , public DiplomBukov::ILogPrinter
+    , public RitM::ILogPrinter
 {
     Q_OBJECT
 

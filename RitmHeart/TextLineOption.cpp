@@ -1,6 +1,6 @@
 #include "TextLineOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 TextLineOption::TextLineOption(const char * text)
     : label(""), textline(text)

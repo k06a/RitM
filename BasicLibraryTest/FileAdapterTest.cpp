@@ -8,12 +8,12 @@
 using ::testing::_;
 using ::testing::Return;
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 //////////////////////////////////////////////////////////////////////////
 
 class TestingReadingProcessor
-    : public DiplomBukov::AbstractProcessor
+    : public RitM::AbstractProcessor
 {
 public:
     MOCK_CONST_METHOD0(CreateCopy, ProcessorPtr());

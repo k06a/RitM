@@ -4,7 +4,7 @@
 #include "CommonInclude.h"
 #include "ILibrary.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class BasicLibrary : public ILibrary
     {
@@ -25,16 +25,16 @@ namespace DiplomBukov
     };
     // class BasicLibrary
 }
-// namespace DiplomBukov
+// namespace RitM
 
 extern "C" __declspec(dllexport)
-DiplomBukov::ILibrary * createLibrary()
+RitM::ILibrary * createLibrary()
 {
-    return new DiplomBukov::BasicLibrary();
+    return new RitM::BasicLibrary();
 }
 
 extern "C" __declspec(dllexport)
-void deleteLibrary(DiplomBukov::ILibrary * lib)
+void deleteLibrary(RitM::ILibrary * lib)
 {
     delete lib;
 }

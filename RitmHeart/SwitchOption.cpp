@@ -1,7 +1,7 @@
 #include "SwitchOption.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 SwitchOption::SwitchOption()
     : label(), labels(), selected(0)

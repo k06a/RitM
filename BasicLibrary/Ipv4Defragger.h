@@ -7,7 +7,7 @@
 #include "IPacket.h"
 #include "AbstractProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     struct DefragPacket
     {
@@ -60,6 +60,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<Ipv4Defragger>::Type Ipv4DefraggerPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IPV4DEFRAGPROCESSOR_H

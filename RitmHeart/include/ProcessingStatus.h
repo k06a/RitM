@@ -1,7 +1,7 @@
 #ifndef PROCESSINGSTATUS_H
 #define PROCESSINGSTATUS_H
 
-namespace DiplomBukov
+namespace RitM
 {
     struct ProcessingStatus
     {
@@ -32,6 +32,6 @@ namespace DiplomBukov
     };
     // struct ProcessingStatus
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif

@@ -5,7 +5,7 @@
 #include "AbstractProcessor.h"
 #include "IPacket.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class AcceptProcessor : public AbstractProcessor
     {
@@ -24,6 +24,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<AcceptProcessor>::Type AcceptProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ACCEPTPROCESSOR_H

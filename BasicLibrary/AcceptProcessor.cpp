@@ -1,6 +1,6 @@
 #include "AcceptProcessor.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 AcceptProcessor::AcceptProcessor(ProcessorPtr Connector)
 {

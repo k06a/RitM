@@ -2,7 +2,7 @@
 #include "IPacket.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 HttpDefragProcessor::HttpDefragProcessor(ProcessorPtr processor)
     : markCount(0), positionOfData(0)

@@ -2,7 +2,7 @@
 #include "IPacket.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 HttpSwapProcessor::HttpSwapProcessor(ProcessorPtr processor)
 : markCount(0), positionOfData(0)

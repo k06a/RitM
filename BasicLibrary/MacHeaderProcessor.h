@@ -5,7 +5,7 @@
 #include "IPacket.h"
 #include "AbstractProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class MacHeaderProcessor : public AbstractProcessor
     {
@@ -25,6 +25,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<MacHeaderProcessor>::Type MacHeaderProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // MACHEADERPROCESSOR_H

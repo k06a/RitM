@@ -6,7 +6,7 @@
 #include <sstream>
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class ILogPrinter
     {
@@ -43,6 +43,6 @@ namespace DiplomBukov
 
     #define LogLine() (static_cast<LogLineType&>(LogLineType()))
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // LOG_H

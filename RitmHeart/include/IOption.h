@@ -3,7 +3,7 @@
 
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API IOption
     {
@@ -21,6 +21,6 @@ namespace DiplomBukov
     };
     // class IOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IOPTION_H

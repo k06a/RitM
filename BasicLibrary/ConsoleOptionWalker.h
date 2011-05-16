@@ -16,7 +16,7 @@
 #include "PushButtonOption.h"
 #include "ListOption.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class ConsoleOptionWalker
         : public EnableSharedFromThis<ConsoleOptionWalker>::Type

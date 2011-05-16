@@ -9,7 +9,7 @@
 #include <QLibrary>
 #include <QCoreApplication>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 ModuleHolder * ModuleHolder::m_instance = NULL;
 

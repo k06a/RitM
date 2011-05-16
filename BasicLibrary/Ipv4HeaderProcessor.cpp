@@ -2,7 +2,7 @@
 #include "network/ipv4_header.h"
 #include "network/tcp_header.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 Ipv4HeaderProcessor::Ipv4HeaderProcessor(ProcessorPtr Connector)
     : header()

@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace DiplomBukov
+namespace RitM
 {
     #pragma pack(push,1)
     struct Protocol
@@ -117,6 +117,6 @@ namespace DiplomBukov
     #pragma pack(pop)
     // struct Protocol
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // PROTOCOL_H

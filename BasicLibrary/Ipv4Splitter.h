@@ -9,7 +9,7 @@
 #include "AbstractProcessor.h"
 #include "network/ipv4_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class Ipv4Splitter : public AbstractProcessor
     {
@@ -34,6 +34,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<Ipv4Splitter>::Type Ipv4SplitterPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IPV4SPLITTERPROCESSOR_H

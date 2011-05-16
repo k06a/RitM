@@ -4,7 +4,7 @@
 #include "CommonInclude.h"
 #include "IModule.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IConnectorModule : public IModule
     {
@@ -15,6 +15,6 @@ namespace DiplomBukov
     };
     // class IConnectorModule
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ICONNECTORMODULE_H

@@ -3,7 +3,7 @@
 
 #include "IAdapterModule.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     template<typename T>
     class TemplateAdapterModule : public IAdapterModule
@@ -35,6 +35,6 @@ namespace DiplomBukov
     };
     // class TemplateAdapterModule
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TEMPLATEADAPTERMODULE_H

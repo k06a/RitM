@@ -6,7 +6,7 @@
 #include <iostream>
 #include <list>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 PcapAdapter::PcapAdapter(ProcessorPtr Connector)
     : statCounter(new BasicStatCounter)

@@ -9,7 +9,7 @@
 #include "AbstractProcessor.h"
 #include "network/mac_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class MacSwitchPort;
     typedef std::tr1::shared_ptr<MacSwitchPort> MacSwitchPortPtr;
@@ -35,6 +35,6 @@ namespace DiplomBukov
     };
     // class MacSwitchPort
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // MACSWITCHPORT_H

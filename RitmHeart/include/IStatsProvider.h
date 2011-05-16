@@ -5,7 +5,7 @@
 #include <string>
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IStatsProvider
     {
@@ -18,6 +18,6 @@ namespace DiplomBukov
     };
     // class IStatsProvider
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ISTATISTICSPROVIDER_H

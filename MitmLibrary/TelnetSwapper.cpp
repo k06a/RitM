@@ -2,7 +2,7 @@
 #include "IPacket.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 TelnetSwapper::TelnetSwapper(ProcessorPtr processor)
 {

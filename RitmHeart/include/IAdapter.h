@@ -4,7 +4,7 @@
 #include "CommonInclude.h"
 #include "IProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IAdapter : public virtual IProcessor
     {
@@ -25,6 +25,6 @@ namespace DiplomBukov
     };
     // class IAdapter
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IADAPTER_H

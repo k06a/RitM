@@ -3,7 +3,7 @@
 
 #include "IConnectorModule.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     template<typename T>
     class TemplateConnectorModule : public IConnectorModule
@@ -35,6 +35,6 @@ namespace DiplomBukov
     };
     // class TemplateConnectorModule
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TEMPLATECONNECTORMODULE_H

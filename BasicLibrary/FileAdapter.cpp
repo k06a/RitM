@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 FileAdapter::FileAdapter(ProcessorPtr Connector)
     : statCounter(new BasicStatCounter)

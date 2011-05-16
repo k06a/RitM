@@ -3,7 +3,7 @@
 
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     // ----------------------------------------------------------------
 
@@ -42,6 +42,6 @@ namespace DiplomBukov
 
     // ----------------------------------------------------------------
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // OPTIONFORWARDDECLS_H

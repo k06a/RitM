@@ -9,7 +9,7 @@
 #include "ProtocolConnector.h"
 #include "MacSwitchPort.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class MacSwitch;
     typedef SharedPointer<MacSwitch>::Type MacSwitchPtr;
@@ -35,6 +35,6 @@ namespace DiplomBukov
     };
     // class MacSwitch
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // MACSWITCH_H

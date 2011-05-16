@@ -7,7 +7,7 @@
 #include "CommonInclude.h"
 #include "network/mac_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API IPacket
     {
@@ -79,6 +79,6 @@ namespace DiplomBukov
 
     typedef std::tr1::shared_ptr<IPacket> PacketPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IPACKET_H

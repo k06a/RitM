@@ -1,6 +1,6 @@
 #include "FileOpenOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 FileOpenOption::FileOpenOption(const char * ext,
                                const char * label)

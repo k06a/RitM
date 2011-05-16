@@ -9,7 +9,7 @@
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class HttpSwapProcessor : public AbstractProcessor
     {
@@ -37,6 +37,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<HttpSwapProcessor>::Type HttpSwapProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // HTTPSWAPPROCESSOR_H

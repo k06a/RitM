@@ -1,7 +1,7 @@
 #include "AbstractProcessor.h"
 #include "IPacket.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 AbstractProcessor::AbstractProcessor()
     : prevProcessor(), nextProcessor(), module()

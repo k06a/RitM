@@ -6,7 +6,7 @@
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class TcpSplitter : public AbstractProcessor
     {
@@ -31,6 +31,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<TcpSplitter>::Type TcpSplitterPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TCPSPLITTER_H

@@ -4,7 +4,7 @@
 #include <memory>
 #include "CommonInclude.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IProcessor
     {
@@ -39,6 +39,6 @@ namespace DiplomBukov
     };
     // class IProcessor
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IProcessor_H

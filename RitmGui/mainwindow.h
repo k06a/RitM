@@ -30,7 +30,7 @@ class MainWindow : public QMainWindow
     QString m_filename;
 
     RitmThread * thread;
-    DiplomBukov::StarterPtr m_starter;
+    RitM::StarterPtr m_starter;
     int m_refreshId;
     QSet<ProcTableWidgetItem*> m_refreshCells;
 
@@ -98,7 +98,7 @@ private slots:
 
     void printStringSlot(QString str);
 
-    TractStat connectRecursive(DiplomBukov::ProcessorPtr nowProc, QList<TableCell> cells, int r, int c, int dx, int dy);
+    TractStat connectRecursive(RitM::ProcessorPtr nowProc, QList<TableCell> cells, int r, int c, int dx, int dy);
 
 private:
     Ui::MainWindow *ui;

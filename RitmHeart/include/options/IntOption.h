@@ -7,7 +7,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API IntOption
         : public EnableSharedFromThis<IntOption>::Type
@@ -42,6 +42,6 @@ namespace DiplomBukov
     };
     // class IntOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IntOption_H

@@ -5,7 +5,7 @@
 #include "AbstractProcessor.h"
 #include "IPacket.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class IcmpHeaderProcessor : public AbstractProcessor
     {
@@ -22,6 +22,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<IcmpHeaderProcessor>::Type IcmpProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // ICMPPROCESSOR_H

@@ -1,7 +1,7 @@
 #include "MacHeaderProcessor.h"
 #include "network/mac_header.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 MacHeaderProcessor::MacHeaderProcessor(ProcessorPtr Connector)
 {

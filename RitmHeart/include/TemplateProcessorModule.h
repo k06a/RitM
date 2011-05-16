@@ -3,7 +3,7 @@
 
 #include "IProcessorModule.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     template<typename T, bool isFinal_value = false>
     class TemplateProcessorModule : public IProcessorModule
@@ -40,6 +40,6 @@ namespace DiplomBukov
     };
     // class TemplateModule
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TEMPLATEPROCESSORMODULE_H

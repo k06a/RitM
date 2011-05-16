@@ -3,7 +3,7 @@
 
 #include "TcpSplitter.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class UdpSplitter : public TcpSplitter
     {
@@ -18,6 +18,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<UdpSplitter>::Type UdpSplitterPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // UDPSPLITTER_H

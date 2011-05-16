@@ -1,6 +1,6 @@
 #include "IntOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 IntOption::IntOption(const std::string & name)
     : label(name), value(0), min(0), max(0)

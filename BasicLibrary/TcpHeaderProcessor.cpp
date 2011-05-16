@@ -1,6 +1,6 @@
 #include "TcpHeaderProcessor.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 TcpHeaderProcessor::TcpHeaderProcessor(ProcessorPtr Connector)
     : inproto(Protocol::None)

@@ -7,10 +7,10 @@
 #include "AbstractProcessor.h"
 #include "IStarter.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class DelayInjectProcessor
-        : public DiplomBukov::AbstractProcessor
+        : public RitM::AbstractProcessor
     {
     public:
         std::list<Protocol> recvProto;
@@ -89,6 +89,6 @@ namespace DiplomBukov
         virtual void stop();
     };
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TIMEDSTARTER_H

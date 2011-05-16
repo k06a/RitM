@@ -1,7 +1,7 @@
 #include "IcmpHeaderProcessor.h"
 #include "network/icmp_header.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 IcmpHeaderProcessor::IcmpHeaderProcessor(ProcessorPtr Connector)
 {

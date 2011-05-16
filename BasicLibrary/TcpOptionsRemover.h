@@ -9,7 +9,7 @@
 #include "IPacket.h"
 #include "network/tcp_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class TcpOptionsRemover : public AbstractProcessor
     {
@@ -27,6 +27,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<TcpOptionsRemover>::Type TcpOptionsRemoverPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TCPOPTIONSREMOVER_H

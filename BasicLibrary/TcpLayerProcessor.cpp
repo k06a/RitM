@@ -2,7 +2,7 @@
 #include "network/tcp_header.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 TcpLayerProcessor::TcpLayerProcessor(ProcessorPtr Connector)
     : maxDataInTcp(0)

@@ -2,7 +2,7 @@
 #include "IAdapter.h"
 #include "IPacket.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 TimedStarter::TimedStarter()
     : m_shouldStop(false)

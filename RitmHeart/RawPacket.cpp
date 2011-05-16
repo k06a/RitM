@@ -1,7 +1,7 @@
 #include "RawPacket.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 RawPacket::RawPacket(int size)
     : id_(0), time_(0), status_(Accepted)

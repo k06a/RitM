@@ -11,7 +11,7 @@
 #include "SwitchOption.h"
 #include "BasicStatCounter.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class PcapAdapter
         : public AbstractProcessor
@@ -51,6 +51,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<PcapAdapter>::Type PcapAdapterPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // PCAPADAPTER_H

@@ -1,9 +1,7 @@
 #ifndef IMODULE_H
 #define IMODULE_H
 
-#include <string>
-
-namespace DiplomBukov
+namespace RitM
 {
     class IModule
     {
@@ -15,6 +13,6 @@ namespace DiplomBukov
     };
     // class IModule
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IMODULE_H

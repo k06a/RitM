@@ -1,7 +1,7 @@
 #include "MacSwitch.h"
 #include "MacSwitchPort.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 MacSwitch::MacSwitch(ProcessorPtr Connector)
 {

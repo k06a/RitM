@@ -6,7 +6,7 @@
 #include "IAdapter.h"
 #include "Log.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 ConsoleOptionWalker::ConsoleOptionWalker()
 {

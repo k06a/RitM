@@ -7,7 +7,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API IPushButtonOptionListener
     {
@@ -46,6 +46,6 @@ namespace DiplomBukov
     };
     // class PushButtonOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // PUSHBUTTONOPTION_H

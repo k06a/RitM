@@ -19,7 +19,7 @@
 #include "PushButtonOption.h"
 #include "ListOption.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class QtOptionWalker
         : public QObject

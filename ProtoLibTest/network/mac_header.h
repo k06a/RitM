@@ -5,7 +5,7 @@
 #include "Protocol.h"
 #include "i64u64.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     #pragma pack(push,1)
     struct mac_addr
@@ -121,6 +121,6 @@ namespace DiplomBukov
     };
     #pragma pack(pop)
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // MAC_HEADER_H

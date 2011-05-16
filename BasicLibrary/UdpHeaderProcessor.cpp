@@ -1,6 +1,6 @@
 #include "UdpHeaderProcessor.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 UdpHeaderProcessor::UdpHeaderProcessor(ProcessorPtr Connector)
 : inproto(Protocol::None)

@@ -8,7 +8,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API TextLineOption
         : public EnableSharedFromThis<TextLineOption>::Type
@@ -34,6 +34,6 @@ namespace DiplomBukov
     };
     // class TextLineOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TEXTLINEOPTION_H

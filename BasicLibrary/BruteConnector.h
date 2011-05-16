@@ -5,7 +5,7 @@
 
 #include "AbstractConnector.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class BruteConnector : public AbstractConnector
     {
@@ -20,6 +20,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<BruteConnector>::Type BruteConnectorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // BRUTECONNECTOR_H

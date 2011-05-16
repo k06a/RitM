@@ -12,7 +12,7 @@
 #include "FileSaveOption.h"
 #include "BasicStatCounter.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     struct pcap_file_header 
     {
@@ -77,6 +77,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<FileAdapter>::Type FileAdapterPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // FILEADAPTER_H

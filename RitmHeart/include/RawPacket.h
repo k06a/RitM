@@ -7,7 +7,7 @@
 #include "i64u64.h"
 #include "network/mac_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API RawPacket : public IPacket
     {
@@ -82,6 +82,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<RawPacket>::Type RawPacketPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // RAWPACKET_H

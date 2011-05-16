@@ -1,6 +1,6 @@
 #include "ComboOption.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 ComboOption::ComboOption()
     : SwitchOption()

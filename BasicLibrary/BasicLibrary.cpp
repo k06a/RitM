@@ -31,7 +31,7 @@
 #include "TcpLayerProcessor.h"
 #include "TcpOptionsRemover.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 BasicLibrary::BasicLibrary()
 {

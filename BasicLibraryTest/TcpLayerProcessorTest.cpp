@@ -17,7 +17,7 @@
 using ::testing::_;
 using ::testing::Return;
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 //////////////////////////////////////////////////////////////////////////
 

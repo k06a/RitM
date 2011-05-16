@@ -6,7 +6,7 @@
 #include <utility>
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 ProtocolConnector::ProtocolConnector()
     : procMap()

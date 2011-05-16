@@ -12,7 +12,7 @@
 #include <QList>
 #include <QPair>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 struct Direction
 {

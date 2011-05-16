@@ -10,7 +10,7 @@
 #include "AbstractProcessor.h"
 #include "network/http_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class HttpDefragProcessor : public AbstractProcessor
     {
@@ -58,6 +58,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<HttpDefragProcessor>::Type HttpDefragProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // HTTPDEFRAGPROCESSOR_H

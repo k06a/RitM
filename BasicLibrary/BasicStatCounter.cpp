@@ -1,6 +1,6 @@
 #include "BasicStatCounter.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 BasicStatCounter::BasicStatCounter()
     : i_count_in(0), i_count_out(0)

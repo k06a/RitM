@@ -1,7 +1,7 @@
 #include "MacSwitchPort.h"
 #include "IPacket.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 MacSwitchPort::MacSwitchPort(ProcessorPtr nextProcessor)
 {

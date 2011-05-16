@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="DiplomGui"
+	Name="RitmGui"
 	ProjectGUID="{3252F711-91E8-3837-B958-A746248824DC}"
 	RootNamespace="DiplomGui"
 	Keyword="Qt4VSv1.0"

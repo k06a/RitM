@@ -5,7 +5,7 @@
 #include "LittleBigEndian.h"
 #include "ipv4_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     #pragma pack(push,1)
     struct tcp_header
@@ -133,6 +133,6 @@ namespace DiplomBukov
     };
     #pragma pack(pop)
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TCP_HEADER_H

@@ -6,7 +6,7 @@
 #include "CommonInclude.h"
 #include "AbstractProcessor.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class TransportPortFilter : public AbstractProcessor
     {
@@ -27,6 +27,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<TransportPortFilter>::Type TransportPortFilterPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TRANSPORTPORTFILTER_H

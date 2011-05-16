@@ -9,7 +9,7 @@
 #include "HttpSwapProcessor.h"
 #include "TelnetSwapper.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 MitmLibrary::MitmLibrary()
 {

@@ -4,7 +4,7 @@
 #include "CommonInclude.h"
 #include "FileOpenOption.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API FileSaveOption : public FileOpenOption
     {
@@ -16,6 +16,6 @@ namespace DiplomBukov
     };
     // class FileSaveOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // FILESAVEOPTION_H

@@ -8,7 +8,7 @@
 #include "IPacket.h"
 #include "network/tcp_header.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class TcpHeaderProcessor : public AbstractProcessor
     {
@@ -29,6 +29,6 @@ namespace DiplomBukov
 
     typedef SharedPointer<TcpHeaderProcessor>::Type TcpHeaderProcessorPtr;
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // TCPHEADERPROCESSOR_H

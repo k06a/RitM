@@ -12,7 +12,7 @@
 #define RITM_API __declspec(dllimport)
 #endif
 
-namespace DiplomBukov
+namespace RitM
 {
     template<typename T>
     struct SharedPointer

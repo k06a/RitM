@@ -1,6 +1,6 @@
 #include "AbstractConnector.h"
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 AbstractConnector::AbstractConnector()
     : module(NULL)

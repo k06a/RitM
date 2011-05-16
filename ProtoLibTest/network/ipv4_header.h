@@ -5,7 +5,7 @@
 #include "LittleBigEndian.h"
 #include "i64u64.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     #pragma pack(push,1)
     struct ipv4_addr
@@ -180,6 +180,6 @@ namespace DiplomBukov
     };
     #pragma pack(pop)
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // IPV4_HEADER_H

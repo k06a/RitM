@@ -8,7 +8,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     template<typename T1, typename T2>
     class ListOption
@@ -46,6 +46,6 @@ namespace DiplomBukov
     };
     // class ListOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // LISTOPTION_H

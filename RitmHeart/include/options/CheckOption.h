@@ -7,7 +7,7 @@
 #include "IOption.h"
 #include "IOptionWalker.h"
 
-namespace DiplomBukov
+namespace RitM
 {
     class RITM_API CheckOption
         : public EnableSharedFromThis<CheckOption>::Type
@@ -33,6 +33,6 @@ namespace DiplomBukov
     };
     // class CheckOption
 }
-// namespace DiplomBukov
+// namespace RitM
 
 #endif // CHECKOPTION_H

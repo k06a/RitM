@@ -1,7 +1,7 @@
 #include "GroupOption.h"
 #include <algorithm>
 
-using namespace DiplomBukov;
+using namespace RitM;
 
 GroupOption::GroupOption(bool vertical, const char * name)
     : label(name), vertical(vertical)
