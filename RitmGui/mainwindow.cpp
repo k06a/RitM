@@ -482,7 +482,7 @@ void MainWindow::printStringSlot(QString str)
     ui->textBrowser_log->append(line);
     QFile file("RitM.log");
     if (file.open(QIODevice::Append))
-        file.write((line + "\n").toUtf8());
+        file.write((line + "\r\n").toUtf8());
 }
 
 MainWindow::TractStat MainWindow::connectRecursive(ProcessorPtr currProc, QList<TableCell> cells, int r, int c, int dr, int dc)
