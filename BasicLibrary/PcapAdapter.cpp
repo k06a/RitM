@@ -49,7 +49,7 @@ ProcessorPtr PcapAdapter::CreateCopy() const
 
 PcapAdapter::~PcapAdapter()
 {
-	pcap_freealldevs(deviceList);
+    pcap_freealldevs(deviceList);
 }
 
 const char * PcapAdapter::getProcessorName()

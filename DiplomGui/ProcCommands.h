@@ -31,7 +31,7 @@ public:
     RemoveProcCommand(ProcTableWidget * table,
                       QList<ProcItem> items);
 
-    virtual int	id () const;
+    virtual int id () const;
     virtual void undo();
     virtual void redo();
     //virtual bool mergeWith(const QUndoCommand * command);
@@ -49,7 +49,7 @@ public:
     PutProcCommand(ProcTableWidget * table,
                    ProcItem item);
 
-    virtual int	id () const;
+    virtual int id () const;
     virtual void undo();
     virtual void redo();
     virtual bool mergeWith(const QUndoCommand * command);
@@ -78,7 +78,7 @@ public:
                     int putRow,
                     int putColumn);
 
-    virtual int	id () const;
+    virtual int id () const;
     virtual void undo();
     virtual void redo();
     bool mergeWith(const QUndoCommand * command);
@@ -107,7 +107,7 @@ public:
                     int putRow,
                     int putColumn);
 
-    virtual int	id () const;
+    virtual int id () const;
     virtual void undo();
     virtual void redo();
 

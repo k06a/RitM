@@ -5,15 +5,15 @@
 
 namespace DiplomBukov
 {
-	#pragma pack(push,1)
-	struct Protocol
-	{
+    #pragma pack(push,1)
+    struct Protocol
+    {
         std::string name;
         int code;
 
         enum PhysicalLayer
-		{
-			None = 0,
+        {
+            None = 0,
             Ethernet_II = 0x0001
         };
 
@@ -47,9 +47,9 @@ namespace DiplomBukov
         enum TransportLayer
         {
             TCP  = 0x06,
-			UDP  = 0x11,
+            UDP  = 0x11,
             ICMP = 0x01
-		};
+        };
 
         static std::string text(TransportLayer pro)
         {
@@ -62,10 +62,10 @@ namespace DiplomBukov
             }
         }
 
-		Protocol(PhysicalLayer proto = None)
-			: name(text(proto)), code(proto)
-		{
-		}
+        Protocol(PhysicalLayer proto = None)
+            : name(text(proto)), code(proto)
+        {
+        }
 
         Protocol(NetworkLayer proto)
             : name(text(proto)), code(proto)
@@ -94,7 +94,7 @@ namespace DiplomBukov
             return (*this);
         }
 
-		bool operator < (const Protocol & proto) const
+        bool operator < (const Protocol & proto) const
         {
             return (name < proto.name);
         }
@@ -113,9 +113,9 @@ namespace DiplomBukov
         {
             return (name == proto);
         }
-	};
-	#pragma pack(pop)
-	// struct Protocol
+    };
+    #pragma pack(pop)
+    // struct Protocol
 }
 // namespace DiplomBukov
 

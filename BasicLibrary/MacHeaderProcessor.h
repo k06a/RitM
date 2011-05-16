@@ -8,11 +8,11 @@
 namespace DiplomBukov
 {
     class MacHeaderProcessor : public AbstractProcessor
-	{
+    {
         mac_header header;
 
-	public:
-		MacHeaderProcessor(ProcessorPtr Connector = ProcessorPtr());
+    public:
+        MacHeaderProcessor(ProcessorPtr Connector = ProcessorPtr());
         virtual ProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
@@ -20,8 +20,8 @@ namespace DiplomBukov
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
-	};
-	// class MacHeaderProcessor
+    };
+    // class MacHeaderProcessor
 
     typedef SharedPointer<MacHeaderProcessor>::Type MacHeaderProcessorPtr;
 }

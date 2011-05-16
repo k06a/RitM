@@ -14,34 +14,34 @@
 
 namespace DiplomBukov
 {
-	struct pcap_file_header 
-	{
+    struct pcap_file_header 
+    {
         static const int magic_value = 0xa1b2c3d4;
 
-		unsigned   int magic_number;   /* magic number */
-		unsigned short version_major;  /* major version number */
-		unsigned short version_minor;  /* minor version number */
-		  signed   int thiszone;       /* GMT to local correction */
-		unsigned   int sigfigs;        /* accuracy of timestamps */
-		unsigned   int snaplen;        /* max length of captured packets, in octets */
-		unsigned   int network;        /* data link type http://www.tcpdump.org/linktypes.html */
-	};
-	
-	struct pcap_packet_header
-	{
-		unsigned int ts_sec;	/* timestamp seconds */
-		unsigned int ts_usec;   /* timestamp microseconds */
-		unsigned int incl_len;  /* number of octets of packet saved in file */
-		unsigned int orig_len;  /* actual length of packet */
-	};
+        unsigned   int magic_number;   /* magic number */
+        unsigned short version_major;  /* major version number */
+        unsigned short version_minor;  /* minor version number */
+          signed   int thiszone;       /* GMT to local correction */
+        unsigned   int sigfigs;        /* accuracy of timestamps */
+        unsigned   int snaplen;        /* max length of captured packets, in octets */
+        unsigned   int network;        /* data link type http://www.tcpdump.org/linktypes.html */
+    };
+    
+    struct pcap_packet_header
+    {
+        unsigned int ts_sec;    /* timestamp seconds */
+        unsigned int ts_usec;   /* timestamp microseconds */
+        unsigned int incl_len;  /* number of octets of packet saved in file */
+        unsigned int orig_len;  /* actual length of packet */
+    };
 
-	class FileAdapter
+    class FileAdapter
         : public AbstractProcessor
         , public IAdapter
-	{
+    {
         BasicStatCounterPtr statCounter;
 
-		FILE * file1;
+        FILE * file1;
         FILE * file2;
 
         bool afterHeader;
@@ -54,17 +54,17 @@ namespace DiplomBukov
         FileOpenOptionPtr inFile;
         FileSaveOptionPtr outFile;
 
-	public:
+    public:
         FileAdapter(ProcessorPtr Connector = ProcessorPtr());
         FileAdapter(const FileAdapter & ad);
-		virtual ProcessorPtr CreateCopy() const;
+        virtual ProcessorPtr CreateCopy() const;
         ~FileAdapter();
         
         virtual ProcessingStatus backwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual const char * getProcessorName();
 
-		virtual void run(bool always);
+        virtual void run(bool always);
         virtual bool tick();
 
         virtual Type type();
@@ -72,8 +72,8 @@ namespace DiplomBukov
         virtual OptionPtr getOptions();
 
         virtual StatsProviderPtr statsProvider();
-	};
-	// class FileAdapter
+    };
+    // class FileAdapter
 
     typedef SharedPointer<FileAdapter>::Type FileAdapterPtr;
 }

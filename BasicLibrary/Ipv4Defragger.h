@@ -42,21 +42,21 @@ namespace DiplomBukov
         }
     };
 
-	class Ipv4Defragger : public AbstractProcessor
-	{
+    class Ipv4Defragger : public AbstractProcessor
+    {
         DefragPacket * fullPacket;
         int ipDataOffset;
 
-	public:
-		Ipv4Defragger(ProcessorPtr Connector = ProcessorPtr());
+    public:
+        Ipv4Defragger(ProcessorPtr Connector = ProcessorPtr());
         virtual ProcessorPtr CreateCopy() const;
 
         virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
-	};
-	// class Ipv4Defragger
+    };
+    // class Ipv4Defragger
 
     typedef SharedPointer<Ipv4Defragger>::Type Ipv4DefraggerPtr;
 }

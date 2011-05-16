@@ -14,7 +14,7 @@ struct pcap_file_header
 
 struct pcap_packet_header
 {
-    unsigned int ts_sec;	/* timestamp seconds */
+    unsigned int ts_sec;    /* timestamp seconds */
     unsigned int ts_usec;   /* timestamp microseconds */
     unsigned int incl_len;  /* number of octets of packet saved in file */
     unsigned int orig_len;  /* actual length of packet */

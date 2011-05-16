@@ -7,7 +7,7 @@
 namespace DiplomBukov
 {
     class IAdapter : public virtual IProcessor
-	{
+    {
     public:
         enum Type
         {
@@ -15,15 +15,15 @@ namespace DiplomBukov
             Offline
         };
 
-	public:
-		virtual ~IAdapter() {}
+    public:
+        virtual ~IAdapter() {}
 
-		virtual void run(bool always) = 0;
+        virtual void run(bool always) = 0;
         virtual bool tick() = 0;
 
         virtual Type type() = 0;
-	};
-	// class IAdapter
+    };
+    // class IAdapter
 }
 // namespace DiplomBukov
 

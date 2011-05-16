@@ -7,14 +7,14 @@
 
 namespace DiplomBukov
 {
-	#pragma pack(push,1)
-	struct mac_addr
-	{
-		union
-		{
-			u8  bytes[6];
-			u16 words[3];
-		};
+    #pragma pack(push,1)
+    struct mac_addr
+    {
+        union
+        {
+            u8  bytes[6];
+            u16 words[3];
+        };
 
         mac_addr()
         {
@@ -109,17 +109,17 @@ namespace DiplomBukov
                 return (words[2] < addr.words[2]);
             return false;
         }
-	};
-	#pragma pack(pop)
+    };
+    #pragma pack(pop)
 
-	#pragma pack(push,1)
-	struct mac_header
-	{
-		mac_addr dst;
-		mac_addr src;
+    #pragma pack(push,1)
+    struct mac_header
+    {
+        mac_addr dst;
+        mac_addr src;
         u16be proto;
-	};
-	#pragma pack(pop)
+    };
+    #pragma pack(pop)
 }
 // namespace DiplomBukov
 

@@ -27,11 +27,11 @@ ProcessorPtr BruteConnector::CreateCopy() const
 ProcessingStatus BruteConnector::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
 {
     ProcessingStatus ans = ProcessingStatus::Rejected;
-	for(MyDeque::iterator it = procList.begin(); it != procList.end(); it++)
+    for(MyDeque::iterator it = procList.begin(); it != procList.end(); it++)
     {
-		ProcessingStatus ret = (*it)->forwardProcess(proto, packet, offset);
+        ProcessingStatus ret = (*it)->forwardProcess(proto, packet, offset);
         if (ret == ProcessingStatus::Accepted)
             ans = ProcessingStatus::Accepted;
-	}
+    }
     return ans;
 }

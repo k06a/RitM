@@ -9,7 +9,7 @@
 using namespace DiplomBukov;
 
 FileAdapter::FileAdapter(ProcessorPtr Connector)
-	: statCounter(new BasicStatCounter)
+    : statCounter(new BasicStatCounter)
     , file1(NULL), file2(NULL), id(0)
     , linkType(0), buffer(NULL), afterHeader(false)
     , groupOption(new GroupOption(true))
@@ -43,8 +43,8 @@ ProcessorPtr FileAdapter::CreateCopy() const
 
 FileAdapter::~FileAdapter()
 {
-	if (file1 != NULL)
-		fclose(file1);
+    if (file1 != NULL)
+        fclose(file1);
     if (file2 != NULL)
         fclose(file2);
     delete [] buffer;
@@ -126,9 +126,9 @@ void FileAdapter::run(bool always)
     id = 1;
     buffer = new u8 [65536];
     while (always)
-	{
+    {
         if (!tick()) break;
-	}
+    }
 }
 
 bool FileAdapter::tick()

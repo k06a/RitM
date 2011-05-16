@@ -7,15 +7,15 @@
 
 namespace DiplomBukov
 {
-	#pragma pack(push,1)
-	struct ipv4_addr
-	{
-		union
-		{
-			u8  bytes[4];
-			u16 words[2];
-			u32 dword;
-		};
+    #pragma pack(push,1)
+    struct ipv4_addr
+    {
+        union
+        {
+            u8  bytes[4];
+            u16 words[2];
+            u32 dword;
+        };
 
         ipv4_addr(const int value = 0)
         {
@@ -56,30 +56,30 @@ namespace DiplomBukov
         {
             return (dword != addr.dword);
         }
-	};
-	#pragma pack(pop)
+    };
+    #pragma pack(pop)
 
     //
 
-	#pragma pack(push,1)
-	struct ipv4_header
-	{
-		// ---------------- First DWORD ----------------
+    #pragma pack(push,1)
+    struct ipv4_header
+    {
+        // ---------------- First DWORD ----------------
 
-		u8 hdr_len:4;
+        u8 hdr_len:4;
         u8 version:4;
 
-		struct {
-			u8 dscp:6;
-			u8 ect:1;
-			u8 ce:1;
-		} dsfield;
+        struct {
+            u8 dscp:6;
+            u8 ect:1;
+            u8 ce:1;
+        } dsfield;
 
-		u16be totalLength;
+        u16be totalLength;
 
-		// ---------------- Second DWORD ----------------
+        // ---------------- Second DWORD ----------------
 
-		u16 identificator;
+        u16 identificator;
 
     private:
         u8 frag_offset1:5;
@@ -87,46 +87,46 @@ namespace DiplomBukov
         u8 flag_mf:1;
         u8 flag_df:1;
         u8 flag_rb:1;
-	private:
+    private:
         u8 frag_offset2;
-	public:
+    public:
         u16 fragmentOffset() {
-			return (frag_offset1 << 11) | (frag_offset2 << 3);
-		}
+            return (frag_offset1 << 11) | (frag_offset2 << 3);
+        }
 
-		void setFragmentOffset(u16 value) {
-			frag_offset1 = (value >> 11);
+        void setFragmentOffset(u16 value) {
+            frag_offset1 = (value >> 11);
             frag_offset2 = (value >> 3);
-		}
+        }
 
-		// ---------------- Third DWORD -----------------
+        // ---------------- Third DWORD -----------------
 
-		u8  ttl;
-		u8  proto;
-		u16 checksum;
+        u8  ttl;
+        u8  proto;
+        u16 checksum;
 
-		// ---------- Fourth and Fifth DWORD ------------
+        // ---------- Fourth and Fifth DWORD ------------
 
-		ipv4_addr src_data;
-		ipv4_addr dst_data;
+        ipv4_addr src_data;
+        ipv4_addr dst_data;
 
         // ----------------------------------------------
 
         /*
-		static unsigned short CalculateChecksum(char * buffer, unsigned short length)
-		{
-			unsigned int sum = 0;
+        static unsigned short CalculateChecksum(char * buffer, unsigned short length)
+        {
+            unsigned int sum = 0;
 
-			for (char * end = buffer + length; buffer < end; buffer += 2)
-				sum += (*buffer<<8) | buffer[1];
+            for (char * end = buffer + length; buffer < end; buffer += 2)
+                sum += (*buffer<<8) | buffer[1];
 
-			while (sum >> 16)
-				sum = (sum & 0xffff) + (sum >> 16);
+            while (sum >> 16)
+                sum = (sum & 0xffff) + (sum >> 16);
 
             sum = (sum >> 8) | (sum << 8);
 
             return ~sum;
-		}
+        }
         */
 
         static u16 countCheckSum(char *p1, i32 iSize)
@@ -149,24 +149,24 @@ namespace DiplomBukov
             return (u16)(~usChksum);
         }
 
-		u16 recountSum()
-		{
+        u16 recountSum()
+        {
             checksum = 0;
-			checksum = countCheckSum((char*)this, size());
-			return checksum;
-		}
+            checksum = countCheckSum((char*)this, size());
+            return checksum;
+        }
 
-		const int size() const
-		{
-			return (hdr_len << 2);
-		}
+        const int size() const
+        {
+            return (hdr_len << 2);
+        }
 
         ipv4_header()
             : version(4), hdr_len(5)
         {
         }
-	};
-	#pragma pack(pop)
+    };
+    #pragma pack(pop)
 
     //
 

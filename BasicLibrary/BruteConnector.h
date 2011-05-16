@@ -7,8 +7,8 @@
 
 namespace DiplomBukov
 {
-	class BruteConnector : public AbstractConnector
-	{
+    class BruteConnector : public AbstractConnector
+    {
     public:
         BruteConnector();
         BruteConnector(const MyDeque & d);
@@ -16,7 +16,7 @@ namespace DiplomBukov
 
         virtual ProcessingStatus forwardProcess(Protocol proto, PacketPtr packet, unsigned offset);
     };
-	// class BruteConnector
+    // class BruteConnector
 
     typedef SharedPointer<BruteConnector>::Type BruteConnectorPtr;
 }

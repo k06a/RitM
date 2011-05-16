@@ -12,15 +12,15 @@
 namespace DiplomBukov
 {
     class Ipv4Splitter : public AbstractProcessor
-	{
+    {
         typedef std::pair<ipv4_addr,ipv4_addr> ipv4_pair;
         typedef std::map<ipv4_pair,ProcessorPtr> MyMap;
 
         MyMap Connectors;
         ipv4_pair para;
-		
-	public:
-		Ipv4Splitter(ProcessorPtr Connector = ProcessorPtr());
+        
+    public:
+        Ipv4Splitter(ProcessorPtr Connector = ProcessorPtr());
         virtual ProcessorPtr CreateCopy() const;
         virtual void DestroyHierarchy();
 
@@ -29,8 +29,8 @@ namespace DiplomBukov
 
         virtual Protocol getProtocol();
         virtual const char * getProcessorName();
-	};
-	// class Ipv4Splitter
+    };
+    // class Ipv4Splitter
 
     typedef SharedPointer<Ipv4Splitter>::Type Ipv4SplitterPtr;
 }

@@ -29,9 +29,9 @@ ProcessingStatus MacHeaderProcessor::forwardProcess(Protocol proto, PacketPtr pa
 
     packet->addProcessor(shared_from_this());
     if (nextProcessor != NULL)
-    	nextProcessor->forwardProcess(packet->format(), packet, offset + sizeof(mac_header));
+        nextProcessor->forwardProcess(packet->format(), packet, offset + sizeof(mac_header));
 
-	return ProcessingStatus::Accepted;
+    return ProcessingStatus::Accepted;
 }
 
 ProcessingStatus MacHeaderProcessor::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)

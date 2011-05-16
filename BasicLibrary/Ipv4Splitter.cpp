@@ -64,7 +64,7 @@ ProcessingStatus Ipv4Splitter::forwardProcess(Protocol proto, PacketPtr packet, 
     if (nextProcessor != NULL)
         Connectors[para]->forwardProcess(proto, packet, offset);
 
-	return ProcessingStatus::Accepted;
+    return ProcessingStatus::Accepted;
 }
 
 ProcessingStatus Ipv4Splitter::backwardProcess(Protocol proto, PacketPtr packet, unsigned offset)

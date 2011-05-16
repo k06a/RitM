@@ -4,7 +4,7 @@
 using namespace DiplomBukov;
 
 Ipv4Defragger::Ipv4Defragger(ProcessorPtr Connector)
-	: fullPacket(NULL)
+    : fullPacket(NULL)
 {
     setNextProcessor(Connector);
 }
@@ -60,7 +60,7 @@ ProcessingStatus Ipv4Defragger::forwardProcess(Protocol proto, PacketPtr packet,
         }
     }
 
-	return ProcessingStatus::Accepted;
+    return ProcessingStatus::Accepted;
 }
 
 Protocol Ipv4Defragger::getProtocol()
