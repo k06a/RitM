@@ -69,6 +69,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4136B48705B7A8D3BDC2D93AA024CC55"
+        "OwnerKey" = "8:_DC180560BAE544F5A4D61565F0649D8F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_51B728F0EE764FAC9F7BAE86E397BD19"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -83,6 +89,12 @@
         {
         "MsmKey" = "8:_7031883E0231E5E29D3C4CF3073AC6C6"
         "OwnerKey" = "8:_54F6FDA8C1134AC38884D2F67EAF18BE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7031883E0231E5E29D3C4CF3073AC6C6"
+        "OwnerKey" = "8:_DC180560BAE544F5A4D61565F0649D8F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -119,6 +131,12 @@
         {
         "MsmKey" = "8:_D94CF2EDC7A445E9A04BF9C8026FF603"
         "OwnerKey" = "8:_54F6FDA8C1134AC38884D2F67EAF18BE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D94CF2EDC7A445E9A04BF9C8026FF603"
+        "OwnerKey" = "8:_DC180560BAE544F5A4D61565F0649D8F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -436,6 +454,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4136B48705B7A8D3BDC2D93AA024CC55"
+            {
+            "SourcePath" = "8:wpcap.dll"
+            "TargetName" = "8:wpcap.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B19290D0BE574F328E1571553CE86380"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_51B728F0EE764FAC9F7BAE86E397BD19"
             {
             "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qjpeg4.dll"
@@ -565,7 +603,7 @@
             "Description" = "8:"
             "Extensions" = "8:ritm"
             "MIME" = "8:"
-            "Icon" = "8:"
+            "Icon" = "8:_391048513C76472EA01D74173570CFBE"
             "IconIndex" = "3:0"
                 "Command"
                 {
@@ -685,7 +723,7 @@
         "Keywords" = "8:RitM network MitM"
         "ARPCOMMENTS" = "8:Система обработки и ретрансляции сетевого трафика по настраиваемому тракту обработки"
         "ARPURLINFOABOUT" = "8:k06aaa@gmail.com"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_391048513C76472EA01D74173570CFBE"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
