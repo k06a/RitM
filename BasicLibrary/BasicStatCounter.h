@@ -10,6 +10,7 @@ class BasicStatCounter : public IStatsProvider
 public:
     i64 i_count_in;
     i64 i_count_out;
+    i64 i_count_loops_private, i_count_loops;
 
     BasicStatCounter();
     virtual int getStatistic_size() const;

@@ -22,19 +22,19 @@ using namespace RitM;
 
 QtOptionWalker::QtOptionWalker(bool locked)
     : QObject()
-    , m_dialog(new QDialog)
+    , m_dialog(NULL)
     , m_layoutStack()
     , m_locked(locked)
 {
-    QLayout * lay = new QVBoxLayout;
-    m_dialog->setLayout(lay);
-    m_layoutStack.append(lay);
+    clear();
 }
 
 void QtOptionWalker::clear()
 {
     m_layoutStack.clear();
-    delete m_dialog;
+
+    if (m_dialog != NULL)
+        delete m_dialog;
 
     m_dialog = new QDialog;
     QLayout * lay = new QVBoxLayout;

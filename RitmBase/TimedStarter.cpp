@@ -5,7 +5,7 @@
 using namespace RitM;
 
 TimedStarter::TimedStarter()
-    : m_shouldStop(false)
+: m_shouldStop(false)
 {
 }
 
@@ -30,7 +30,7 @@ void TimedStarter::start()
         delays[i]->pickUpTo(adapters[i]);
         adapters[i]->run(false);
     }
-    
+
     while (true)
     {
         u64 mintime = ULLONG_MAX;
@@ -45,7 +45,7 @@ void TimedStarter::start()
                 allFalse &= !adapters[i]->tick();
             else
                 allFalse = false;
-        
+
             if (delays[i]->recvPacket.size() == 0)
                 continue;
 

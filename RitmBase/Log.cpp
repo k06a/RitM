@@ -2,10 +2,10 @@
 
 using namespace RitM;
 
-#pragma data_seg(".shared")
+//#pragma data_seg(".shared")
 ILogPrinter * Log::m_printer = NULL;
-#pragma data_seg() 
-#pragma comment(linker, "/SECTION:.shared,RWS")
+//#pragma data_seg() 
+//#pragma comment(linker, "/SECTION:.shared,RWS")
 
 Log::Log()
 {

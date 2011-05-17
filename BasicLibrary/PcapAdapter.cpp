@@ -123,7 +123,13 @@ bool PcapAdapter::tick()
     pcap_pkthdr header;
     const u8 * pkt_data = pcap_next(device, &header);
     if (pkt_data == NULL)
+    {
+        statCounter->i_count_loops_private++;
         return true;
+    }
+
+    statCounter->i_count_loops = statCounter->i_count_loops_private;
+    statCounter->i_count_loops_private = 0;
 
     // Find in hash
     u32 hash = crc32(pkt_data, header.caplen);

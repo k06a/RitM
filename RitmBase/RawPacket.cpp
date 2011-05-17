@@ -7,7 +7,6 @@ RawPacket::RawPacket(int size)
     : id_(0), time_(0), status_(Accepted)
     , real_size(size), data_(size)
     , direction_(Unknown)
-
 {
 }
 
@@ -114,14 +113,14 @@ void RawPacket::push_front(int length)
 void RawPacket::erase(int p1, int p2)
 {
     data_.erase(data_.begin() + p1,
-                data_.begin() + p2);
+        data_.begin() + p2);
     setRealSize(realSize() - (p2-p1));
 }
 
 void RawPacket::insert(int p, u8 * data, int size)
 {
     data_.insert(data_.begin() + p,
-                 data, data + size);
+        data, data + size);
     setRealSize(realSize() + size);
 }
 

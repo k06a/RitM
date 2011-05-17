@@ -7,6 +7,7 @@
 #include <utility>
 #include <algorithm>
 #include <sstream>
+#include <iterator>
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -45,7 +46,7 @@ struct http_transfer_coding
             if (blob.end() - offset < chunkSize)
                 return std::make_pair(Blob(), -1);
 
-            std::copy(it, it+chunkSize, back_inserter(vec));
+            std::copy(it, it+chunkSize, std::back_inserter(vec));
 
             offset = it + chunkSize + 2;
         }

@@ -80,10 +80,7 @@ void GroupOption::removeLastOption()
 
 std::string GroupOption::saveToString(int level)
 {
-    std::string delim = "(";
-    for (int l = 0; l <= level; l++)
-        delim += "@";
-    delim += ")";
+    std::string delim = "(" + std::string(level+1, '@') + ")";
 
     std::string str;
     for (unsigned i = 0; i < optionList.size(); i++)
@@ -97,16 +94,18 @@ std::string GroupOption::saveToString(int level)
 
 void GroupOption::loadFromString(std::string str, int level)
 {
-    std::string delim = "(";
-    for (int l = 0; l <= level; l++)
-        delim += "@";
-    delim += ")";
-
+    std::string delim = "(" + std::string(level+1, '@') + ")";
+    
     unsigned i = 0;
-    while (str.size() > 0 && i < optionList.size())
+    while (str.size() > 0)
     {
         std::string::iterator it = std::search(str.begin(), str.end(),
                                                delim.begin(), delim.end());
+
+        // Если нет такого итема, то скопировать структуру с первого
+        if  (i == optionList.size())
+            optionList.push_back(optionList[0]->CreateCopy());
+
         optionList[i]->loadFromString(str.substr(0,it-str.begin()), level+1);
 
         if (it == str.end())

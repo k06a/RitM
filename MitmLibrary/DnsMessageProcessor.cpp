@@ -58,13 +58,13 @@ DnsMessageProcessor::DnsMessageProcessor(ProcessorPtr processor)
     addButton->setListener(appendListener);
     PushButtonOptionPtr delButton(new PushButtonOption("Удалить"));
     delButton->setListener(removeListener);
-    GroupOptionPtr group2(new GroupOption(false));
-    group2->addOption(addButton);
-    group2->addOption(delButton);
+    GroupOptionPtr buttons(new GroupOption(false));
+    buttons->addOption(addButton);
+    buttons->addOption(delButton);
 
     options->addOption(alwaysResave);
     options->addOption(options_list);
-    options->addOption(group2);
+    options->addOption(buttons);
 }
 
 ProcessorPtr DnsMessageProcessor::CreateCopy() const
@@ -73,7 +73,10 @@ ProcessorPtr DnsMessageProcessor::CreateCopy() const
     if (nextProcessor != NULL)
         np = nextProcessor->CreateCopy();
 
-    return ProcessorPtr(new DnsMessageProcessor(np));
+    DnsMessageProcessorPtr p(new DnsMessageProcessor(np));
+    p->getOptions()->loadFromString(options->saveToString());
+
+    return p;
 }
 
 ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr packet, unsigned offset)
@@ -83,49 +86,65 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
 
     packet->addProcessor(shared_from_this());
 
-    u16 answerType = 0;
-    if (destType->getSelectedText() == "IPv4")
-        answerType = DnsRequest::A;
-    if (destType->getSelectedText() == "Domain Name")
-        answerType = DnsRequest::TXT;
-    if (destType->getSelectedText() == "Mail Exchange")
-        answerType = DnsRequest::MX;
-
+    /*
     dnsMessage.parse(&*(packet->dataBegin() + offset), packet->size()-offset);
 
+    
     bool podmena = false;
-
-    if (check->isChecked())
     for (unsigned i = 0; i < dnsMessage.answers.size(); i++)
     {
-        std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
-        if ((host == source->getText()) &&
-            (dnsMessage.answers[i].questionType == answerType))
+        for (int line = 0; line < options_list->options_size(); line++)
         {
-            switch (answerType)
+            GroupOptionPtr gr = SharedPointerCast<GroupOption>(options_list->options_item(line));
+
+            CheckOptionPtr    check       = SharedPointerCast<CheckOption   >(gr->options_item(0));
+            TextLineOptionPtr source      = SharedPointerCast<TextLineOption>(gr->options_item(1));
+            ComboOptionPtr    destType    = SharedPointerCast<ComboOption   >(gr->options_item(2));
+            TextLineOptionPtr destination = SharedPointerCast<TextLineOption>(gr->options_item(3));
+            
+            if (!check->isChecked())
+                continue;
+
+            u16 answerType = 0;
+            if (destType->getSelectedText() == "IPv4")
+                answerType = DnsRequest::A;
+            if (destType->getSelectedText() == "Domain Name")
+                answerType = DnsRequest::TXT;
+            if (destType->getSelectedText() == "Mail Exchange")
+                answerType = DnsRequest::MX;
+
+            std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
+
+            if ((host == source->getText()) &&
+                (dnsMessage.answers[i].questionType == answerType))
             {
-                case DnsRequest::A:
+                switch (answerType)
                 {
-                    ipv4_addr addr = destination->getText();
-                    dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
-                    break;
+                    case DnsRequest::A:
+                    {
+                        ipv4_addr addr = destination->getText();
+                        dnsMessage.answers[i].resources.assign((u8*)&addr, (u8*)&addr+4);
+                        break;
+                    }
+                    case DnsRequest::TXT:
+                    {
+                        dnsMessage.answers[i].resText =
+                            std::make_pair(DnsName::fromString(destination->getText()),0);
+                        break;
+                    }
+                    case DnsRequest::MX:
+                    {
+                        u16be priority = 0x0028;
+                        dnsMessage.answers[i].resources.assign((u8*)&priority, ((u8*)&priority)+2);
+                        dnsMessage.answers[i].resText =
+                            std::make_pair(DnsName::fromString(destination->getText()),0);
+                        break;
+                    }
                 }
-                case DnsRequest::TXT:
-                {
-                    dnsMessage.answers[i].resText =
-                        std::make_pair(DnsName::fromString(destination->getText()),0);
-                    break;
-                }
-                case DnsRequest::MX:
-                {
-                    u16be priority = 0x0028;
-                    dnsMessage.answers[i].resources.assign((u8*)&priority, ((u8*)&priority)+2);
-                    dnsMessage.answers[i].resText =
-                        std::make_pair(DnsName::fromString(destination->getText()),0);
-                    break;
-                }
+                podmena = true;           
             }
-            podmena = true;           
+
+            break;
         }
     }
     
@@ -137,6 +156,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
         std::copy(vec.begin(), vec.end(), &(*packet)[offset]);
     }
 
+    */
     backwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;

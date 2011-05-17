@@ -121,7 +121,8 @@ namespace RitM
             char tcpBuf[65536] = {};
             memcpy(tcpBuf,&psd_header,sizeof(PSD_HEADER));
             memcpy(tcpBuf+sizeof(PSD_HEADER),tcph,tcph->header_size());
-            memcpy(tcpBuf+sizeof(PSD_HEADER)+tcph->header_size(),data,size);
+            if (size > 0)
+                memcpy(tcpBuf+sizeof(PSD_HEADER)+tcph->header_size(),data,size);
             if ((sizeof(PSD_HEADER)+tcph->header_size()+size) & 1)
             {
                 tcpBuf[sizeof(PSD_HEADER)+tcph->header_size()+size] = 0;
