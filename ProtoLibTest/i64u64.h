@@ -13,29 +13,7 @@ typedef unsigned __int16 u16;
 typedef unsigned __int32 u32;
 typedef unsigned __int64 u64;
 
-#if defined(LITTLE_ENDIAN)
-
-// Little Endian
-
-typedef i16 i16le;
-typedef i32 i32le;
-typedef i64 i64le;
-
-typedef u16 u16le;
-typedef u32 u32le;
-typedef u64 u64le;
-
-// Big Endian
-
-typedef boolib::util::BigEndian<i16> i16be;
-typedef boolib::util::BigEndian<i32> i32be;
-typedef boolib::util::BigEndian<i64> i64be;
-
-typedef boolib::util::BigEndian<u16> u16be;
-typedef boolib::util::BigEndian<u32> u32be;
-typedef boolib::util::BigEndian<u64> u64be;
-
-#elif defined(BIG_ENDIAN)
+#ifdef BIG_ENDIAN
 
 // Little Endian
 
@@ -59,7 +37,29 @@ typedef u64 u64be;
 
 #else
 
-#pragma message("Please define LITTLE_ENDIAN of BIG_ENDIAN before include " __FILE__)
+//#if !defined(LITTLE_ENDIAN)
+//#pragma message("Please define LITTLE_ENDIAN of BIG_ENDIAN before include " __FILE__)
+//#endif
+
+// Little Endian
+
+typedef i16 i16le;
+typedef i32 i32le;
+typedef i64 i64le;
+
+typedef u16 u16le;
+typedef u32 u32le;
+typedef u64 u64le;
+
+// Big Endian
+
+typedef boolib::util::BigEndian<i16> i16be;
+typedef boolib::util::BigEndian<i32> i32be;
+typedef boolib::util::BigEndian<i64> i64be;
+
+typedef boolib::util::BigEndian<u16> u16be;
+typedef boolib::util::BigEndian<u32> u32be;
+typedef boolib::util::BigEndian<u64> u64be;
 
 #endif
 

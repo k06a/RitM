@@ -1,6 +1,7 @@
 #include "Ipv4HeaderProcessor.h"
 #include "network/ipv4_header.h"
 #include "network/tcp_header.h"
+#include "network/udp_header.h"
 
 using namespace RitM;
 
@@ -74,6 +75,13 @@ ProcessingStatus Ipv4HeaderProcessor::backwardProcess(Protocol proto, PacketPtr 
             ip->dst_data.dword,
             ip->totalLength-ip->size());
             */
+    } else if (proto == Protocol::UDP)
+    {
+        udp_header * udp = (udp_header *)(((char*)ip) + ip->size());
+        u8 * data = (u8*)(((char*)udp) + udp->header_size());
+        int size = ip->totalLength - ip->size() - udp->header_size();
+        //udp->checksum = udp->udp_sum_calc(data, size, ip->src_data.dword, ip->dst_data.dword);
+        udp->checksum = 0;//udp->inet_chksum_pseudo(data, ip->src_data.dword, ip->dst_data.dword, 17, size);
     }
 
     if (packet->processorBefore(shared_from_this()) != NULL)

@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS /wd4250"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmHeart\include;..\RitmHeart\include\options"
+				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmBase\include;..\RitmBase\include\options"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;BASICLIBRARY_EXPORTS;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -119,7 +119,7 @@
 				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS /wd4250"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmHeart\include;..\RitmHeart\include\options"
+				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmBase\include;..\RitmBase\include\options"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;BASICLIBRARY_EXPORTS;LITTLE_ENDIAN"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -212,14 +212,6 @@
 			</File>
 			<File
 				RelativePath=".\BasicLibrary.h"
-				>
-			</File>
-			<File
-				RelativePath=".\BasicStatCounter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\BasicStatCounter.h"
 				>
 			</File>
 			<Filter

@@ -86,9 +86,7 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
 
     packet->addProcessor(shared_from_this());
 
-    /*
     dnsMessage.parse(&*(packet->dataBegin() + offset), packet->size()-offset);
-
     
     bool podmena = false;
     for (unsigned i = 0; i < dnsMessage.answers.size(); i++)
@@ -106,11 +104,11 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
                 continue;
 
             u16 answerType = 0;
-            if (destType->getSelectedText() == "IPv4")
+            if (destType->getSelectedText() == std::string("IPv4"))
                 answerType = DnsRequest::A;
-            if (destType->getSelectedText() == "Domain Name")
+            if (destType->getSelectedText() == std::string("Domain Name"))
                 answerType = DnsRequest::TXT;
-            if (destType->getSelectedText() == "Mail Exchange")
+            if (destType->getSelectedText() == std::string("Mail Exchange"))
                 answerType = DnsRequest::MX;
 
             std::string host = DnsName::readableName(dnsMessage.answers[i].nameSize.first);
@@ -141,10 +139,9 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
                         break;
                     }
                 }
-                podmena = true;           
+                podmena = true;
+                break;
             }
-
-            break;
         }
     }
     
@@ -156,7 +153,6 @@ ProcessingStatus DnsMessageProcessor::forwardProcess(Protocol proto, PacketPtr p
         std::copy(vec.begin(), vec.end(), &(*packet)[offset]);
     }
 
-    */
     backwardProcess(proto, packet, offset);
 
     return ProcessingStatus::Accepted;

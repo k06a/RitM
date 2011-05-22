@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmHeart\include;..\RitmHeart\include\options"
+				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmBase\include;..\RitmBase\include\options"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmHeart\include;..\RitmHeart\include\options"
+				AdditionalIncludeDirectories="..\winpcap\include;..\ProtoLibTest;..\RitmBase\include;..\RitmBase\include\options"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

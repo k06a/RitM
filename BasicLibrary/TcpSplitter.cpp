@@ -74,7 +74,7 @@ ProcessingStatus TcpSplitter::backwardProcess(Protocol proto, PacketPtr packet, 
         std::swap(tcp->src_port, tcp->dst_port);
 
     if (packet->processorBefore(shared_from_this()) != NULL)
-        packet->processorBefore(shared_from_this())->backwardProcess(Protocol::TCP, packet, offset);
+        packet->processorBefore(shared_from_this())->backwardProcess(getProtocol(), packet, offset);
 
     return ProcessingStatus::Accepted;
 }

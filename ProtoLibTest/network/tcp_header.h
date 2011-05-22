@@ -82,23 +82,6 @@ namespace RitM
             memset(this, 0, sizeof(tcp_header));
         }
 
-        u16 CheckSum(u16 *buffer, int size)
-        {
-            unsigned long cksum = 0;
-            while(size > 1)
-            {
-                cksum += *buffer++;
-                size -= sizeof(u16);
-            }
-            if(size)
-                cksum += *(u16*)buffer;
-
-            cksum = (cksum >> 16) + (cksum & 0xffff);
-            cksum += (cksum >>16);
-
-            return (u16)(~cksum);
-        }
-
         u16 TcpCheckSum(ipv4_header * iph, tcp_header * tcph, u8 * data, int size)
         {
             struct PSD_HEADER
@@ -130,6 +113,24 @@ namespace RitM
             }
             return tcph->check_sum = CheckSum((u16*)tcpBuf,
                 sizeof(PSD_HEADER)+tcph->header_size()+size);
+        }
+
+    private:
+        u16 CheckSum(u16 *buffer, int size)
+        {
+            unsigned long cksum = 0;
+            while(size > 1)
+            {
+                cksum += *buffer++;
+                size -= sizeof(u16);
+            }
+            if(size)
+                cksum += *(u16*)buffer;
+
+            cksum = (cksum >> 16) + (cksum & 0xffff);
+            cksum += (cksum >>16);
+
+            return (u16)(~cksum);
         }
     };
     #pragma pack(pop)

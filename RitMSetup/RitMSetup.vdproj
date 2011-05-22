@@ -276,7 +276,7 @@
         {
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_004BA7394E004D41BB13F76C9FA82D79"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qmng4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qmng4.dll"
             "TargetName" = "8:qmng4.dll"
             "Tag" = "8:"
             "Folder" = "8:_9E5BF9C300C44ACDAFF9548350231984"
@@ -296,7 +296,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0513B019044B4985B1A15AC38C3A82EE"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\iconengines\\qsvgicon4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\iconengines\\qsvgicon4.dll"
             "TargetName" = "8:qsvgicon4.dll"
             "Tag" = "8:"
             "Folder" = "8:_FAB98068BB73429EBE6C4CADF4F47DFA"
@@ -316,7 +316,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_068F5CD2D93845578593B1FF75AB0FDC"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qtiff4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qtiff4.dll"
             "TargetName" = "8:qtiff4.dll"
             "Tag" = "8:"
             "Folder" = "8:_9E5BF9C300C44ACDAFF9548350231984"
@@ -376,7 +376,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_161C289FD615458FA150B2E358AE2414"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qsvg4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qsvg4.dll"
             "TargetName" = "8:qsvg4.dll"
             "Tag" = "8:"
             "Folder" = "8:_9E5BF9C300C44ACDAFF9548350231984"
@@ -396,7 +396,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2854660648E74AB1897A9BA6C0E2142B"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\bin\\QtXml4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\bin\\QtXml4.dll"
             "TargetName" = "8:QtXml4.dll"
             "Tag" = "8:"
             "Folder" = "8:_B19290D0BE574F328E1571553CE86380"
@@ -476,7 +476,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_51B728F0EE764FAC9F7BAE86E397BD19"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qjpeg4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qjpeg4.dll"
             "TargetName" = "8:qjpeg4.dll"
             "Tag" = "8:"
             "Folder" = "8:_9E5BF9C300C44ACDAFF9548350231984"
@@ -516,7 +516,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A04200142B2445ACA217F824FF0DBAA2"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qico4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qico4.dll"
             "TargetName" = "8:qico4.dll"
             "Tag" = "8:"
             "Folder" = "8:_9E5BF9C300C44ACDAFF9548350231984"
@@ -536,7 +536,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A23F8556435049F2869C4E51216750D1"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qgif4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\plugins\\imageformats\\qgif4.dll"
             "TargetName" = "8:qgif4.dll"
             "Tag" = "8:"
             "Folder" = "8:_9E5BF9C300C44ACDAFF9548350231984"
@@ -576,7 +576,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E4E79B7E0DB0435495D02F15C2D919C7"
             {
-            "SourcePath" = "8:C:\\Qt\\SDK_1.1_RC\\Desktop\\Qt\\4.7.3\\msvc2008\\bin\\QtSvg4.dll"
+            "SourcePath" = "8:C:\\Qt\\SDK_1.1\\Desktop\\Qt\\4.7.3\\msvc2008\\bin\\QtSvg4.dll"
             "TargetName" = "8:QtSvg4.dll"
             "Tag" = "8:"
             "Folder" = "8:_B19290D0BE574F328E1571553CE86380"
